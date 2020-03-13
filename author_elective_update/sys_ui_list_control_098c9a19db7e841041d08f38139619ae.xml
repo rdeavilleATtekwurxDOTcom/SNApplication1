@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_list_control">
+    <sys_ui_list_control action="DELETE">
+        <columns_condition/>
+        <edit_condition/>
+        <edit_default_filter/>
+        <edit_roles/>
+        <empty_condition/>
+        <filter_condition/>
+        <filter_roles/>
+        <hierarchical_lists>false</hierarchical_lists>
+        <label>My list control</label>
+        <link_condition/>
+        <link_roles/>
+        <list_edit_insert_row>false</list_edit_insert_row>
+        <list_edit_ref_qual_tag/>
+        <list_edit_type/>
+        <name>x_tekso_twxapp01_cmdb_changes</name>
+        <new_condition/>
+        <new_roles/>
+        <omit_columns_if_empty>false</omit_columns_if_empty>
+        <omit_drilldown_link>false</omit_drilldown_link>
+        <omit_edit_button>true</omit_edit_button>
+        <omit_filters>false</omit_filters>
+        <omit_if_empty>false</omit_if_empty>
+        <omit_links>false</omit_links>
+        <omit_new_button>true</omit_new_button>
+        <related_list/>
+        <sys_class_name>sys_ui_list_control</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-05 12:28:09</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>098c9a19db7e841041d08f38139619ae</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_cmdb_changes</sys_name>
+        <sys_overrides display_value="">global</sys_overrides>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_list_control_098c9a19db7e841041d08f38139619ae</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-05 12:28:09</sys_updated_on>
+    </sys_ui_list_control>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_list_control_098c9a19db7e841041d08f38139619ae</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_list_control"><sys_ui_list_control action="INSERT_OR_UPDATE"><columns_condition/><edit_condition/><edit_default_filter/><edit_roles/><empty_condition/><filter_condition/><filter_roles/><hierarchical_lists>false</hierarchical_lists><label>My list control</label><link_condition/><link_roles/><list_edit_insert_row>false</list_edit_insert_row><list_edit_ref_qual_tag/><list_edit_type/><name>x_tekso_twxapp01_cmdb_changes</name><new_condition/><new_roles/><omit_columns_if_empty>false</omit_columns_if_empty><omit_drilldown_link>false</omit_drilldown_link><omit_edit_button>true</omit_edit_button><omit_filters>false</omit_filters><omit_if_empty>false</omit_if_empty><omit_links>false</omit_links><omit_new_button>true</omit_new_button><related_list/><sys_class_name>sys_ui_list_control</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-02-05 12:28:09</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>098c9a19db7e841041d08f38139619ae</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_cmdb_changes</sys_name><sys_overrides display_value="">global</sys_overrides><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_list_control_098c9a19db7e841041d08f38139619ae</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-02-05 12:28:09</sys_updated_on></sys_ui_list_control></record_update>]]></payload>
+        <payload_hash>1017990525</payload_hash>
+        <record_name>x_tekso_twxapp01_cmdb_changes</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-05 12:28:09</sys_created_on>
+        <sys_id>7cbc5e19db7e841041d08f3813961905</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170155270e70000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-05 12:28:09</sys_updated_on>
+        <type>List Control</type>
+        <update_guid>b4bc5e19587e8410ee43a7cbbf079505</update_guid>
+        <update_guid_history>b4bc5e19587e8410ee43a7cbbf079505:1017990525</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-05 12:29:10</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_list_control">sys_ui_list_control</sys_db_object>
+        <sys_id>1bdb3f7765a9420c87efe35ba298dc10</sys_id>
+        <sys_metadata>098c9a19db7e841041d08f38139619ae</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_cmdb_changes</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="CMDB Changes">ce9e079fdb26001041d08f381396195f</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_list_control_098c9a19db7e841041d08f38139619ae</sys_update_name>
+        <sys_update_version display_value="sys_ui_list_control_098c9a19db7e841041d08f38139619ae">7cbc5e19db7e841041d08f3813961905</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-05 12:29:10</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

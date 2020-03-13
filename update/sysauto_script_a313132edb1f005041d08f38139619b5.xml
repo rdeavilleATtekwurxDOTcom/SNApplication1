@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Clear Data Tables</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-03-05 10:09:43</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[var gr1 = new GlideRecord('x_tekso_twxapp01_rest_data_to_ucontrol');
+gr1.query();
+gr1.deleteMultiple();
+
+var gr2 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+gr2.query();
+gr2.deleteMultiple();
+
+var gr3 = new GlideRecord('x_tekso_twxapp01_cmdb_changes');
+gr3.query();
+gr3.deleteMultiple();
+		
+var gr4 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+gr4.query();
+gr4.deleteMultiple();
+	
+var gr5 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+gr5.query();
+gr5.deleteMultiple();
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-05 10:10:58</sys_created_on>
+        <sys_id>a313132edb1f005041d08f38139619b5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Clear Data Tables</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_a313132edb1f005041d08f38139619b5</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-05 10:10:58</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

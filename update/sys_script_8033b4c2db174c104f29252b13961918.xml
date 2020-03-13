@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>cmdb_rel_ci</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>uControl Track Del cmdb_rel_ci</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as all info is lost for a delete
+	// After BR - this writes to x_tekso_twxapp01_cmdb_deletes
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_deletes which is triggered on insert
+	// BR uControl Track Deletes	
+	
+	var fieldCnt = 0;
+	var allFields = '';
+	for (var x in current){
+		if (fieldCnt == 0) {
+			allFields = x;
+		}
+		else {
+			allFields = allFields + ',' + x;
+		}
+		fieldCnt++;
+	}
+	
+	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+	gr1.initialize();
+	gr1.setValue('record_sys_id',current.sys_id);
+	gr1.setValue('table_name','cmdb_rel_ci');
+	gr1.setValue('record_originally_created_by',current.sys_created_by);
+	gr1.setValue('record_originally_created_on',current.sys_created_on);	
+	gr1.setValue('record_updated_by',current.sys_updated_by);
+	gr1.setValue('record_updated_on',current.sys_updated_on);		
+	gr1.setValue('correlation_id1',current.parent.correlation_id);
+	gr1.setValue('correlation_id2',current.child.correlation_id);	
+	gr1.setValue('discovery_source1',current.parent.discovery_source);
+	gr1.setValue('discovery_source2',current.child.discovery_source);	
+	gr1.setValue('base_table','cmdb_rel_ci');
+	gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+	gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+	gr1.setValue('all_fields',allFields);
+	gr1.setValue('no_of_fields',fieldCnt);	
+	gr1.setValue('triggered_by_script','uControl Track Del cmdb_rel_ci');
+	gr1.insert();
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-03 09:20:15</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>8033b4c2db174c104f29252b13961918</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>uControl Track Del cmdb_rel_ci</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_8033b4c2db174c104f29252b13961918</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-03 20:17:30</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=8033b4c2db174c104f29252b13961918"/>
+</record_update>

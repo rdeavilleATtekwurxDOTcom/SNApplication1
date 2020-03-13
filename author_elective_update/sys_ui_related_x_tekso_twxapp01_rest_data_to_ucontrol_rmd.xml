@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_related action="DELETE" sys_domain="global" table="x_tekso_twxapp01_rest_data_to_ucontrol" version="2" view="rmd">
+        <sys_ui_related_list_entry action="INSERT_OR_UPDATE">
+            <filter/>
+            <list_id display_value="REST Data To uControl - RMD" name="x_tekso_twxapp01_rest_data_to_ucontrol" related_list="NULL" sys_domain="global" view="db7287dadb5b8c104f29252b1396197d">4882475edb5b8c104f29252b1396190f</list_id>
+            <order_by/>
+            <position>0</position>
+            <related_list>x_tekso_twxapp01_cmdb_changes.link_to_rest_data_record</related_list>
+            <sys_class_name>sys_ui_related_list_entry</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-04 14:18:38</sys_created_on>
+            <sys_id>c082475edb5b8c104f29252b13961910</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-04 14:18:38</sys_updated_on>
+        </sys_ui_related_list_entry>
+        <sys_ui_related_list action="INSERT_OR_UPDATE">
+            <calculated_name>REST Data To uControl - RMD</calculated_name>
+            <filter/>
+            <name>x_tekso_twxapp01_rest_data_to_ucontrol</name>
+            <order_by/>
+            <position/>
+            <related_list/>
+            <sys_class_name>sys_ui_related_list</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-04 14:18:38</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>4882475edb5b8c104f29252b1396190f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>REST Data To uControl - RMD</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_related_x_tekso_twxapp01_rest_data_to_ucontrol_rmd</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-04 14:18:38</sys_updated_on>
+            <sys_user/>
+            <view display_value="RMD" name="rmd">db7287dadb5b8c104f29252b1396197d</view>
+            <view_name/>
+        </sys_ui_related_list>
+    </sys_ui_related>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_related_x_tekso_twxapp01_rest_data_to_ucontrol_rmd</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_related sys_domain="global" table="x_tekso_twxapp01_rest_data_to_ucontrol" version="2" view="rmd"><sys_ui_related_list_entry action="INSERT_OR_UPDATE"><filter/><list_id display_value="REST Data To uControl - RMD" name="x_tekso_twxapp01_rest_data_to_ucontrol" related_list="NULL" sys_domain="global" view="db7287dadb5b8c104f29252b1396197d">4882475edb5b8c104f29252b1396190f</list_id><order_by/><position>0</position><related_list>x_tekso_twxapp01_cmdb_changes.link_to_rest_data_record</related_list><sys_class_name>sys_ui_related_list_entry</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-04 14:18:38</sys_created_on><sys_id>c082475edb5b8c104f29252b13961910</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-04 14:18:38</sys_updated_on></sys_ui_related_list_entry><sys_ui_related_list action="INSERT_OR_UPDATE"><calculated_name>REST Data To uControl - RMD</calculated_name><filter/><name>x_tekso_twxapp01_rest_data_to_ucontrol</name><order_by/><position/><related_list/><sys_class_name>sys_ui_related_list</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-04 14:18:38</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>4882475edb5b8c104f29252b1396190f</sys_id><sys_mod_count>0</sys_mod_count><sys_name>REST Data To uControl - RMD</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_related_x_tekso_twxapp01_rest_data_to_ucontrol_rmd</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-04 14:18:38</sys_updated_on><sys_user/><view display_value="RMD" name="rmd">db7287dadb5b8c104f29252b1396197d</view><view_name/></sys_ui_related_list></sys_ui_related></record_update>]]></payload>
+        <payload_hash>973243541</payload_hash>
+        <record_name>REST Data To uControl</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:18:38</sys_created_on>
+        <sys_id>c882475edb5b8c104f29252b13961911</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170a5e9a77e0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:18:38</sys_updated_on>
+        <type>Related Lists</type>
+        <update_guid>4482475e645b8c1049984e1e3a064b11</update_guid>
+        <update_guid_history>4482475e645b8c1049984e1e3a064b11:973243541,5772075e225b8c103c9fca28bf2388ec:-1507373584</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:23:44</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_related_list">sys_ui_related_list</sys_db_object>
+        <sys_id>010564de5b8440ecac1d5392e455f404</sys_id>
+        <sys_metadata>4882475edb5b8c104f29252b1396190f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>REST Data To uControl - RMD</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="REST Data To uControl">2e5cf317dbe6001041d08f38139619a0</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_related_x_tekso_twxapp01_rest_data_to_ucontrol_rmd</sys_update_name>
+        <sys_update_version display_value="sys_ui_related_x_tekso_twxapp01_rest_data_to_ucontrol_rmd">c882475edb5b8c104f29252b13961911</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:23:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

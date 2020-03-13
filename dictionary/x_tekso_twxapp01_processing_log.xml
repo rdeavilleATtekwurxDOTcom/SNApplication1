@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Processing Log" max_length="40" name="x_tekso_twxapp01_processing_log" type="collection">
+        <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
+        <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
+        <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
+        <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
+        <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
+        <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
+        <element default="0" label="Polling Interval" max_length="40" name="polling_interval" type="integer"/>
+        <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
+        <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
+        <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
+        <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
+    </element>
+</database>

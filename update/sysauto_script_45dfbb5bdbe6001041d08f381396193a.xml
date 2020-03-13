@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Send Data to uControl</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period>1970-01-01 00:01:00</run_period>
+        <run_start>2020-01-30 14:33:24</run_start>
+        <run_time>1970-01-01 08:00:00</run_time>
+        <run_type>periodically</run_type>
+        <script><![CDATA[var startTime = GlideDateTime();
+
+var setupTable = 'x_tekso_twxapp01_setup';
+var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+
+// update the number of Pending Records in the Setup Table
+updateNumberOfPendingRecordsInSetupTable(setupTable,trackingTable);	
+
+var gr0 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+gr0.query();
+if (gr0.next()) {
+	// Get the sys_id for this script
+	var sysIDForThisScript = current.sys_id;
+	
+	// sys_id of the setup record
+	var setupSysID = gr0.sys_id; // Needed for test connection
+	var setupStatus = gr0.getValue('status') || '';
+	var pollingInterval = gr0.getValue('ucontrol_polling_interval_minutes') || 0;
+	
+	// Ensure that the setup table has the sys_id for this script so that if someone
+	// changes the interval then this can be updated
+	var setupScheduledJobSysID = gr0.getValue('scheduled_job_sys_id') || '';
+	if (sysIDForThisScript != setupScheduledJobSysID) {
+		gr0.setValue('scheduled_job_sys_id',sysIDForThisScript);
+		gr0.setValue('system_configuration_checks','OK');
+		gr0.update();
+	}
+		
+	// need to get midServerSysID and midServerName
+	if (setupStatus == 'Sending') {
+		// Only do some work if the status is Sending
+		mainBit(pollingInterval);
+	}
+	// update the number of Pending Records in the Setup Table
+	updateNumberOfPendingRecordsInSetupTable(setupTable,trackingTable);	
+	
+	// When was the last time a connection test was performed?
+	
+	//Need to put this through GlideDateTime()
+	var connectionTestedAt = new GlideDateTime(gr0.getValue('connection_tested_at'));	
+	gs.info('connectionTestedAt: ' + connectionTestedAt.toString());
+	var now = new GlideDateTime();
+	var dur = new GlideDuration();
+	dur = GlideDateTime.subtract(connectionTestedAt,now);// In Milliseconds
+	gs.info('dur: ' + dur.toString());
+	var secs = dur.getNumericValue() / 1000; 
+	gs.info('secs: ' + secs.toString());
+	var mins = dur.getNumericValue() / 1000 / 60;  // Minutes - wil be floating point e.g. 69.206
+	var mins2 = parseInt(mins); // e.g. 69
+	if (mins2 > 10) {
+		
+		//Need to use getElement to do dot walking.
+		var midServerSysID = gr0.getElement('ucontrol_mid_server.sys_id') || '';
+		var midServerName = gr0.getElement('ucontrol_mid_server.name') || '';				
+		var url = gr0.getValue('ucontrol_url') || '';
+		// Remove any leading or trailing spaces from the URL
+		url = url.replace(/^\s+|\s+$/g, '');
+
+		if (url.length > 0) {
+			// Remove the last character if it is a /
+			if (url.charAt(url.length - 1) == '/') {
+				url = url.substr(0, url.length - 1);
+			}
+		}
+		
+		// Can only do a test if got a URL and a MID Server
+		if (url.length > 0 && midServerName.length > 0 &&midServerSysID.length > 0) {
+			var dtRequest = new GlideDateTime();
+
+			// gets the user name
+			var userName = gs.getUserName();
+
+			// e.g. dev91664
+			var snInstance = gs.getProperty("instance_name");	
+			// e.g. https://dev91664.service-now.com/
+			var snURL = gs.getProperty("glide.servlet.uri");
+
+			var source = 'ServiceNow';
+
+			var json = '{\"source\":\"' + source + '\",';	// ServiceNow
+			json = json  + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+			json = json + '\"source_url\":\"' + snURL + '\",'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+			json = json +  '\"connection_requested\":\"' + dtRequest + '\",';	
+			json = json + '\"user\":\"' + userName + '\"}'; // No comma at the end	
+
+			var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+			var gr1 = new GlideRecord(connectionTestTable);
+			gr1.initialize();
+			gr1.setValue('setup_record',setupSysID);
+			gr1.setValue('ucontrol_url',url);
+			gr1.setValue('ucontrol_mid_server_name',midServerName);
+			gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);	
+			gr1.setValue('json_request_body',json);
+			gr1.setValue('triggered_by_script','Scheduled Job Send Data To uControl');
+			gr1.setValue('test_connection_triggered_by',true);
+			var connectionTestSysID = gr1.insert();
+
+			var si = new x_tekso_twxapp01.OutboundREST();
+			si.processTestConnection(connectionTestSysID);	
+		} // if (url.length > 0 && midServerName.length > 0 &&midServerSysID.length > 0)
+	} // if (mins2 > 10) 	
+}
+
+
+function setProcessingCompleteAtInLog(logTable,logSysID) {
+	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+	gr1.addQuery('sys_id',logSysID);
+	gr1.query();
+	if (gr1.next()) {
+		var completedAt = GlideDateTime();
+		gr1.setValue('processing_completed_at',completedAt);
+		gr1.update();
+	}
+}
+
+// Create a new log record - x_tekso_twxapp01_processing_log and return the sys_id
+function createNewLogRecord(logTable,pollingInterval) {
+	var rtnSysID = '';
+	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+	gr1.initialize();
+	gr1.setValue('total_number_of_records_sent',0);
+	gr1.setValue('number_of_updates_sent',0);
+	gr1.setValue('number_of_deletes_sent',0);	
+	gr1.setValue('data_sent_updates_per_class','');
+	gr1.setValue('data_sent_deletes_per_class','');	
+	gr1.setValue('polling_interval',pollingInterval);
+	rtnSysID = gr1.insert();
+	return rtnSysID;
+}
+
+
+// Add the sys_id for the lastest log to setup
+function updateSetupAddProcessingLogRef(setupTable,logSysID) {
+	var gr1 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('link_to_last_processing_log_record',logSysID);
+		gr1.update();
+	}
+}
+
+
+function sendSummary(recCnt,updCnt,delCnt) {
+	var rtn = '';
+	if (recCnt == 1) {
+		rtn = '1 record';
+	}
+	else {
+		rtn = recCnt.toString() + ' records';
+	}	
+
+	if (updCnt == 1) {
+		rtn = rtn + ' (1 update';
+	}
+	else {
+		rtn = rtn + ' (' + updCnt.toString() + ' updates';
+	}
+
+	if (delCnt == 1) {
+		rtn = rtn + ' , 1 delete)';
+	}
+	else {
+		rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+	}
+
+	return rtn;
+}
+		
+function updateNumberOfPendingRecordsInSetupTable(setupTable,trackingTable) {
+	var noOfRecsNew = getNumberOfPendingRecords(trackingTable);
+	var gr1 = new GlideRecord(setupTable);
+	gr1.query();
+	if (gr1.next()) {
+		var noOfRecsOld = gr1.getValue('number_of_pending_records') || 0;
+		// Only update if the value has changed
+		if (noOfRecsOld != noOfRecsNew) {
+			gr1.setValue('number_of_pending_records',noOfRecsNew);
+			gr1.update();
+		}
+	}
+}
+
+function getNumberOfPendingRecords(trackingTable) {
+	// Get the number of pending records
+	var gr1 = new GlideRecord(trackingTable);
+	gr1.addQuery('status','Pending');
+	gr1.query();
+	var cnt = gr1.getRowCount();
+
+	return cnt;
+}
+
+
+function createLinkRecord(linkTable,operation,table,baseTable,recordSysID,data_sys_id,trackingSysID,logSysID) {
+				
+	var gr1 = new GlideRecord(linkTable);
+	gr1.initialize();
+	gr1.setValue('operation',operation); // insert / delete
+	gr1.setValue('table',table); // Blank for Delete
+	gr1.setValue('base_table',baseTable);
+	gr1.setValue('record_sys_id',recordSysID); // Sys_id for the cmdb_ci / cmdb_rel_ci record to be processed
+	gr1.setValue('link_to_rest_data_record',data_sys_id);
+	gr1.setValue('link_to_processing_record',trackingSysID);
+	gr1.setValue('link_to_processing_log_record',logSysID);
+	gr1.insert();
+}
+
+
+function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,JSONRequestBody,noOfRecsInJSON,logSysID) {
+	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	gr1.initialize();
+	gr1.setValue('operation',operation); // insert
+	gr1.setValue('base_table',baseTable);
+	gr1.setValue('ucontrol_mid_server_name',midServerName);
+	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
+	gr1.setValue('ucontrol_url',url);						
+	gr1.setValue('json_request_body',JSONRequestBody);
+	gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
+	gr1.setValue('link_to_processing_log_record',logSysID);
+	var rtn_sys_id = gr1.insert();
+	
+	return rtn_sys_id;
+}
+
+
+function createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID) {
+
+	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	gr1.initialize();
+	gr1.setValue('operation',operation); // insert / delete
+	gr1.setValue('base_table',baseTable);
+	gr1.setValue('ucontrol_mid_server_name',midServerName);
+	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
+	gr1.setValue('ucontrol_url',url);
+	gr1.setValue('json_request_body','');
+	gr1.setValue('no_of_cmdb_records_in_json_request_body',0);
+	gr1.setValue('link_to_processing_log_record',logSysID);	
+	var rtn_sys_id = gr1.insert();
+	
+	return rtn_sys_id;
+}
+
+
+function addJSONToDataRecord(dataTable,data_sys_id,jsonRequestBody,noOfRecsInJSON) {
+	
+	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	gr1.addQuery('sys_id',data_sys_id);
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('json_request_body',jsonRequestBody);
+		gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
+		gr1.update();
+	}	
+}
+
+
+function mainBit(pollingInterval) {
+			
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+	var logTable = 'x_tekso_twxapp01_processing_log';
+	var setupTable = 'x_tekso_twxapp01_setup';
+	
+	var stsRecordCount = 0;
+	var stsUpdateCount = 0;
+	var stsDeleteCount = 0;
+	var stsUpdPerClsArr = [];
+	var stsUpdPerClsArr2 = [];	
+	var stsDelPerClsArr = [];
+	var stsDelPerClsArr2 = [];
+	var stsIdx = 0;
+	
+	var recCnt = 0;
+	var trackingSysID = '';
+	var operation = '';
+	var baseTable = '';
+	var table = '';
+	var midServerName = '';
+	var midServerSysID = '';
+	var user = '';
+	var url ='';
+	var recordSysID = '';
+	var dt = new GlideDateTime();
+	var jsonRequestBody = '';
+	var prevOperation = '';
+	var prevBaseTable = '';
+	var prevMIDServerName = '';
+	var prevMIDServerSysID = '';
+	var prevURL = '';
+	var prevUser = '';
+
+	var deletesToProcess = 0;
+	var deleteDataList = '';
+	var deleteMetaData = '';
+	var delete_data_sys_id = '';
+	var deleteJsonRequestBody = '';
+	
+	var updatesToProcess = 0;
+	var updateDataList = '';
+	var updateMetaData = '';
+	var update_data_sys_id = '';
+	var updateJsonRequestBody = '';
+
+	var insertData = '';
+	var insertJsonRequestBody = '';
+	
+	var data_sys_id = '';	
+	var metaData = '';
+
+	var logRecordCreated = false;
+	var logSysID = '';
+	
+	// Get all the records that are Pending
+	var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	gr1.addQuery('status','Pending');
+	gr1.orderBy('sys_created_on'); // For descending use - gr2.orderByDesc("sys_created_on");
+	gr1.query();
+	while(gr1.next()) {
+		recCnt++;
+		trackingSysID = gr1.getValue('sys_id');
+		recordSysID = gr1.getValue('record_sys_id') || '';	
+		operation = gr1.getValue('operation') ||'';
+		baseTable = gr1.getValue('base_table') || '';
+		table = gr1.getValue('table') || '';	
+		
+		// Keep a track of the number of records processed in this run
+		stsRecordCount++;
+		
+		if (operation == 'update') {
+			stsUpdateCount++;
+			stsIdx = stsUpdPerClsArr.indexOf(table);
+			if (stsIdx < 0) {
+				// The table  \ class is not already in the array - so add it
+				stsUpdPerClsArr.push(table);
+				stsUpdPerClsArr2.push(1);
+			}
+			else {
+				// Increment the count for this table \ class				
+				stsUpdPerClsArr2[stsIdx] = stsUpdPerClsArr2[stsIdx] + 1;
+			}
+		} //if (operation == 'update')
+		
+		if (operation == 'delete') {
+			stsDeleteCount++;
+			stsIdx = stsDelPerClsArr.indexOf(table);
+			if (stsIdx < 0) {
+				// The table \ class is not already in the array - so add it				
+				stsDelPerClsArr.push(table);
+				stsDelPerClsArr2.push(1);
+			}
+			else {
+				// Increment the count for this table \ class
+				stsDelPerClsArr2[stsIdx] = stsDelPerClsArr2[stsIdx] + 1;
+			}
+		} //if (operation == 'delete')			
+		
+		midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
+		midServerSysID = gr1.getValue('ucontrol_mid_server_sys_id') || '';	
+		url = gr1.getValue('ucontrol_url') || '';
+		user = gr1.getValue('sys_created_by') || '';	
+		dt = gr1.getValue('sys_created_on') || '';
+		jsonRequestBody = gr1.getValue('json_request_body') || '';
+		metaData = gr1.getValue('metadata') || '';
+
+		// Update to Processing - so no longer pending?
+		gr1.setValue('status','Processing');
+		gr1.update();
+
+		// Is there any delete or update data that needs to be pushed out first?
+		if (recCnt > 1) {
+
+			if (deletesToProcess > 0) {
+				updatesToProcess = 0;
+				updateDataList = '';
+				// Operation is not delete or change in baseTable / midServer / url
+				if (operation != 'delete' || baseTable != prevBaseTable || midServerName != prevMIDServerName || url != prevURL || deletesToProcess > 10) {
+					// Delete data to be flushed out
+
+					// PROCESS deleteData			
+					deleteDataList = '\"deletedData\": [' + deleteDataList + ']';
+					deleteJsonRequestBody = '{' + deleteMetaData + ',' + deleteDataList + '}';
+					
+					addJSONToDataRecord(dataTable,delete_data_sys_id,deleteJsonRequestBody,deletesToProcess);
+					
+					var si3 = new x_tekso_twxapp01.OutboundREST();	
+					// Complete the json and process
+					si3.process(delete_data_sys_id);	
+
+					deletesToProcess = 0;
+					deletedDataList = '';
+
+				} // deletes to flush out
+			} // if deletesToProcess > 0	
+			
+			if (updatesToProcess > 0) {
+				deletesToProcess = 0;
+				deleteDataList = '';
+
+				// Operation is not update or change in baseTable / midServer / url
+				if (operation != 'update' || baseTable != prevBaseTable || midServerName != prevMIDServerName || url != prevURL || updatesToProcess > 10) {
+					// Update data to be flushed out
+
+					// PROCESS updateData			
+					updateDataList = '\"updateData\": [' + updateDataList + ']';
+					updateJsonRequestBody = '{' + updateMetaData + ',' + updateDataList + '}';
+						
+					addJSONToDataRecord(dataTable,update_data_sys_id,updateJsonRequestBody,updatesToProcess);
+				
+					var si4 = new x_tekso_twxapp01.OutboundREST();	
+					// Complete the json and process
+					si4.process(update_data_sys_id);	
+
+					updatesToProcess = 0;
+					updateDataList = '';
+
+				} // updates to flush out
+			} // if updatesToProcess > 0
+			
+		} // if recCnt > 1
+
+		// Normal insert
+		if (operation == 'insert') {
+			deletesToProcess = 0;
+			deleteDataList = '';
+			updatesToProcess = 0;
+			updateDataList = '';
+
+			insertData = '\"insertedData\": ' + jsonRequestBody;
+			insertJsonRequestBody = '{' + metaData + ',' + insertData + '}';
+			
+			if (logRecordCreated == false) {
+				// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
+				logSysID = createNewLogRecord(logTable,pollingInterval); //x_tekso_twxapp01_processing_log
+				// Add the sys_id for the log to the setup table
+				updateSetupAddProcessingLogRef(setupTable,logSysID);
+				logRecordCreated = true;
+				//logSysID is the sys_id for the log record
+			}
+			
+			// 1 Record
+			data_sys_id = createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,insertJsonRequestBody,1,logSysID);
+			
+			createLinkRecord(linkTable,operation,table,baseTable,recordSysID,data_sys_id,trackingSysID,logSysID);
+			
+			var si = new x_tekso_twxapp01.OutboundREST();		
+			si.process(data_sys_id);
+
+		}
+
+		// If delete then store it up and process later
+		if (operation == 'delete') {
+			// Store up the delete record
+			if (deletesToProcess == 0) {
+				deleteDataList = '';
+				deleteMetaData = metaData;
+
+				if (logRecordCreated == false) {
+					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
+					logSysID = createNewLogRecord(logTable,pollingInterval); //x_tekso_twxapp01_processing_log
+					// Add the sys_id for the log to the setup table
+					updateSetupAddProcessingLogRef(setupTable,logSysID);					
+					logRecordCreated = true;
+					//logSysID is the sys_id for the log record
+				}	
+				
+				delete_data_sys_id = createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID);
+				
+				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,delete_data_sys_id,trackingSysID,logSysID);			
+			}
+			else {
+				// Not the first one
+				deleteDataList = deleteDataList + ',';
+
+				if (logRecordCreated == false) {
+					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
+					logSysID = createNewLogRecord(logTable,pollingInterval); //x_tekso_twxapp01_processing_log
+					// Add the sys_id for the log to the setup table
+					updateSetupAddProcessingLogRef(setupTable,logSysID);					
+					logRecordCreated = true;
+					//logSysID is the sys_id for the log record
+				}					
+				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,delete_data_sys_id,trackingSysID,logSysID);			
+			}		
+			deleteDataList = deleteDataList + jsonRequestBody;
+			
+			deletesToProcess++;					
+		} // if (operation == 'delete')
+		
+		// If update then store it up and process later
+		if (operation == 'update') {
+			// Store up the update record
+			if (updatesToProcess == 0) {
+				updateDataList = '';
+				updateMetaData = metaData;
+
+				if (logRecordCreated == false) {
+					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
+					logSysID = createNewLogRecord(logTable,pollingInterval); //x_tekso_twxapp01_processing_log
+					// Add the sys_id for the log to the setup table
+					updateSetupAddProcessingLogRef(setupTable,logSysID);					
+					logRecordCreated = true;
+					//logSysID is the sys_id for the log record
+				}					
+				update_data_sys_id = createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID);
+
+				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,update_data_sys_id,trackingSysID,logSysID);			
+			}
+			else {
+				// Not the first one
+				updateDataList = updateDataList + ',';
+
+				if (logRecordCreated == false) {
+					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
+					logSysID = createNewLogRecord(logTable,pollingInterval); //x_tekso_twxapp01_processing_log
+					// Add the sys_id for the log to the setup table
+					updateSetupAddProcessingLogRef(setupTable,logSysID);
+					logRecordCreated = true;
+					//logSysID is the sys_id for the log record
+				}							createLinkRecord(linkTable,operation,table,baseTable,recordSysID,update_data_sys_id,trackingSysID,logSysID);			
+			}		
+			updateDataList = updateDataList + jsonRequestBody;
+			updatesToProcess++;					
+		} // if (operation == 'delete')
+		
+		prevOperation = operation;
+		prevBaseTable = baseTable;
+		prevMIDServerName = midServerName;
+		prevMIDServerSysID = midServerSysID;
+		prevURL = url;
+		prevUser = user;
+	} // while(gr1.next()) 
+
+	// Gone through all the records
+	// There may be deletes or updates banked up that need to be output
+	if (deletesToProcess > 0) {
+		// There are some deletes left to process
+		deleteDataList = '\"deletedData\": [' + deleteDataList + ']';
+		jsonRequestBody = '{' + deleteMetaData + ',' + deleteDataList + '}';
+		
+		addJSONToDataRecord(dataTable,delete_data_sys_id,jsonRequestBody,deletesToProcess);
+		
+		var si2 = new x_tekso_twxapp01.OutboundREST();		
+		si2.process(delete_data_sys_id);	
+	} // if (deletesToProcess > 0) 
+
+	if (updatesToProcess > 0) {
+		// There are some updates left to process
+		updateDataList = '\"updatedData\": [' + updateDataList + ']';
+		jsonRequestBody = '{' + updateMetaData + ',' + updateDataList + '}';
+				
+		addJSONToDataRecord(dataTable,update_data_sys_id,jsonRequestBody,updatesToProcess);
+				
+		var si5 = new x_tekso_twxapp01.OutboundREST();		
+		si5.process(update_data_sys_id);	
+	} // if (updatesToProcess > 0)
+	
+	// stats
+	if (stsRecordCount > 0 && logRecordCreated == true) {
+		var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+		gr2.addQuery('sys_id',logSysID);
+		gr2.query();
+		if (gr2.next()) {
+			//Totals
+			gr2.setValue('total_number_of_records_sent',stsRecordCount);
+			gr2.setValue('number_of_updates_sent',stsUpdateCount);
+			gr2.setValue('number_of_deletes_sent',stsDeleteCount);
+			var summary = sendSummary(stsRecordCount,stsUpdateCount,stsDeleteCount);
+			gr2.setValue('data_sent_summary',summary);
+			
+			//Totals per class - combine onto one string
+			var stsUpdPerCls = '';
+			if (stsUpdateCount > 0) {
+				// Got at least one
+				for (stsIdx = 0; stsIdx < stsUpdPerClsArr.length; stsIdx++) {
+					var stsUpdPerClsCnt = stsUpdPerClsArr2[stsIdx].toString();
+					if (stsIdx == 0) {
+						// 1st Record
+						stsUpdPerCls = stsUpdPerClsArr[stsIdx] + ': ' + stsUpdPerClsCnt;
+					}
+					else {
+						stsUpdPerCls = stsUpdPerCls + ', ' + stsUpdPerClsArr[stsIdx] + ': ' + stsUpdPerClsCnt;
+					}
+				}			
+			}
+			gr2.setValue('data_sent_updates_per_class',stsUpdPerCls);
+
+			var stsDelPerCls = '';
+			if (stsDeleteCount > 0) {
+				// Got at least one			
+				for (stsIdx = 0; stsIdx < stsDelPerClsArr.length; stsIdx++) {
+					var stsDelPerClsCnt = stsDelPerClsArr2[stsIdx].toString();
+					if (stsIdx == 0) {
+						// 1st Record					
+						stsDelPerCls = stsDelPerClsArr[stsIdx] + ': ' + stsDelPerClsCnt;
+					}
+					else {
+						stsDelPerCls = stsDelPerCls + ', ' + stsDelPerClsArr[stsIdx] + ': ' + stsDelPerClsCnt;
+					}
+				}			
+			}
+			gr2.setValue('data_sent_deletes_per_class',stsDelPerCls);
+			gr2.update();
+			
+		} // if (gr2.next()) 
+	} // if (stsRecordCount > 0 && logRecordCreated == true) {
+	
+	// processing_completed_at
+	if (logRecordCreated == true) {
+		setProcessingCompleteAtInLog(logTable,logSysID);
+	}		
+}
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-30 15:00:07</sys_created_on>
+        <sys_id>45dfbb5bdbe6001041d08f381396193a</sys_id>
+        <sys_mod_count>138</sys_mod_count>
+        <sys_name>Send Data to uControl</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_45dfbb5bdbe6001041d08f381396193a</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 15:50:58</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

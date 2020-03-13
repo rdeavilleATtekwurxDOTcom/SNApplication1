@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.OutboundREST</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>OutboundREST</name>
+        <script><![CDATA[var OutboundREST = Class.create();
+OutboundREST.prototype = {
+    initialize: function() { 
+    },	
+	updateSupportedClassesTable: function(setupSysID,newClassInternalName,newClassDisplayName) {
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+		// Remve any old records - setupSysID is the sys_id for the current setup record
+		// If the setup record has been deleted and recreated there may be records linked
+		// to the previous setup record which we now need to remove
+		var gr0 = new GlideRecord(classTable);
+		gr0.addQuery('class',newClassInternalName);
+		gr0.query();
+		while (gr0.next()) {
+			// Not the current sys_id
+			if (gr0.getValue('setup_record') != setupSysID) {
+				gr0.deleteRecord();
+			}
+		}
+		
+		// Look for a record with matching name and label
+		var gr1 = new GlideRecord(classTable);
+		gr1.addQuery('setup_record',setupSysID);
+		gr1.addQuery('class',newClassInternalName);
+		gr1.addQuery('class_display_name',newClassDisplayName);
+		gr1.query();
+		if (!gr1.next()) {
+			// Record does not exist with this combo of name and label
+			// Check if a record exists with just the name alone
+			var gr2 = new GlideRecord(classTable);
+			gr2.addQuery('setup_record',setupSysID);
+			gr2.addQuery('class',newClassInternalName);
+			gr2.query();
+			if (gr2.next()) {	
+				// Record exists - this means the display name has changed
+				// Update the record with the new display name
+				gr2.setValue('class_display_name',newClassDisplayName);
+				gr2.update();
+			}
+			else {
+				// Record does not exist - Insert
+				var gr3 = new GlideRecord(classTable);
+				gr3.initialize();
+				gr3.setValue('setup_record',setupSysID);
+				gr3.setValue('class',newClassInternalName);
+				gr3.setValue('class_display_name',newClassDisplayName);		
+				gr3.insert();
+			}		
+		}	
+	},
+	sendRESTRequest: function(midServerName,httpMethod,endPoint) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response
+		
+		var responseBody = '';
+		var status = 500;
+		var sm;
+		var rtnArr = [];
+		
+		try{
+			sm = new sn_ws.RESTMessageV2();
+
+			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setRequestHeader('Content-Type','application/json');
+			sm.setRequestHeader('Accept','application/json');
+			sm.setHttpMethod(httpMethod); // e.g. get / post				
+			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+	
+			response = sm.executeAsync(); 
+	
+			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
+			status = response.getStatusCode();
+		} catch(ex) {
+			responseBody = ex.getMessage();
+			status = '500';
+		} finally {
+			requestBody = sm ? sm.getRequestBody():null;
+		}
+		
+		if (parseInt(status) == 200) {
+			// Success for GET
+			rtnArr.push('SUCCESS');
+			rtnArr.push(parseInt(status));
+			rtnArr.push(responseBody); //{"result":{"statusCode":200,"statusMsg":"OK","connection":true}}
+			return rtnArr;
+		}
+		else {
+			rtnArr.push('FAIL');				
+			rtnArr.push(parseInt(status));			
+			rtnArr.push(responseBody);  
+			return rtnArr;
+			// Bad MID Server:
+			// 500
+			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting for 30 seconds in ECC Queue
+
+			// Bad url:
+			// 500
+			// java.lang.IllegalStateException: unsupported protocol: 'xhttps'
+
+			// Good URL but bad endpoint e.g connecta
+			// 404
+			// Method failed: (/uControl/rest/servicenow/connecta) with code: 404
+
+			// Good URL but bad method e.g. geta
+			// 500
+			// No enum constant com.glide.rest.outbound.HTTPOutboundMethod.geta
+
+			// No URL
+			// 0
+			// The request failed: java.lang.IllegalArgumentException: host parameter is null
+
+			// No MID Server
+			// 0
+			// Unknown host
+		}	
+	},	
+	sendRESTRequestWithBody: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response
+		
+		var responseBody = '';
+		var status = 500;
+		var sm;
+		var rtnArr = [];
+		
+		try{
+			sm = new sn_ws.RESTMessageV2();
+
+			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setRequestHeader('Content-Type','application/json');
+			sm.setRequestHeader('Accept','application/json');
+			sm.setHttpMethod(httpMethod); // e.g. get / post		
+			sm.setRequestBody(requestBody);
+			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+	
+			response = sm.executeAsync(); 
+	
+			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
+			status = response.getStatusCode();
+		} catch(ex) {
+			responseBody = ex.getMessage();
+			status = '500';
+		} finally {
+			requestBody = sm ? sm.getRequestBody():null;
+		}
+		
+		if (parseInt(status) == successCode) {
+			// 200 = Success for GET
+			rtnArr.push('SUCCESS');
+			rtnArr.push(parseInt(status));
+			rtnArr.push(responseBody); //{"result":{"statusCode":200,"statusMsg":"OK","connection":true}}
+			return rtnArr;
+		}
+		else {
+			rtnArr.push('FAIL');				
+			rtnArr.push(parseInt(status));			
+			rtnArr.push(responseBody);  
+			return rtnArr;
+			// Bad MID Server:
+			// 500
+			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting for 30 seconds in ECC Queue
+
+			// Bad url:
+			// 500
+			// java.lang.IllegalStateException: unsupported protocol: 'xhttps'
+
+			// Good URL but bad endpoint e.g connecta
+			// 404
+			// Method failed: (/uControl/rest/servicenow/connecta) with code: 404
+
+			// Good URL but bad method e.g. geta
+			// 500
+			// No enum constant com.glide.rest.outbound.HTTPOutboundMethod.geta
+
+			// No URL
+			// 0
+			// The request failed: java.lang.IllegalArgumentException: host parameter is null
+
+			// No MID Server
+			// 0
+			// Unknown host
+		}	
+	},
+	updateCI: function(midServerName,url,requestBody) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response		
+		
+		var rtnArr = [];
+		
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/update/ci';
+
+				// 200 = Success for update
+				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+			}
+			else {
+				// No URL
+				rtnArr.push('FAIL');				
+				rtnArr.push(500);
+				rtnArr.push('No url');				
+			}
+		}
+		else {
+			// No midServer
+			rtnArr.push('FAIL');				
+			rtnArr.push(500);
+			rtnArr.push('No mid server');
+		}
+		
+		return rtnArr;		
+	},
+	deleteCI: function(midServerName,url,requestBody) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response		
+		
+		var rtnArr = [];
+		
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/delete/ci';
+
+				// 200 = Success for delete
+				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+			}
+			else {
+				// No URL
+				rtnArr.push('FAIL');				
+				rtnArr.push(500);
+				rtnArr.push('No url');				
+			}
+		}
+		else {
+			// No midServer
+			rtnArr.push('FAIL');				
+			rtnArr.push(500);
+			rtnArr.push('No mid server');
+		}
+		
+		return rtnArr;		
+	},	
+	createCI: function(midServerName,url,requestBody) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response		
+		
+		var rtnArr = [];
+		
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/create/ci';
+
+				// 201 = Success for create
+				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,201);
+			}
+			else {
+				// No URL
+				rtnArr.push('FAIL');				
+				rtnArr.push(500);
+				rtnArr.push('No url');				
+			}
+		}
+		else {
+			// No midServer
+			rtnArr.push('FAIL');				
+			rtnArr.push(500);
+			rtnArr.push('No mid server');
+		}
+		
+		return rtnArr;		
+	},	
+	testConnection: function(midServerName,url,requestBody) {
+		// Returns an array 
+		// [0] = SUCCESS \ FAIL
+		// [1] = REST Status Number
+		// [2] = REST Response		
+		var rtnArr = [];
+				
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/connect';
+
+				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+			}
+			else {
+				// No URL
+				rtnArr.push('FAIL');				
+				rtnArr.push(500);
+				rtnArr.push('No url');				
+			}
+		}
+		else {
+			// No midServer
+			rtnArr.push('FAIL');				
+			rtnArr.push(500);
+			rtnArr.push('No mid server');
+		}
+		return rtnArr;
+	},			
+	processTestConnection: function (connection_sys_id) {
+				
+		var connectionFailed = false;
+		var connectionOKButMissingUser = false;
+		var connectionOKButNoValidUser = false;
+		var connectionOK = false;
+		var connectionOKAndGotUser = false;
+
+		// User who intiated the test connection
+		var testConnectionUser = '';	
+		
+		var setupConnectionStatus = '';
+		var setupConnectionStatusDetails = '';
+		var setupuControlIntegrationUser = '';
+	
+		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+		var gr1 = new GlideRecord(connectionTestTable);
+		gr1.addQuery('sys_id',connection_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var setupSysID = gr1.getValue('setup_record') || '';
+						
+			// sys_created_by for record x_tekso_twxapp01_connection_test
+			// will be the user who requested the test
+			testConnectionUser = gr1.getValue('sys_created_by') || '';
+			
+			var jsonRequestBody = gr1.getValue('json_request_body') || '';
+			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
+			var startIfSuccess = gr1.getValue('set_status_to_running_if_test_successful') || false;	
+			var url = gr1.getValue('ucontrol_url') || '';
+		
+			var dtSent = new GlideDateTime();
+			var rtnArr = [];
+			
+			// Remove any leading or trailing spaces from the URL
+			url = url.replace(/^\s+|\s+$/g, '');
+
+			if (url.length > 0) {
+				// Remove the last character if it is a /
+				if (url.charAt(url.length - 1) == '/') {
+					url = url.substr(0, url.length - 1);
+				}
+			}	
+			
+			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
+			var resultSuccessFail = '';
+			var resultStatusCode = 0;
+			var resultRestResponse = '';
+			var resultStatusMsg = '';
+			var resultConnection = false;
+			var resultUserAccount = '';
+			var resultUserAccountMatched = false;
+			var resultUserAccountSysID = '';
+			var resultClassesArr = [];
+						
+			if (rtnArr.length > 2) {
+				resultSuccessFail= rtnArr[0];
+				resultStatusCode = parseInt(rtnArr[1]);
+				resultRestResponse = rtnArr[2];
+				// Need to check if string contains 'result', 'statusCode', 'connection'
+				if (resultRestResponse.indexOf('result') >= 0 && 
+					resultRestResponse.indexOf('statusCode') && 
+					resultRestResponse.indexOf('connection')) {				
+					var parser = new global.JSON();
+					var jsonBack = parser.decode(resultRestResponse);	
+					resultStatusCode = parseInt(jsonBack.result.statusCode);
+					resultStatusMsg = jsonBack.result.statusMsg;	
+					resultConnection = jsonBack.result.connection;
+					resultUserAccount = jsonBack.result.user_account;		
+					
+					resultClassesArr = jsonBack.result.classes;		
+			
+				} // if got result / statusCode / connection
+				else {
+					resultStatusMsg = resultRestResponse;
+				}
+			}
+			
+			var dtBack = new GlideDateTime();
+			gr1.setValue('sent_to_ucontrol_at',dtSent);
+			gr1.setValue('response_from_ucontrol',resultRestResponse);
+			gr1.setValue('response_received_at',dtBack);
+			gr1.setValue('response_status_code',resultStatusCode);
+			gr1.setValue('response_status_message',resultStatusMsg);
+			gr1.setValue('response_connection',resultConnection);
+			gr1.setValue('response_user_account',resultUserAccount);
+			
+			if (resultSuccessFail == 'SUCCESS' && resultStatusCode == 200 && resultConnection == true) {
+				gr1.setValue('connection_status','OK');
+				connectionOK = true;
+			}
+			else
+			{
+				gr1.setValue('connection_status','Failed');		
+				connectionFailed = true;
+			}
+			
+			if (connectionOK == true) {
+				if (resultUserAccount.length > 0) {
+					// Check if we can find a matching user record
+					var gr5 = new GlideRecord('sys_user');
+					gr5.addQuery('user_name',resultUserAccount);
+					gr5.query();
+					if (gr5.next()) {
+						// Found a matching user account
+						// Success	
+						gr1.setValue('response_user_account_matched',true);
+						gr1.setValue('response_user_account_sys_id',gr5.sys_id);
+						gr1.setValue('response_user_account_record',gr5.sys_id);	
+						resultUserAccountMatched = true;
+						resultUserAccountSysID = gr5.sys_id;
+						setupuControlIntegrationUser = gr5.sys_id;
+						connectionOKAndGotUser = true;
+						// SUCCESS
+						setupConnectionStatus = 'OK';
+						setupConnectionStatusDetails = 'Connection Working';
+					}
+					else {
+						// No user account match found
+						connectionOKButNoValidUser = true;
+						setupConnectionStatus = 'Failed';
+						setupConnectionStatusDetails = 'No matching user account found for : ' + resultUserAccount;						
+					}
+				}
+				else {
+					// No user account provided
+					connectionOKButMissingUser = true;
+					setupConnectionStatus = 'Failed';
+					setupConnectionStatusDetails = 'No user account returned';				
+				}
+			}
+			else {
+				setupConnectionStatus = 'Failed';		
+				setupConnectionStatusDetails = resultStatusMsg;
+			}
+					
+			gr1.update();	
+					
+			var setupTable = 'x_tekso_twxapp01_setup';
+			var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+			var setupExistingStatus = '';
+			var setupExistingStatusDetails = '';
+			var setupExistingNumberOfSuppportedClasses = 0;
+			var numberOfSupportedClasses = 0;
+			var cmdbTracking = '';
+			var gr2 = new GlideRecord(setupTable);
+			gr2.addQuery('sys_id',setupSysID);
+			gr2.query();
+			if (gr2.next()) {
+				cmdbTracking = gr2.getValue('cmdb_tracking') || '';
+				setupExistingStatus = gr2.getValue('status') || '';
+				setupExistingStatusDetails = gr2.getValue('status_details') || '';
+				setupExistingNumberOfSuppportedClasses = gr2.getValue('number_of_supported_classes') || 0;
+
+				if (connectionOKAndGotUser == true) {
+					// Update the classes - we should only do that if this is a success
+
+					// Read the existing classes and store in an array: name and internal name	
+					var newClassesInternalNameArr = [];
+					for(var x=0; x<resultClassesArr.length; x++){
+						var newClassInternalName = resultClassesArr[x];
+						// Get the class display name
+						var gr6 = new GlideRecord('sys_db_object');
+						gr6.addQuery('name',newClassInternalName);
+						gr6.query();
+						if (gr6.next()) {
+							// Class is valid
+							var newClassDisplayName = gr6.getValue('label') || '';
+							this.updateSupportedClassesTable(setupSysID,newClassInternalName,newClassDisplayName);
+							newClassesInternalNameArr.push(newClassInternalName);
+						}
+					} // for
+					
+					// There may be some classes in the table that need to be removed
+					var gr7 = new GlideRecord(classTable);
+					gr7.addQuery('setup_record',setupSysID);
+					gr7.query();
+					while(gr7.next()) {
+						var classInternalName = gr7.getValue('class') || '';	
+						if (classInternalName.length > 0) {
+							if (newClassesInternalNameArr.indexOf(classInternalName) == -1) {
+								// The class is not in the new list
+								gr7.deleteRecord();
+							}
+						}
+					}
+				
+				} // if (connectionOKAndGotUser == true)
+				
+				numberOfSupportedClasses = setupExistingNumberOfSuppportedClasses;
+				var gr8 = new GlideRecord(classTable);
+				gr8.addQuery('setup_record',setupSysID);
+				gr8.query();
+				numberOfSupportedClasses = gr8.getRowCount();
+				
+				gr2.setValue('connection_status',setupConnectionStatus);
+				gr2.setValue('connection_status_details',setupConnectionStatusDetails);
+				gr2.setValue('connection_tested_at',dtBack);
+				gr2.setValue('ucontrol_integration_user',setupuControlIntegrationUser);		
+				gr2.setValue('number_of_supported_classes',numberOfSupportedClasses);
+				gr2.setValue('start_sending_requested',false);
+				gr2.setValue('connection_test_requested',false);
+				// Was Sending has now Failed connection
+				if (setupConnectionStatus == 'Failed') {
+					if (setupExistingStatus == 'Sending') {
+						gr2.setValue('status','Trying To Send - Connection Has Failed');
+						gr2.setValue('status_set_to_trying_to_send_connection_failed_at',dtBack);
+						gr2.setValue('status_details','Connection was lost at ' + dtBack);
+					}
+				}
+							
+				if (setupConnectionStatus == 'OK') {
+					if (startIfSuccess == true && setupExistingStatus != 'Sending') {
+						// Set status to Sending
+						gr2.setValue('status','Sending');
+						if (cmdbTracking == 'Off') {
+							// The onLoad client script to display a pop-up when the 
+							// form reloads
+							var popupmsg = 'x_tekso_twxapp01_start_sending_message';
+							gr2.setValue('show_message_on_form_reload',popupmsg);		
+						}
+						// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
+						// i.e this is the user who requested the test/start
+						gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testConnectionUser);	
+						if (setupExistingStatus != 'Trying To Send - Connection Has Failed') {
+							// Update the Set To Running DT/By - but only do this if the previous status
+							// was not 'Trying To Send - Connection Has Failed' - as we want to preserve the original
+							// date the status moved to Running
+							gr2.setValue('status_set_to_sending_by',testConnectionUser);
+							gr2.setValue('status_set_to_sending_at',dtBack);
+						}						
+					}
+					// 
+					// "Not Sending"
+					
+					else {
+						// Connection OK but do not start
+						if (setupExistingStatus == 'Not Sending') {
+							if (setupExistingStatusDetails == 'Connection Requires Testing') {
+								gr2.setValue('status_details',setupExistingStatus);	
+							}
+						}
+					}
+				} // if (setupConnectionStatus == 'OK') 
+
+				gr2.update();	
+			} // if (gr2.next())		
+		}		
+	},
+	process: function (data_sys_id){
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var resultSucessFail = '';
+		var resultStatusCode = 0;
+		var resultRestRespose = '';
+		var resultStatusMsg = '';
+		
+		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+		gr1.addQuery('sys_id',data_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var jsonRequestBody = gr1.getValue('json_request_body');
+			var midServerName = gr1.getValue('ucontrol_mid_server_name');
+			var url = gr1.getValue('ucontrol_url');
+			var operation = gr1.getValue('operation');
+			var dtSent = new GlideDateTime();
+			var rtnArr = [];
+			
+			// Remove any leading or trailing spaces from the URL
+			url = url.replace(/^\s+|\s+$/g, '');
+
+			if (url.length > 0) {
+				// Remove the last character if it is a /
+				if (url.charAt(url.length - 1) == '/') {
+					url = url.substr(0, url.length - 1);
+				}
+			}
+			
+			if (operation == 'update') {
+				rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
+			}
+			
+			if (operation == 'delete') {
+				rtnArr = this.deleteCI(midServerName,url,jsonRequestBody);	
+			}		
+			
+			if (operation == 'insert') {
+				rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
+			}	
+			
+			// Handle the result
+			if (rtnArr.length > 2) {
+				resultSuccessFail= rtnArr[0];
+				resultStatusCode = parseInt(rtnArr[1]);
+				resultRestResponse = rtnArr[2];
+				// Need to check if string contains 'result', 'statusCode'
+				if (resultRestResponse.indexOf('result') >= 0 && 
+					resultRestResponse.indexOf('statusCode') >= 0) {				
+					var parser = new global.JSON();
+					var jsonBack = parser.decode(resultRestResponse);	
+					resultStatusCode = parseInt(jsonBack.result.statusCode);
+					resultStatusMsg = jsonBack.result.statusMsg;	
+				} // if got result / statusCode
+				else {
+					resultStatusMsg = resultRestResponse;
+				}
+			}
+					
+			var dtBack = new GlideDateTime();
+			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
+			gr1.setValue('response_received_at',dtBack);
+			gr1.setValue('response_received',true);
+			gr1.setValue('response_status_code',resultStatusCode);
+			gr1.setValue('response_status_message',resultStatusMsg);
+			gr1.update(); //x_tekso_twxapp01_rest_data_to_ucontrol
+
+			// Get all the link records that have this data_sys_id
+			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			gr2.addQuery('link_to_rest_data_record',data_sys_id);
+			gr2.query();
+			while(gr2.next()) {
+				// For each one - loop through and get each change record
+				var link_sys_id = gr2.sys_id;
+				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
+				// Update the REST response on the link record
+				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
+				gr2.setValue('response_received_at',dtBack);
+				gr2.setValue('response_received',true);
+				gr2.setValue('response_status_code',resultStatusCode);
+				gr2.setValue('response_status_message',resultStatusMsg);
+				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data
+
+				// Get the change record
+				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				gr3.addQuery('sys_id',cmdb_changes_sys_id);
+				gr3.query();
+				while(gr3.next()) {
+					// Update the REST response on the change record
+					// There should only be 1 record
+					gr3.setValue('status','Sent'); // If success?????????????????????????????????
+					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					gr3.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
+					gr3.setValue('response_received_at',dtBack);	
+					gr3.setValue('response_received',true);
+					gr3.setValue('response_status_code',resultStatusCode);
+					gr3.setValue('response_status_message',resultStatusMsg);
+					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
+					no_of_times_sent_to_ucontrol++;
+					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
+					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+					gr3.setValue('rest_data_record_created',true);
+					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.setValue('rest_response_record_created',true);
+					gr3.update(); //x_tekso_twxapp01_cmdb_changes
+				} // while(gr3.next())
+			} //while(gr2.next())		 
+		}	
+	},
+    type: 'OutboundREST'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-28 12:16:56</sys_created_on>
+        <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
+        <sys_mod_count>143</sys_mod_count>
+        <sys_name>OutboundREST</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-13 10:20:19</sys_updated_on>
+    </sys_script_include>
+</record_update>

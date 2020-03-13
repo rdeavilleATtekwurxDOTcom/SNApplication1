@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_setup</collection>
+        <condition>current.ucontrol_mid_server.changes() || current.ucontrol_url.changes() || current.connection_test_requested.changesTo(true)</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Check Connection Status If Changed</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[//After Insert/Update
+(function executeRule(current, previous) {
+	
+	// IF this is 0 then we don't have good connection details
+	// so no point even bothering to try testing the connection
+	var gotConnectionData = 1;
+	
+	var midServerName = current.ucontrol_mid_server.name.toString();
+	var midServerSysID = current.ucontrol_mid_server;
+	
+	if (midServerName == '' || midServerName.length < 1) {
+		gotConnectionData = 0;
+	}
+
+	if (midServerSysID == '' || midServerSysID.length < 1) {
+		gotConnectionData = 0;
+	}
+	
+	var url = current.ucontrol_url.toString();  
+
+	if (url == '' || url.length < 1) {
+		gotConnectionData = 0;
+	}
+	
+	if (gotConnectionData == 1) {
+		// Got a MID Server and a URL
+		
+		var dtRequest = new GlideDateTime();
+
+		// gets the user name
+		var userName = gs.getUserName();
+
+		// e.g. dev91664
+		var snInstance = gs.getProperty("instance_name");	
+		// e.g. https://dev91664.service-now.com/
+		var snURL = gs.getProperty("glide.servlet.uri");
+
+		var source = 'ServiceNow';
+
+		var json = '{\"source\":\"' + source + '\",';	// ServiceNow
+		json = json  + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+		json = json + '\"source_url\":\"' + snURL + '\",'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+		json = json +  '\"date_sent\":\"' + dtRequest + '\",';	
+		json = json + '\"user\":\"' + userName + '\"}'; // No comma at the end	
+
+		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+		var gr1 = new GlideRecord(connectionTestTable);
+		gr1.initialize();
+		gr1.setValue('setup_record',current.sys_id);
+		gr1.setValue('ucontrol_url',url);
+		gr1.setValue('ucontrol_mid_server_name',midServerName);
+		gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);	
+		gr1.setValue('json_request_body',json);
+		gr1.setValue('test_connection_triggered_by','BR Check Connection Status If Changed');
+
+		if (current.start_sending_requested == true) {
+			gr1.setValue('set_status_to_running_if_test_successful',true);				
+		}
+		else {
+			gr1.setValue('set_status_to_running_if_test_successful',false);
+		}
+		
+		var connectionTestSysID = gr1.insert();
+
+		var si = new x_tekso_twxapp01.OutboundREST();
+		si.processTestConnection(connectionTestSysID);
+
+	}
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-29 17:48:47</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
+        <sys_mod_count>38</sys_mod_count>
+        <sys_name>Check Connection Status If Changed</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 13:27:09</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=79f1eb07db2a485035a38a723996199f"/>
+</record_update>

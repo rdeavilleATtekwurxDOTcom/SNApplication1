@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.CheckRecordExists</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>CheckRecordExists</name>
+        <script><![CDATA[// Call new x_tekso_twxapp01.CheckRecordExists().tableAndSysID(table,sys_id);
+var CheckRecordExists = Class.create();
+CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	tableAndSysID: function(table,sys_id){	
+		// Returns true if the sys_id exists in the table
+		// Used in a UI Action to determine whether a button should be displayed		
+		var rtn = false;
+		// Check that we have got a sys_id and a table
+		var sys_id_str = sys_id.toString();
+		var table_str = table.toString();
+		if (sys_id_str.length == 32 && table_str.length > 0) {
+			var gr1 = new GlideRecord(table_str);
+			gr1.addQuery('sys_id',sys_id_str);
+			gr1.query();
+			if (gr1.next()) {
+				// Record exists
+				rtn = true;
+			}
+		}
+		return rtn;
+	},
+	tableAndLowerNumber: function(table,number) {
+		// Returns true if the table contains at least one
+		// record where the number field is < number
+		// i.e. checking to see if number is the first record in the table
+		// or whether there are previous records
+		// Used in a UI Action to determine whether a button should be displayed
+		var rtn = false;
+		var number_str = number.toString();
+		var table_str = table.toString();
+		// Check that we have got a number and table
+		if (number_str.length >0  && table_str.length > 0) {
+			var qry = 'number<' + number_str;
+			var gr1 = new GlideRecord(table_str);
+			gr1.addEncodedQuery(qry);
+			gr1.query();
+			if (gr1.next()) {
+				rtn = true;
+			}
+		}
+		return rtn;
+	},
+	tableAndHigherNumber: function(table,number) {
+		// Returns true if the table contains at least one
+		// record where the number field is > number
+		// i.e. checking to see if number is the last record in the table
+		// or whether there are more records
+		// Used in a UI Action to determine whether a button should be displayed		
+		var rtn = false;
+		var number_str = number.toString();
+		var table_str = table.toString();
+		// Check that we have got a number and table
+		if (number_str.length >0  && table_str.length > 0) {
+			var qry = 'number>' + number_str;
+			var gr1 = new GlideRecord(table_str);
+			gr1.addEncodedQuery(qry);
+			gr1.query();
+			if (gr1.next()) {
+				rtn = true;
+			}
+		}
+		return rtn;
+	},												   
+    type: 'CheckRecordExists'
+});
+
+// Can be called like this from a UI Action - this is server side - so does this need to be client callable?
+// new x_tekso_twxapp01.CheckRecordExists().tableAndSysID('x_tekso_twxapp01_cmdb_changes',current.link_to_processing_record);
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-05 12:32:43</sys_created_on>
+        <sys_id>b8f1f7a6db9f005041d08f3813961904</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>CheckRecordExists</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_b8f1f7a6db9f005041d08f3813961904</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-13 10:22:26</sys_updated_on>
+    </sys_script_include>
+</record_update>

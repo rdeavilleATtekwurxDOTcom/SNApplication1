@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>rest_response</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-11 14:38:21</sys_created_on>
+        <sys_id>452a07e8db6fc01041d08f381396198b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>REST Response</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_view_452a07e8db6fc01041d08f381396198b</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-11 14:38:21</sys_updated_on>
+        <title>REST Response</title>
+        <user/>
+    </sys_ui_view>
+</record_update>

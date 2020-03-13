@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="CMDB Changes" max_length="40" name="x_tekso_twxapp01_cmdb_changes" type="collection">
+        <element label="All Fields" max_length="4000" name="all_fields" type="string"/>
+        <element label="Base Table" max_length="80" name="base_table" type="string"/>
+        <element label="Correlation ID1" max_length="512" name="correlation_id1" type="string"/>
+        <element label="Correlation ID2" max_length="512" name="correlation_id2" type="string"/>
+        <element label="Data To Process" max_length="4000" name="data_to_process" type="string"/>
+        <element label="Discovery Source1" max_length="100" name="discovery_source1" type="string"/>
+        <element label="Discovery Source2" max_length="100" name="discovery_source2" type="string"/>
+        <element label="Dropped Fields" max_length="4000" name="dropped_fields" type="string"/>
+        <element label="Excluded Fields" max_length="4000" name="excluded_fields" type="string"/>
+        <element label="Fields To Process" max_length="4000" name="fields_to_process" type="string"/>
+        <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
+        <element label="Link To Latest REST Data Record" max_length="32" name="link_to_latest_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
+        <element label="MetaData" max_length="4000" name="metadata" type="string"/>
+        <element label="No Of Dropped Fields" max_length="40" name="no_of_dropped_fields" type="integer"/>
+        <element label="No Of Excluded Fields" max_length="40" name="no_of_excluded_fields" type="integer"/>
+        <element label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
+        <element label="No Of Fields To Process" max_length="40" name="no_of_fields_to_process" type="integer"/>
+        <element label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Operation" max_length="10" name="operation" type="string"/>
+        <element label="Record Originally Created By" max_length="40" name="record_originally_created_by" type="string"/>
+        <element label="Record Originally Created On" max_length="40" name="record_originally_created_on" type="glide_date_time"/>
+        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
+        <element label="Rel Child Sys ID" max_length="32" name="rel_child_sys_id" type="string"/>
+        <element label="Rel Parent Sys ID" max_length="32" name="rel_parent_sys_id" type="string"/>
+        <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
+        <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
+        <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
+        <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
+        <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element label="REST Data Record Created" max_length="40" name="rest_data_record_created" type="boolean"/>
+        <element label="REST Response Record Created" max_length="40" name="rest_response_record_created" type="boolean"/>
+        <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
+        <element label="Status" max_length="40" name="status" type="string"/>
+        <element label="Table" max_length="80" name="table" type="string"/>
+        <element label="Triggered By Script" max_length="40" name="triggered_by_script" type="string"/>
+        <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
+        <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>
+        <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
+        <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
+        <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
+    </element>
+</database>

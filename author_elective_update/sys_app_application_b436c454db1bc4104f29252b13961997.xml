@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application">
+    <sys_app_application action="DELETE">
+        <active>true</active>
+        <category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category>
+        <description/>
+        <device_type>browser</device_type>
+        <hint/>
+        <name>Button Visibility</name>
+        <order>100</order>
+        <roles>x_tekso_twxapp01.button_visibility_user</roles>
+        <sys_class_name>sys_app_application</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 19:28:05</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b436c454db1bc4104f29252b13961997</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Button Visibility</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_app_application_b436c454db1bc4104f29252b13961997</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 19:28:05</sys_updated_on>
+        <title>Button Visibility</title>
+        <view_name/>
+    </sys_app_application>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_app_application_b436c454db1bc4104f29252b13961997</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_app_application"><sys_app_application action="INSERT_OR_UPDATE"><active>true</active><category display_value="Custom Applications">e0355b31ef303000a61d5a3615c0fb78</category><description/><device_type>browser</device_type><hint/><name>Button Visibility</name><order>100</order><roles>x_tekso_twxapp01.button_visibility_user</roles><sys_class_name>sys_app_application</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-02-26 19:28:05</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>b436c454db1bc4104f29252b13961997</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Button Visibility</sys_name><sys_overrides/><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_app_application_b436c454db1bc4104f29252b13961997</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-02-26 19:28:05</sys_updated_on><title>Button Visibility</title><view_name/></sys_app_application></record_update>]]></payload>
+        <payload_hash>1874810870</payload_hash>
+        <record_name>Button Visibility</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 19:28:05</sys_created_on>
+        <sys_id>b436c454db1bc4104f29252b1396199a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17082f874890000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 19:28:05</sys_updated_on>
+        <type>Application Menu</type>
+        <update_guid>fc36c454331bc4107021975b2f03c099</update_guid>
+        <update_guid_history>fc36c454331bc4107021975b2f03c099:1874810870</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="Button Visibility">c5c98318db13481041d08f381396191f</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 09:42:32</sys_created_on>
+        <sys_db_object display_value="" name="sys_app_application">sys_app_application</sys_db_object>
+        <sys_id>4bb288256bbc4ea8b7a94034b8e7a784</sys_id>
+        <sys_metadata>b436c454db1bc4104f29252b13961997</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Button Visibility</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_app_application_b436c454db1bc4104f29252b13961997</sys_update_name>
+        <sys_update_version display_value="sys_app_application_b436c454db1bc4104f29252b13961997">b436c454db1bc4104f29252b1396199a</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 09:42:32</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

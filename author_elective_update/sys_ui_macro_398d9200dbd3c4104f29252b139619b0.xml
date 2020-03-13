@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_macro">
+    <sys_ui_macro action="DELETE">
+        <active>true</active>
+        <category>general</category>
+        <description/>
+        <media_type/>
+        <name>Test</name>
+        <scoped_name>x_tekso_twxapp01_Test</scoped_name>
+        <sys_class_name>sys_ui_macro</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 11:52:13</sys_created_on>
+        <sys_id>398d9200dbd3c4104f29252b139619b0</sys_id>
+        <sys_mod_count>67</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_macro_398d9200dbd3c4104f29252b139619b0</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 21:39:04</sys_updated_on>
+        <xml><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+
+	<g2:evaluate var="jvar_answer">	
+		var btn = '';
+		var gr1 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+		gr1.query();
+		if (gr1.next()) {
+			btn = gr1.getValue('start_button');
+		}
+		gs.info('btn: ' + btn);
+		btn;
+	</g2:evaluate>
+		
+
+	<j2:if test="$[jvar_answer == 'Show']">		
+		<button id="button" onclick="button()" style="color:blue">$[jvar_answer]</button>		
+		<button id="back" class="btn btn-default" type="button" style="color:blue" onclick="window.history.back()">Back</button>	
+	</j2:if>
+
+	<j2:if test="$[jvar_answer == 'Hidden']">		
+		<button id="button" onclick="button()" style="color:red">$[jvar_answer]</button>		
+		<button id="back" class="btn btn-default" type="button" style="color:red" onclick="window.history.back()">Back</button>	
+	</j2:if>
+	
+<script>
+       	 function button() {}
+</script>
+</j:jelly>]]></xml>
+    </sys_ui_macro>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_macro_398d9200dbd3c4104f29252b139619b0</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_ui_macro"&gt;&lt;sys_ui_macro action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;category&gt;general&lt;/category&gt;&lt;description/&gt;&lt;media_type/&gt;&lt;name&gt;Test&lt;/name&gt;&lt;scoped_name&gt;x_tekso_twxapp01_Test&lt;/scoped_name&gt;&lt;sys_class_name&gt;sys_ui_macro&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-02-26 11:52:13&lt;/sys_created_on&gt;&lt;sys_id&gt;398d9200dbd3c4104f29252b139619b0&lt;/sys_id&gt;&lt;sys_mod_count&gt;67&lt;/sys_mod_count&gt;&lt;sys_name&gt;Test&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_macro_398d9200dbd3c4104f29252b139619b0&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-02-26 21:39:04&lt;/sys_updated_on&gt;&lt;xml&gt;&lt;![CDATA[&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null"&gt;
+
+	&lt;g2:evaluate var="jvar_answer"&gt;	
+		var btn = '';
+		var gr1 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+		gr1.query();
+		if (gr1.next()) {
+			btn = gr1.getValue('start_button');
+		}
+		gs.info('btn: ' + btn);
+		btn;
+	&lt;/g2:evaluate&gt;
+		
+
+	&lt;j2:if test="$[jvar_answer == 'Show']"&gt;		
+		&lt;button id="button" onclick="button()" style="color:blue"&gt;$[jvar_answer]&lt;/button&gt;		
+		&lt;button id="back" class="btn btn-default" type="button" style="color:blue" onclick="window.history.back()"&gt;Back&lt;/button&gt;	
+	&lt;/j2:if&gt;
+
+	&lt;j2:if test="$[jvar_answer == 'Hidden']"&gt;		
+		&lt;button id="button" onclick="button()" style="color:red"&gt;$[jvar_answer]&lt;/button&gt;		
+		&lt;button id="back" class="btn btn-default" type="button" style="color:red" onclick="window.history.back()"&gt;Back&lt;/button&gt;	
+	&lt;/j2:if&gt;
+	
+&lt;script&gt;
+       	 function button() {}
+&lt;/script&gt;
+&lt;/j:jelly&gt;]]&gt;&lt;/xml&gt;&lt;/sys_ui_macro&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1544255899</payload_hash>
+        <record_name>Test</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 21:39:04</sys_created_on>
+        <sys_id>ef2420d8db5bc4104f29252b139619ab</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17083705db60000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 21:39:04</sys_updated_on>
+        <type>Macro</type>
+        <update_guid>6b2420d8e35bc410e126832c76ca14ab</update_guid>
+        <update_guid_history>6b2420d8e35bc410e126832c76ca14ab:1544255899,cda3ec98175bc4100380ac51cc3367a6:-2118580606,96ad9018255bc41060bde3bae6b73a7e:972614763,233d9cd4fa5bc410d96f12d686628c36:1267492206,d71c9c94745bc410749dac6da49cf1e6:858873230,d6cb9c14f25bc4108c9a773f86812449:-253793649,70f9d0544d5bc410eba547494531418d:-1704989749,5e29ccd4661bc410d865bcb8a8096855:313534411,e8e64454731bc41021dcbb1c7515ed9d:-692218700,08aebf8c30d7c410ac21c660d2ef1059:-1280712999,d12e734c6ed7c4102eb8b000cf61b688:1829352003,37cdb38cfdd7c41036b3d84750130a54:-461864988,d7ad3b4c5cd7c410a9e340758bc9b10a:1006156868,f28d378c33d7c41010e8eda0c2622ffc:-39190756,584dbf0c88d7c410f61a8876abadce44:-905145588,e60d3b0c35d7c4101eedc9c331d95255:-385606818,5b4b3b0c8cd7c4109de43f7d8e14266a:1355594728,f27937084fd7c4108f266733d18a6770:-451651042,cd86bb089cd7c410c1523fe8859d7b3e:53101301,0b563308e0d7c410f5c53fa4fa7ed8d3:1732519747,56367fc4e9d7c4108d290b2562af6b51:262533691,bc06f7c48fd7c4102695e3416aaf8ab2:1460842053,d5c5ffc4a1d7c41098dbb3f7c443d8c8:-51413037,476537c4efd7c4106e00716cb6aa4c1e:53101301,093537c042d7c410c312be0a9fd96491:1962530854,ea643784acd7c410309d8c64bb1eeeb6:1952264470,3504ff8063d7c410e00bedcbee856ada:-1544223416,b6437f4486d7c410e1aea119badddcb9:2055148020,4ec06f444497c41078e08d1abfcb9bdf:1827257147,a4906f44c297c410c95e4e1a9f3845db:-447158837,295023449297c410a609156b4e427f98:1459354290,543f13c0d597c4103c126f833288beae:-1949527825,495913409097c41022a2be53c6efbbc9:842199518,2f24570c7657c4109b24db68eaf8b806:2024710846,4263dbc8b757c4102cc7211beeab85ad:355180821,5ce2dbc88c57c4107ec772e2827717b7:-2025666954,57b11b884b57c41006ed204e78dae049:-1026151574,bc519f48cd57c410fb6661214a9a18a0:1902149215,8ed097484c57c41060e18eecdeab2748:1823322516,69a0d7487657c4109adea0bdb4085ede:-866590848,64ba0f043b57c4105f81781efd3f31f7:-1634608487,4a7acb047657c4105801b87be03ff666:-1472656562,ff1ac3049c57c41065a6efcbc0ffe516:-369952069,4458cf400657c410b2782bc604f915d1:791692641,1ad7cb40aa57c410b14b5ed5f4310c4f:1465989298,c1d5cfcc6517c41025f9ffe0a7185a82:2020523086,ae648b8cbd17c4102597402dd25f504a:1465989298,9ff3c38ce617c410c07cdd509df33c80:-1504157722,c4b307cc0717c4105252246ac6f5ec91:195903335,abd24f4c7917c410e615a602e6477c79:-770715072,a3c1874ca817c4103fa98fbe69be2542:1720164260,ec71474c1517c4101778235e4b9dfec2:-1555197262,1921470cf117c4104ed34933610df9ca:-1161521711,5c2087c80f17c410065b1468a1f35d8e:-1885693513,982f7280ca17c410f09b7b4e5835b1e5:767505436,33fe3248ae17c410c6dfb8a27c9f392d:643999834,8c4cbe08ae17c410c1a0e14c8d904a37:-1330711747,69fbb6402117c41013f4ad3734512262:-876237821,06143e806d17c4101fa6127fb39a5842:632093041,6cb23a401517c4100b4661f46fabc145:74861678,ea82b6404817c4101bb56e01e84b3d59:1030936907,6b52f6009017c410fe06ea398ad763c0:74861678,a337a20823d3c4109cb379a1176331aa:1420360106,1cf6a6c49ad3c41048f471f34dd5d4ac:468514168,d3b0624041d3c410ae3526d9a3af8baa:512581866,0ea0e600a0d3c410ba52ed583103aa6b:6436071,c6fd1a000ad3c4104e164c9b2bcb518d:2089915743,1bdd1a8c4793c410b280f2ff7a4398a9:-1101699552</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 10:25:59</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_macro">sys_ui_macro</sys_db_object>
+        <sys_id>0cf783d25a994e13883a19f04433c491</sys_id>
+        <sys_metadata>398d9200dbd3c4104f29252b139619b0</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_macro_398d9200dbd3c4104f29252b139619b0</sys_update_name>
+        <sys_update_version display_value="sys_ui_macro_398d9200dbd3c4104f29252b139619b0">ef2420d8db5bc4104f29252b139619ab</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 10:25:59</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.UpdateProcessLogResults</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UpdateProcessLogResults</name>
+        <script><![CDATA[var UpdateProcessLogResults = Class.create();
+UpdateProcessLogResults.prototype = {
+    initialize: function() {
+    },
+	
+	// Builds a string like this: 3 records (3 updates , 0 deletes)
+	processSummary: function(recCnt,updCnt,delCnt) {
+		var rtn = '';
+		if (recCnt == 1) {
+			rtn = '1 record';
+		}
+		else {
+			rtn = recCnt.toString() + ' records';
+		}	
+
+		if (updCnt == 1) {
+			rtn = rtn + ' (1 update';
+		}
+		else {
+			rtn = rtn + ' (' + updCnt.toString() + ' updates';
+		}
+
+		if (delCnt == 1) {
+			rtn = rtn + ' , 1 delete)';
+		}
+		else {
+			rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+		}
+
+		return rtn;
+	},	
+    process: function(logSysID) {
+
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var logTable = 'x_tekso_twxapp01_processing_log';
+		var setupTable = 'x_tekso_twxapp01_setup';
+		
+		var updCnt = 0;
+		var delCnt = 0;
+		var recCnt = 0;
+		var gotAllResults = false;
+		
+		var gr1 = new GlideRecord(linkTable);
+		gr1.addQuery('link_to_processing_log_record',logSysID);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		// This is the number of records
+		if (rowCnt > 0) {
+			// Find all the records which have got a response
+			var gr2 = new GlideRecord(linkTable);
+			gr2.addQuery('link_to_processing_log_record',logSysID);
+			gr2.addQuery('response_received',true);
+			gr2.query();
+			var rowCnt2 = gr2.getRowCount();
+			// Only update the stats if got all the results back
+			if (rowCnt2 == rowCnt) {
+				// All the records have got a response
+				gotAllResults = true;
+				// Get all the results back and
+				// tally up the stats
+				while(gr2.next()) {
+					var op = gr2.getValue('operation') || '';
+					var sta = gr2.getValue('response_status_code') || 0;
+					if (sta == 200) {
+						recCnt++;
+						if (op == 'update') {
+							updCnt++;
+						}
+						if (op == 'delete') {
+							delCnt++;
+						}
+					}
+				} // while(gr2.next())
+			} //if (rowCnt2 == rowCnt) 
+		} //if (rowCnt > 0) 
+		
+		if (gotAllResults == true) {
+			// Got all the stats back
+			// Update the results
+			var summary = this.processSummary(recCnt,updCnt,delCnt);
+
+			var gr3 = new GlideRecord(logTable);
+			gr3.addQuery('sys_id',logSysID);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('total_number_of_records_processed',recCnt);
+				gr3.setValue('number_of_updates_processed',updCnt);
+				gr3.setValue('number_of_deletes_processed',delCnt);		
+				gr3.setValue('processing_summary',summary);
+				gr3.update();
+			} //if (gr3.next()) 
+			
+			
+			var gr4 = new GlideRecord(setupTable);
+			gr4.addQuery('link_to_last_processing_log_record',logSysID);
+			gr4.query();
+			if (gr4.next()) {
+				// This log record is the latest one and is attached to the setup table
+				var snt = gr3.getValue('data_sent_summary') || '';
+				var dt = gr3.getValue('sys_created_on');
+				gr4.setValue('last_processing_data_sent_summary',snt);
+				gr4.setValue('last_processing_at',dt);
+				gr4.setValue('last_processing_results_summary',summary);
+				gr4.update();
+			}
+
+		} //if (gotAllResults == true)
+	},
+    type: 'UpdateProcessLogResults'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-10 16:02:42</sys_created_on>
+        <sys_id>3a315e10db6f801041d08f38139619aa</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>UpdateProcessLogResults</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_3a315e10db6f801041d08f38139619aa</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 11:45:13</sys_updated_on>
+    </sys_script_include>
+</record_update>

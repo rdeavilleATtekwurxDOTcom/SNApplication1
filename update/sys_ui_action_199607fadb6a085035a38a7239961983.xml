@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name>stop_action</action_name>
+        <active>true</active>
+        <client>false</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments/>
+        <condition>current.status != 'Not Sending' </condition>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint>Stop sending data to uControl. The fields: URL, MID Server, Polling Interval and Max Retries can be updated when sending is stopped</hint>
+        <isolate_script>false</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Stop Sending</name>
+        <onclick/>
+        <order>104</order>
+        <script><![CDATA[current.status = 'Not Sending';
+var gdt = new GlideDateTime();
+var usr = gs.getUserName();
+current.status_set_to_not_sending_by = usr;
+current.status_set_to_not_sending_at = gdt;
+// Can set the user because we know that we are sure that it is being stopped
+current.status_details = 'Stopped at: ' + gdt + ' by: ' + usr;
+current.last_button_clicked = 'Stop Sending';
+if (current.cmdb_tracking == 'Running') {
+	// This will trigger a message to be displayed when the form is reloaded		
+	current.show_message_on_form_reload = 'x_tekso_twxapp01_stop_sending_message';	
+}
+current.update();
+action.setRedirectURL(current);	]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-28 21:08:16</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>199607fadb6a085035a38a7239961983</sys_id>
+        <sys_mod_count>40</sys_mod_count>
+        <sys_name>Stop Sending</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_action_199607fadb6a085035a38a7239961983</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 15:17:56</sys_updated_on>
+        <table>x_tekso_twxapp01_setup</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

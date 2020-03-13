@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_relationship">
+    <sys_relationship action="DELETE">
+        <advanced>false</advanced>
+        <apply_to/>
+        <basic_apply_to>x_tekso_twxapp01_rest_data_to_ucontrol</basic_apply_to>
+        <basic_query_from>x_tekso_twxapp01_cmdb_changes</basic_query_from>
+        <insert_callback/>
+        <name>RMD</name>
+        <query_from/>
+        <query_with><![CDATA[(function refineQuery(current, parent) {
+
+current.addQuery('link_to_rest_data_record', parent.sys_id);
+
+})(current, parent);]]></query_with>
+        <reference_field>link_to_rest_data_record</reference_field>
+        <related_list/>
+        <simple_reference>false</simple_reference>
+        <sys_class_name>sys_relationship</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:44:23</sys_created_on>
+        <sys_id>cc77cb52db9b8c104f29252b13961916</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>RMD</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_relationship_cc77cb52db9b8c104f29252b13961916</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:47:42</sys_updated_on>
+    </sys_relationship>
+    <sys_translated_text action="DELETE" query="documentkey=cc77cb52db9b8c104f29252b13961916"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_relationship_cc77cb52db9b8c104f29252b13961916</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_relationship"&gt;&lt;sys_relationship action="INSERT_OR_UPDATE"&gt;&lt;advanced&gt;false&lt;/advanced&gt;&lt;apply_to/&gt;&lt;basic_apply_to&gt;x_tekso_twxapp01_rest_data_to_ucontrol&lt;/basic_apply_to&gt;&lt;basic_query_from&gt;x_tekso_twxapp01_cmdb_changes&lt;/basic_query_from&gt;&lt;insert_callback/&gt;&lt;name&gt;RMD&lt;/name&gt;&lt;query_from/&gt;&lt;query_with&gt;&lt;![CDATA[(function refineQuery(current, parent) {
+
+current.addQuery('link_to_rest_data_record', parent.sys_id);
+
+})(current, parent);]]&gt;&lt;/query_with&gt;&lt;reference_field&gt;link_to_rest_data_record&lt;/reference_field&gt;&lt;related_list/&gt;&lt;simple_reference&gt;false&lt;/simple_reference&gt;&lt;sys_class_name&gt;sys_relationship&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-04 14:44:23&lt;/sys_created_on&gt;&lt;sys_id&gt;cc77cb52db9b8c104f29252b13961916&lt;/sys_id&gt;&lt;sys_mod_count&gt;3&lt;/sys_mod_count&gt;&lt;sys_name&gt;RMD&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_relationship_cc77cb52db9b8c104f29252b13961916&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-03-04 14:47:42&lt;/sys_updated_on&gt;&lt;/sys_relationship&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=cc77cb52db9b8c104f29252b13961916"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1712536051</payload_hash>
+        <record_name>RMD</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:47:42</sys_created_on>
+        <sys_id>8e2983d2db9b8c104f29252b1396199a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170a60445600000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:47:42</sys_updated_on>
+        <type>Relationship</type>
+        <update_guid>0a2983d2c09b8c1047fd7ff156a9a69a</update_guid>
+        <update_guid_history>0a2983d2c09b8c1047fd7ff156a9a69a:1712536051,e30943d2f39b8c10b8e4004d355c9dde:-29268691,60f8cb92409b8c10958a577c0818d34a:1528921217,9d68c792469b8c10ff31f1e6491f93c1:-489735359</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 15:07:22</sys_created_on>
+        <sys_db_object display_value="" name="sys_relationship">sys_relationship</sys_db_object>
+        <sys_id>633e04009e0f42a8b6f8d46573d37f10</sys_id>
+        <sys_metadata>cc77cb52db9b8c104f29252b13961916</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RMD</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="REST Data To uControl">2e5cf317dbe6001041d08f38139619a0</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_relationship_cc77cb52db9b8c104f29252b13961916</sys_update_name>
+        <sys_update_version display_value="sys_relationship_cc77cb52db9b8c104f29252b13961916">8e2983d2db9b8c104f29252b1396199a</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 15:07:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config">
+    <ua_table_licensing_config action="DELETE">
+        <is_fulfillment>false</is_fulfillment>
+        <license_condition/>
+        <license_model>none</license_model>
+        <license_roles/>
+        <name>x_tekso_twxapp01_special</name>
+        <op_delete>true</op_delete>
+        <op_insert>true</op_insert>
+        <op_update>true</op_update>
+        <owner_condition/>
+        <sys_class_name>ua_table_licensing_config</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-11 15:32:24</sys_created_on>
+        <sys_id>7486df68dbafc01041d08f38139619bf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_special</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>ua_table_licensing_config_7486df68dbafc01041d08f38139619bf</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-11 15:32:24</sys_updated_on>
+    </ua_table_licensing_config>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>ua_table_licensing_config_7486df68dbafc01041d08f38139619bf</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="ua_table_licensing_config"><ua_table_licensing_config action="INSERT_OR_UPDATE"><is_fulfillment>false</is_fulfillment><license_condition/><license_model>none</license_model><license_roles/><name>x_tekso_twxapp01_special</name><op_delete>true</op_delete><op_insert>true</op_insert><op_update>true</op_update><owner_condition/><sys_class_name>ua_table_licensing_config</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-11 15:32:24</sys_created_on><sys_id>7486df68dbafc01041d08f38139619bf</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_special</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>ua_table_licensing_config_7486df68dbafc01041d08f38139619bf</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-11 15:32:24</sys_updated_on></ua_table_licensing_config></record_update>]]></payload>
+        <payload_hash>-299329335</payload_hash>
+        <record_name>x_tekso_twxapp01_special</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-11 15:32:24</sys_created_on>
+        <sys_id>3886df68dbafc01041d08f38139619c1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170ca39b69a0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-11 15:32:24</sys_updated_on>
+        <type>Table Subscription Configuration</type>
+        <update_guid>7086df68f3afc0100cb11570dd3858c1</update_guid>
+        <update_guid_history>7086df68f3afc0100cb11570dd3858c1:-299329335</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-12 14:09:42</sys_created_on>
+        <sys_db_object display_value="" name="ua_table_licensing_config">ua_table_licensing_config</sys_db_object>
+        <sys_id>9bd6ed67e12a41ae921f17b4a7d37209</sys_id>
+        <sys_metadata>7486df68dbafc01041d08f38139619bf</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_special</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>ua_table_licensing_config_7486df68dbafc01041d08f38139619bf</sys_update_name>
+        <sys_update_version display_value="ua_table_licensing_config_7486df68dbafc01041d08f38139619bf">3886df68dbafc01041d08f38139619c1</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 14:09:42</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

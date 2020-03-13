@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>REST_Data</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 15:27:34</sys_created_on>
+        <sys_id>82421b9adb9b8c104f29252b1396195f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Rest_data</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_view_82421b9adb9b8c104f29252b1396195f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 15:27:34</sys_updated_on>
+        <title>Rest_data</title>
+        <user/>
+    </sys_ui_view>
+</record_update>

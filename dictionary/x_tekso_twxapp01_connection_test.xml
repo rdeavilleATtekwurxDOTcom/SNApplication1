@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Connection Test" max_length="40" name="x_tekso_twxapp01_connection_test" type="collection">
+        <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
+        <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Response Connection" max_length="40" name="response_connection" type="boolean"/>
+        <element label="Response From uControl" max_length="4000" name="response_from_ucontrol" type="string"/>
+        <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
+        <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
+        <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element label="Response User Account" max_length="40" name="response_user_account" type="string"/>
+        <element label="Response User Account Matched" max_length="40" name="response_user_account_matched" type="boolean"/>
+        <element label="Response User Account Record" max_length="32" name="response_user_account_record" reference="sys_user" type="reference"/>
+        <element label="Response User Account Sys ID" max_length="32" name="response_user_account_sys_id" type="string"/>
+        <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
+        <element label="Setup Record" max_length="32" name="setup_record" reference="x_tekso_twxapp01_setup" type="reference"/>
+        <element label="Set Status To Running If Test Successful" max_length="40" name="set_status_to_running_if_test_successful" type="boolean"/>
+        <element label="Test Connection Triggered By" max_length="100" name="test_connection_triggered_by" type="string"/>
+        <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
+        <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
+        <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
+        <index name="index">
+            <element name="response_user_account_record"/>
+        </index>
+        <index name="index2">
+            <element name="setup_record"/>
+        </index>
+    </element>
+</database>

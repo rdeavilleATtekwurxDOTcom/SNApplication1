@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_setup</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Setup Track Changes</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var updateCnt = 0;
+	var fieldsUpdated = '';
+	if (current.operation() == 'update') {
+		// For an update only interested in url, mid server, integrtion user, polling interval, max retries
+		// last_button_clicked
+		for (var x in current){
+			if (x == 'ucontrol_url' || x == 'ucontrol_mid_server' || x == 'ucontrol_integration_user' || x == 'ucontrol_polling_interval_minutes' || x == 'max_retries' || x == 'status' || x == 'connection_sttaus' || x == 'cmdb_tracking' || x == 'last_button_clicked') {
+				if (current[x] != previous[x]) {
+					if (updateCnt == 0) {
+						fieldsUpdated = x;
+					}
+					else {
+						fieldsUpdated = fieldsUpdated + ', ' + x;
+					}
+					updateCnt++;				
+				} // if (current[x] != previous[x])
+			}
+		} // for
+	} // if (current.operation() == 'update')
+	
+	if (current.operation() == 'insert' || current.operation() == 'delete' || updateCnt > 0) {
+		// Only if insert, delete or an update (of a field we are interested in)
+		var gr1 = new GlideRecord('x_tekso_twxapp01_setup_history');
+		gr1.initialize();
+		gr1.setValue('operation',current.operation());		
+		gr1.setValue('ucontrol_url',current.ucontrol_url);
+		gr1.setValue('ucontrol_mid_server_name',current.ucontrol_mid_server.name);
+		gr1.setValue('ucontrol_mid_server_sys_id',current.ucontrol_mid_server.sys_id);
+		gr1.setValue('ucontrol_integration_user_name',current.ucontrol_integration_user.name);
+		gr1.setValue('ucontrol_integration_user_sys_id',current.ucontrol_integration_user.sys_id);
+		gr1.setValue('ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
+		gr1.setValue('max_retries',current.max_retries);
+		gr1.setValue('status',current.status);
+		gr1.setValue('connection_status',current.connection_status);
+		gr1.setValue('cmdb_tracking',current.cmdb_tracking);	
+		gr1.setValue('last_button_clicked',current.last_button_clicked);
+		if (updateCnt > 0) {
+			// For an update - capture the previous values as well
+			gr1.setValue('previous_ucontrol_url',previous.ucontrol_url);
+			gr1.setValue('previous_ucontrol_mid_server_name',previous.ucontrol_mid_server.name);
+			gr1.setValue('previous_ucontrol_mid_server_sys_id',previous.ucontrol_mid_server.sys_id);
+			gr1.setValue('previous_ucontrol_integration_user_name',previous.ucontrol_integration_user.name);
+			gr1.setValue('previous_ucontrol_integration_user_sys_id',previous.ucontrol_integration_user.sys_id);
+			gr1.setValue('previous_ucontrol_polling_interval_minutes',previous.ucontrol_polling_interval_minutes);
+			gr1.setValue('previous_max_retries',previous.max_retries);
+			gr1.setValue('previous_status',previous.status);
+			gr1.setValue('previous_connection_status',previous.connection_status);
+			gr1.setValue('previous_cmdb_tracking',previous.cmdb_tracking);	
+			gr1.setValue('previous_last_button_clicked',previous.last_button_clicked);
+			gr1.setValue('fields_updated',fieldsUpdated); 
+		}
+		gr1.insert();
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 12:08:28</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6b29a3d8db93481041d08f3813961910</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>Setup Track Changes</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_6b29a3d8db93481041d08f3813961910</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 15:13:51</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=6b29a3d8db93481041d08f3813961910"/>
+</record_update>

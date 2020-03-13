@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script/>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_tekso_twxapp01_support_contact_details.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<html>
+<head>
+<style>
+body {
+  padding-top: 40px !important;
+  padding-left: 40px !important;
+  padding-right: 40px !important
+}
+</style>
+</head>
+<body>	
+<img src="logo1.jpg"/>
+<h1><strong>Support Contact Details</strong></h1>
+<h3>Email:&#160;<a href="mailto:info@tekwurx.com">info@tekwurx.com</a></h3>
+<h3>Web:&#160;<a href="http://www.tekwurx.com" target="_blank">http://www.tekwurx.com</a></h3>
+<h3>Address: 12 Power House, Higham Mead, Chesham, Bucks. HP5 2AH. UK</h3>
+<br/>
+<button id="back" class="btn btn-default" type="button" onclick="window.history.back()">Back</button>
+</body>
+</html>		
+</j:jelly>
+]]></html>
+        <name>support_contact_details</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-03 15:58:22</sys_created_on>
+        <sys_id>a74870b0db3e041041d08f38139619d1</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>support_contact_details</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_page_a74870b0db3e041041d08f38139619d1</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-05 21:57:17</sys_updated_on>
+    </sys_ui_page>
+</record_update>

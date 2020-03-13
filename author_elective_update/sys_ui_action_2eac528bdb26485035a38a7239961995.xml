@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="DELETE">
+        <action_name>sysverb_update</action_name>
+        <active>true</active>
+        <client>true</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments/>
+        <condition>current.isValidRecord() &amp;&amp; current.canWrite() &amp;&amp; gs.getProperty('glide.ui.update_is_submit') != 'true'</condition>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint/>
+        <isolate_script>false</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Update</name>
+        <onclick>runUpdateClientCode()</onclick>
+        <order>100</order>
+        <script><![CDATA[//Client-side 'onclick' function
+function runUpdateClientCode(){
+	if (g_form.getValue('connection_status') == 'Unknown') 
+	{
+		//var cnf = alert('Connection status has changed');
+		var cnf = confirm("Connection has failed. Do you still want to leave this record?");
+		if (!cnf) {
+			return;
+		}
+	}
+	/*
+	var url = g_form.getValue('ucontrol_url');
+	var mid_server = g_form.getDisplayBox('ucontrol_mid_server').value;
+	if (url == "") {
+		g_form.hideFieldMsg('ucontrol_url');
+		g_form.showFieldMsg('ucontrol_url','The field is blank','error');
+		return false; //Abort submission
+	}
+	
+	if (mid_server == "") {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','The field is blank','error');
+		return false; //Abort submission
+	}	
+   //Call the UI Action and skip the 'onclick' function
+   */
+   gsftSubmit(null, g_form.getFormElement(), 'sysverb_update2'); //MUST call the 'Action name' set in this UI Action
+}
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runUpdateBusRuleCode2();
+
+//Server-side function
+function runUpdateBusRuleCode2(){
+	current.update();
+}
+
+function runUpdateBusRuleCode(){
+	// Use .toString() to convert from an object to a string
+	var midServer = current.ucontrol_mid_server.name.toString();
+	var url = current.ucontrol_url.toString();
+	
+	// Remove any leading or trailing spaces from the URL
+	url = url.replace(/^\s+|\s+$/g, '');
+	
+	if (url.length > 0) {
+		// Remove the last character if it is a /
+		if (url.charAt(url.length - 1) == '/') {
+			url = url.substr(0, url.length - 1);
+		}
+	}
+	
+	var si = new x_tekso_twxapp01.OutboundREST();
+	var rtnArr = si.testConnection(midServer,url);
+	if (rtnArr[0] == 'SUCCESS' && rtnArr[1] == 200) {
+		current.connection_status = 'OK';
+		current.connection_status_details = 'Connection Working';
+		current.update();
+	}
+	else {
+		current.connection_status = 'Failed';
+		current.connection_status_details = rtnArr[1] + ' ' + rtnArr[2];
+		// Set the status to Not Running
+		current.status = 'Not Running';
+		current.update();
+		action.setRedirectURL(current);			
+	}
+
+}
+
+
+//Client-side 'onclick' function
+/*
+function runUpdateClientCode(){
+
+	if (g_form.getValue('connection_status') == 'OK'){
+		var field1 = g_form.getControl('ucontrol_url'); 
+		var field2 = g_form.getControl('ucontrol_mid_server');		
+		
+		//See if the 'changed' attribute on either field is true
+		if(field1.changed || field2.changed){
+			var url = g_form.getValue('ucontrol_url');
+			var mid_server = g_form.getDisplayBox('ucontrol_mid_server').value;
+			//g_form.addInfoMessage('Fields have changed');
+			test(mid_server,url);
+			
+			
+		}
+	}
+	//Call the UI Action and skip the 'onclick' function
+	gsftSubmit(null, g_form.getFormElement(), 'sysverb_update2'); //MUST call the 'Action name' set in this UI Action		
+}
+
+function test(midServerName,url) {
+	//g_form.addInfoMessage('test: ' + midServerName + ' url: ' + url);
+	// Now try with the client callable version
+	var ga = new GlideAjax('x_tekso_twxapp01.OutboundREST');//this is the script include
+	ga.addParam("sysparm_name", "testConnectionClient"); //this is the function within the script include
+	ga.addParam("sysparm_mid_server_name", midServerName);
+	ga.addParam("sysparm_url", url);
+	ga.getXML(getResponse);	
+}
+
+function getResponse(response) {
+	var values = response.responseXML.documentElement.getAttribute('answer').toString().split('|');
+	//g_form.addInfoMessage(values[0]);
+	//g_form.addInfoMessage(values[1]);
+	//g_form.addInfoMessage(values[2]);	
+	
+	if (values[0] == 'SUCCESS' && values[1] == 200) {
+		g_form.setValue('connection_status','OK');
+		g_form.setValue('connection_status_details','Connection Working');
+	}
+	else {
+		//g_form.setValue('connection_status','Failed');
+		//g_form.setValue('connection_status_details',values[1] + ' ' + values[2]);	
+		//g_form.getElement('connection_status').style.backgroundColor = "pink";	
+		//g_form.getElement('connection_status_details').style.backgroundColor = "pink";
+		//g_form.flash('connection_status', 'pink', 0);
+		
+		var cnf = confirm("Connection has failed. Do you still want to leave this record?");
+	}
+}
+
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runUpdateBusRuleCode();
+
+//Server-side function
+//Server-side function
+function runUpdateBusRuleCode(){
+	// Use .toString() to convert from an object to a string
+	var midServer = current.ucontrol_mid_server.name.toString();
+	var url = current.ucontrol_url.toString();
+	gs.info('runUpdateBusRuleCode: ' + url);
+	
+	// Remove any leading or trailing spaces from the URL
+	url = url.replace(/^\s+|\s+$/g, '');
+	
+	if (url.length > 0) {
+		// Remove the last character if it is a /
+		if (url.charAt(url.length - 1) == '/') {
+			url = url.substr(0, url.length - 1);
+		}
+	}
+	
+	var si = new x_tekso_twxapp01.OutboundREST();
+	var rtnArr = si.testConnection(midServer,url);
+	if (rtnArr[0] == 'SUCCESS' && rtnArr[1] == 200) {
+		current.connection_status = 'OK';
+		current.connection_status_details = 'Connection Working';
+	}
+	else {
+		current.connection_status = 'Failed';
+		current.connection_status_details = rtnArr[1] + ' ' + rtnArr[2];
+		// Set the status to Not Running
+		current.status = 'Not Running';
+	}
+	current.update();
+	action.setRedirectURL(current);	
+}
+*/
+]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-29 12:42:12</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>2eac528bdb26485035a38a7239961995</sys_id>
+        <sys_mod_count>46</sys_mod_count>
+        <sys_name>Update</sys_name>
+        <sys_overrides display_value="Update">42df02e20a0a0b340080e61b551f2909</sys_overrides>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_action_2eac528bdb26485035a38a7239961995</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-01-30 10:48:37</sys_updated_on>
+        <table>x_tekso_twxapp01_setup</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_action_2eac528bdb26485035a38a7239961995</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_ui_action"&gt;&lt;sys_ui_action action="INSERT_OR_UPDATE"&gt;&lt;action_name&gt;sysverb_update&lt;/action_name&gt;&lt;active&gt;true&lt;/active&gt;&lt;client&gt;true&lt;/client&gt;&lt;client_script_v2&gt;&lt;![CDATA[function onClick(g_form) {
+
+}]]&gt;&lt;/client_script_v2&gt;&lt;comments/&gt;&lt;condition&gt;current.isValidRecord() &amp;amp;&amp;amp; current.canWrite() &amp;amp;&amp;amp; gs.getProperty('glide.ui.update_is_submit') != 'true'&lt;/condition&gt;&lt;form_action&gt;true&lt;/form_action&gt;&lt;form_button&gt;true&lt;/form_button&gt;&lt;form_button_v2&gt;false&lt;/form_button_v2&gt;&lt;form_context_menu&gt;false&lt;/form_context_menu&gt;&lt;form_link&gt;false&lt;/form_link&gt;&lt;form_menu_button_v2&gt;false&lt;/form_menu_button_v2&gt;&lt;form_style/&gt;&lt;hint/&gt;&lt;isolate_script&gt;false&lt;/isolate_script&gt;&lt;list_action&gt;false&lt;/list_action&gt;&lt;list_banner_button&gt;false&lt;/list_banner_button&gt;&lt;list_button&gt;false&lt;/list_button&gt;&lt;list_choice&gt;false&lt;/list_choice&gt;&lt;list_context_menu&gt;false&lt;/list_context_menu&gt;&lt;list_link&gt;false&lt;/list_link&gt;&lt;list_save_with_form_button&gt;false&lt;/list_save_with_form_button&gt;&lt;list_style/&gt;&lt;name&gt;Update&lt;/name&gt;&lt;onclick&gt;runUpdateClientCode()&lt;/onclick&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[//Client-side 'onclick' function
+function runUpdateClientCode(){
+	if (g_form.getValue('connection_status') == 'Unknown') 
+	{
+		//var cnf = alert('Connection status has changed');
+		var cnf = confirm("Connection has failed. Do you still want to leave this record?");
+		if (!cnf) {
+			return;
+		}
+	}
+	/*
+	var url = g_form.getValue('ucontrol_url');
+	var mid_server = g_form.getDisplayBox('ucontrol_mid_server').value;
+	if (url == "") {
+		g_form.hideFieldMsg('ucontrol_url');
+		g_form.showFieldMsg('ucontrol_url','The field is blank','error');
+		return false; //Abort submission
+	}
+	
+	if (mid_server == "") {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','The field is blank','error');
+		return false; //Abort submission
+	}	
+   //Call the UI Action and skip the 'onclick' function
+   */
+   gsftSubmit(null, g_form.getFormElement(), 'sysverb_update2'); //MUST call the 'Action name' set in this UI Action
+}
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runUpdateBusRuleCode2();
+
+//Server-side function
+function runUpdateBusRuleCode2(){
+	current.update();
+}
+
+function runUpdateBusRuleCode(){
+	// Use .toString() to convert from an object to a string
+	var midServer = current.ucontrol_mid_server.name.toString();
+	var url = current.ucontrol_url.toString();
+	
+	// Remove any leading or trailing spaces from the URL
+	url = url.replace(/^\s+|\s+$/g, '');
+	
+	if (url.length &gt; 0) {
+		// Remove the last character if it is a /
+		if (url.charAt(url.length - 1) == '/') {
+			url = url.substr(0, url.length - 1);
+		}
+	}
+	
+	var si = new x_tekso_twxapp01.OutboundREST();
+	var rtnArr = si.testConnection(midServer,url);
+	if (rtnArr[0] == 'SUCCESS' &amp;&amp; rtnArr[1] == 200) {
+		current.connection_status = 'OK';
+		current.connection_status_details = 'Connection Working';
+		current.update();
+	}
+	else {
+		current.connection_status = 'Failed';
+		current.connection_status_details = rtnArr[1] + ' ' + rtnArr[2];
+		// Set the status to Not Running
+		current.status = 'Not Running';
+		current.update();
+		action.setRedirectURL(current);			
+	}
+
+}
+
+
+//Client-side 'onclick' function
+/*
+function runUpdateClientCode(){
+
+	if (g_form.getValue('connection_status') == 'OK'){
+		var field1 = g_form.getControl('ucontrol_url'); 
+		var field2 = g_form.getControl('ucontrol_mid_server');		
+		
+		//See if the 'changed' attribute on either field is true
+		if(field1.changed || field2.changed){
+			var url = g_form.getValue('ucontrol_url');
+			var mid_server = g_form.getDisplayBox('ucontrol_mid_server').value;
+			//g_form.addInfoMessage('Fields have changed');
+			test(mid_server,url);
+			
+			
+		}
+	}
+	//Call the UI Action and skip the 'onclick' function
+	gsftSubmit(null, g_form.getFormElement(), 'sysverb_update2'); //MUST call the 'Action name' set in this UI Action		
+}
+
+function test(midServerName,url) {
+	//g_form.addInfoMessage('test: ' + midServerName + ' url: ' + url);
+	// Now try with the client callable version
+	var ga = new GlideAjax('x_tekso_twxapp01.OutboundREST');//this is the script include
+	ga.addParam("sysparm_name", "testConnectionClient"); //this is the function within the script include
+	ga.addParam("sysparm_mid_server_name", midServerName);
+	ga.addParam("sysparm_url", url);
+	ga.getXML(getResponse);	
+}
+
+function getResponse(response) {
+	var values = response.responseXML.documentElement.getAttribute('answer').toString().split('|');
+	//g_form.addInfoMessage(values[0]);
+	//g_form.addInfoMessage(values[1]);
+	//g_form.addInfoMessage(values[2]);	
+	
+	if (values[0] == 'SUCCESS' &amp;&amp; values[1] == 200) {
+		g_form.setValue('connection_status','OK');
+		g_form.setValue('connection_status_details','Connection Working');
+	}
+	else {
+		//g_form.setValue('connection_status','Failed');
+		//g_form.setValue('connection_status_details',values[1] + ' ' + values[2]);	
+		//g_form.getElement('connection_status').style.backgroundColor = "pink";	
+		//g_form.getElement('connection_status_details').style.backgroundColor = "pink";
+		//g_form.flash('connection_status', 'pink', 0);
+		
+		var cnf = confirm("Connection has failed. Do you still want to leave this record?");
+	}
+}
+
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runUpdateBusRuleCode();
+
+//Server-side function
+//Server-side function
+function runUpdateBusRuleCode(){
+	// Use .toString() to convert from an object to a string
+	var midServer = current.ucontrol_mid_server.name.toString();
+	var url = current.ucontrol_url.toString();
+	gs.info('runUpdateBusRuleCode: ' + url);
+	
+	// Remove any leading or trailing spaces from the URL
+	url = url.replace(/^\s+|\s+$/g, '');
+	
+	if (url.length &gt; 0) {
+		// Remove the last character if it is a /
+		if (url.charAt(url.length - 1) == '/') {
+			url = url.substr(0, url.length - 1);
+		}
+	}
+	
+	var si = new x_tekso_twxapp01.OutboundREST();
+	var rtnArr = si.testConnection(midServer,url);
+	if (rtnArr[0] == 'SUCCESS' &amp;&amp; rtnArr[1] == 200) {
+		current.connection_status = 'OK';
+		current.connection_status_details = 'Connection Working';
+	}
+	else {
+		current.connection_status = 'Failed';
+		current.connection_status_details = rtnArr[1] + ' ' + rtnArr[2];
+		// Set the status to Not Running
+		current.status = 'Not Running';
+	}
+	current.update();
+	action.setRedirectURL(current);	
+}
+*/
+]]&gt;&lt;/script&gt;&lt;show_insert&gt;false&lt;/show_insert&gt;&lt;show_multiple_update&gt;false&lt;/show_multiple_update&gt;&lt;show_query&gt;false&lt;/show_query&gt;&lt;show_update&gt;true&lt;/show_update&gt;&lt;sys_class_name&gt;sys_ui_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-01-29 12:42:12&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;2eac528bdb26485035a38a7239961995&lt;/sys_id&gt;&lt;sys_mod_count&gt;46&lt;/sys_mod_count&gt;&lt;sys_name&gt;Update&lt;/sys_name&gt;&lt;sys_overrides display_value="Update"&gt;42df02e20a0a0b340080e61b551f2909&lt;/sys_overrides&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_ui_action_2eac528bdb26485035a38a7239961995&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-01-30 10:48:37&lt;/sys_updated_on&gt;&lt;table&gt;x_tekso_twxapp01_setup&lt;/table&gt;&lt;ui11_compatible&gt;true&lt;/ui11_compatible&gt;&lt;ui16_compatible&gt;false&lt;/ui16_compatible&gt;&lt;/sys_ui_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1054576958</payload_hash>
+        <record_name>Update</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-30 10:48:37</sys_created_on>
+        <sys_id>4c6c0bdbdb26001041d08f3813961904</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>16ff61128830000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-01-30 10:48:37</sys_updated_on>
+        <type>UI Action</type>
+        <update_guid>c46c0bdbac2600103a8991c44c274704</update_guid>
+        <update_guid_history>c46c0bdbac2600103a8991c44c274704:-1054576958,797faf03ed6a485025ed0aa8dc478b60:482816142,323f23432f6a48507dea9dbd339a5c82:275555526,d58ea303366a4850029c234bea460164:2022706459,d80e6303d86a48509626dff64716b7d3:1711919547,475de7cfca2a4850f5c969c3cd744a4a:-649653381,97f62f0b982a4850c7b2f9becb6b7de6:1418726118,2a802f83c02a4850e116d8c4a1d2699b:-161408934,54306b43bb2a485074be902631b8eb60:1142552800,aebe5343e52a4850ec59b34ba38cd620:1256876497,a17d1703d72a485005bc0244e983e955:960158897,06ec1303022a48508bfffca5a68e43df:-454516655,f34c5b4fffe64850398b36eafc85c18b:318641777,861adb0f00e648506f378d604837d0ed:180536423,78b9174fdfe6485009de45a6de5f86ce:1981560289,09099fcbc1e64850b10994dcb0c236c7:-1717278828,5cb8570f26e6485094dbd85834ac09fb:-127870668,06289fcbd8e6485055f346a12f1eb24d:1203273338,6e7717cbd7e648508bdb5c90b5ed99ae:416945718,e53713cb00e6485091bd1f52a6592d77:1232298352,dff6d38b10e648507402455c58c50dfc:423029130,5394970b43e6485017fa075f11ba2e10:-8160273,b1745b0bc0e64850167473d9b158fb4e:-265316113,5e34dbc33ae64850153ba83c284825fa:-1949397194,d504dfc799e648505db7e935f7604dca:783626804,fbc317871ee648509dc3e15c61e62ab0:-785720963,55a46a033f664850a6f7a94340d0a5b9:-1701267068,bd74ae03ce664850e11e5572c962b847:172380256,b664a2437b664850aee1a9d54d847445:1729424384,3514e2cf7e264850c9a556f1faf10cb6:2037725986,e7c32a03f66648501725ff76a80de943:-2082429029,a732ee8fd3264850da3e9ca6a18f97f6:16216967,28e1ae8f4c264850e1b674ea43a249b5:-1464440514,b0b1e64f5026485039b8373ef4ab8199:-2124639406,5051e64f1e2648503abf2179c20ca894:-1163665806,93016e4f9b2648507b3a92ca80801941:-2053896053,f480224f6f264850927c505d415d51a6:-1319213813,2820a64fd82648502ee6befbdbbcd195:883012921,5f9f5ecbb326485087a982d93e69173f:-1302976743,b43f5acb8626485044adfac95b1665a9:117647841,052eda8b372648500a0b9b6de9c9e46e:276499901,401e5e8b00264850201f3e3f1c3d3834:393405867,d6ed56cbf02648501d324541e959b8be:-2096564211,3f9d1e8b2926485062bcd971aa6a88f5:-399564385,4b6dda8b03264850f3eb26c8a430aacc:494744745,5e4dd28bff2648505b9e5a6ad5e0b65c:-943386922,12ccd28bfa264850540c6703e77cc956:-828175576</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-30 10:49:23</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_action">sys_ui_action</sys_db_object>
+        <sys_id>69459a5a845745f0bc9f065f65696801</sys_id>
+        <sys_metadata>2eac528bdb26485035a38a7239961995</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Update</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Setup">a93c2476db62085035a38a723996195b</sys_parent>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_action_2eac528bdb26485035a38a7239961995</sys_update_name>
+        <sys_update_version display_value="sys_ui_action_2eac528bdb26485035a38a7239961995">4c6c0bdbdb26001041d08f3813961904</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-01-30 10:49:23</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

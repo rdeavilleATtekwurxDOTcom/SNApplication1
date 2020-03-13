@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="DELETE">
+        <group/>
+        <hidden>false</hidden>
+        <name>rmd</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:18:35</sys_created_on>
+        <sys_id>db7287dadb5b8c104f29252b1396197d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RMD</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_view_db7287dadb5b8c104f29252b1396197d</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:18:35</sys_updated_on>
+        <title>RMD</title>
+        <user/>
+    </sys_ui_view>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_view_db7287dadb5b8c104f29252b1396197d</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view"><sys_ui_view action="INSERT_OR_UPDATE"><group/><hidden>false</hidden><name>rmd</name><roles/><sys_class_name>sys_ui_view</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-04 14:18:35</sys_created_on><sys_id>db7287dadb5b8c104f29252b1396197d</sys_id><sys_mod_count>0</sys_mod_count><sys_name>RMD</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_view_db7287dadb5b8c104f29252b1396197d</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-04 14:18:35</sys_updated_on><title>RMD</title><user/></sys_ui_view></record_update>]]></payload>
+        <payload_hash>1231057563</payload_hash>
+        <record_name>RMD</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 14:18:35</sys_created_on>
+        <sys_id>1f72075edb5b8c104f29252b139619e9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170a5e99aa20000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 14:18:35</sys_updated_on>
+        <type>UI View</type>
+        <update_guid>5772075e2d5b8c10740c799ab3df7fe9</update_guid>
+        <update_guid_history>5772075e2d5b8c10740c799ab3df7fe9:1231057563</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 15:26:47</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_view">sys_ui_view</sys_db_object>
+        <sys_id>79729df896ff49bcafa684c5bb8a2664</sys_id>
+        <sys_metadata>db7287dadb5b8c104f29252b1396197d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RMD</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_view_db7287dadb5b8c104f29252b1396197d</sys_update_name>
+        <sys_update_version display_value="sys_ui_view_db7287dadb5b8c104f29252b1396197d">1f72075edb5b8c104f29252b139619e9</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 15:26:47</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

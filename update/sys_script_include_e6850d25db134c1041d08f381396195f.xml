@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.UpdateScheduledJob</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UpdateScheduledJob</name>
+        <script><![CDATA[var UpdateScheduledJob = Class.create();
+UpdateScheduledJob.prototype = {
+    initialize: function() {
+    },
+    updateScheduledJob: function(setupSysID) {
+		
+		var setupTable = 'x_tekso_twxapp01_setup';
+		
+		var gr1 = new GlideRecord(setupTable);
+		gr1.addQuery('sys_id',setupSysID);
+		gr1.query;
+		if (gr1.next()) {
+			
+			var interval = gr1.getValue('ucontrol_polling_interval_minutes');
+			
+			var intervalStr = '';
+			if (interval < 10) {
+				intervalStr = '0' + interval.toString();
+			}
+			else {
+				intervalStr = interval.toString();	
+			}
+
+			// D HH:MM:SS
+			var durationStr = '0 00:' + intervalStr + ':00';
+
+			var duration = new GlideDuration(durationStr);
+
+			// If the scheduled job is running it should have sent down its sys id
+			var foundScheduledJob = false;
+			
+			var scheduledJobSysID = gr1.getValue('scheduled_job_sys_id').toString();
+
+			if (scheduledJobSysID.length < 32) {
+				var gr2 = new GlideRecord('sysauto');
+				gr2.addQuery('name','Send Data to uControl');
+				gr2.query();
+				if (gr2.next()) {
+					scheduledJobSysID = gr2.getValue('sys_id');
+					gr1.setValue('scheduled_job_sys_id',scheduledJobSysID);
+				}
+			} 
+
+			if (scheduledJobSysID.length >= 32) {
+				var gr3 = new GlideRecord('sysauto');
+				gr3.addQuery('sys_id',scheduledJobSysID);
+				gr3.query();	
+				if (gr3.next()) {
+					foundScheduledJob = true;	
+					gr3.setValue('active',true);
+					gr3.setValue('run_type','periodically');
+					gr3.setValue('run_period',duration);
+					gr3.update();			
+				}
+			}
+			
+			if (foundScheduledJob == false) {
+				// There is a problem with the scheduled job
+				gr1.setValue('system_configuration_checks','Cannot find the scheduled job: Send Data to uControl');
+			}
+			else {
+				gr1.setValue('system_configuration_checks','OK');
+			}
+			gr1.update();
+			
+		}
+		
+	},
+    type: 'UpdateScheduledJob'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-01 21:35:55</sys_created_on>
+        <sys_id>e6850d25db134c1041d08f381396195f</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UpdateScheduledJob</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_e6850d25db134c1041d08f381396195f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-01 21:35:55</sys_updated_on>
+    </sys_script_include>
+</record_update>

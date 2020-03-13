@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.SetPrevNextRecordsForCMDBLinkToREST</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>SetPrevNextRecordsForCMDBLinkToREST</name>
+        <script><![CDATA[var SetPrevNextRecordsForCMDBLinkToREST = Class.create();
+SetPrevNextRecordsForCMDBLinkToREST.prototype = {
+    initialize: function() {
+    },
+	orderRecords: function (record_sys_id,link_to_processing_record) {
+		//There could be multiple x_tekso_twxapp01_cmdb_link_to_rest_data records
+		//with the same record_sys_id and link_to_processing_record 
+		//The records should link together in a chain from first to last
+		//The first record has a flag to show it is the first and should link to the next
+		//The last record has a flag to show it is the last and should link to the previous
+		//Middle records should link to the previous record and the next record
+		
+		//This is where the same CMDB Changes record has been sent to uControl repeatedly
+		//A new x_tekso_twxapp01_cmdb_link_to_rest_data records record is created each time
+		
+		//If records are deleted from x_tekso_twxapp01_cmdb_link_to_rest_data
+		//then the chain could be broken - so need to scan through all related
+		//records and ensure that they join together
+		
+		//record_sys_id = this is the sys_id of the cmdb record thst has been updated\deleted e.g. cmdb_ci_win_server
+		//link_to_processing_record = this is the sys_id of cmdb_changes
+	
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+		gr1.addQuery('link_to_processing_record',link_to_processing_record);
+		gr1.addQuery('record_sys_id',record_sys_id);
+		gr1.orderBy('sys_created_on'); // Earliest first, latest last
+		gr1.query();
+		var cnt = gr1.getRowCount();
+		var rowcnt = 1;
+		var first_sys_id = '';
+		var last_sys_id = '';
+		var sys_id_arr = [];
+		var attempt_no = 0;
+		// Only 1 record
+		if (cnt == 1) {
+			// Only 1 record first = true, last = true
+			if (gr1.next()) {
+				gr1.setValue('first_process_record',true);
+				gr1.setValue('latest_process_record',true);
+				gr1.setValue('link_to_previous_record','');
+				gr1.setValue('link_to_next_record','');	
+				gr1.setValue('send_to_ucontrol_attempt_no',1);
+				gr1.update();			
+			}
+		} // if (cnt == 1)
+
+		// 2 Records - first points to last and last points to first
+		if (cnt == 2) {
+			// 2 records
+			rowcnt = 1;
+			while (gr1.next()) {
+				if (rowcnt == 1) {
+					// Get first sys_id
+					first_sys_id = gr1.sys_id.toString();
+					attempt_no = gr1.getValue('send_to_ucontrol_attempt_no') || 0;
+					if (attempt_no < 1) {
+						attempt_no = 1;
+					}
+
+				}
+				if (rowcnt == 2) {
+					// Get second sys_id
+					last_sys_id = gr1.sys_id.toString();
+				}
+				rowcnt++;
+			} // while
+			// Set first record to point to last record
+			var gr2 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+			gr2.addQuery('sys_id',first_sys_id);
+			gr2.query();
+			if (gr2.next()) {
+				gr2.setValue('first_process_record',true);
+				gr2.setValue('latest_process_record',false);
+				gr2.setValue('link_to_previous_record','');
+				gr2.setValue('link_to_next_record',last_sys_id);
+				gr2.setValue('send_to_ucontrol_attempt_no',attempt_no);
+				gr2.update();				
+			}
+			// Set last record to point to first record
+			attempt_no++;
+			var gr3 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+			gr3.addQuery('sys_id',last_sys_id);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('first_process_record',false);
+				gr3.setValue('latest_process_record',true);
+				gr3.setValue('link_to_previous_record',first_sys_id);
+				gr3.setValue('link_to_next_record','');	
+				gr3.setValue('send_to_ucontrol_attempt_no',attempt_no);
+				gr3.update();				
+			}		
+		} // if (cnt == 2)
+
+		// More than 2 records
+		if (cnt > 2) {
+			// Put all the sys_id's into an array
+			rowcnt = 1;
+			first_sys_id = '';
+			last_sys_id = '';
+			attempt_no = 0;
+			while (gr1.next()) {
+				if (rowcnt == 1) {
+					// First record
+					first_sys_id = gr1.sys_id.toString();
+					attempt_no = gr1.getValue('send_to_ucontrol_attempt_no') || 0;
+					if (attempt_no < 1) {
+						attempt_no = 1;
+					}
+				}
+				last_sys_id = gr1.sys_id.toString();
+				sys_id_arr.push(last_sys_id); // Put the sys_id into an array
+				rowcnt++;
+			} // while	
+
+			// [a,b,c] arr.length = 3 [0] = a, [1] = b, [2] = c
+			// i = 0 to 2
+			var lasti = sys_id_arr.length -1; 
+			// Loop through the array
+			for (var i = 0; i < sys_id_arr.length; i++) {
+				var sys_id = sys_id_arr[i].toString();
+				var prev_sys_id = '';
+				var next_sys_id = '';
+				var isFirst = false;
+				var isLast = false;			
+				if (i == 0) {
+					// First record
+					isFirst = true;
+				}
+				if (i > 0) {
+					// Not the first record
+					prev_sys_id = sys_id_arr[i-1].toString();
+				}
+				if (i == lasti) {
+					// Last Record
+					next_sys_id = '';
+					isLast = true;
+				}
+				else {
+					// Not the last one
+					next_sys_id = sys_id_arr[i+1].toString();
+					isLast = false;
+				}
+
+				var gr4 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+				gr4.addQuery('sys_id',sys_id);
+				gr4.query();
+				if (gr4.next()) {
+					gr4.setValue('first_process_record',isFirst);
+					gr4.setValue('latest_process_record',isLast);
+					gr4.setValue('link_to_previous_record',prev_sys_id);
+					gr4.setValue('link_to_next_record',next_sys_id);	
+					gr4.setValue('send_to_ucontrol_attempt_no',attempt_no);
+					gr4.update();
+					attempt_no++;
+				}
+			} // for		
+		} // if (cnt > 2)}	
+	},
+    type: 'SetPrevNextRecordsForCMDBLinkToREST'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-05 15:49:39</sys_created_on>
+        <sys_id>0b2e503edb13405041d08f3813961968</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>SetPrevNextRecordsForCMDBLinkToREST</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_0b2e503edb13405041d08f3813961968</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-10 13:31:05</sys_updated_on>
+    </sys_script_include>
+</record_update>

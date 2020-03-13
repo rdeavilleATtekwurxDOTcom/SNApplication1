@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="data_sent_deletes_per_class" label="Data Sent Deletes Per Class" language="en" table="x_tekso_twxapp01_processing_log">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>data_sent_deletes_per_class</element>
+            <help/>
+            <hint/>
+            <label>Data Sent Deletes Per Class</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_processing_log</name>
+            <plural>Data Sent Deletes Per Class</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-10 14:58:49</sys_created_on>
+            <sys_id>0f35c654db2f801041d08f3813961972</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Data Sent Deletes Per Class</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_processing_log_data_sent_deletes_per_class_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-10 14:58:49</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

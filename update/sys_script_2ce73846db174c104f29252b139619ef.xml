@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_cmdb_deletes</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>uControl Track Deletes</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[//Check that the table name provided is in the list of classes supported by
+//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes
+function isTableInSupportedClasses(tblName,supportedClassesTable) {
+	var rtn = false;
+	// Ensure that this is a string
+	var tblName2 = tblName.toString();
+	if (tblName2.length > 0) {
+		var gr1 = new GlideRecord(supportedClassesTable);
+		gr1.addQuery('class',tblName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Matching record found
+			rtn = true;
+		}
+	}
+	return rtn;
+ }
+
+// Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
+function isCMDBTrackingRunning(configTable) {
+	var rtn = true;
+	
+	// Default to Running
+	var cmdbTracking = 'Running';
+	var gr1 = new GlideRecord(configTable);
+	gr1.query();
+	if (gr1.next()) {
+		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
+	}
+	
+	if (cmdbTracking == 'Off') {
+		rtn = false;
+	}
+	return rtn;
+}
+
+
+function update_tracking_br_for_cmdb_ci(configTable) {
+	// Set the T/F flag on the setup table to confirm that this BR is running
+	var gr1 = new GlideRecord(configTable);
+	gr1.addQuery('tracking_br_for_cmdb_ci',false);
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('tracking_br_for_cmdb_ci',true);
+		gr1.update();
+	}	
+}
+
+// Should be an ASYNCH BR 
+(function executeRule(current, previous) {
+
+	//For cmdb_ci:
+	//Fields To Process: sys_updated_on,sys_class_name,sys_updated_by,sys_id
+	//Data To Process: "sys_updated_on":"2020-03-03 10:45:06",
+	//                 "sys_class_name":"cmdb_ci_win_server","sys_updated_by":"robin","sys_id":"f0080906db574c104f29252b139619a5"
+	//No Of Fields To Process: 4
+	
+	//For cmdb_rel_ci:
+	//Fields To Process: sys_updated_on,sys_id,sys_updated_by
+	//Data to Process: "sys_updated_on":"2020-03-03 10:51:52","sys_id":"46898586db574c104f29252b13961965","sys_updated_by":"robin"
+	//No Of Fields To Process: 3
+	
+	var configTable = 'x_tekso_twxapp01_setup';
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var supportedClassesTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+	var thisTable = 'x_tekso_twxapp01_cmdb_deletes';
+	var thisRecordSysID = current.sys_id.toString();
+	var thisRecordStatus = current.status.toString();
+	
+	var br = 'uControl Track Deletes';
+	
+	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
+	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
+	
+	var matchedCriteriaForProcessing = false;
+	
+	// If the tableName is cmdb_rel_ci then the base table is also cmdb_rel_ci
+	// If the tableName is not cmdb_rel_ci then it must be something like cmdb_ci_win_server so
+	// in that case the base table will be cmdb_ci
+	var baseTable = current.base_table;
+	
+	var operation = 'delete';	
+	
+	update_tracking_br_for_cmdb_ci(configTable);
+	
+	var supportedClass = false;
+	if (baseTable == 'cmdb_rel_ci') {
+		supportedClass = true;
+	}
+	else {
+		//Check that the table name provided is in the list of classes supported by
+		//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes		
+		supportedClass = isTableInSupportedClasses(tableName,supportedClassesTable);
+	}
+
+	var cmdbTrackingRunning = isCMDBTrackingRunning(configTable);
+	
+	// Only continue if this is a supported class (or cmdb_rel_ci)
+	// and x_tekso_twxapp01_setup.cmdb_tracking is not 'Off'	
+	if (supportedClass == true && cmdbTrackingRunning == true) {
+		
+		var configUsrName = '';
+		var configUsrSysID = '';	
+		var configURL = '';
+		var configMIDServerName = '';
+		var configMIDServerSysID = '';	
+		var configMaxRetries = 0;
+
+		var gotConfigUsr = 0;
+
+		var noOfFieldsToProcess = 0;
+		var fieldsToProcess = '';
+
+		var noOfExcludedFields = 0;
+		var excludedFields = '';
+
+		var noOfDroppedFields = 0;
+		var droppedFields = '';
+		
+		var data = '';
+
+		var recordOriginallyCreatedBy = current.record_originally_created_by;		
+		var recordOriginallyCreatedOn = current.record_originally_created_on;
+		var recordUpdatedBy = current.record_updated_by;		
+		var recordUpdatedOn = current.record_updated_on;
+		var noOfFields = current.no_of_fields;
+		var allFields = current.all_fields;
+		
+		// gets the user name
+		var userName = gs.getUserName();
+
+		// Read the Config Table
+		var gr1 = new GlideRecord(configTable);
+		gr1.query();
+		if (gr1.next()) {
+			//Cannot do dot walking with getValue
+			//Have to use getElement		
+			//Need to use toString as getElement returns an object
+			configUsrName = gr1.getElement('ucontrol_integration_user.name').toString() || '';		
+			configUsrSysID = gr1.getValue('ucontrol_integration_user') || '';			
+			configURL = gr1.getValue('ucontrol_url') || '';		
+			//Cannot do dot walking with getValue
+			//configMIDServerName = gr1.getValue('ucontrol_mid_server.name') || '';	
+			//Have to use getElement
+			configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
+			configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
+			configMaxRetries = gr1.getValue('max_retries') || 0;	
+
+			if (configUsrName.length > 0) {
+				gotConfigUsr = 1;
+			}
+		}
+
+
+		// Only continue if the BR was not triggered by the uControl user
+		// Only continue if the item was originally created by the uControl user
+		carryOn = false;		
+		// Current user is not the uControl User
+		if (gotConfigUsr == 1 & userName != configUsrName) {
+			// Record was originally created by the uControl User
+			if (recordOriginallyCreatedBy == configUsrName ) {
+				carryOn = true;
+			}
+		}
+		carryOn = true; /////////////////////////////////////////////////////////////////
+		if (carryOn == true) {
+			
+			// e.g. dev91664
+			var snInstance = gs.getProperty("instance_name");	
+			// e.g. https://dev91664.service-now.com/
+			var snURL = gs.getProperty("glide.servlet.uri");
+
+			var recordSysID = current.record_sys_id;			
+			
+			var source = 'ServiceNow';
+			var status = 'Pending';
+
+			var parentSysID = '';
+			var childSysID = '';
+			var correlationID1 = '';
+			var correlationID2 = '';
+			var discoverySource1 = '';
+			var discoverySource2 = '';
+
+			// For cmdb_rel_ci
+			if (baseTable == 'cmdb_rel_ci') {
+				parentSysID = current.rel_parent_sys_id || '';
+				childSysID = current.rel_child_sys_id || '';
+				correlationID1 = current.correlation_id1 || '';
+				correlationID2 = current.correlation_id2 || '';
+				discoverySource1 = current.discovery_source1 || '';
+				discoverySource2 = current.discovery_source2 || '';
+	
+				//For cmdb_rel_ci:
+				//Fields To Process: sys_updated_on,sys_id,sys_updated_by
+				//Data to Process: "sys_updated_on":"2020-03-03 10:51:52","sys_id":"46898586db574c104f29252b13961965","sys_updated_by":"robin"
+				//No Of Fields To Process: 3
+				
+				noOfFieldsToProcess = 3;
+				fieldsToProcess = 'sys_updated_on,sys_updated_by,sys_id';
+				
+				data = '\"sys_updated_on\":\"' + recordUpdatedOn + '\"';
+				data = data + ',';
+				data = data + '\"sys_updated_by\":\"' + recordUpdatedBy + '\"';	
+				data = data + ',';
+				data = data + '\"sys_id\":\"' + recordSysID + '\"';	
+				
+			}
+			else {
+				// For cmdb_ci
+				correlationID1 = current.correlation_id1 || '';
+				discoverySource1 = current.discovery_source1|| '';
+								
+				//For cmdb_ci:
+				//Fields To Process: sys_updated_on,sys_class_name,sys_updated_by,sys_id
+				//Data To Process: "sys_updated_on":"2020-03-03 10:45:06",
+				//                 "sys_class_name":"cmdb_ci_win_server","sys_updated_by":"robin","sys_id":"f0080906db574c104f29252b139619a5"
+				//No Of Fields To Process: 4
+				
+				noOfFieldsToProcess = 4;
+				fieldsToProcess = 'sys_updated_on,sys_class_name,sys_updated_by,sys_id';
+				
+				data = '\"sys_updated_on\":\"' + recordUpdatedOn + '\"';
+				data = data + ',';
+				data = data + '\"sys_class_name\":\"' + tableName + '\"';				
+				data = data + ',';
+				data = data + '\"sys_updated_by\":\"' + recordUpdatedBy + '\"';	
+				data = data + ',';
+				data = data + '\"sys_id\":\"' + recordSysID + '\"';								
+			}
+
+			var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
+			dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
+			dbInfo = dbInfo + '\"source\":\"' + source + '\",';	// ServiceNow
+			dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+			dbInfo = dbInfo + '\"source_url\":\"' + snURL + '\"'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+
+			tag = 'deletedData';
+
+			var jsonRequestBody = '{' + data + '}';	
+			
+			var gr2 = new GlideRecord(trackingTable);
+			gr2.initialize();
+			gr2.setValue('operation',operation);
+			gr2.setValue('table',tableName);
+			gr2.setValue('base_table',baseTable);
+			gr2.setValue('record_sys_id',recordSysID);
+			gr2.setValue('status',status);
+			gr2.setValue('no_of_fields',noOfFields); // 0 for Delete
+			gr2.setValue('all_fields',allFields); // '' for Delete
+			gr2.setValue('no_of_excluded_fields',noOfExcludedFields); // 0 for Delete
+			gr2.setValue('excluded_fields',excludedFields); // '' for Delete
+			gr2.setValue('no_of_dropped_fields',noOfDroppedFields); // 0 for Delete
+			gr2.setValue('dropped_fields',droppedFields); // '' for Delete
+			gr2.setValue('no_of_fields_to_process',noOfFieldsToProcess);
+			gr2.setValue('fields_to_process',fieldsToProcess);
+			gr2.setValue('data_to_process',data);
+			gr2.setValue('no_of_times_sent_to_ucontrol',0);
+			gr2.setValue('ucontrol_url',configURL);
+			gr2.setValue('ucontrol_mid_server_name',configMIDServerName);
+			gr2.setValue('ucontrol_mid_server_sys_id',configMIDServerSysID);		
+			gr2.setValue('ucontrol_integration_user_name',configUsrName);
+			gr2.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
+			gr2.setValue('max_retries',configMaxRetries);
+			gr2.setValue('triggered_by_script',br);
+			gr2.setValue('json_request_body',jsonRequestBody);
+			gr2.setValue('metadata',dbInfo);
+			gr2.setValue('rel_parent_sys_id',parentSysID);
+			gr2.setValue('rel_child_sys_id',childSysID);
+			gr2.setValue('correlation_id1',correlationID1);
+			gr2.setValue('correlation_id2',correlationID2);
+			gr2.setValue('discovery_source1',discoverySource1);
+			gr2.setValue('discovery_source2',discoverySource2);
+			gr2.setValue('record_originally_created_by',recordOriginallyCreatedBy);
+			gr2.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+			
+			var trackingSysID = gr2.insert();
+
+			// Only update if the status field is blank - this should stop the risk of the BR's looping
+			if (thisRecordStatus.length < 1) {
+				var gr3 = new GlideRecord(thisTable);
+				gr3.addQuery('sys_id',thisRecordSysID);
+				gr3.query();
+				if (gr3.next()) {
+					gr3.setValue('status','Matched Criteria For Processing');
+					gr3.setValue('link_to_processing_record',trackingSysID);
+					gr3.setWorkflow(false);
+					gr3.autoSysFields(false);
+					gr3.update();
+					matchedCriteriaForProcessing = true;
+				}		
+			}
+
+		} //if (carryOn = true) 
+	} //if (supportedClass == true)
+	
+	if (matchedCriteriaForProcessing == false && thisRecordStatus.length < 1) {
+		var gr4 = new GlideRecord(thisTable);
+		gr4.addQuery('sys_id',thisRecordSysID);
+		gr4.query();
+		if (gr4.next()) {
+			gr4.setValue('status','Did Not Match Criteria For Processing');
+			gr4.setWorkflow(false);
+			gr4.autoSysFields(false);			
+			gr4.update();	
+		}
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-03 10:29:54</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>uControl Track Deletes</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 10:15:49</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=2ce73846db174c104f29252b139619ef"/>
+</record_update>

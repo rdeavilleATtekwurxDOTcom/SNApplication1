@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter">
+    <sys_ui_formatter action="DELETE">
+        <active>true</active>
+        <angular_module/>
+        <formatter>Test.xml</formatter>
+        <name>Test</name>
+        <sys_class_name>sys_ui_formatter</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 11:54:34</sys_created_on>
+        <sys_id>714e1e00dbd3c4104f29252b13961994</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_formatter_714e1e00dbd3c4104f29252b13961994</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 11:54:34</sys_updated_on>
+        <table>x_tekso_twxapp01_setup</table>
+        <type>formatter</type>
+    </sys_ui_formatter>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_formatter_714e1e00dbd3c4104f29252b13961994</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter"><sys_ui_formatter action="INSERT_OR_UPDATE"><active>true</active><angular_module/><formatter>Test.xml</formatter><name>Test</name><sys_class_name>sys_ui_formatter</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-02-26 11:54:34</sys_created_on><sys_id>714e1e00dbd3c4104f29252b13961994</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Test</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_formatter_714e1e00dbd3c4104f29252b13961994</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-02-26 11:54:34</sys_updated_on><table>x_tekso_twxapp01_setup</table><type>formatter</type></sys_ui_formatter></record_update>]]></payload>
+        <payload_hash>-1752451515</payload_hash>
+        <record_name>Test</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 11:54:34</sys_created_on>
+        <sys_id>e56e1a00dbd3c4104f29252b13961993</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17081593e620000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-26 11:54:34</sys_updated_on>
+        <type>UI Formatter</type>
+        <update_guid>216e1a00fbd3c4105d33256c19b32c93</update_guid>
+        <update_guid_history>216e1a00fbd3c4105d33256c19b32c93:-1752451515</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 10:25:39</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_formatter">sys_ui_formatter</sys_db_object>
+        <sys_id>52febcafb2ef4f50a332ea635f782010</sys_id>
+        <sys_metadata>714e1e00dbd3c4104f29252b13961994</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Test</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Setup">a93c2476db62085035a38a723996195b</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_formatter_714e1e00dbd3c4104f29252b13961994</sys_update_name>
+        <sys_update_version display_value="sys_ui_formatter_714e1e00dbd3c4104f29252b13961994">e56e1a00dbd3c4104f29252b13961993</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 10:25:39</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function onCancel() {
+	GlideDialogWindow.get().destroy();
+	return false;
+}
+
+function onOK() {
+	// Get the sys_id here 
+	//var sys_id = gel("sysID").value;
+	
+	// Set g_form.modified = false to stop the are you sure message? from being displayed
+	// This message would normally pop-up if you 1) change a field value and then 2) hit the delete button
+	// It sees the change and asks for confirmation - but as we are deleting the record - who cares?
+	g_form.modified = false; 
+	GlideDialogWindow.get().destroy();
+	return true;
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_tekso_twxapp01_delete_setup_record_are_you_sure_ok_cancel.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g:ui_form>
+	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	<img src="logo1.jpg"/>
+	<table border="0">		
+	<tr>
+		<td>
+			<h3>Are you sure you wish to proceed? Deleting this record will stop all processing</h3>
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<h3>Click on the OK button to Delete this record</h3>
+		</td>
+	</tr>			
+	<tr>
+		<td>
+			<br/>			
+		</td>
+	</tr>		
+	<tr id="dialogbuttons">
+		<td align="center">
+			<button type="submit" onclick="return onOK();">OK</button>	
+			<button onclick="return onCancel();">Cancel</button>				
+		</td>
+	</tr>
+	</table>
+</g:ui_form>	
+</j:jelly>]]></html>
+        <name>delete_setup_record_are_you_sure_ok_cancel</name>
+        <processing_script><![CDATA[//Script that runs on the server when the page is submitted. 
+//If you want to run the processing script you need to make sure your button has type="submit" as an attribute.  
+//Must have the <g:ui_form> tag. Apparently leaving that tag off the HTML, causes the UI page to ignore the processing script.
+//Do not use the properties tag "ok_type="button" cancel_type="button" - They override the standard button's behaviour and it won't be 
+//treated as a submit
+
+// This uses sysID which is set in the ui_page: <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/>	
+
+var setupTable = 'x_tekso_twxapp01_setup';
+
+var gr1 = new GlideRecord(setupTable);
+gr1.addQuery('sys_id',sysID);
+gr1.query();
+if (gr1.next()) {
+	gr1.setValue('last_button_clicked','Delete');
+	gr1.update();
+}
+// This will be tracked by a BR and written to the history table
+
+// Now perform the delete
+var gr2 = new GlideRecord(setupTable);
+gr2.addQuery('sys_id',sysID);
+gr2.query();
+if (gr2.next()) {
+	gr2.setValue('last_button_clicked','Delete');
+	gr2.deleteRecord();
+}
+
+// Redirect to the list
+response.sendRedirect('/x_tekso_twxapp01_setup_list.do');]]></processing_script>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-02 11:01:01</sys_created_on>
+        <sys_id>90918cf9dbd30c104f29252b139619af</sys_id>
+        <sys_mod_count>42</sys_mod_count>
+        <sys_name>delete_setup_record_are_you_sure_ok_cancel</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_page_90918cf9dbd30c104f29252b139619af</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 09:54:06</sys_updated_on>
+    </sys_ui_page>
+</record_update>

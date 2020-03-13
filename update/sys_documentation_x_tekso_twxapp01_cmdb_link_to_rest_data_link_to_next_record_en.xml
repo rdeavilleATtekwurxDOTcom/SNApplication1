@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="link_to_next_record" label="Link To Next Record" language="en" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>link_to_next_record</element>
+            <help/>
+            <hint/>
+            <label>Link To Next Record</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
+            <plural>Link To Next Records</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-04 21:16:17</sys_created_on>
+            <sys_id>8212a4a2dbdf8c104f29252b139619ad</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Link To Next Record</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_link_to_rest_data_link_to_next_record_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-04 21:16:17</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

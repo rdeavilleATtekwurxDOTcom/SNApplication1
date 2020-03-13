@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="" section_id="36ab2f5cdb93481041d08f38139619e1" sys_domain="global" table="x_tekso_twxapp01_setup_history" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>number</element>
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+            <sys_id>403ae00fdb9b00504f29252b139619bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>sys_created_on</element>
+            <position>1</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+            <sys_id>c03ae00fdb9b00504f29252b139619bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>2</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+            <sys_id>443ae00fdb9b00504f29252b139619bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>operation</element>
+            <position>3</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+            <sys_id>c43ae00fdb9b00504f29252b139619bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>sys_created_by</element>
+            <position>4</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+            <sys_id>483ae00fdb9b00504f29252b139619bb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption/>
+            <header>false</header>
+            <name>x_tekso_twxapp01_setup_history</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-02-27 12:10:39</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>36ab2f5cdb93481041d08f38139619e1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_setup_history</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_section_36ab2f5cdb93481041d08f38139619e1</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-02-27 12:10:39</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_section_36ab2f5cdb93481041d08f38139619e1</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="36ab2f5cdb93481041d08f38139619e1" sys_domain="global" table="x_tekso_twxapp01_setup_history" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>number</element><position>0</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-06 11:08:36</sys_created_on><sys_id>403ae00fdb9b00504f29252b139619bb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-06 11:08:36</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>sys_created_on</element><position>1</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-06 11:08:36</sys_created_on><sys_id>c03ae00fdb9b00504f29252b139619bb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-06 11:08:36</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>2</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-06 11:08:36</sys_created_on><sys_id>443ae00fdb9b00504f29252b139619bb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-06 11:08:36</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>operation</element><position>3</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-06 11:08:36</sys_created_on><sys_id>c43ae00fdb9b00504f29252b139619bb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-06 11:08:36</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>sys_created_by</element><position>4</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-06 11:08:36</sys_created_on><sys_id>483ae00fdb9b00504f29252b139619bb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_setup_history" sys_domain="global" view="Default view">36ab2f5cdb93481041d08f38139619e1</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-06 11:08:36</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>x_tekso_twxapp01_setup_history</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-02-27 12:10:39</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>36ab2f5cdb93481041d08f38139619e1</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_setup_history</sys_name><sys_overrides/><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_section_36ab2f5cdb93481041d08f38139619e1</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-02-27 12:10:39</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>-1854669806</payload_hash>
+        <record_name>Setup History</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-06 11:08:36</sys_created_on>
+        <sys_id>803ae00fdb9b00504f29252b139619bd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170af8865780000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 11:08:36</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>0c3ae00f849b005017a9c1554b836ebc</update_guid>
+        <update_guid_history>0c3ae00f849b005017a9c1554b836ebc:-1854669806,12aab9b66c5300500db3682cf5cb9581:1201836685,65a9b976db5300501a4def7f1833aa82:-2065825500,197209b552d70c10844cb3ffcaafce8f:-1022167730,cc5285b545d70c1046d443e1cfed8121:383628729,ae3241b554d70c101b00d22d2ec8bd7d:559616224,8cfea835ef970c1026ad350c65d1b09f:1967319765,4aace4b18e970c10766af79b6eb6e82b:464739893,36dbe8710d970c1062953abc4fd48978:-1956276921,e05ae03187970c10133fe037a58777f6:-573600417,7ec7f758e2d348107a1f6569a806a0b3:-2085958037,3b6733582ed34810917217cd782e3039:1221073578,356fef5031d348107aa4e8493fce699f:-425632990,134f2b1015d348101bdb58455d7b8224:-27134646,096c23dc279348107298fea761d27c4c:1537326336,beab2f5cd3934810bcf399bad5cfb3e8:393634590,32ab2f5cce9348100a7d20a47b4e7ce4:949948362</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-06 11:10:11</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>071ee2ee27b041ea98be6c77a7c1b764</sys_id>
+        <sys_metadata>36ab2f5cdb93481041d08f38139619e1</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_setup_history</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Setup History">3e772318db93481041d08f3813961983</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_section_36ab2f5cdb93481041d08f38139619e1</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_36ab2f5cdb93481041d08f38139619e1">803ae00fdb9b00504f29252b139619bd</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 11:10:11</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,623 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>cmdb_ci</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>OLD uControl Track Upd cmdb_ci</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[function getName(sys_id,tbl) {
+	var nm = '';	
+	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (sys_id.length == 32 && reference_tbl_arr.indexOf(tbl) >= 0) {
+		var gr = new GlideRecord(tbl);
+		gr.addQuery('sys_id',sys_id);
+		gr.query();
+		if (gr.next()) {
+			nm = gr.getValue('name') || '';
+		}
+	}
+	return nm;
+}
+
+
+//Check that the table name provided is in the list of classes supported by
+//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes
+function isTableInSupportedClasses(tblName,supportedClassesTable) {
+	var rtn = false;
+	// Ensure that this is a string
+	var tblName2 = tblName.toString();
+	if (tblName2.length > 0) {
+		var gr1 = new GlideRecord(supportedClassesTable);
+		gr1.addQuery('class',tblName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Matching record found
+			rtn = true;
+		}
+	}
+	return rtn;
+ }
+
+// Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
+function isCMDBTrackingRunning(configTable) {
+	var rtn = true;
+	
+	// Default to Running
+	var cmdbTracking = 'Running';
+	var gr1 = new GlideRecord(configTable);
+	gr1.query();
+	if (gr1.next()) {
+		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
+	}
+	
+	if (cmdbTracking == 'Off') {
+		rtn = false;
+	}
+	return rtn;
+}
+
+
+function update_tracking_br_for_cmdb_ci(configTable) {
+	// Set the T/F flag on the setup table to confirm that this BR is running
+	var gr1 = new GlideRecord(configTable);
+	gr1.addQuery('tracking_br_for_cmdb_ci',false);
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('tracking_br_for_cmdb_ci',true);
+		gr1.update();
+	}	
+}
+
+// Should be an AFTER BR so that it is only triggered if a valid update has been made
+// With async we do not have current.operation()
+(function executeRule(current, previous) {
+
+	gs.info('uControl Track Upd cmdb_ci');
+	var configTable = 'x_tekso_twxapp01_setup';
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var supportedClassesTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+	
+	// This BR should only be on cmdb_ci and cmdb_rel_ci
+	var br = 'uControl Track Upd cmdb_ci';
+	
+	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
+	var tableName = current.getTableName();	
+	gs.info('tableName: ' + tableName);
+	
+	// If the tableName is cmdb_rel_ci then the base table is also cmdb_rel_ci
+	// If the tableName is not cmdb_rel_ci then it must be something like cmdb_ci_win_server so
+	// in that case the base table will be cmdb_ci
+	var baseTable = 'cmdb_rel_ci'; // cmdb_ci / cmdb_rel_ci	
+	if (tableName != 'cmdb_rel_ci') {
+		baseTable = 'cmdb_ci';
+	}
+	gs.info('baseTable: ' + baseTable);
+	
+	//Not with async
+	//var operation = current.operation(); //insert / update / delete
+	var operation = 'update';	
+	gs.info('operation: ' + operation);
+	
+	update_tracking_br_for_cmdb_ci(configTable);
+	
+	var supportedClass = false;
+	if (baseTable == 'cmdb_rel_ci') {
+		supportedClass = true;
+	}
+	else {
+		//Check that the table name provided is in the list of classes supported by
+		//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes		
+		supportedClass = isTableInSupportedClasses(tableName,supportedClassesTable);
+	}
+
+	var cmdbTrackingRunning = isCMDBTrackingRunning(configTable);
+	
+	// Only continue if this is a supported class (or cmdb_rel_ci)
+	// and x_tekso_twxapp01_setup.cmdb_tracking is not 'Off'
+	if (supportedClass == true && cmdbTrackingRunning == true) {
+		gs.info('supportedClass = true');
+		
+		// ** Setup Section **	
+		// These are the only reference tables we are interested in
+		var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+
+		// If this is set then only these fields are included exerything else will be excluded
+		var only_include_arr = []; //Update / Insert
+		if (baseTable == 'cmdb_ci') {
+			if (operation == 'delete') {
+				only_include_arr = ['sys_id','sys_updated_on','sys_updated_by','sys_class_name'];	
+			}
+		}
+		else {
+			// cmdb_rel_ci does not require class
+			if (operation == 'delete') {
+				only_include_arr = ['sys_id','sys_updated_on','sys_updated_by'];	
+			}			
+		}
+		
+		// Fields to include
+		var include_arr = []; //Delete	
+		if (baseTable == 'cmdb_ci') {
+			if (operation == 'update') {
+				include_arr = ['sys_id','sys_updated_on','sys_updated_by','sys_class_name'];	
+			}
+			if (operation == 'insert') {
+				include_arr = ['sys_id','sys_created_on','sys_created_by','sys_class_name'];						
+			}
+		}
+		else {
+			// cmdb_rel_ci does not require class
+			if (operation == 'update') {
+				include_arr = ['sys_id','sys_updated_on','sys_updated_by'];	
+			}
+			if (operation == 'insert') {
+				include_arr = ['sys_id','sys_created_on','sys_created_by'];						
+			}			
+		}
+		
+		// Fields to exclude
+		var exclude_arr = [];
+		if (baseTable == 'cmdb_ci') {
+			if (operation == 'update') {
+				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','sys_domain','sys_class_path'];  		
+			}
+			if (operation == 'delete') {
+				exclude_arr = [];			
+			}
+			if (operation == 'insert') {
+				exclude_arr = ['sys_tags','sys_updated_on','sys_updated_by','sys_mod_count','sys_domain','sys_class_path'];  		
+			}
+		}
+		else {
+			// cmdb_rel_ci
+			if (operation == 'update') {
+				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','connection_strength','port','percent_outage'];  			
+			}
+			if (operation == 'delete') {
+				exclude_arr = [];			
+			}
+			if (operation == 'insert') {
+				exclude_arr = ['sys_tags','sys_updated_on','sys_updated_by','sys_mod_count','connection_strength','port','percent_outage']; 			
+			}		
+		}
+
+		// If set to 1 then empty fields will be included - used for Insert/Delete
+		var include_empty_fields = 0;
+
+		// If set to 1 then fields that have not changed will be included - used for Update
+		var include_unchanged_fields = 0;
+
+		var include_reference_block = 1;
+		// If set to 0 then will be "parent": "56f10ff92f310010c57149e72799b6b4",
+		// If set to 1 then will be "parent": {
+		//		"sys_id": "56f10ff92f310010c57149e72799b6b4",
+		//		"name": "My Azure Datacenter"
+		//	},
+
+		// ** End Of Setup Section **
+
+		var configUsrName = '';
+		var configUsrSysID = '';	
+		var configURL = '';
+		var configMIDServerName = '';
+		var configMIDServerSysID = '';	
+		var configMaxRetries = 0;
+
+		var gotConfigUsr = 0;
+
+		var noOfFields = 0;
+		var allFields = '';
+
+		var noOfFieldsToProcess = 0;
+		var fieldsToProcess = '';
+
+		var noOfExcludedFields = 0;
+		var excludedFields = '';
+
+		var noOfDroppedFields = 0;
+		var droppedFields = '';
+
+		var name_arr = [];
+		var value_arr = [];
+		var internal_type_arr = [];
+		var ref_table_arr = [];
+		var changed_arr = [];
+		var mode_arr = [];
+
+		var data = '';
+
+		var recordOriginallyCreatedBy = current.sys_created_by;
+		gs.info('recordOriginallyCreatedBy: ' + recordOriginallyCreatedBy);
+		
+		var recordOriginallyCreatedOn = current.sys_created_on;
+		gs.info('recordOriginallyCreatedOn: ' + recordOriginallyCreatedOn);
+		
+		// gets the user name
+		var userName = gs.getUserName();
+
+		// Read the Config Table
+		var gr1 = new GlideRecord(configTable);
+		gr1.query();
+		if (gr1.next()) {
+			//Cannot do dot walking with getValue
+			//Have to use getElement		
+			//Need to use toString as getElement returns an object
+			configUsrName = gr1.getElement('ucontrol_integration_user.name').toString() || '';		
+			configUsrSysID = gr1.getValue('ucontrol_integration_user') || '';			
+			configURL = gr1.getValue('ucontrol_url') || '';		
+			//Cannot do dot walking with getValue
+			//configMIDServerName = gr1.getValue('ucontrol_mid_server.name') || '';	
+			//Have to use getElement
+			configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
+			configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
+			configMaxRetries = gr1.getValue('max_retries') || 0;	
+
+			if (configUsrName.length > 0) {
+				gotConfigUsr = 1;
+			}
+		}
+
+
+		// Only continue if the BR was not triggered by the uControl user
+		// If it is a delete then only continue if the item was originally created by the uControl user
+		// Inserts are not supported
+		carryOn = false;		
+		if (gotConfigUsr == 1 & userName != configUsrName) {
+			if (operation == 'delete') {
+				if (recordOriginallyCreatedBy == configUsrName ) {
+					carryOn = true;
+				}
+			}
+			if (operation == 'update') {
+				carryOn = true;
+			}
+		}
+		carryOn = true; //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		if (carryOn == true) {
+			// e.g. dev91664
+			var snInstance = gs.getProperty("instance_name");	
+			// e.g. https://dev91664.service-now.com/
+			var snURL = gs.getProperty("glide.servlet.uri");
+
+			var recordSysID = current.sys_id;				
+			
+			var source = 'ServiceNow';
+			var status = 'Pending';
+
+			var parentSysID = '';
+			var childSysID = '';
+			var correlationID1 = '';
+			var correlationID2 = '';
+			var discoverySource1 = '';
+			var discoverySource2 = '';
+
+			// For cmdb_rel_ci
+			if (baseTable == 'cmdb_rel_ci') {
+				parentSysID = current.parent.sys_id || '';
+				childSysID = current.child.sys_id || '';
+				correlationID1 = current.parent.correlation_id || '';
+				correlationID2 = current.child.correlation_id || '';
+				discoverySource1 = current.parent.discovery_source || '';
+				discoverySource2 = current.child.discovery_source || '';
+			}
+			else {
+				// For cmdb_ci
+				correlationID1 = current.correlation_id || '';
+				discoverySource1 = current.discovery_source || '';
+			}
+
+			var elements = current.getElements();
+			//GlideRecord also has a getElements method. This returns an array (if in scope) 
+			//or an ArrayList (if in global) of all of the elements on the record. 
+			//You can then loop through the array (in scope) or iterate through it (in global) 
+			//to get things like the label, field name, and value.
+
+			if (typeof elements.size != 'undefined') {
+				// Part 1
+				// GLOBAL SCOPE
+				// we are in global scope, so iterate through the ArrayList
+				for (var i=0; i<elements.size(); i++) {
+					var element1 = elements.get(i);								
+					var descriptor1 = element1.getED();
+					var isChoice1 = descriptor1.isChoiceTable();
+					// string / boolean / integer / reference / glide_date_time
+					var internal_type1 = descriptor1.getInternalType();
+					var ref_table1 = '';
+					if (interalType1 == 'reference') {
+						ref_table = descriptor1.getReference();
+					}
+
+					var name1 = element1.getName();
+					var label1 = element1.getLabel();
+					// ORing with '' stops null from being returned
+					// .nil() and .hasValue() are not supported in scoped applications				
+					var value1 = current.getValue(name1) || '';	
+					// For choice lists - use the display value
+					if (isChoice1) {
+						value1 = current.getDisplayValue(name1) || '';
+					}
+					var changed1 = '';
+					if (element1.changes()) {
+						changed1 = 'changed';
+					}
+					name_arr.push(name1);
+					value_arr.push(value1);
+					internal_type_arr.push(internal_type1);
+					ref_table_arr.push(ref_table1);
+					changed_arr.push(changed1);
+					mode_arr.push('Include');
+				} // for
+			}
+			else {
+				// Part 2
+				// APPLICATION SCOPE
+				// we are in scope, so loop over the array	
+				for (var j=0; j<elements.length; j++) {
+					var element2 = elements[j];
+					var descriptor2 = element2.getED();
+					// string / boolean / integer / reference / glide_date_time
+					var internal_type2 = descriptor2.getInternalType();
+					var isChoice2 = descriptor2.isChoiceTable();
+					var ref_table2 = '';
+					if (internal_type2 == 'reference') {
+						ref_table2 = descriptor2.getReference();
+					}
+
+					var name2 = element2.getName();
+					var label2 = element2.getLabel();
+					// ORing with '' stops null from being returned
+					// .nil() and .hasValue() are not supported in scoped applications				
+					var value2 = current.getValue(name2) || '';	
+					// For choice lists - use the display value
+					if (isChoice2) {
+						value2 = current.getDisplayValue(name2) || '';
+					}				
+					var changed2 = '';
+					if (element2.changes()) {
+						changed2 = 'changed';
+					}
+					name_arr.push(name2);
+					value_arr.push(value2);
+					internal_type_arr.push(internal_type2);
+					ref_table_arr.push(ref_table2);
+					changed_arr.push(changed2);	
+					mode_arr.push('Include');
+				} // for
+			} // if
+
+			// Part 3
+			// Loop through the data to work out what should be included / excluded / dropped
+			// etc
+			var mode = '';
+			for (var k=0; k < name_arr.length; k++) {
+				var name3 = name_arr[k];
+				var value3 = value_arr[k];
+				var changed3 = changed_arr[k];
+
+				if (only_include_arr.length > 0) {
+					mode = 'Exclude';
+					if (only_include_arr.indexOf(name3) >= 0) {
+						mode = 'Include';
+					}
+				}  // if only_include
+				else {
+					// Must include?
+					if (include_arr.indexOf(name3) >= 0) {
+						// Field must be included
+						mode = 'Include';
+					} // if include
+					else {
+						// Must exclude?
+						if (exclude_arr.indexOf(name3) >= 0) {
+							// Field must be excluded
+							mode = 'Exclude';
+						} // if exclude	
+						else {
+							// Neither explicitly include or exclude
+							mode = 'Drop';
+							// Got a value or include_empty_fields 
+							if (operation == 'insert' || operation == 'delete') {
+								if (value3.length > 0 || include_empty_fields == 1) {
+									// Field has a value
+									mode = 'Include';	
+								}
+							} //insert || delete
+							if (operation == 'update') {
+								// Value changed or include_unchaned_fields
+								if (changed3 == 'changed' || include_unchanged_fields == 1) {	
+									mode = 'Include';
+								}
+							} //update
+						} // if exclude else
+					} // if include else
+				} // if only_include else
+				mode_arr[k] = mode;
+			} //for
+
+			// Part 4
+			// Now we have got the data in arrays we can process it
+			for (var l=0; l < name_arr.length; l++) {
+				var name4 = name_arr[l];
+				var value4 = value_arr[l];
+				if (name4 == 'sys_class_name') {
+					// use the internal name e.g cmdb_ci_win_server not Windows Server
+					value4 = tableName;
+				}
+				var internal_type4 = internal_type_arr[l];
+				var ref_table4 = ref_table_arr[l];
+				var changed4 = changed_arr[l];
+				var mode4 = mode_arr[l];
+				var value_lookup4 = '';
+				var name_lookup4 = '';
+				var lookup4 = 0;
+				if (internal_type4 == 'reference') {	
+					// Is this one of the tables that we are interested in?
+					if (reference_tbl_arr.indexOf(ref_table4) >= 0) {
+						value_lookup4 = getName(value4,ref_table4); // sys_id, table_name		
+						name_lookup4 = 'name'; //name4 + '_name';
+						lookup4 = 1;
+					}
+				}
+
+				if (internal_type4 == 'boolean'){
+					if (value4 == '1') {
+						value4 = 'true';
+					}
+					else {
+						value4 = 'false';
+					}
+				}
+
+				if (noOfFields > 0) {
+					allFields = allFields + ',';
+				}
+				allFields = allFields + name4;
+				noOfFields++;
+
+				//Including the field
+				if (mode4 == 'Include') {
+					if (noOfFieldsToProcess > 0) {
+						fieldsToProcess = fieldsToProcess + ',';
+						data = data + ',';
+					}
+
+					if (lookup4 == 1 && include_reference_block == 1) {
+						// "parent": {
+						//		"sys_id": "56f10ff92f310010c57149e72799b6b4",
+						//		"name": "My Azure Datacenter"
+						//	},								
+						data = data + '\"' + name4 + '\":{\"sys_id\":\"' + value4 + '\",\"' + name_lookup4 + '\":\"' + value_lookup4 + '\"}';
+					}
+					else {
+						data = data + '\"' + name4 + '\":\"' + value4 + '\"';
+					}
+
+					fieldsToProcess = fieldsToProcess + name4;
+					noOfFieldsToProcess++;
+				}
+
+				// Excluding the field
+				if (mode4 == 'Exclude') {
+					if (noOfExcludedFields > 0) {
+						excludedFields = excludedFields + ',';
+					}
+					excludedFields = excludedFields + name4;
+					noOfExcludedFields++;				
+				}
+
+				// Dropping the field - e.g. it is blank or is not changed
+				if (mode4 == 'Drop') {
+					if (noOfDroppedFields > 0) {
+						droppedFields = droppedFields + ',';
+					}
+					droppedFields = droppedFields+ name4;
+					noOfDroppedFields++;									
+				}
+
+			} // for
+
+			var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
+			dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
+			dbInfo = dbInfo + '\"source\":\"' + source + '\",';	// ServiceNow
+			dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+			dbInfo = dbInfo + '\"source_url\":\"' + snURL + '\"'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+
+			var tag = 'insertedData';
+			if (operation == 'insert') {
+				tag = 'insertedData';
+			}
+
+			if (operation == 'update') {
+				tag = 'changedData';
+			}
+
+			if (operation == 'delete') {
+				tag = 'deletedData';
+			}
+
+			var jsonRequestBody = '{' + data + '}';	
+			
+			var gr2 = new GlideRecord(trackingTable);
+			gr2.initialize();
+			gr2.setValue('operation',operation);
+			gr2.setValue('table',tableName);
+			gr2.setValue('base_table',baseTable);
+			gr2.setValue('record_sys_id',recordSysID);
+			gr2.setValue('status',status);
+			gr2.setValue('no_of_fields',noOfFields);
+			gr2.setValue('all_fields',allFields);
+			gr2.setValue('no_of_excluded_fields',noOfExcludedFields);
+			gr2.setValue('excluded_fields',excludedFields);
+			gr2.setValue('no_of_dropped_fields',noOfDroppedFields);
+			gr2.setValue('dropped_fields',droppedFields);
+			gr2.setValue('no_of_fields_to_process',noOfFieldsToProcess);
+			gr2.setValue('fields_to_process',fieldsToProcess);
+			gr2.setValue('data_to_process',data);
+			gr2.setValue('no_of_times_sent_to_ucontrol',0);
+			gr2.setValue('ucontrol_url',configURL);
+			gr2.setValue('ucontrol_mid_server_name',configMIDServerName);
+			gr2.setValue('ucontrol_mid_server_sys_id',configMIDServerSysID);		
+			gr2.setValue('ucontrol_integration_user_name',configUsrName);
+			gr2.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
+			gr2.setValue('max_retries',configMaxRetries);
+			gr2.setValue('triggered_by_script',br);
+			gr2.setValue('json_request_body',jsonRequestBody);
+			gr2.setValue('metadata',dbInfo);
+			gr2.setValue('rel_parent_sys_id',parentSysID);
+			gr2.setValue('rel_child_sys_id',childSysID);
+			gr2.setValue('correlation_id1',correlationID1);
+			gr2.setValue('correlation_id2',correlationID2);
+			gr2.setValue('discovery_source1',discoverySource1);
+			gr2.setValue('discovery_source2',discoverySource2);
+			gr2.setValue('record_originally_created_by',recordOriginallyCreatedBy);
+			gr2.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+			
+			var trackingSysID = gr2.insert();
+
+		} //if (carryOn == true) 
+	} //if (supportedClass == true)
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-30 13:46:42</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c7e4f3dfdba6001041d08f381396193c</sys_id>
+        <sys_mod_count>27</sys_mod_count>
+        <sys_name>OLD uControl Track Upd cmdb_ci</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_c7e4f3dfdba6001041d08f381396193c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-03 20:20:49</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=c7e4f3dfdba6001041d08f381396193c"/>
+</record_update>

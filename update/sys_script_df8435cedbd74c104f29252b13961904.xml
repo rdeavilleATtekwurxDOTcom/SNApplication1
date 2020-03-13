@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_cmdb_updates</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>uControl Track Updates</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[function getName(sys_id,tbl) {
+	var nm = '';	
+	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (sys_id.length == 32 && reference_tbl_arr.indexOf(tbl) >= 0) {
+		var gr = new GlideRecord(tbl);
+		gr.addQuery('sys_id',sys_id);
+		gr.query();
+		if (gr.next()) {
+			nm = gr.getValue('name') || '';
+		}
+	}
+	return nm;
+}
+
+// Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
+function isCMDBTrackingRunning(configTable) {
+	var rtn = true;
+	
+	// Default to Running
+	var cmdbTracking = 'Running';
+	var gr1 = new GlideRecord(configTable);
+	gr1.query();
+	if (gr1.next()) {
+		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
+	}
+	
+	if (cmdbTracking == 'Off') {
+		rtn = false;
+	}
+	return rtn;
+}
+
+//Check that the table name provided is in the list of classes supported by
+//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes
+function isTableInSupportedClasses(tblName,supportedClassesTable) {
+	var rtn = false;
+	// Ensure that this is a string
+	var tblName2 = tblName.toString();
+	if (tblName2.length > 0) {
+		var gr1 = new GlideRecord(supportedClassesTable);
+		gr1.addQuery('class',tblName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Matching record found
+			rtn = true;
+		}
+	}
+	return rtn;
+ }
+
+function update_tracking_br_for_cmdb_ci(configTable) {
+	// Set the T/F flag on the setup table to confirm that this BR is running
+	var gr1 = new GlideRecord(configTable);
+	gr1.addQuery('tracking_br_for_cmdb_ci',false);
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('tracking_br_for_cmdb_ci',true);
+		gr1.update();
+	}	
+}
+
+(function executeRule(current, previous /*null when async*/) {
+
+	var configTable = 'x_tekso_twxapp01_setup';
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var supportedClassesTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+	var thisTable = 'x_tekso_twxapp01_cmdb_updates';
+	var thisRecordSysID = current.sys_id.toString();
+	var thisRecordStatus = current.status.toString();
+	
+	// This BR should only be on cmdb_ci and cmdb_rel_ci
+	var br = 'uControl Track Upd cmdb_ci';
+	
+	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
+	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
+
+	var matchedCriteriaForProcessing = false;
+	
+	// If the tableName is cmdb_rel_ci then the base table is also cmdb_rel_ci
+	// If the tableName is not cmdb_rel_ci then it must be something like cmdb_ci_win_server so
+	// in that case the base table will be cmdb_ci
+	var baseTable = current.base_table;
+	
+	var operation = 'update';		
+
+	update_tracking_br_for_cmdb_ci(configTable);
+	
+	var supportedClass = false;
+	if (baseTable == 'cmdb_rel_ci') {
+		supportedClass = true;
+	}
+	else {
+		//Check that the table name provided is in the list of classes supported by
+		//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes		
+		supportedClass = isTableInSupportedClasses(tableName,supportedClassesTable);
+	}
+	
+	var cmdbTrackingRunning = isCMDBTrackingRunning(configTable);
+	
+	// Only continue if this is a supported class (or cmdb_rel_ci)
+	// and x_tekso_twxapp01_setup.cmdb_tracking is not 'Off'
+	if (supportedClass == true && cmdbTrackingRunning == true) {
+		
+		// These are the only reference tables we are interested in
+		var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+		
+		var configUsrName = '';
+		var configUsrSysID = '';	
+		var configURL = '';
+		var configMIDServerName = '';
+		var configMIDServerSysID = '';	
+		var configMaxRetries = 0;
+
+		var gotConfigUsr = 0;
+
+		var recordOriginallyCreatedBy = current.record_originally_created_by;		
+		var recordOriginallyCreatedOn = current.record_originally_created_on;
+		var recordUpdatedBy = current.record_updated_by;		
+		var recordUpdatedOn = current.record_updated_on;
+				
+		// gets the user name
+		var userName = gs.getUserName();
+
+		// Read the Config Table
+		var gr1 = new GlideRecord(configTable);
+		gr1.query();
+		if (gr1.next()) {
+			//Cannot do dot walking with getValue
+			//Have to use getElement		
+			//Need to use toString as getElement returns an object
+			configUsrName = gr1.getElement('ucontrol_integration_user.name').toString() || '';		
+			configUsrSysID = gr1.getValue('ucontrol_integration_user') || '';			
+			configURL = gr1.getValue('ucontrol_url') || '';		
+			//Cannot do dot walking with getValue
+			//configMIDServerName = gr1.getValue('ucontrol_mid_server.name') || '';	
+			//Have to use getElement
+			configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
+			configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
+			configMaxRetries = gr1.getValue('max_retries') || 0;	
+
+			if (configUsrName.length > 0) {
+				gotConfigUsr = 1;
+			}
+		}
+		
+		
+		// Only continue if the BR was not triggered by the uControl user
+		carryOn = false;		
+		if (gotConfigUsr == 1 & userName != configUsrName) {
+			carryOn = true;
+		}
+		carryOn = true; //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		if (carryOn == true) {
+			// e.g. dev91664
+			var snInstance = gs.getProperty("instance_name");	
+			// e.g. https://dev91664.service-now.com/
+			var snURL = gs.getProperty("glide.servlet.uri");
+						
+			var source = 'ServiceNow';
+			var status = 'Pending';
+			
+			var recordSysID = current.record_sys_id;
+			var parentSysID = '';
+			var childSysID = '';
+			var correlationID1 = '';
+			var correlationID2 = '';
+			var discoverySource1 = '';
+			var discoverySource2 = '';			
+			
+			var allFields = current.all_fields;
+			var allFieldsArr = allFields.split(',');
+			var noOfFields = allFieldsArr.length;
+
+			var fieldsChanged = current.fields_changed;
+			var fieldsChangedArr = fieldsChanged.split(',');
+
+			var include_arr = [];
+			var exclude_arr = []; 
+
+			if (baseTable == 'cmdb_rel_ci') {
+				include_arr = ['sys_id','sys_updated_on','sys_updated_by'];	
+				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','connection_strength','port','percent_outage'];  				
+			}
+			else {
+				include_arr = ['sys_id','sys_updated_on','sys_updated_by','sys_class_name'];
+				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','sys_domain','sys_class_path'];				
+			}
+			
+			var fld = '';
+			var fieldsToProcessArr = [];
+			var fieldsNotToProcessArr = [];
+
+			var noOfExcludedFields = 0;	
+			var excludedFields= '';
+			var noOfDroppedFields = 0;
+			var droppedFields = '';
+
+			var noOfFieldsToProcess = 0;
+			var fieldsToProcess = '';
+			var data = '';
+			var lookup = 0;
+
+			// Check if all of the fields that have changed at in the exclude list
+			// If that is the case then all of the fields should be excluded and there
+			// will be nothing left to process
+			var allFieldsExcluded = true;
+			for(var h = 0; h < fieldsChangedArr.length; h++) {
+				fld = fieldsChangedArr[h];
+				if (exclude_arr.indexOf(fld) < 0) {
+					// fld is not in the exclude list
+					allFieldsExcluded = false;
+				}
+			}
+			
+			if (allFieldsExcluded == false) {
+				// At least one field to be processed
+
+				// Get back the record that has changed
+				var gr2 = new GlideRecord(tableName);
+				gr2.addQuery('sys_id',recordSysID);
+				gr2.query();
+				if (gr2.next()) {
+					// Got the record
+					if (baseTable == 'cmdb_rel_ci') {
+						// Need to use getElement for dot walking
+						parentSysID = gr2.getElement('parent.sys_id') || '';
+						childSysID = gr2.getElement('child.sys_id') || '';
+						correlationID1 = gr2.getElement('parent.correlation_id') || '';
+						correlationID2 = gr2.getElement('child.correlation_id') || '';
+						discoverySource1 = gr2.getElement('parent.discovery_source') || '';
+						discoverySource2 = gr2.getElement('child.discovery_source') || '';
+					}
+					else {
+						// For cmdb_ci
+						correlationID1 = gr2.getValue('correlation_id') || '';
+						discoverySource1 = gr2.getValue('discovery_source') || '';
+					}
+
+					// Check if any of they fields that have changed are in the exclude list
+					// Only add the field to fieldsToProcess if it is not in the exclude list
+					for(var i = 0; i < fieldsChangedArr.length; i++) {
+						fld = fieldsChangedArr[i];
+						if (exclude_arr.indexOf(fld) < 0) {
+							// fld is not in the exclude list
+							fieldsToProcessArr.push(fld);
+						}
+					}	
+
+					// Are there any fields that are not already in the list of fields 
+					// that have changed that we should also be including
+					// If so add them e.g. sys_id etc
+					for(var j = 0; j < include_arr.length; j++) {
+						fld = include_arr[j];
+						if (fieldsToProcessArr.indexOf(fld) < 0) {
+							// fld is not in the array
+							fieldsToProcessArr.push(fld);
+						}
+					}		
+
+					// Get a list of all the fields that are not going to be processed
+					for(var k = 0; k < allFieldsArr.length; k++) {
+						fld = allFieldsArr[k];
+						// fld is not in the list to be processed;
+						if (fieldsToProcessArr.indexOf(fld) < 0) {
+							// add the field in the list of fields not to be processed
+							fieldsNotToProcessArr.push(fld);
+						}
+					}
+
+					// Work out why a field is not going to be processed
+					// Is it because it is in the excluded list?
+					// If not then add it to the droppped list
+					for(var l = 0; l < fieldsNotToProcessArr.length; l++) {
+						fld = fieldsNotToProcessArr[l];
+						if (exclude_arr.indexOf(fld) > -1) {
+							// Fld is in the excluded list
+							if (noOfExcludedFields == 0) {
+								excludedFields = fld;	
+							}
+							else {
+								excludedFields = excludedFields + ',' + fld;
+							}
+							noOfExcludedFields++;
+						}
+						else {
+							// If the field is in the list of fields not going to be processed
+							// but it is not in the excluded list - then it must be a dropped field
+							// i.e. a field that has not changed
+							if (noOfDroppedFields == 0) {
+								droppedFields = fld;
+							}
+							else {
+								droppedFields = droppedFields + ',' + fld;	
+							}
+							noOfDroppedFields++;
+						}
+					}
+
+					// Read back the fields that we need to process to get their values
+					for(var m = 0; m < fieldsToProcessArr.length; m++) {
+						fld = fieldsToProcessArr[m];
+						var element = gr2.getElement(fld);
+						var descriptor = element.getED();				
+						var isChoice = descriptor.isChoiceTable();
+						//var tp = gr2.getElement(fld).getED().getInternalType();
+						var tp = descriptor.getInternalType();
+						var ref_table = '';
+						lookup = 0;
+						var val = gr2.getValue(fld) || '';
+						if (tp == 'reference') {
+							ref_table = descriptor.getReference();
+							// Is this a reference we are interested in?
+							if (reference_tbl_arr.indexOf(ref_table) < 0) {
+								// Drop the reference
+								lookup = -1;
+							}
+							else {
+								var val_lookup = getName(val,ref_table); // sys_id, table_name	
+								// Include the reference
+								lookup = 1;
+							}						
+						}
+
+						// For choice lists - use the display value
+						if (isChoice) {
+							val = gr2.getDisplayValue(fld) || '';
+						}
+						if (fld == 'sys_class_name') {
+							// use the internal name e.g cmdb_ci_win_server not Windows Server
+							val = tableName;
+						}
+						if (tp == 'boolean'){
+							if (val == '1') {
+								val = 'true';
+							}
+							else {
+								val = 'false';
+							}
+						}
+
+						// If lookup = 0 then field is normal
+						// If lookup = 1 then field is a reference we want
+						// If lookup = -1 then exclude the reference field
+						if (lookup == 0) {
+							if (noOfFieldsToProcess == 0) {
+								fieldsToProcess = fld;
+								data = '\"' + fld + '\":\"' + val + '\"';	
+							}
+							else {
+								fieldsToProcess = fieldsToProcess + ',' + fld;
+								data = data + ',\"' + fld + '\":\"' + val + '\"';	
+							}
+							noOfFieldsToProcess++;
+						}
+
+						if (lookup == 1) {
+							if (noOfFieldsToProcess == 0) {
+								fieldsToProcess = fld;
+								data = '\"' + fld + '\":{\"sys_id\":\"' + val + '\",\"name\":\"' + val_lookup + '\"}';
+							}
+							else {
+								fieldsToProcess = fieldsToProcess + ',' + fld;
+								// "parent": {
+								//		"sys_id": "56f10ff92f310010c57149e72799b6b4",
+								//		"name": "My Azure Datacenter"
+								//	},								
+								data = data + ',\"' + fld + '\":{\"sys_id\":\"' + val + '\",\"name\":\"' + val_lookup + '\"}';
+							}
+							noOfFieldsToProcess++;
+						}
+						if (lookup == -1) {
+							// Reference field is to be added to the dropped list
+							if (noOfDroppedFields == 0) {
+								droppedFields = fld;
+							}
+							else {
+								droppedFields = droppedFields + ',' + fld;	
+							}
+							noOfDroppedFields++;						
+						}
+
+					} // Read back the fields that we need to process to get their values
+
+					var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
+					dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
+					dbInfo = dbInfo + '\"source\":\"' + source + '\",';	// ServiceNow
+					dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+					dbInfo = dbInfo + '\"source_url\":\"' + snURL + '\"'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+
+					var tag = 'changedData';
+
+					var jsonRequestBody = '{' + data + '}';	
+
+					var gr3 = new GlideRecord(trackingTable);
+					gr3.initialize();
+					gr3.setValue('operation',operation);
+					gr3.setValue('table',tableName);
+					gr3.setValue('base_table',baseTable);
+					gr3.setValue('record_sys_id',recordSysID);
+					gr3.setValue('status',status);
+					gr3.setValue('no_of_fields',noOfFields);
+					gr3.setValue('all_fields',allFields);
+					gr3.setValue('no_of_excluded_fields',noOfExcludedFields);
+					gr3.setValue('excluded_fields',excludedFields);
+					gr3.setValue('no_of_dropped_fields',noOfDroppedFields);
+					gr3.setValue('dropped_fields',droppedFields);
+					gr3.setValue('no_of_fields_to_process',noOfFieldsToProcess);
+					gr3.setValue('fields_to_process',fieldsToProcess);
+					gr3.setValue('data_to_process',data);
+					gr3.setValue('no_of_times_sent_to_ucontrol',0);
+					gr3.setValue('ucontrol_url',configURL);
+					gr3.setValue('ucontrol_mid_server_name',configMIDServerName);
+					gr3.setValue('ucontrol_mid_server_sys_id',configMIDServerSysID);		
+					gr3.setValue('ucontrol_integration_user_name',configUsrName);
+					gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
+					gr3.setValue('max_retries',configMaxRetries);
+					gr3.setValue('triggered_by_script',br);
+					gr3.setValue('json_request_body',jsonRequestBody);
+					gr3.setValue('metadata',dbInfo);
+					gr3.setValue('rel_parent_sys_id',parentSysID);
+					gr3.setValue('rel_child_sys_id',childSysID);
+					gr3.setValue('correlation_id1',correlationID1);
+					gr3.setValue('correlation_id2',correlationID2);
+					gr3.setValue('discovery_source1',discoverySource1);
+					gr3.setValue('discovery_source2',discoverySource2);
+					gr3.setValue('record_originally_created_by',recordOriginallyCreatedBy);
+					gr3.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+
+					var trackingSysID = gr3.insert();
+
+					// Only update if the status field is blank - this should stop the risk of the BR's looping
+					if (thisRecordStatus.length < 1) {
+						var gr4 = new GlideRecord(thisTable);
+						gr4.addQuery('sys_id',thisRecordSysID);
+						gr4.query();
+						if (gr4.next()) {
+							gr4.setValue('status','Matched Criteria For Processing');
+							gr4.setValue('link_to_processing_record',trackingSysID);
+							gr4.setWorkflow(false);
+							gr4.autoSysFields(false);
+							gr4.update();
+							matchedCriteriaForProcessing = true;
+						}		
+					}
+
+				} // if (gr1.next())
+			} // if (allFieldsExcluded == false)
+		} // if (carryOn == true) 
+	} // if (supportedClass == true && cmdbTrackingRunning == true) {
+
+	if (matchedCriteriaForProcessing == false && thisRecordStatus.length < 1) {
+		var gr5 = new GlideRecord(thisTable);
+		gr5.addQuery('sys_id',thisRecordSysID);
+		gr5.query();
+		if (gr5.next()) {
+			gr5.setValue('status','Did Not Match Criteria For Processing');
+			gr5.setWorkflow(false);
+			gr5.autoSysFields(false);			
+			gr5.update();	
+		}
+	}
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-03 14:16:38</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>uControl Track Updates</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-04 10:01:53</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=df8435cedbd74c104f29252b13961904"/>
+</record_update>

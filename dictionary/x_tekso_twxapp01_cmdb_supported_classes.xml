@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="CMDB Supported Classes" max_length="40" name="x_tekso_twxapp01_cmdb_supported_classes" type="collection">
+        <element label="Class" max_length="80" name="class" type="string"/>
+        <element label="Class Display Name" max_length="80" name="class_display_name" type="string"/>
+        <element display="true" label="Setup Record" max_length="32" name="setup_record" reference="x_tekso_twxapp01_setup" type="reference"/>
+        <index name="index">
+            <element name="setup_record"/>
+        </index>
+    </element>
+</database>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="setup_record" label="Setup Record" language="en" table="x_tekso_twxapp01_connection_test">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>setup_record</element>
+            <help/>
+            <hint/>
+            <label>Setup Record</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_connection_test</name>
+            <plural>Setup Records</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-02-01 20:29:53</sys_created_on>
+            <sys_id>0e94ab80dbbe80104f29252b139619e5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Setup Record</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_connection_test_setup_record_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-02-01 20:29:53</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

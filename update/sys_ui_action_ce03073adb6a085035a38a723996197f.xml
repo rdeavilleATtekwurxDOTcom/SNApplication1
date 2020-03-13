@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name>start_action</action_name>
+        <active>true</active>
+        <client>true</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments/>
+        <condition>current.status != 'Sending' &amp;&amp; current.connection_status == 'OK'</condition>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint>Start sending data to uControl</hint>
+        <isolate_script>true</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Start Sending</name>
+        <onclick>runStartClientCode()</onclick>
+        <order>103</order>
+        <script><![CDATA[//Client-side 'onclick' function
+function runStartClientCode(){
+
+	var url = g_form.getValue('ucontrol_url');
+	
+	var mid_server = '';
+	var canReadMIDServerField = true;	
+	// Put the mid_server in a try catch block in case the user does not have access to this
+	try {
+		mid_server = g_form.getDisplayBox('ucontrol_mid_server').value || '';
+	}
+	catch(err) {
+		//alert(err);
+		//TypeError: Cannot read property 'value' of undefined
+		mid_server = '';
+		canReadMIDServerField = false;
+	}
+	
+	if (url == "") {
+		g_form.hideFieldMsg('ucontrol_url');
+		g_form.showFieldMsg('ucontrol_url','The field is blank','error');
+		return false; //Abort submission
+	}
+
+	if (canReadMIDServerField == false) {
+		g_form.clearMessages();
+		g_form.addErrorMessage("Start Sending Action Cannot Be Performed - Cannot access the MID Server table");
+		return false; //Abort submission
+	}
+	
+	if (canReadMIDServerField == true && mid_server == "") {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','The field is blank','error');
+		return false; //Abort submission
+	}	
+		
+	gsftSubmit(null, g_form.getFormElement(), 'start_action'); //MUST call the 'Action name' set in this UI Action	
+	
+}
+
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runStartBusRuleCode();
+
+//Server-side function
+function runStartBusRuleCode(){
+
+	// Script Include
+	var setupSysID = current.sys_id;
+	var si = new x_tekso_twxapp01.UpdateScheduledJob();
+	si.updateScheduledJob(setupSysID);
+
+	current.start_sending_requested = true;
+	current.connection_test_requested = true;
+	current.last_button_clicked = 'Start Sending (Requested)';
+	current.update();
+	
+	// This will trigger the BR - Check Connection Setting
+	// The connection_status_details = 'Connection Requires Testing And Start will also tell the BR to start if all is okay
+	action.setRedirectURL(current);	
+}
+]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-01-28 20:54:20</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ce03073adb6a085035a38a723996197f</sys_id>
+        <sys_mod_count>46</sys_mod_count>
+        <sys_name>Start Sending</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_action_ce03073adb6a085035a38a723996197f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-13 11:16:59</sys_updated_on>
+        <table>x_tekso_twxapp01_setup</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

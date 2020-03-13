@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="CMDB Link to REST Data" max_length="40" name="x_tekso_twxapp01_cmdb_link_to_rest_data" type="collection">
+        <element label="Base Table" max_length="80" name="base_table" type="string"/>
+        <element label="First Process Record" max_length="40" name="first_process_record" type="boolean"/>
+        <element label="Latest Process Record" max_length="40" name="latest_process_record" type="boolean"/>
+        <element label="Link To Next Record" max_length="32" name="link_to_next_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element label="Link To Previous Record" max_length="32" name="link_to_previous_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
+        <element label="Link To REST Data Record" max_length="32" name="link_to_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Operation" max_length="10" name="operation" type="string"/>
+        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
+        <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
+        <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
+        <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
+        <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
+        <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element default="0" label="Send to uControl Attempt No" max_length="40" name="send_to_ucontrol_attempt_no" type="integer"/>
+        <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
+        <element label="Table" max_length="80" name="table" type="string"/>
+        <index name="index">
+            <element name="link_to_rest_data_record"/>
+        </index>
+        <index name="index2">
+            <element name="link_to_processing_record"/>
+        </index>
+        <index name="index3">
+            <element name="link_to_next_record"/>
+        </index>
+        <index name="index4">
+            <element name="link_to_previous_record"/>
+        </index>
+        <index name="index5">
+            <element name="link_to_processing_log_record"/>
+        </index>
+    </element>
+</database>

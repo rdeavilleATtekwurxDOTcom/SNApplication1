@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function onOK() {
+	var sys_id = gel("sysID").value;
+
+	// Clear the field show_message_on_form_reload
+	// The client script should have already done this - but to be extra safe
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientUpdateSetup');//this is the script include
+	ga.addParam("sysparm_name", "setShowMessageOnFormReloadToBlank"); //this is the function within the script include
+	ga.addParam("sysparm_sys_id", sys_id);
+	ga.getXML();
+
+	GlideDialogWindow.get().destroy();
+	return true;
+}
+
+]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_tekso_twxapp01_stop_sending_message.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<g:ui_form>
+	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 
+	<img src="logo1.jpg"/>
+	<table border="0">		
+	<tr>
+		<td>
+		<h3>CMDB tracking is Running.</h3>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+		<h3>While Sending is Stopped any changes will be tracked and held in a queue until Sending is Started.</h3>
+		</td>
+	</tr>					
+	<tr id="dialogbuttons">
+		<td align="center">
+			<g:dialog_button_ok ok="return onOK();"  ok_type="button"/>
+		</td>
+	</tr>
+	</table>
+</g:ui_form>	
+</j:jelly>]]></html>
+        <name>stop_sending_message</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-28 12:20:28</sys_created_on>
+        <sys_id>e8e534f0db57881041d08f3813961971</sys_id>
+        <sys_mod_count>18</sys_mod_count>
+        <sys_name>stop_sending_message</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_page_e8e534f0db57881041d08f3813961971</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 09:46:42</sys_updated_on>
+    </sys_ui_page>
+</record_update>

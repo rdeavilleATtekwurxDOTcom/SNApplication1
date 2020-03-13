@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="DELETE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.macroRefresh</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>macroRefresh</name>
+        <script><![CDATA[var macroRefresh = Class.create();
+macroRefresh.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+	servicesMacro: function(){
+
+	var hideOrShow = this.getParameter('sysparm_hideorshow');
+		
+	var gr1 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('start_button',hideOrShow);
+		gr1.update();
+	}
+	else {
+		var gr2 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+		gr2.initialize();
+		gr2.setValue('start_button',hideOrShow);
+		gr2.insert();		
+	}
+	
+	var jr = new GlideJellyRunner();
+	jr.setEscaping(false);
+	jr.setTwoPhase(true); // set true if your ui macro uses two phases
+	var result = jr.runMacro('Test');
+	return result;
+	},
+    type: 'macroRefresh'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-26 15:21:25</sys_created_on>
+        <sys_id>4f1dcf84db57c4104f29252b139619fd</sys_id>
+        <sys_mod_count>24</sys_mod_count>
+        <sys_name>macroRefresh</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_4f1dcf84db57c4104f29252b139619fd</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 09:57:11</sys_updated_on>
+    </sys_script_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_include_4f1dcf84db57c4104f29252b139619fd</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;x_tekso_twxapp01.macroRefresh&lt;/api_name&gt;&lt;caller_access/&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description/&gt;&lt;name&gt;macroRefresh&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var macroRefresh = Class.create();
+macroRefresh.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+	servicesMacro: function(){
+
+	var hideOrShow = this.getParameter('sysparm_hideorshow');
+		
+	var gr1 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('start_button',hideOrShow);
+		gr1.update();
+	}
+	else {
+		var gr2 = new GlideRecord('x_tekso_twxapp01_button_visibility');
+		gr2.initialize();
+		gr2.setValue('start_button',hideOrShow);
+		gr2.insert();		
+	}
+	
+	var jr = new GlideJellyRunner();
+	jr.setEscaping(false);
+	jr.setTwoPhase(true); // set true if your ui macro uses two phases
+	var result = jr.runMacro('Test');
+	return result;
+	},
+    type: 'macroRefresh'
+});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-02-26 15:21:25&lt;/sys_created_on&gt;&lt;sys_id&gt;4f1dcf84db57c4104f29252b139619fd&lt;/sys_id&gt;&lt;sys_mod_count&gt;24&lt;/sys_mod_count&gt;&lt;sys_name&gt;macroRefresh&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;read&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_4f1dcf84db57c4104f29252b139619fd&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-02-27 09:57:11&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1713915951</payload_hash>
+        <record_name>macroRefresh</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 09:57:11</sys_created_on>
+        <sys_id>b31d0710db53481041d08f38139619f9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170861422e00000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 09:57:11</sys_updated_on>
+        <type>Script Include</type>
+        <update_guid>3f1d0710305348105944d812fa5152f8</update_guid>
+        <update_guid_history>3f1d0710305348105944d812fa5152f8:-1713915951,5fefdc18d65bc41058af0cbd3fedc471:-1417797460,1c7e9418ba5bc4109746a85cf1adb68d:219947499,33ac94d4b35bc4104146448999fbc0a0:-50194351,cb79d414c95bc41044bd99270ba95486:1225943557,cb7300d0f31bc4100e0ad08e4d597694:554585434,ea5ebf8c0fd7c4109c271933bebd4053:-365162697,c40a3bc8d1d7c410f45ab4db8811304b:-398796390,18c937c8fcd7c410b8a3a756aa2aa0a7:-740665328,dba67f0881d7c410add65d5e78c7276e:-1025369608,aa75fbc4cbd7c410de22d36d67ec6677:-1379837872,4dd4b78405d7c41025a7820f6c7d5342:-2084004190,1ee3b7840ed7c410d4c6ce2aa17ab03c:-2090958895,a6c3b304aed7c41094a3eecb07884843:383926554,9684a3c47b97c410fd37dd6c8fc5e65c:589610022,0350af440a97c41013d4b2f6763ce305:701209470,eb2e97c0b297c410cb51856085aefe75:589610022,e93c9b80d297c410d8acb072a630b780:701209470,15b95340b997c41079bcaecee622f455:589610022,7f39df00e197c410fc33f53385ec1283:-242377818,fae8538ced57c410e701edd6a3ce62eb:-1946510506,d4a25388ed57c410241817bc5fc713e4:-1165063145,df409748ca57c4101eb32268815097c3:2100751181,233ecbc45557c410ad47e63d43550f15:-249863505,e3bd0bc48957c410f2fef61b3eef1e49:426394638</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 10:26:11</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_include">sys_script_include</sys_db_object>
+        <sys_id>03b3267b401e4a8282070db6ca0bbfc1</sys_id>
+        <sys_metadata>4f1dcf84db57c4104f29252b139619fd</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>macroRefresh</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_include_4f1dcf84db57c4104f29252b139619fd</sys_update_name>
+        <sys_update_version display_value="sys_script_include_4f1dcf84db57c4104f29252b139619fd">b31d0710db53481041d08f38139619f9</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-02-27 10:26:11</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

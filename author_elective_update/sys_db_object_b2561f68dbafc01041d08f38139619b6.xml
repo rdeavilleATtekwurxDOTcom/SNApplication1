@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object">
+    <sys_db_object action="DELETE">
+        <access>public</access>
+        <actions_access>false</actions_access>
+        <alter_access>false</alter_access>
+        <caller_access/>
+        <client_scripts_access>false</client_scripts_access>
+        <configuration_access>false</configuration_access>
+        <create_access>false</create_access>
+        <create_access_controls>true</create_access_controls>
+        <delete_access>false</delete_access>
+        <extension_model/>
+        <is_extendable>false</is_extendable>
+        <label>Special</label>
+        <live_feed_enabled>false</live_feed_enabled>
+        <name>x_tekso_twxapp01_special</name>
+        <number_ref/>
+        <provider_class/>
+        <read_access>true</read_access>
+        <scriptable_table>false</scriptable_table>
+        <super_class/>
+        <sys_class_code/>
+        <sys_class_name>sys_db_object</sys_class_name>
+        <sys_class_path/>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-11 15:32:23</sys_created_on>
+        <sys_id>b2561f68dbafc01041d08f38139619b6</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Special</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_db_object_b2561f68dbafc01041d08f38139619b6</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-11 15:32:23</sys_updated_on>
+        <update_access>false</update_access>
+        <user_role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</user_role>
+        <ws_access>true</ws_access>
+    </sys_db_object>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_db_object_b2561f68dbafc01041d08f38139619b6</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_db_object"><sys_db_object action="INSERT_OR_UPDATE"><access>public</access><actions_access>false</actions_access><alter_access>false</alter_access><caller_access/><client_scripts_access>false</client_scripts_access><configuration_access>false</configuration_access><create_access>false</create_access><create_access_controls>true</create_access_controls><delete_access>false</delete_access><extension_model/><is_extendable>false</is_extendable><label>Special</label><live_feed_enabled>false</live_feed_enabled><name>x_tekso_twxapp01_special</name><number_ref/><provider_class/><read_access>true</read_access><scriptable_table>false</scriptable_table><super_class/><sys_class_code/><sys_class_name>sys_db_object</sys_class_name><sys_class_path/><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-11 15:32:23</sys_created_on><sys_id>b2561f68dbafc01041d08f38139619b6</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Special</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_db_object_b2561f68dbafc01041d08f38139619b6</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-11 15:32:23</sys_updated_on><update_access>false</update_access><user_role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</user_role><ws_access>true</ws_access></sys_db_object></record_update>]]></payload>
+        <payload_hash>696579317</payload_hash>
+        <record_name>Special</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-11 15:32:24</sys_created_on>
+        <sys_id>8986df68dbafc01041d08f38139619c5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170ca39b6d90000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-11 15:32:24</sys_updated_on>
+        <type>Table</type>
+        <update_guid>c186df680bafc0100a0d93c24abc77c5</update_guid>
+        <update_guid_history>c186df680bafc0100a0d93c24abc77c5:696579317</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-12 14:09:41</sys_created_on>
+        <sys_db_object display_value="" name="sys_db_object">sys_db_object</sys_db_object>
+        <sys_id>0406dd465bda4826803cb2d026527864</sys_id>
+        <sys_metadata>b2561f68dbafc01041d08f38139619b6</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Special</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_db_object_b2561f68dbafc01041d08f38139619b6</sys_update_name>
+        <sys_update_version display_value="sys_db_object_b2561f68dbafc01041d08f38139619b6">8986df68dbafc01041d08f38139619c5</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-12 14:09:41</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
