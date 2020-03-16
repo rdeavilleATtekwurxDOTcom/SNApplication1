@@ -17,7 +17,7 @@
         <column_label>CMDB Tracking Details</column_label>
         <comments/>
         <create_roles/>
-        <default_value>javascript: var gdt = new GlideDateTime(); var answer = 'Started at ' + gdt.getDisplayValue() + ' by: ' + gs.getUserName(); answer;&#13;
+        <default_value>Off&#13;
 </default_value>
         <defaultsort/>
         <delete_roles/>
@@ -55,14 +55,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-02-29 21:48:24</sys_created_on>
         <sys_id>06f240d5db9b88104f29252b139619fd</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>CMDB Tracking Details</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_dictionary_x_tekso_twxapp01_setup_cmdb_tracking_details</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-02-29 22:19:59</sys_updated_on>
+        <sys_updated_on>2020-03-13 15:59:56</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

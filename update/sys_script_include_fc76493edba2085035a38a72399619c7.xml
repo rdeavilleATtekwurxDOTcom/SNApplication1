@@ -332,7 +332,7 @@ OutboundREST.prototype = {
 		var setupConnectionStatus = '';
 		var setupConnectionStatusDetails = '';
 		var setupuControlIntegrationUser = '';
-	
+		var setupuControlIntegrationUserIsValid = false;
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var gr1 = new GlideRecord(connectionTestTable);
 		gr1.addQuery('sys_id',connection_sys_id);
@@ -430,6 +430,7 @@ OutboundREST.prototype = {
 						resultUserAccountMatched = true;
 						resultUserAccountSysID = gr5.sys_id;
 						setupuControlIntegrationUser = gr5.sys_id;
+						setupuControlIntegrationUserIsValid = true;
 						connectionOKAndGotUser = true;
 						// SUCCESS
 						setupConnectionStatus = 'OK';
@@ -517,35 +518,41 @@ OutboundREST.prototype = {
 				gr2.setValue('connection_status_details',setupConnectionStatusDetails);
 				gr2.setValue('connection_tested_at',dtBack);
 				gr2.setValue('ucontrol_integration_user',setupuControlIntegrationUser);		
+				gr2.setValue('ucontrol_integration_user_is_valid',setupuControlIntegrationUserIsValid);						
 				gr2.setValue('number_of_supported_classes',numberOfSupportedClasses);
 				gr2.setValue('start_sending_requested',false);
 				gr2.setValue('connection_test_requested',false);
 				// Was Sending has now Failed connection
 				if (setupConnectionStatus == 'Failed') {
 					if (setupExistingStatus == 'Sending') {
-						gr2.setValue('status','Trying To Send - Connection Has Failed');
-						gr2.setValue('status_set_to_trying_to_send_connection_failed_at',dtBack);
-						gr2.setValue('status_details','Connection was lost at ' + dtBack);
+						// Status = Error
+						// Status Error Details = Connection Lost At
+						// Was Sending Connection Failed At
+						gr2.setValue('status','Error');
+						gr2.setValue('status_was_sending_then_connection_failed_at',dtBack);
+						gr2.setValue('status_error_details','Connection failed at ' + dtBack);
 					}
 				}
-							
+				
 				if (setupConnectionStatus == 'OK') {
 					if (startIfSuccess == true && setupExistingStatus != 'Sending') {
 						// Set status to Sending
 						gr2.setValue('status','Sending');
+						gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes) and Max Retries can only be updated when Sending is Stopped');
 						if (cmdbTracking == 'Off') {
 							// The onLoad client script to display a pop-up when the 
 							// form reloads
 							var popupmsg = 'x_tekso_twxapp01_start_sending_message';
 							gr2.setValue('show_message_on_form_reload',popupmsg);		
 						}
-						// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
-						// i.e this is the user who requested the test/start
-						gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testConnectionUser);	
-						if (setupExistingStatus != 'Trying To Send - Connection Has Failed') {
-							// Update the Set To Running DT/By - but only do this if the previous status
-							// was not 'Trying To Send - Connection Has Failed' - as we want to preserve the original
-							// date the status moved to Running
+						if (setupExistingStatus == 'Error') {
+							gr2.setValue('status_was_sending_then_connection_failed_at','');
+							gr2.setValue('status_error_details','');							
+						}
+						else {
+							// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
+							// i.e this is the user who requested the test/start
+							gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testConnectionUser);	
 							gr2.setValue('status_set_to_sending_by',testConnectionUser);
 							gr2.setValue('status_set_to_sending_at',dtBack);
 						}						
@@ -563,6 +570,18 @@ OutboundREST.prototype = {
 					}
 				} // if (setupConnectionStatus == 'OK') 
 
+				// CMDB Tracking is Running but we have lost the user
+				if (setupuControlIntegrationUserIsValid == false && cmdbTracking == 'Running') {
+					gr2.setValue('cmdb_tracking','Error');
+					gr2.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
+				}
+
+				// Now got a valid user set status back to Running
+				if (setupuControlIntegrationUserIsValid == true && cmdbTracking == 'Error') {
+					gr2.setValue('cmdb_tracking','Running');
+					gr2.setValue('cmdb_tracking_error_details','');
+				}
+				
 				gr2.update();	
 			} // if (gr2.next())		
 		}		
@@ -685,13 +704,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>143</sys_mod_count>
+        <sys_mod_count>150</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 10:20:19</sys_updated_on>
+        <sys_updated_on>2020-03-15 21:21:55</sys_updated_on>
     </sys_script_include>
 </record_update>

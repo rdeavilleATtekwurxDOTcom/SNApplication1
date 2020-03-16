@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Setup History" max_length="40" name="x_tekso_twxapp01_setup_history" type="collection">
         <element label="CMDB Tracking" max_length="40" name="cmdb_tracking" type="string"/>
+        <element label="CMDB Tracking Details" max_length="100" name="cmdb_tracking_details" type="string"/>
         <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
         <element label="Fields Updated" max_length="200" name="fields_updated" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
@@ -8,10 +9,12 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Operation" max_length="10" name="operation" type="string"/>
         <element label="Previous CMDB Tracking" max_length="40" name="previous_cmdb_tracking" type="string"/>
+        <element label="Previous CMDB Tracking Details" max_length="100" name="previous_cmdb_tracking_details" type="string"/>
         <element label="Previous Connection Status" max_length="40" name="previous_connection_status" type="string"/>
         <element label="Previous Last Button Clicked" max_length="40" name="previous_last_button_clicked" type="string"/>
         <element label="Previous Max Retries" max_length="40" name="previous_max_retries" type="integer"/>
         <element label="Previous Status" max_length="40" name="previous_status" type="string"/>
+        <element label="Previous uControl Integration User Is Valid" max_length="40" name="previous_ucontrol_integration_user_is_valid" type="boolean"/>
         <element label="Previous uControl Integration User Name" max_length="40" name="previous_ucontrol_integration_user_name" type="string"/>
         <element label="Previous uControl Integration User Sys ID" max_length="32" name="previous_ucontrol_integration_user_sys_id" type="string"/>
         <element label="Previous uControl MID Server Name" max_length="40" name="previous_ucontrol_mid_server_name" type="string"/>
@@ -19,6 +22,7 @@
         <element label="Previous uControl Polling Interval (minutes)" max_length="40" name="previous_ucontrol_polling_interval_minutes" type="integer"/>
         <element label="Previous uControl URL" max_length="200" name="previous_ucontrol_url" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
+        <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
         <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
         <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>

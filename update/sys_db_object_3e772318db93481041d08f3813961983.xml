@@ -14,7 +14,7 @@
         <label>Setup History</label>
         <live_feed_enabled>false</live_feed_enabled>
         <name>x_tekso_twxapp01_setup_history</name>
-        <number_ref display_value="LOG">dc5aacfddb570c104f29252b139619f3</number_ref>
+        <number_ref display_value="SETH">dc5aacfddb570c104f29252b139619f3</number_ref>
         <provider_class/>
         <read_access>true</read_access>
         <scriptable_table>false</scriptable_table>

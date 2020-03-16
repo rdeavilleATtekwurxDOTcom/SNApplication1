@@ -2,8 +2,11 @@
     <element label="CMDB Updates" max_length="40" name="x_tekso_twxapp01_cmdb_updates" type="collection">
         <element label="All Fields" max_length="4000" name="all_fields" type="string"/>
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
+        <element label="CMDB Tracking Status" max_length="40" name="cmdb_tracking_status" type="string"/>
         <element label="Fields Changed" max_length="4000" name="fields_changed" type="string"/>
+        <element label="Is In The List Of uControl Supported Classes" max_length="40" name="is_in_the_list_of_ucontrol_supported_classes" type="boolean"/>
         <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
+        <element label="Name" max_length="255" name="name" type="string"/>
         <element default="0" label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Number Of Fields Changed" max_length="40" name="number_of_fields_changed" type="integer"/>
@@ -12,9 +15,18 @@
         <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
         <element label="Record Updated By" max_length="40" name="record_updated_by" type="string"/>
         <element label="Record Updated On" max_length="40" name="record_updated_on" type="glide_date_time"/>
+        <element label="Rel Child Name" max_length="255" name="rel_child_name" type="string"/>
+        <element label="Rel Child Sys ID" max_length="32" name="rel_child_sys_id" type="string"/>
+        <element label="Rel Parent Name" max_length="255" name="rel_parent_name" type="string"/>
+        <element label="Rel Parent Sys ID" max_length="32" name="rel_parent_sys_id" type="string"/>
+        <element label="Rel Type Name" max_length="100" name="rel_type_name" type="string"/>
+        <element label="Rel Type Sys ID" max_length="32" name="rel_type_sys_id" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
         <element label="Triggered By Script" max_length="40" name="triggered_by_script" type="string"/>
+        <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
+        <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
+        <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>
         <index name="index">
             <element name="link_to_processing_record"/>
         </index>

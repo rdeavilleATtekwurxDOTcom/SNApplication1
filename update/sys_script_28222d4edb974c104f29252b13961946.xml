@@ -76,10 +76,16 @@
 		gr1.setValue('triggered_by_script','uControl Track Upd cmdb_ci');	
 		gr1.setValue('fields_changed',fieldsChanged);
 		gr1.setValue('number_of_fields_changed',changeCnt);
+		gr1.setValue('name',current.name);		
 		gr1.setValue('all_fields',allFields);
 		gr1.setValue('no_of_fields',fieldCnt);
 		gr1.insert();
 	}
+		
+	// Record that the br has run
+	var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	si.setDTLastRunAt('br_ucontrol_track_upd_cmdb_ci_last_ran_at');
+	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -87,7 +93,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>28222d4edb974c104f29252b13961946</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>uControl Track Upd cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -95,7 +101,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_28222d4edb974c104f29252b13961946</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-04 10:07:41</sys_updated_on>
+        <sys_updated_on>2020-03-16 13:23:14</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

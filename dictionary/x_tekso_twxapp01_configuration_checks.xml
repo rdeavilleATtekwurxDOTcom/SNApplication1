@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Configuration Checks" max_length="40" name="x_tekso_twxapp01_configuration_checks" type="collection">
+        <element label="BR uControl Track Deletes Last Run At" max_length="40" name="br_ucontrol_track_deletes_last_run_at" type="glide_date_time"/>
+        <element label="BR uControl Track Del cmdb_ci Last Ran At" max_length="40" name="br_ucontrol_track_del_cmdb_ci_last_ran_at" type="glide_date_time"/>
+        <element label="BR uControl Track Del cmdb_rel_ci Last Ran At" max_length="40" name="br_ucontrol_track_del_cmdb_rel_ci_last_ran_at" type="glide_date_time"/>
+        <element label="BR uControl Track Updates Last Run At" max_length="40" name="br_ucontrol_track_updates_last_run_at" type="glide_date_time"/>
+        <element label="BR uControl Track Upd cmdb_ci Last Ran At" max_length="40" name="br_ucontrol_track_upd_cmdb_ci_last_ran_at" type="glide_date_time"/>
+        <element label="BR uControl Track Upd cmdb_rel_ci Last Ran At" max_length="40" name="br_ucontrol_track_upd_cmdb_rel_ci_last_ran_at" type="glide_date_time"/>
+        <element label="SJ Send Data to uControl Last Ran At" max_length="40" name="sj_send_data_to_ucontrol_last_ran_at" type="glide_date_time"/>
+    </element>
+</database>

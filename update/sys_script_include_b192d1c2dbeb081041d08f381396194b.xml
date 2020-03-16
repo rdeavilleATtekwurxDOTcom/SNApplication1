@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.UpdateConfigurationChecks</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UpdateConfigurationChecks</name>
+        <script><![CDATA[var UpdateConfigurationChecks = Class.create();
+UpdateConfigurationChecks.prototype = {
+    initialize: function() {
+    },
+
+	setDTLastRunAt: function(fld) {
+		var now = new GlideDateTime();
+		
+		var checkTable = 'x_tekso_twxapp01_configuration_checks';
+		
+		//'scheduled_job_last_ran_at'
+		var gr1 = new GlideRecord(checkTable);
+		gr1.query();
+		if (gr1.next()){
+			gr1.setValue(fld,now);
+			gr1.update();
+		}
+		else {
+			var gr2 = new GlideRecord(checkTable);
+			gr2.initialize();
+			gr2.setValue(fld,now);
+			gr2.insert();	
+		}
+		
+	},
+    type: 'UpdateConfigurationChecks'
+};
+
+// Called like this:
+// var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+// si.setDTLastRunAt('scheduled_job_last_ran_at');
+
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-15 21:55:54</sys_created_on>
+        <sys_id>b192d1c2dbeb081041d08f381396194b</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>UpdateConfigurationChecks</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_b192d1c2dbeb081041d08f381396194b</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-16 09:55:37</sys_updated_on>
+    </sys_script_include>
+</record_update>

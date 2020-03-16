@@ -36,7 +36,6 @@ if (gr0.next()) {
 	var setupScheduledJobSysID = gr0.getValue('scheduled_job_sys_id') || '';
 	if (sysIDForThisScript != setupScheduledJobSysID) {
 		gr0.setValue('scheduled_job_sys_id',sysIDForThisScript);
-		gr0.setValue('system_configuration_checks','OK');
 		gr0.update();
 	}
 		
@@ -52,13 +51,10 @@ if (gr0.next()) {
 	
 	//Need to put this through GlideDateTime()
 	var connectionTestedAt = new GlideDateTime(gr0.getValue('connection_tested_at'));	
-	gs.info('connectionTestedAt: ' + connectionTestedAt.toString());
 	var now = new GlideDateTime();
 	var dur = new GlideDuration();
 	dur = GlideDateTime.subtract(connectionTestedAt,now);// In Milliseconds
-	gs.info('dur: ' + dur.toString());
 	var secs = dur.getNumericValue() / 1000; 
-	gs.info('secs: ' + secs.toString());
 	var mins = dur.getNumericValue() / 1000 / 60;  // Minutes - wil be floating point e.g. 69.206
 	var mins2 = parseInt(mins); // e.g. 69
 	if (mins2 > 10) {
@@ -115,6 +111,20 @@ if (gr0.next()) {
 	} // if (mins2 > 10) 	
 }
 
+// Record that the scheduled job has run
+var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
+si2.setDTLastRunAt('sj_send_data_to_ucontrol_last_ran_at');
+
+
+function setLastScanPerformedAt(setupTable) {
+	var now = new GlideDateTime();
+	var gr1 = new GlideRecord(setupTable);
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('last_scan_performed_at',now);	
+		gr1.update();
+	}
+}
 
 function setProcessingCompleteAtInLog(logTable,logSysID) {
 	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
@@ -324,6 +334,8 @@ function mainBit(pollingInterval) {
 
 	var logRecordCreated = false;
 	var logSysID = '';
+	
+	setLastScanPerformedAt(setupTable);
 	
 	// Get all the records that are Pending
 	var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
@@ -629,14 +641,14 @@ function mainBit(pollingInterval) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-30 15:00:07</sys_created_on>
         <sys_id>45dfbb5bdbe6001041d08f381396193a</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>142</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_45dfbb5bdbe6001041d08f381396193a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-12 15:50:58</sys_updated_on>
+        <sys_updated_on>2020-03-16 12:58:08</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

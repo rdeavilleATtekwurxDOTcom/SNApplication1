@@ -109,6 +109,7 @@ UpdateProcessLogResults.prototype = {
 				var dt = gr3.getValue('sys_created_on');
 				gr4.setValue('last_processing_data_sent_summary',snt);
 				gr4.setValue('last_processing_at',dt);
+				gr4.setValue('last_scan_performed_at',dt);
 				gr4.setValue('last_processing_results_summary',summary);
 				gr4.update();
 			}
@@ -121,13 +122,13 @@ UpdateProcessLogResults.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-10 16:02:42</sys_created_on>
         <sys_id>3a315e10db6f801041d08f38139619aa</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>UpdateProcessLogResults</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_3a315e10db6f801041d08f38139619aa</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-12 11:45:13</sys_updated_on>
+        <sys_updated_on>2020-03-16 12:52:04</sys_updated_on>
     </sys_script_include>
 </record_update>

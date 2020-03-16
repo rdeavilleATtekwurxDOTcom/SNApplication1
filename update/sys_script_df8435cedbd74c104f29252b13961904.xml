@@ -41,21 +41,29 @@
 	return nm;
 }
 
+
+
 // Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
 function isCMDBTrackingRunning(configTable) {
-	var rtn = true;
+	// Default to Off
+	var rtn = 'Off';
 	
-	// Default to Running
-	var cmdbTracking = 'Running';
+	// Default to Off
+	var cmdbTracking = 'Off';
+
 	var gr1 = new GlideRecord(configTable);
 	gr1.query();
 	if (gr1.next()) {
 		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
 	}
 	
-	if (cmdbTracking == 'Off') {
-		rtn = false;
+	if (cmdbTracking == 'Running') {
+		rtn = 'Running';
 	}
+	if (cmdbTracking == 'Error') {
+		rtn = 'Error';
+	}
+
 	return rtn;
 }
 
@@ -77,18 +85,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	return rtn;
  }
 
-function update_tracking_br_for_cmdb_ci(configTable) {
-	// Set the T/F flag on the setup table to confirm that this BR is running
-	var gr1 = new GlideRecord(configTable);
-	gr1.addQuery('tracking_br_for_cmdb_ci',false);
-	gr1.query();
-	if (gr1.next()) {
-		gr1.setValue('tracking_br_for_cmdb_ci',true);
-		gr1.update();
-	}	
-}
-
-(function executeRule(current, previous /*null when async*/) {
+// Should be an ASYNCH BR 	
+(function executeRule(current, previous) {
 
 	var configTable = 'x_tekso_twxapp01_setup';
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -111,8 +109,6 @@ function update_tracking_br_for_cmdb_ci(configTable) {
 	var baseTable = current.base_table;
 	
 	var operation = 'update';		
-
-	update_tracking_br_for_cmdb_ci(configTable);
 	
 	var supportedClass = false;
 	if (baseTable == 'cmdb_rel_ci') {
@@ -126,21 +122,61 @@ function update_tracking_br_for_cmdb_ci(configTable) {
 	
 	var cmdbTrackingRunning = isCMDBTrackingRunning(configTable);
 	
+	// Check for uControl Integration User
+	var configUsrName = '';
+	var configUsrSysID = '';	
+	var configURL = '';
+	var configMIDServerName = '';
+	var configMIDServerSysID = '';	
+	var configMaxRetries = 0;
+	var gotConfigUsr = false;
+	
+	// Read the Config Table
+	var gr1 = new GlideRecord(configTable);
+	gr1.query();
+	if (gr1.next()) {
+		//Cannot do dot walking with getValue
+		//Have to use getElement		
+		//Need to use toString as getElement returns an object
+		configUsrName = gr1.getElement('ucontrol_integration_user.name').toString() || '';		
+		configUsrSysID = gr1.getValue('ucontrol_integration_user') || '';			
+		configURL = gr1.getValue('ucontrol_url') || '';		
+		//Cannot do dot walking with getValue
+		//configMIDServerName = gr1.getValue('ucontrol_mid_server.name') || '';	
+		//Have to use getElement
+		configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
+		configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
+		configMaxRetries = gr1.getValue('max_retries') || 0;	
+
+		if (configUsrName.length > 0) {
+			gotConfigUsr = true;
+		}
+	}
+
+	if (cmdbTrackingRunning == 'Running') {
+		if (gotConfigUsr == false) {
+			cmdbTrackingRunning = 'Error';
+			gr1.setValue('cmdb_tracking','Error');
+			gr1.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
+			gr1.update();
+		}
+	}
+	else if (cmdbTrackingRunning == 'Error') {
+		if (gotConfigUsr == true) {
+			cmdbTrackingRunning = 'Running';
+			gr1.setValue('cmdb_tracking','Running');
+			gr1.setValue('cmdb_tracking_error_details','');	
+			gr1.update();
+		}		
+	}
+	
+	
 	// Only continue if this is a supported class (or cmdb_rel_ci)
-	// and x_tekso_twxapp01_setup.cmdb_tracking is not 'Off'
-	if (supportedClass == true && cmdbTrackingRunning == true) {
+	// and x_tekso_twxapp01_setup.cmdb_tracking is 'Running'
+	if (supportedClass == true && cmdbTrackingRunning == 'Running') {
 		
 		// These are the only reference tables we are interested in
 		var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
-		
-		var configUsrName = '';
-		var configUsrSysID = '';	
-		var configURL = '';
-		var configMIDServerName = '';
-		var configMIDServerSysID = '';	
-		var configMaxRetries = 0;
-
-		var gotConfigUsr = 0;
 
 		var recordOriginallyCreatedBy = current.record_originally_created_by;		
 		var recordOriginallyCreatedOn = current.record_originally_created_on;
@@ -149,29 +185,6 @@ function update_tracking_br_for_cmdb_ci(configTable) {
 				
 		// gets the user name
 		var userName = gs.getUserName();
-
-		// Read the Config Table
-		var gr1 = new GlideRecord(configTable);
-		gr1.query();
-		if (gr1.next()) {
-			//Cannot do dot walking with getValue
-			//Have to use getElement		
-			//Need to use toString as getElement returns an object
-			configUsrName = gr1.getElement('ucontrol_integration_user.name').toString() || '';		
-			configUsrSysID = gr1.getValue('ucontrol_integration_user') || '';			
-			configURL = gr1.getValue('ucontrol_url') || '';		
-			//Cannot do dot walking with getValue
-			//configMIDServerName = gr1.getValue('ucontrol_mid_server.name') || '';	
-			//Have to use getElement
-			configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
-			configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
-			configMaxRetries = gr1.getValue('max_retries') || 0;	
-
-			if (configUsrName.length > 0) {
-				gotConfigUsr = 1;
-			}
-		}
-		
 		
 		// Only continue if the BR was not triggered by the uControl user
 		carryOn = false;		
@@ -466,6 +479,11 @@ function update_tracking_br_for_cmdb_ci(configTable) {
 						if (gr4.next()) {
 							gr4.setValue('status','Matched Criteria For Processing');
 							gr4.setValue('link_to_processing_record',trackingSysID);
+							gr4.setValue('cmdb_tracking_status',cmdbTrackingRunning);
+							gr4.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
+							gr4.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
+							gr4.setValue('ucontrol_integration_user_name',configUsrName);
+							gr4.setValue('ucontrol_integration_user_sys_id',configUsrSysID);	
 							gr4.setWorkflow(false);
 							gr4.autoSysFields(false);
 							gr4.update();
@@ -484,11 +502,20 @@ function update_tracking_br_for_cmdb_ci(configTable) {
 		gr5.query();
 		if (gr5.next()) {
 			gr5.setValue('status','Did Not Match Criteria For Processing');
+			gr5.setValue('cmdb_tracking_status',cmdbTrackingRunning);
+			gr5.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
+			gr5.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
+			gr5.setValue('ucontrol_integration_user_name',configUsrName);
+			gr5.setValue('ucontrol_integration_user_sys_id',configUsrSysID);			
 			gr5.setWorkflow(false);
 			gr5.autoSysFields(false);			
 			gr5.update();	
 		}
 	}
+
+	// Record that the br has run
+	var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	si.setDTLastRunAt('br_ucontrol_track_updates_last_run_at');	
 	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -497,7 +524,7 @@ function update_tracking_br_for_cmdb_ci(configTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -505,7 +532,7 @@ function update_tracking_br_for_cmdb_ci(configTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-04 10:01:53</sys_updated_on>
+        <sys_updated_on>2020-03-16 09:55:53</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

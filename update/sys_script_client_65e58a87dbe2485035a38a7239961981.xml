@@ -15,15 +15,29 @@
 	// Set fields ReadOnly
 	g_form.setReadOnly('status',true);   
 	g_form.setReadOnly('status_details',true);	
+	g_form.setReadOnly('status_error_details',true);		
 	g_form.setReadOnly('connection_status',true);
 	g_form.setReadOnly('connection_status_details',true);
 	g_form.setReadOnly('ucontrol_integration_user',true);
 	g_form.setReadOnly('number_of_supported_classes',true);
-	g_form.setReadOnly('system_configuration_checks',true);
 	g_form.setReadOnly('cmdb_tracking',true);
 	g_form.setReadOnly('cmdb_tracking_details',true);
+	g_form.setReadOnly('cmdb_tracking_error_details',true);	
 	g_form.setReadOnly('number_of_pending_records',true);	
 	g_form.setReadonly('ucontrol_mid_server.status',true);
+	g_form.setReadonly('last_scan_performed_at',true);
+	g_form.setReadonly('last_processing_at',true);
+	g_form.setReadonly('last_processing_data_sent_summary',true);
+	g_form.setReadonly('last_processing_results_summary',true);
+	g_form.setReadonly('help',true);
+
+	// Display the help if Status is Sending or Error
+	if (g_form.getValue('status') == 'Sending' || g_form.getValue('status') == 'Error' || g_form.getValue('connection_status') == 'Missing Connection Details') {
+		g_form.setDisplay('help',true);
+	}
+	else {
+		g_form.setDisplay('help',false);	
+	}
 	
 	// Only show connection tested at if it is not blank
 	if (g_form.getValue('connection_tested_at') == '') {
@@ -32,6 +46,14 @@
 	else {
 		g_form.setDisplay('connection_tested_at',true);
 		g_form.setReadOnly('connection_tested_at',true);		
+	}
+
+	// Only show last scan performed at if there is some data
+	if (g_form.getValue('last_scan_performed_at') == '') {
+		g_form.setDisplay('last_scan_performed_at',false);
+	}
+	else {
+		g_form.setDisplay('last_scan_performed_at',true);		
 	}
 	
 	// Only show the last data sent fields if there is some data	
@@ -83,43 +105,61 @@
 
 
 	if (g_form.getValue('connection_status') == 'OK') {
-		g_form.setDisplay('number_of_supported_classes',true);
-		g_form.setDisplay('system_configuration_checks',true);		
+		g_form.setDisplay('number_of_supported_classes',true);	
 		g_form.setDisplay('ucontrol_integration_user',true);	
 	}
 	else {
 		g_form.setDisplay('number_of_supported_classes',false);
-		g_form.setDisplay('system_configuration_checks',false);	
 		g_form.setDisplay('ucontrol_integration_user',false);			
 	}
 
 
 	if (g_form.getValue('cmdb_tracking') == 'Running') {
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";		
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";	
+		g_form.setDisplay('cmdb_tracking_details',true);
+		g_form.setDisplay('cmdb_tracking_error_details',false);		
 		g_form.getElement('cmdb_tracking_details').style.backgroundColor = "lightgreen";
 	}
-	else {
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";
-		g_form.getElement('cmdb_tracking_details').style.backgroundColor = "Tomato";			
+	
+	if (g_form.getValue('cmdb_tracking') == 'Off') {
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
+		g_form.setDisplay('cmdb_tracking_details',true);
+		g_form.setDisplay('cmdb_tracking_error_details',false);
+		g_form.getElement('cmdb_tracking_details').style.backgroundColor = "Tomato";
 	}
 	
-	if (g_form.getValue('system_configuration_checks') == 'Cannot find the scheduled job: Send Data to uControl') {
-		g_form.getElement('system_configuration_checks').style.backgroundColor = "Tomato";	
-		g_form.flash('system_configuration_checks', 'Tomato', 0);
-	} 
-
+	if (g_form.getValue('cmdb_tracking') == 'Error') {
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";
+		g_form.setDisplay('cmdb_tracking_details',false);	
+		g_form.setDisplay('cmdb_tracking_error_details',true);			
+		g_form.getElement('cmdb_tracking_error_details').style.backgroundColor = "Tomato";			
+	}
+	
 	if (g_form.getValue('status') == 'Sending') {
 		g_form.getElement('status').style.backgroundColor = "lightgreen";
-		g_form.getElement('status_details').style.backgroundColor = "lightgreen";
-		
+		g_form.setDisplay('status_details',true); // Show
+		g_form.setDisplay('status_error_details',false); // Hide
+		g_form.getElement('status_details').style.backgroundColor = "lightgreen";		
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
 		g_form.setReadOnly('max_retries',true); // Could do this via ACL?
 		
 	}
+	else if (g_form.getValue('status') == 'Error') {
+		g_form.getElement('status').style.backgroundColor = "Tomato";
+		g_form.setDisplay('status_details',false); // Hide
+		g_form.setDisplay('status_error_details',true); // Show
+		g_form.getElement('status_error_details').style.backgroundColor = "Tomato";
+		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
+		g_form.setReadOnly('max_retries',true); // Could do this via ACL?		
+	}
 	else {
 		// Not Sending
 		g_form.getElement('status').style.backgroundColor = "Tomato";
-		g_form.getElement('status_details').style.backgroundColor = "Tomato";
+		g_form.setDisplay('status_details',true); // Show
+		g_form.setDisplay('status_error_details',false); // Hide
+		g_form.getElement('status_details').style.backgroundColor = "Tomato";	
+		g_form.setReadOnly('ucontrol_polling_interval_minutes',false); // Could do this via ACL?
+		g_form.setReadOnly('max_retries',false); // Could do this via ACL?		
 	}
 
 	if (g_form.getValue('connection_status') == 'OK') {
@@ -225,7 +265,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>127</sys_mod_count>
+        <sys_mod_count>138</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -233,7 +273,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 11:07:22</sys_updated_on>
+        <sys_updated_on>2020-03-16 13:06:57</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

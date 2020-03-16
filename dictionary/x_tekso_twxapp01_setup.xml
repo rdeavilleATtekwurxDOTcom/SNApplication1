@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Setup" max_length="40" name="x_tekso_twxapp01_setup" type="collection">
-        <element default="Running" hint="The system is checking the CMDB for changes" label="CMDB Tracking" max_length="40" name="cmdb_tracking" type="string"/>
-        <element default="javascript: var gdt = new GlideDateTime(); var answer = 'Started at ' + gdt.getDisplayValue() + ' by: ' + gs.getUserName(); answer;&#13;&#10;" label="CMDB Tracking Details" max_length="100" name="cmdb_tracking_details" type="string"/>
+        <element default="Off" hint="The system is checking the CMDB for changes" label="CMDB Tracking" max_length="40" name="cmdb_tracking" type="string"/>
+        <element default="Off&#13;&#10;" label="CMDB Tracking Details" max_length="100" name="cmdb_tracking_details" type="string"/>
+        <element label="CMDB Tracking Error Details" max_length="100" name="cmdb_tracking_error_details" type="string"/>
         <element label="CMDB Tracking Switched Off At" max_length="40" name="cmdb_tracking_switched_off_at" type="glide_date_time"/>
         <element label="CMDB Tracking Switched Off By" max_length="40" name="cmdb_tracking_switched_off_by" type="string"/>
         <element default="javascript:gs.nowDateTime();" dynamic_default_value="79cb83a85f220100a9ad2572f2b4773c" label="CMDB Tracking Switched On At" max_length="40" name="cmdb_tracking_switched_on_at" type="glide_date_time" use_dynamic_default="true"/>
@@ -18,10 +19,12 @@
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
+        <element default="Enter a valid uControl URL and uControl MID Server and then click on Test Connection" label="Help" max_length="200" name="help" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
         <element label="Last Processing At" max_length="40" name="last_processing_at" type="glide_date_time"/>
         <element label="Last Processing Data Sent Summary" max_length="40" name="last_processing_data_sent_summary" type="string"/>
         <element label="Last Processing Results Summary" max_length="40" name="last_processing_results_summary" type="string"/>
+        <element label="Last Scan Performed At" max_length="40" name="last_scan_performed_at" type="glide_date_time"/>
         <element label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element choice="3" default="5" hint="If there is a problem sending data - this is the number of times the system will retry" label="Max Retries" max_length="40" name="max_retries" type="integer">
             <choice>
@@ -40,21 +43,20 @@
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
         <element choice="3" default="Not Sending" label="Status" max_length="40" name="status" type="string">
             <choice>
+                <element inactive_on_update="false" label="Error" value="Error"/>
                 <element inactive_on_update="false" label="Not Sending" value="Not Sending"/>
                 <element inactive_on_update="false" label="Sending" value="Sending"/>
-                <element inactive_on_update="false" label="Trying To Send - Connection Has Failed" value="Trying To Send  - Connection Has Failed"/>
             </choice>
         </element>
         <element default="Missing Connection Details" label="Status Details" max_length="100" name="status_details" type="string"/>
+        <element label="Status Error Details" max_length="100" name="status_error_details" type="string"/>
         <element label="Status Set To Not Sending At" max_length="40" name="status_set_to_not_sending_at" type="glide_date_time"/>
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>
         <element label="Status Set To Sending At" max_length="40" name="status_set_to_sending_at" type="glide_date_time"/>
         <element label="Status Set To Sending By" max_length="40" name="status_set_to_sending_by" type="string"/>
-        <element label="Status Set To Trying To Send Connection Failed At" max_length="40" name="status_set_to_trying_to_send_connection_failed_at" type="glide_date_time"/>
-        <element hint="Set by the system" label="System Configuration Checks" max_length="200" name="system_configuration_checks" type="string"/>
-        <element label="Tracking BR For cmdb_ci" max_length="40" name="tracking_br_for_cmdb_ci" type="boolean"/>
-        <element label="Tracking BR For cmdb_rel_ci" max_length="40" name="tracking_br_for_cmdb_rel_ci" type="boolean"/>
+        <element label="Status Was Sending Then Connection Failed At" max_length="40" name="status_was_sending_then_connection_failed_at" type="glide_date_time"/>
         <element attributes="ref_decoration_disabled=true" hint="Will be set automatically when the system connects to uControl" label="uControl Integration User" max_length="32" name="ucontrol_integration_user" reference="sys_user" type="reference"/>
+        <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
         <element hint="Can only be updated when system is not sending - Click on the Stop Sending buton to change the MID Server" label="uControl MID Server" max_length="32" name="ucontrol_mid_server" reference="ecc_agent" type="reference"/>
         <element choice="3" default="1" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer">
             <choice>
