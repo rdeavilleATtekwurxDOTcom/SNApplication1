@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="DELETE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.TestScriptInclude</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>TestScriptInclude</name>
+        <script><![CDATA[var TestScriptInclude = Class.create();
+TestScriptInclude.prototype = {
+    initialize: function() {
+    },
+	test: function() {
+		var gr1 = new GlideRecord('x_tekso_twxapp01_test_table');
+		gr1.initialize();
+		gr1.setValue('test_field','From SI');
+		gr1.insert();
+	},
+	
+    type: 'TestScriptInclude'
+};
+
+// Called
+//var si = new x_tekso_twxapp01.TestScriptInclude();
+//si.test();
+
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 13:26:55</sys_created_on>
+        <sys_id>a692b1e6db6b881041d08f38139619fb</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>TestScriptInclude</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_a692b1e6db6b881041d08f38139619fb</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 13:32:17</sys_updated_on>
+    </sys_script_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_include_a692b1e6db6b881041d08f38139619fb</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;x_tekso_twxapp01.TestScriptInclude&lt;/api_name&gt;&lt;caller_access/&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;description/&gt;&lt;name&gt;TestScriptInclude&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var TestScriptInclude = Class.create();
+TestScriptInclude.prototype = {
+    initialize: function() {
+    },
+	test: function() {
+		var gr1 = new GlideRecord('x_tekso_twxapp01_test_table');
+		gr1.initialize();
+		gr1.setValue('test_field','From SI');
+		gr1.insert();
+	},
+	
+    type: 'TestScriptInclude'
+};
+
+// Called
+//var si = new x_tekso_twxapp01.TestScriptInclude();
+//si.test();
+
+]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-17 13:26:55&lt;/sys_created_on&gt;&lt;sys_id&gt;a692b1e6db6b881041d08f38139619fb&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;TestScriptInclude&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_a692b1e6db6b881041d08f38139619fb&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-03-17 13:32:17&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>277301626</payload_hash>
+        <record_name>TestScriptInclude</record_name>
+        <reverted_from/>
+        <source>f36b3852dba348104f29252b139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 13:32:17</sys_created_on>
+        <sys_id>3384b92adb6b881041d08f38139619c4</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170e8b1e4450000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 13:32:17</sys_updated_on>
+        <type>Script Include</type>
+        <update_guid>bb84b92a486b88106125ff74e42bf7c3</update_guid>
+        <update_guid_history>bb84b92a486b88106125ff74e42bf7c3:277301626,11537de60e6b8810b4ca623f5ce11059:-1052204852</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 13:33:04</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_include">sys_script_include</sys_db_object>
+        <sys_id>3fd2637cb5394b88ab0a3ca9adf53240</sys_id>
+        <sys_metadata>a692b1e6db6b881041d08f38139619fb</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TestScriptInclude</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_include_a692b1e6db6b881041d08f38139619fb</sys_update_name>
+        <sys_update_version display_value="sys_script_include_a692b1e6db6b881041d08f38139619fb">3384b92adb6b881041d08f38139619c4</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 13:33:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

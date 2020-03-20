@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>true</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_setup</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Setup Track Changes</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var updateCnt = 0;
+	var fieldsUpdated = '';
+	if (current.operation() == 'update') {
+		// For an update only interested certain fields e.g. url, mid server, integrtion user, polling interval, max retries
+		// last_button_clicked
+		for (var x in current){
+			if (x == 'ucontrol_url' || x == 'ucontrol_mid_server' || x == 'ucontrol_integration_user' || x == 'ucontrol_polling_interval_minutes' || x == 'max_retries' || x == 'status' || x == 'connection_status' || x == 'cmdb_tracking' || x == 'last_button_clicked' || x == 'cmdb_tracking_details' || x == 'cmdb_tracking_error_details' || x == 'connection_status_details' || x == 'status_details' || x == 'status_error_details' || x == 'ucontrol_integration_user_is_valid')
+			{
+
+				if (current[x] != previous[x]) {
+					if (updateCnt == 0) {
+						fieldsUpdated = x;
+					}
+					else {
+						fieldsUpdated = fieldsUpdated + ', ' + x;
+					}
+					updateCnt++;				
+				} // if (current[x] != previous[x])
+			}
+		} // for
+	} // if (current.operation() == 'update')
+	
+	if (current.operation() == 'insert' || current.operation() == 'delete' || updateCnt > 0) {
+		// Only if insert, delete or an update (of a field we are interested in)
+		var gr1 = new GlideRecord('x_tekso_twxapp01_setup_history');
+		gr1.initialize();
+		gr1.setValue('sh_operation',current.operation());		
+		gr1.setValue('sh_ucontrol_url',current.ucontrol_url);
+		gr1.setValue('sh_ucontrol_mid_server_name',current.ucontrol_mid_server.name);
+		gr1.setValue('sh_ucontrol_mid_server_sys_id',current.ucontrol_mid_server.sys_id);
+		gr1.setValue('sh_ucontrol_integration_user_name',current.ucontrol_integration_user.name);
+		gr1.setValue('sh_ucontrol_integration_user_sys_id',current.ucontrol_integration_user.sys_id);
+		gr1.setValue('sh_ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
+		gr1.setValue('sh_max_retries',current.max_retries);
+		gr1.setValue('sh_status',current.status);
+		gr1.setValue('sh_status_details',current.status_details);
+		gr1.setValue('sh_status_error_details',current.status_error_details);
+		gr1.setValue('sh_connection_status',current.connection_status);
+		gr1.setValue('sh_connection_status_details',current.connection_status_details);
+		gr1.setValue('sh_cmdb_tracking',current.cmdb_tracking);	
+		gr1.setValue('sh_cmdb_tracking_details',current.cmdb_tracking_details);	
+		gr1.setValue('sh_cmdb_tracking_error_details',current.cmdb_tracking_error_details);	
+		gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
+		gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_status_was_sending_then_connection_failed_at_dt',current.status_was_sending_then_connection_failed_at_dt);
+		if (updateCnt > 0) {
+			// For an update - capture the previous values as well
+			gr1.setValue('sh_previous_ucontrol_url',previous.ucontrol_url);
+			gr1.setValue('sh_previous_ucontrol_mid_server_name',previous.ucontrol_mid_server.name);
+			gr1.setValue('sh_previous_ucontrol_mid_server_sys_id',previous.ucontrol_mid_server.sys_id);
+			gr1.setValue('sh_previous_ucontrol_integration_user_name',previous.ucontrol_integration_user.name);
+			gr1.setValue('sh_previous_ucontrol_integration_user_sys_id',previous.ucontrol_integration_user.sys_id);
+			gr1.setValue('sh_previous_ucontrol_polling_interval_minutes',previous.ucontrol_polling_interval_minutes);
+			gr1.setValue('sh_previous_max_retries',previous.max_retries);
+			gr1.setValue('sh_previous_status',previous.status);
+			gr1.setValue('sh_previous_status_details',previous.status_details);
+			gr1.setValue('sh_previous_status_error_details',previous.status_error_details);			
+			gr1.setValue('sh_previous_connection_status',previous.connection_status);
+			gr1.setValue('sh_previous_connection_status_details',previous.connection_status_details);
+			gr1.setValue('sh_previous_cmdb_tracking',previous.cmdb_tracking);	
+			gr1.setValue('sh_previous_cmdb_tracking_error_details',previous.cmdb_tracking_error_details);	
+			gr1.setValue('sh_previous_cmdb_tracking_details',previous.cmdb_tracking_details);	
+			gr1.setValue('sh_previous_last_button_clicked',previous.last_button_clicked);
+			gr1.setValue('sh_previous_ucontrol_integration_user_is_valid',previous.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_previous_status_was_sending_then_connection_failed_at_dt',previous.status_was_sending_then_connection_failed_at_dt);			
+			gr1.setValue('sh_fields_updated',fieldsUpdated); 
+		}
+		gr1.insert();
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-02-27 12:08:28</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6b29a3d8db93481041d08f3813961910</sys_id>
+        <sys_mod_count>24</sys_mod_count>
+        <sys_name>Setup Track Changes</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_6b29a3d8db93481041d08f3813961910</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 12:10:57</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=6b29a3d8db93481041d08f3813961910"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_6b29a3d8db93481041d08f3813961910</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;true&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;x_tekso_twxapp01_setup&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Setup Track Changes&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var updateCnt = 0;
+	var fieldsUpdated = '';
+	if (current.operation() == 'update') {
+		// For an update only interested certain fields e.g. url, mid server, integrtion user, polling interval, max retries
+		// last_button_clicked
+		for (var x in current){
+			if (x == 'ucontrol_url' || x == 'ucontrol_mid_server' || x == 'ucontrol_integration_user' || x == 'ucontrol_polling_interval_minutes' || x == 'max_retries' || x == 'status' || x == 'connection_status' || x == 'cmdb_tracking' || x == 'last_button_clicked' || x == 'cmdb_tracking_details' || x == 'cmdb_tracking_error_details' || x == 'connection_status_details' || x == 'status_details' || x == 'status_error_details' || x == 'ucontrol_integration_user_is_valid')
+			{
+
+				if (current[x] != previous[x]) {
+					if (updateCnt == 0) {
+						fieldsUpdated = x;
+					}
+					else {
+						fieldsUpdated = fieldsUpdated + ', ' + x;
+					}
+					updateCnt++;				
+				} // if (current[x] != previous[x])
+			}
+		} // for
+	} // if (current.operation() == 'update')
+	
+	if (current.operation() == 'insert' || current.operation() == 'delete' || updateCnt &gt; 0) {
+		// Only if insert, delete or an update (of a field we are interested in)
+		var gr1 = new GlideRecord('x_tekso_twxapp01_setup_history');
+		gr1.initialize();
+		gr1.setValue('sh_operation',current.operation());		
+		gr1.setValue('sh_ucontrol_url',current.ucontrol_url);
+		gr1.setValue('sh_ucontrol_mid_server_name',current.ucontrol_mid_server.name);
+		gr1.setValue('sh_ucontrol_mid_server_sys_id',current.ucontrol_mid_server.sys_id);
+		gr1.setValue('sh_ucontrol_integration_user_name',current.ucontrol_integration_user.name);
+		gr1.setValue('sh_ucontrol_integration_user_sys_id',current.ucontrol_integration_user.sys_id);
+		gr1.setValue('sh_ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
+		gr1.setValue('sh_max_retries',current.max_retries);
+		gr1.setValue('sh_status',current.status);
+		gr1.setValue('sh_status_details',current.status_details);
+		gr1.setValue('sh_status_error_details',current.status_error_details);
+		gr1.setValue('sh_connection_status',current.connection_status);
+		gr1.setValue('sh_connection_status_details',current.connection_status_details);
+		gr1.setValue('sh_cmdb_tracking',current.cmdb_tracking);	
+		gr1.setValue('sh_cmdb_tracking_details',current.cmdb_tracking_details);	
+		gr1.setValue('sh_cmdb_tracking_error_details',current.cmdb_tracking_error_details);	
+		gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
+		gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_status_was_sending_then_connection_failed_at_dt',current.status_was_sending_then_connection_failed_at_dt);
+		if (updateCnt &gt; 0) {
+			// For an update - capture the previous values as well
+			gr1.setValue('sh_previous_ucontrol_url',previous.ucontrol_url);
+			gr1.setValue('sh_previous_ucontrol_mid_server_name',previous.ucontrol_mid_server.name);
+			gr1.setValue('sh_previous_ucontrol_mid_server_sys_id',previous.ucontrol_mid_server.sys_id);
+			gr1.setValue('sh_previous_ucontrol_integration_user_name',previous.ucontrol_integration_user.name);
+			gr1.setValue('sh_previous_ucontrol_integration_user_sys_id',previous.ucontrol_integration_user.sys_id);
+			gr1.setValue('sh_previous_ucontrol_polling_interval_minutes',previous.ucontrol_polling_interval_minutes);
+			gr1.setValue('sh_previous_max_retries',previous.max_retries);
+			gr1.setValue('sh_previous_status',previous.status);
+			gr1.setValue('sh_previous_status_details',previous.status_details);
+			gr1.setValue('sh_previous_status_error_details',previous.status_error_details);			
+			gr1.setValue('sh_previous_connection_status',previous.connection_status);
+			gr1.setValue('sh_previous_connection_status_details',previous.connection_status_details);
+			gr1.setValue('sh_previous_cmdb_tracking',previous.cmdb_tracking);	
+			gr1.setValue('sh_previous_cmdb_tracking_error_details',previous.cmdb_tracking_error_details);	
+			gr1.setValue('sh_previous_cmdb_tracking_details',previous.cmdb_tracking_details);	
+			gr1.setValue('sh_previous_last_button_clicked',previous.last_button_clicked);
+			gr1.setValue('sh_previous_ucontrol_integration_user_is_valid',previous.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_previous_status_was_sending_then_connection_failed_at_dt',previous.status_was_sending_then_connection_failed_at_dt);			
+			gr1.setValue('sh_fields_updated',fieldsUpdated); 
+		}
+		gr1.insert();
+	}
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-02-27 12:08:28&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;6b29a3d8db93481041d08f3813961910&lt;/sys_id&gt;&lt;sys_mod_count&gt;24&lt;/sys_mod_count&gt;&lt;sys_name&gt;Setup Track Changes&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_6b29a3d8db93481041d08f3813961910&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-03-17 12:10:57&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=6b29a3d8db93481041d08f3813961910"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-986086661</payload_hash>
+        <record_name>Setup Track Changes</record_name>
+        <reverted_from/>
+        <source>f36b3852dba348104f29252b139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 12:10:57</sys_created_on>
+        <sys_id>1cf1a9e6db2b881041d08f38139619c7</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170e8676d8c0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 12:10:57</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>14f1a9e6352b881085c6c28c2fe899c7</update_guid>
+        <update_guid_history>14f1a9e6352b881085c6c28c2fe899c7:-986086661,3bfc51e23d2b8810c18c8ed89f2eddf6:-606675063,844c55a2592b881018072eac8d5e4a9d:611193617,9567d52ebbe788103eb818a98050ead0:-805499152,d1f6516ee3e788101af7984ef7263421:-205446396,25f5512e6fe788106f25ad0994e4827d:-621790042,175599aab2e788109d1a25a274a519d3:-33706797,ffc45d2a8be78810758da2549f03f8b6:-1288629970,a68c4da213e788109f5dec433a6b398f:-526608624,a85265cf5a5f0050b40e31793caaab88:-1779251702,3d7795471c5f0050b693c6540df13435:1280531922,503ab0cbdcdb00500d5915b443d37d62:925806878,9ba9f88b9cdb0050b1e6132a59735259:-105066174,37e97d362b53005064dd40591b3d5888:-1681367625,a4f2cdb5fbd70c10be13aebbbee95e77:1697525175,e27773e129d30c10ee101623b7cf6c92:1561248699,4999bbd8fbd3481087cba395bd314e8f:-2139174303,16483bd4abd34810e25b5df1ad702ab6:1488995375,cfa33394b0d34810b9fd841a0a5293e0:-111367440,8e52fb14d4d34810b2f82f020ee43b43:549432067,2291f79032d34810bed3fe076efa16f9:514451449,77cfeb50a0d3481080b1f8402a307b55:2003207779,4fcd2bdc2e9348109524ab6e7fe6034b:-1101264309,8f7ca3dc2f934810de7f0ec154a12731:-628497767,cf2b235c96934810faaab36d5582765a:1753069461</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-18 12:49:19</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>73ee433878ba453a97b2504ea5298cc9</sys_id>
+        <sys_metadata>6b29a3d8db93481041d08f3813961910</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Setup Track Changes</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Setup">a93c2476db62085035a38a723996195b</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_6b29a3d8db93481041d08f3813961910</sys_update_name>
+        <sys_update_version display_value="sys_script_6b29a3d8db93481041d08f3813961910">1cf1a9e6db2b881041d08f38139619c7</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-18 12:49:19</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

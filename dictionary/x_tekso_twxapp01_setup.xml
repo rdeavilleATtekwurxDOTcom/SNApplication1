@@ -13,12 +13,15 @@
                 <element inactive_on_update="false" label="Failed" value="Failed"/>
                 <element inactive_on_update="false" label="Missing Connection Details" value="Missing Connection Details"/>
                 <element inactive_on_update="false" label="OK" value="OK"/>
+                <element inactive_on_update="false" label="Sending Process Starting - Please Wait" value="Sending Process Starting - Please Wait"/>
+                <element inactive_on_update="false" label="Testing Connection - Please Wait" value="Testing Connection - Please Wait"/>
             </choice>
         </element>
         <element default="A uControl URL and MID Server are required" label="Connection Status Details" max_length="200" name="connection_status_details" type="string"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
+        <element label="Good Connection Failed At" max_length="40" name="good_connection_failed_at" type="glide_date_time"/>
         <element default="Enter a valid uControl URL and uControl MID Server and then click on Test Connection" label="Help" max_length="200" name="help" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
         <element label="Last Processing At" max_length="40" name="last_processing_at" type="glide_date_time"/>
@@ -41,6 +44,7 @@
         <element label="Scheduled Job Sys ID" max_length="32" name="scheduled_job_sys_id" type="string"/>
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
+        <element label="Start Sending Requested At" max_length="40" name="start_sending_requested_at" type="glide_date_time"/>
         <element choice="3" default="Not Sending" label="Status" max_length="40" name="status" type="string">
             <choice>
                 <element inactive_on_update="false" label="Error" value="Error"/>
@@ -54,7 +58,6 @@
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>
         <element label="Status Set To Sending At" max_length="40" name="status_set_to_sending_at" type="glide_date_time"/>
         <element label="Status Set To Sending By" max_length="40" name="status_set_to_sending_by" type="string"/>
-        <element label="Status Was Sending Then Connection Failed At" max_length="40" name="status_was_sending_then_connection_failed_at" type="glide_date_time"/>
         <element attributes="ref_decoration_disabled=true" hint="Will be set automatically when the system connects to uControl" label="uControl Integration User" max_length="32" name="ucontrol_integration_user" reference="sys_user" type="reference"/>
         <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
         <element hint="Can only be updated when system is not sending - Click on the Stop Sending buton to change the MID Server" label="uControl MID Server" max_length="32" name="ucontrol_mid_server" reference="ecc_agent" type="reference"/>

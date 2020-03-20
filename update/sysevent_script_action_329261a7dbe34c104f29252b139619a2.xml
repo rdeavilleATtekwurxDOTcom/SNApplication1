@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.testconnectiontimeout</event_name>
+        <name>TestConnectionTimeOut</name>
+        <order>100</order>
+        <script><![CDATA[TestConnectionTimeOutScriptAction();
+
+function TestConnectionTimeOutScriptAction() {
+	gs.info('TestConnectionTimeOutScriptAction - Start');
+	//Note: parm not param
+	//gs.info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs.info('event.parm2: ' + event.parm2); // gs.getUserName()
+
+	var setupTable = 'x_tekso_twxapp01_setup';
+	var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+	
+	// current should be the x_tekso_twxapp01_connection_test record
+	var sysID = current.sys_id;
+	var gr1 = new GlideRecord(connectionTestTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.query();
+	if (gr1.next()) {
+		var status = gr1.getValue('status') || '';
+		var setupRecord = gr1.getValue('setup_record');
+		if (status == 'Pending' || status == 'Sent') {			
+			gr1.setValue('status','Timed Out');
+			gr1.update();
+			var gr2 = new GlideRecord(setupTable);
+			gr2.addQuery('sys_id',setupRecord);
+			gr2.query();
+			if (gr2.next()) {
+				gr2.setValue('connection_status','Failed');				
+				gr2.setValue('connection_status_details','Connection Test Timed Out');
+				gr2.setValue('start_sending_requested',false);
+				gr2.setValue('connection_test_requested',false);				
+				gr2.update();
+			}
+		}
+	}	
+}
+]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-20 14:56:11</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>329261a7dbe34c104f29252b139619a2</sys_id>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>TestConnectionTimeOut</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-20 16:22:39</sys_updated_on>
+    </sysevent_script_action>
+</record_update>

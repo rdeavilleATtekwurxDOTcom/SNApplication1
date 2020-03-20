@@ -114,7 +114,7 @@
         <sys_mod_count>0</sys_mod_count>
         <sys_name>Action</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
-        <sys_parent display_value="Setup History">3e772318db93481041d08f3813961983</sys_parent>
+        <sys_parent display_value="">3e772318db93481041d08f3813961983</sys_parent>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>

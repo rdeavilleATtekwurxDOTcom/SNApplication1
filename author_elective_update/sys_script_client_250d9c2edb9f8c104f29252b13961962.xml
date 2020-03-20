@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="DELETE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>cmdb_tracking</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Setup History Set Fields onLoad</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+	
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		var fieldName = fields[x];
+		
+		if (fieldName.substring(0,9) == 'previous_') {
+			// Rename all 'previous_...' fields
+			g_form.setLabelOf(fieldName,'Previous value');	
+			var fieldName2 = fieldName.substring(9); // Strip off previous_
+			// If previous_field != field
+			if (g_form.getValue(fieldName) != g_form.getValue(fieldName2)) {
+				g_form.getElement(fieldName).style.backgroundColor = "lightgreen";			
+				g_form.getElement(fieldName2).style.backgroundColor = "lightgreen";
+			}
+		}
+		// Set all fields readonly
+		g_form.setReadOnly(fieldName, true);
+	}
+}
+]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-04 20:54:48</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>250d9c2edb9f8c104f29252b13961962</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>Setup History Set Fields onLoad</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_250d9c2edb9f8c104f29252b13961962</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 15:27:11</sys_updated_on>
+        <table>x_tekso_twxapp01_setup_history</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_client_250d9c2edb9f8c104f29252b13961962</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description/&gt;&lt;field&gt;cmdb_tracking&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Setup History Set Fields onLoad&lt;/name&gt;&lt;order/&gt;&lt;script&gt;&lt;![CDATA[function onLoad() {
+	
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x &lt; fields.length; x++) {
+		var fieldName = fields[x];
+		
+		if (fieldName.substring(0,9) == 'previous_') {
+			// Rename all 'previous_...' fields
+			g_form.setLabelOf(fieldName,'Previous value');	
+			var fieldName2 = fieldName.substring(9); // Strip off previous_
+			// If previous_field != field
+			if (g_form.getValue(fieldName) != g_form.getValue(fieldName2)) {
+				g_form.getElement(fieldName).style.backgroundColor = "lightgreen";			
+				g_form.getElement(fieldName2).style.backgroundColor = "lightgreen";
+			}
+		}
+		// Set all fields readonly
+		g_form.setReadOnly(fieldName, true);
+	}
+}
+]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-04 20:54:48&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;250d9c2edb9f8c104f29252b13961962&lt;/sys_id&gt;&lt;sys_mod_count&gt;14&lt;/sys_mod_count&gt;&lt;sys_name&gt;Setup History Set Fields onLoad&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_250d9c2edb9f8c104f29252b13961962&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-03-06 15:27:11&lt;/sys_updated_on&gt;&lt;table&gt;x_tekso_twxapp01_setup_history&lt;/table&gt;&lt;type&gt;onLoad&lt;/type&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-399211007</payload_hash>
+        <record_name>Setup History Set Fields onLoad</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-06 15:27:11</sys_created_on>
+        <sys_id>37552d83db9f00504f29252b139619b5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170b07522e10000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-06 15:27:11</sys_updated_on>
+        <type>Client Script</type>
+        <update_guid>bf552d83619f005001929b3a2b7262b4</update_guid>
+        <update_guid_history>bf552d83619f005001929b3a2b7262b4:-399211007,8e51c143511f005065588aeb4b31cd19:1114461061,6ea00d03021f00501eb621fca4b205bd:394864718,8f5041cfd4db0050d8d65a2574a192b5:-747156870,d98f3003dd1f005069ac9d6a5ecb94b5:1184108925,49bef88fa3db0050212cbc75894b4843:-1039440152,9b6ef88ff8db0050fb56104cf9c0671c:970654216,e83e7c4f53db0050e198c6c3bfbda991:1694660322,6d5df8cb1cdb00503e6fee46cf300dd9:-1678270487,e01df8cb96db0050b73482970ce44dd5:1379913737,34ebb80f40db00508b4c7aa366f9ec57:220569203,24c7380b77db0050bc82c2cda959f073:1751088810,4727b00bcbdb0050bb574426a16e014e:1932203190,3796bcc70ddb005012ad88a543a169e3:830477440,532d1c6e479f8c109bec8c68b9e7cfa2:695759299</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 09:51:53</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_client">sys_script_client</sys_db_object>
+        <sys_id>49eb7a4fa8fb42209fcbf95b5a6e29c4</sys_id>
+        <sys_metadata>250d9c2edb9f8c104f29252b13961962</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Setup History Set Fields onLoad</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="">3e772318db93481041d08f3813961983</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_client_250d9c2edb9f8c104f29252b13961962</sys_update_name>
+        <sys_update_version display_value="sys_script_client_250d9c2edb9f8c104f29252b13961962">37552d83db9f00504f29252b139619b5</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 09:51:53</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

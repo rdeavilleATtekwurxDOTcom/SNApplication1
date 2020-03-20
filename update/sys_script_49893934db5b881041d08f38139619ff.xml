@@ -30,9 +30,19 @@
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 
 	// Used by client script - On Load
-	// This field is not displayed on the form so we need it here so we can reference it in a client script	
-	g_scratchpad.show_message_on_form_reload = current.show_message_on_form_reload;
+	// These fields are not displayed on the form so we need it here so we can reference it in a client script	
+	g_scratchpad.show_message_on_form_reload = current.show_message_on_form_reload;	
 	
+	g_scratchpad.start_sending_requested = 0;
+	if (current.start_sending_requested == true) {
+		g_scratchpad.start_sending_requested = 1;
+	}
+
+	g_scratchpad.connection_test_requested = 0;
+	if (current.connection_test_requested == true) {
+		g_scratchpad.connection_test_requested = 1;
+	}
+
 	// Get the number of pending records
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var gr1 = new GlideRecord(trackingTable);
@@ -48,7 +58,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>49893934db5b881041d08f38139619ff</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>Setup Display BR Scratchpad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -56,7 +66,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_49893934db5b881041d08f38139619ff</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 11:02:22</sys_updated_on>
+        <sys_updated_on>2020-03-20 09:20:34</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="" section_id="e9b17d66db6b881041d08f38139619c5" sys_domain="global" table="x_tekso_twxapp01_test_table" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>test_field</element>
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-17 13:19:50</sys_created_on>
+            <sys_id>2db17d66db6b881041d08f38139619cb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_test_table" sys_domain="global" view="Default view">e9b17d66db6b881041d08f38139619c5</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-17 13:19:50</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption/>
+            <header>false</header>
+            <name>x_tekso_twxapp01_test_table</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-17 13:19:50</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>e9b17d66db6b881041d08f38139619c5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_test_table</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_section_e9b17d66db6b881041d08f38139619c5</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-17 13:19:50</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_section_e9b17d66db6b881041d08f38139619c5</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="e9b17d66db6b881041d08f38139619c5" sys_domain="global" table="x_tekso_twxapp01_test_table" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>test_field</element><position>0</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-17 13:19:50</sys_created_on><sys_id>2db17d66db6b881041d08f38139619cb</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_test_table" sys_domain="global" view="Default view">e9b17d66db6b881041d08f38139619c5</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-17 13:19:50</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>x_tekso_twxapp01_test_table</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-17 13:19:50</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>e9b17d66db6b881041d08f38139619c5</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_test_table</sys_name><sys_overrides/><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_section_e9b17d66db6b881041d08f38139619c5</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-17 13:19:50</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>320143157</payload_hash>
+        <record_name>Test Table</record_name>
+        <reverted_from/>
+        <source>f36b3852dba348104f29252b139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 13:19:50</sys_created_on>
+        <sys_id>25b17d66db6b881041d08f38139619cd</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170e8a680420000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 13:19:50</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>adb17d665a6b88109b60df23d15769cc</update_guid>
+        <update_guid_history>adb17d665a6b88109b60df23d15769cc:320143157,61b17d66206b88101eb582890691d9c8:707888137</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 13:33:22</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>6bd7e6c6983144a08a6ab36de587d640</sys_id>
+        <sys_metadata>e9b17d66db6b881041d08f38139619c5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_test_table</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="">b790b166db6b881041d08f38139619a7</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_section_e9b17d66db6b881041d08f38139619c5</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_e9b17d66db6b881041d08f38139619c5">25b17d66db6b881041d08f38139619cd</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-17 13:33:22</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

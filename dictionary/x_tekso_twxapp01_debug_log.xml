@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Debug Log" max_length="40" name="x_tekso_twxapp01_debug_log" type="collection">
+        <element label="Message" max_length="200" name="message" type="string"/>
+    </element>
+</database>

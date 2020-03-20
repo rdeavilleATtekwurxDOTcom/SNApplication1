@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>sys_created_on</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Setup History Set Fields onLoad</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+
+	var op = g_form.getValue('sh_operation');
+	
+	if (op == 'update' ) {
+		updateRecord();
+	}
+	
+	if (op == 'delete' || op == 'insert') {
+		// Delete and Insert have no previous values
+		deleteOrInsertRecord();
+	}
+
+}
+
+function deleteOrInsertRecord() {
+	// Delete and Insert have no previous values
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		var fieldName = fields[x];	
+		var lbl = g_form.getLabelOf(fieldName);
+		
+		if (fieldName == 'sh_fields_updated') {
+			g_form.setDisplay(fieldName,false);		
+		}
+		else if (fieldName.substring(0,12) == 'sh_previous_') {
+			// Hide all 'previous_...' fields
+			// Do this before setting the fields readonly
+			g_form.setDisplay(fieldName,false);	
+		}
+		// If the label starts SH then remove the SH 
+		else if (lbl.substring(0,3) == 'SH ') {
+			lbl = lbl.substring(3); // Remove the first 3 letters
+			// Do this before setting the fields readonly
+			g_form.setLabelOf(fieldName,lbl);
+		}		
+		
+		g_form.setReadOnly(fieldName, true);		
+	} // for (var x = 0; x < fields.length; x++)
+}
+
+function updateRecord() {
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		var fieldName = fields[x];		
+		var lbl = g_form.getLabelOf(fieldName);
+				
+		if (fieldName.substring(0,12) == 'sh_previous_') {
+			// Rename all 'previous_...' fields
+			// Do this before setting the fields readonly
+			g_form.setLabelOf(fieldName,'Previous value');	
+		}
+		// If the label starts SH then remove the SH 
+		else if (lbl.substring(0,3) == 'SH ') {
+			lbl = lbl.substring(3); // Remove the first 3 letters
+			// Do this before setting the fields readonly
+			g_form.setLabelOf(fieldName,lbl);
+		}
+		
+		// If a field is sh_previous_ e.g. sh_previous_cmdb_tracking_details
+		// then their should be a twin - sh_cmdb_tracking_details		
+		if (fieldName.substring(0,12) == 'sh_previous_') {
+			var field1 = fieldName.substring(12); // Strip off sh_previous_
+			// e.g. sh_previous_cmdb_tracking_details bececomes cmdb_tracking_details
+			
+			var field2 = 'sh_' + field1;
+			// the twin should be sh_ + field1 e.g. sh_cmdb_tracking_details
+			// Check if the values in the two fields are different
+			if (g_form.getValue(fieldName) != g_form.getValue(field2)) {
+
+				// Do this before setting the fields readonly
+				g_form.getElement(fieldName).style.backgroundColor = "lightgreen";			
+				g_form.getElement(field2).style.backgroundColor = "lightgreen";
+
+				// Set the field labels to be green
+				// Need to set flsh twice in order to get it to stick
+				// Do this before setting the fields readonly
+				g_form.flash(fieldName, "lightgreen", 0);
+				g_form.flash(fieldName, "lightgreen", 0);	
+
+				g_form.flash(field2, "lightgreen", 0);
+				g_form.flash(field2, "lightgreen", 0);	
+				
+			} // if (g_form.getValue(field1) != g_form.getValue(field2)) 
+		} // if (fieldName.substring(0,12) == 'sh_previous_')
+		
+		// Set all the fields readonly
+		// do this at the end
+		g_form.setReadOnly(fieldName, true);
+		
+	} // for (var x = 0; x < fields.length; x++)
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 10:44:05</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>519cc1e2dbe7881041d08f381396197d</sys_id>
+        <sys_mod_count>53</sys_mod_count>
+        <sys_name>Setup History Set Fields onLoad</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_519cc1e2dbe7881041d08f381396197d</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-20 13:18:17</sys_updated_on>
+        <table>x_tekso_twxapp01_setup_history</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

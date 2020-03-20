@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[function onAbort() {
+	//var sys_id = gel("sysID").value;
+	//var now = gel("now").value;
+	
+	GlideDialogWindow.get().destroy();
+	return true;
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_tekso_twxapp01_sending_starting_please_wait.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+.aligncenter {
+    text-align: center;
+}
+</style>
+	
+<g:ui_form>
+	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	<img src="logo1.jpg"/>
+	<table border="0">		
+	<tr>
+		<td>
+			<h3>Sending Processing is starting up.</h3>
+		</td>
+	</tr>							
+	<tr>
+		<td>
+			<h3>Please wait for this to complete and for the form to reload.</h3>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+			<h3>This may take a few seconds.</h3>
+		</td>
+	</tr>		
+	<tr>	
+		<td>
+	<p class="aligncenter">
+		<img src="spinner.gif" width="256" height="256" alt="centered image" />
+			</p>
+		</td>
+	</tr>	
+	<tr id="dialogbuttons">
+		<td align="center">
+			<button type="submit" onclick="return onAbort();">Abort</button>			
+		</td>
+	</tr>		
+	</table>	
+</g:ui_form>	
+</j:jelly>
+]]></html>
+        <name>sending_starting_please_wait</name>
+        <processing_script><![CDATA[var gr1 = new GlideRecord('x_tekso_twxapp01_setup');
+gr1.addQuery('sys_id',sysID);
+gr1.query();
+if (gr1.next()) {
+	gr1.setValue('connection_status','Failed');				
+	gr1.setValue('connection_status_details','Sending Aborted');
+	gr1.setValue('start_sending_requested',false);
+	gr1.setValue('connection_test_requested',false);	
+	gr1.update();
+	var url = '/x_tekso_twxapp01_setup.do?sys_id=' + sysID;
+	response.sendRedirect(url);	
+}]]></processing_script>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-18 18:26:40</sys_created_on>
+        <sys_id>0621848bdbefc81041d08f38139619b2</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>sending_starting_please_wait</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_page_0621848bdbefc81041d08f38139619b2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-20 17:20:36</sys_updated_on>
+    </sys_ui_page>
+</record_update>

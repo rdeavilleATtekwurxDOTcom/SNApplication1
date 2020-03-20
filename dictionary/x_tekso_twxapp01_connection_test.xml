@@ -3,6 +3,7 @@
         <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Request Will Time Out At" max_length="40" name="request_will_time_out_at" type="glide_date_time"/>
         <element label="Response Connection" max_length="40" name="response_connection" type="boolean"/>
         <element label="Response From uControl" max_length="4000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
@@ -14,7 +15,14 @@
         <element label="Response User Account Sys ID" max_length="32" name="response_user_account_sys_id" type="string"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element label="Setup Record" max_length="32" name="setup_record" reference="x_tekso_twxapp01_setup" type="reference"/>
-        <element label="Set Status To Running If Test Successful" max_length="40" name="set_status_to_running_if_test_successful" type="boolean"/>
+        <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
+        <element choice="3" label="Status" max_length="40" name="status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Pending" value="Pending"/>
+                <element inactive_on_update="false" label="Processed" value="Processed"/>
+                <element inactive_on_update="false" label="Sent" value="Sent"/>
+            </choice>
+        </element>
         <element label="Test Connection Triggered By" max_length="100" name="test_connection_triggered_by" type="string"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>

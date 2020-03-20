@@ -11,7 +11,18 @@
         <name>Setup Set Fields onLoad</name>
         <order/>
         <script><![CDATA[function onLoad() {
-		
+	
+	if (g_scratchpad.start_sending_requested == 1) {
+		sendingStartingUp();
+		return;
+	}
+	
+	if (g_scratchpad.connection_test_requested == 1) {
+		testConnectionIsRunning();
+		return;
+	}
+
+	
 	// Set fields ReadOnly
 	g_form.setReadOnly('status',true);   
 	g_form.setReadOnly('status_details',true);	
@@ -258,6 +269,95 @@
 		gdw3.render();	
 	}	
 }
+
+function testConnectionIsRunning() {
+
+	var sysID = g_form.getUniqueValue();
+	var fieldsToDisplayArr = [];
+	
+	fieldsToDisplayArr.push('ucontrol_url');
+	fieldsToDisplayArr.push('ucontrol_mid_server');
+	fieldsToDisplayArr.push('status');
+	fieldsToDisplayArr.push('status_details');
+	fieldsToDisplayArr.push('connection_status');
+	fieldsToDisplayArr.push('connection_status_details');
+	fieldsToDisplayArr.push('cmdb_tracking');
+    fieldsToDisplayArr.push('cmdb_tracking_details');
+	fieldsToDisplayArr.push('max_retries');
+	fieldsToDisplayArr.push('number_of_pending_records');
+	fieldsToDisplayArr.push('help');
+	fieldsToDisplayArr.push('ucontrol_polling_interval_minutes');
+
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		var fieldName = fields[x];	
+		if (fieldsToDisplayArr.indexOf(fieldName) > -1) {
+			g_form.setDisplay(fieldName, true);			
+		}
+		else {
+			g_form.setDisplay(fieldName, false);				
+		}
+		g_form.setReadOnly(fieldName, true);	
+	}
+	g_form.setReadOnly('ucontrol_mid_server.status',false);
+	g_form.setDisplay('ucontrol_mid_server.status',false);
+	
+	var gdw = new GlideDialogWindow('x_tekso_twxapp01_testing_connection_please_wait');
+	gdw.setPreference('sysparm_sysid',sysID);
+	//gdw.setPreference('sysparm_now',gdt);	
+	gdw.setTitle('<h1><strong>Please wait..</strong></h1>');
+	// To hide the x in the window
+	gdw.removeCloseDecoration();
+	gdw.render();	
+	
+	return;
+}
+
+function sendingStartingUp() {
+
+	var sysID = g_form.getUniqueValue();
+	var fieldsToDisplayArr = [];
+	
+	fieldsToDisplayArr.push('ucontrol_url');
+	fieldsToDisplayArr.push('ucontrol_mid_server');
+	fieldsToDisplayArr.push('ucontrol_integration_user'); // User	
+	fieldsToDisplayArr.push('status');
+	fieldsToDisplayArr.push('status_details');
+	fieldsToDisplayArr.push('connection_status');
+	fieldsToDisplayArr.push('connection_status_details');
+	fieldsToDisplayArr.push('cmdb_tracking');
+    fieldsToDisplayArr.push('cmdb_tracking_details');
+	fieldsToDisplayArr.push('max_retries');
+	fieldsToDisplayArr.push('number_of_pending_records');
+	fieldsToDisplayArr.push('help');
+	fieldsToDisplayArr.push('ucontrol_polling_interval_minutes');
+	fieldsToDisplayArr.push('number_of_supported_classes'); // Number of supported classes
+	fieldsToDisplayArr.push('connection_tested_at'); // Connection tested at
+	fieldsToDisplayArr.push('ucontrol_mid_server.status'); // MID Server Status
+		
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		var fieldName = fields[x];	
+		if (fieldsToDisplayArr.indexOf(fieldName) > -1) {
+			g_form.setDisplay(fieldName, true);			
+		}
+		else {
+			g_form.setDisplay(fieldName, false);				
+		}
+		g_form.setReadOnly(fieldName, true);	
+	}
+	
+	var gdw = new GlideDialogWindow('x_tekso_twxapp01_sending_starting_please_wait');
+	gdw.setPreference('sysparm_sysid',sysID);
+	//gdw.setPreference('sysparm_now',gdt);	
+	gdw.setTitle('<h1><strong>Please wait...</strong></h1>');
+	// To hide the x in the window
+	gdw.removeCloseDecoration();
+	gdw.render();	
+	
+	return;
+}
+
 ]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -265,7 +365,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>138</sys_mod_count>
+        <sys_mod_count>181</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -273,7 +373,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-16 13:06:57</sys_updated_on>
+        <sys_updated_on>2020-03-20 17:17:30</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

@@ -76,6 +76,44 @@
             <sys_updated_on>2020-01-30 10:34:33</sys_updated_on>
             <value>OK</value>
         </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Sending Process Starting - Please Wait</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-19 13:33:55</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>65188c9fdb6f0c1041d08f381396199f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-19 13:33:55</sys_updated_on>
+            <value>Sending Process Starting - Please Wait</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Testing Connection - Please Wait</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-19 13:33:34</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ac0884d3dbaf0c1041d08f3813961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-19 13:33:34</sys_updated_on>
+            <value>Testing Connection - Please Wait</value>
+        </sys_choice>
         <sys_choice_set action="INSERT_OR_UPDATE">
             <element>connection_status</element>
             <name>x_tekso_twxapp01_setup</name>

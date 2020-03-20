@@ -34,7 +34,7 @@ RP.getParameterValue("sysparm_view") == 'supported_classes_module';]]></new_cond
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a1a3b6dddbbe841041d08f38139619cd</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>x_tekso_twxapp01_cmdb_supported_classes</sys_name>
         <sys_overrides display_value="">global</sys_overrides>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -42,6 +42,6 @@ RP.getParameterValue("sysparm_view") == 'supported_classes_module';]]></new_cond
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_list_control_a1a3b6dddbbe841041d08f38139619cd</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-11 11:15:49</sys_updated_on>
+        <sys_updated_on>2020-03-19 11:33:38</sys_updated_on>
     </sys_ui_list_control>
 </record_update>

@@ -319,7 +319,7 @@ OutboundREST.prototype = {
 		return rtnArr;
 	},			
 	processTestConnection: function (connection_sys_id) {
-				
+						
 		var connectionFailed = false;
 		var connectionOKButMissingUser = false;
 		var connectionOKButNoValidUser = false;
@@ -346,7 +346,9 @@ OutboundREST.prototype = {
 			
 			var jsonRequestBody = gr1.getValue('json_request_body') || '';
 			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
-			var startIfSuccess = gr1.getValue('set_status_to_running_if_test_successful') || false;	
+			
+			// If this is true then if the test connection is successful the status should be set to Sending
+			var startIfSuccess = gr1.getValue('start_sending_requested') || false;	
 			var url = gr1.getValue('ucontrol_url') || '';
 		
 			var dtSent = new GlideDateTime();
@@ -362,7 +364,14 @@ OutboundREST.prototype = {
 				}
 			}	
 			
+			gr1.setValue('status','Sent');
+			gr1.setValue('sent_to_ucontrol_at',dtSent);
+			gr1.update();
 			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
+			
+			// Need to check if the request has been aborted / time out since it was called
+			// If so then we need to do something?
+			
 			var resultSuccessFail = '';
 			var resultStatusCode = 0;
 			var resultRestResponse = '';
@@ -397,7 +406,8 @@ OutboundREST.prototype = {
 			}
 			
 			var dtBack = new GlideDateTime();
-			gr1.setValue('sent_to_ucontrol_at',dtSent);
+
+			gr1.setValue('status','Processed');
 			gr1.setValue('response_from_ucontrol',resultRestResponse);
 			gr1.setValue('response_received_at',dtBack);
 			gr1.setValue('response_status_code',resultStatusCode);
@@ -529,7 +539,7 @@ OutboundREST.prototype = {
 						// Status Error Details = Connection Lost At
 						// Was Sending Connection Failed At
 						gr2.setValue('status','Error');
-						gr2.setValue('status_was_sending_then_connection_failed_at',dtBack);
+						gr2.setValue('good_connection_failed_at',dtBack);
 						gr2.setValue('status_error_details','Connection failed at ' + dtBack);
 					}
 				}
@@ -546,7 +556,7 @@ OutboundREST.prototype = {
 							gr2.setValue('show_message_on_form_reload',popupmsg);		
 						}
 						if (setupExistingStatus == 'Error') {
-							gr2.setValue('status_was_sending_then_connection_failed_at','');
+							gr2.setValue('good_connection_failed_at','');
 							gr2.setValue('status_error_details','');							
 						}
 						else {
@@ -584,7 +594,7 @@ OutboundREST.prototype = {
 				
 				gr2.update();	
 			} // if (gr2.next())		
-		}		
+		}	
 	},
 	process: function (data_sys_id){
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -704,13 +714,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>150</sys_mod_count>
+        <sys_mod_count>158</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-15 21:21:55</sys_updated_on>
+        <sys_updated_on>2020-03-20 17:32:43</sys_updated_on>
     </sys_script_include>
 </record_update>

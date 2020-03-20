@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="good_connection_failed_at" label="Good Connection Failed At" language="en" table="x_tekso_twxapp01_setup">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>good_connection_failed_at</element>
+            <help/>
+            <hint/>
+            <label>Good Connection Failed At</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <plural>Good Connection Failed Ats</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-19 13:42:42</sys_created_on>
+            <sys_id>731ac057dbaf0c1041d08f38139619b8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Good Connection Failed At</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_good_connection_failed_at_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-19 13:42:42</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

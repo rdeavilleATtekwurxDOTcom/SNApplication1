@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition>current.cmdb_tracking == 'Running' || current.cmdb_tracking == 'Error'</condition>
+        <condition>current.cmdb_tracking != 'Off' &amp;&amp; current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -64,7 +64,7 @@ function stopCMDBTrackingCallBackFunction(response){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a25a08a8db17481041d08f38139619b1</sys_id>
-        <sys_mod_count>52</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>Stop CMDB Tracking</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -72,7 +72,7 @@ function stopCMDBTrackingCallBackFunction(response){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_a25a08a8db17481041d08f38139619b1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 22:45:06</sys_updated_on>
+        <sys_updated_on>2020-03-19 10:39:25</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

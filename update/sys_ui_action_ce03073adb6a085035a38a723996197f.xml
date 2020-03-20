@@ -77,19 +77,24 @@ if(typeof window == 'undefined')
 //Server-side function
 function runStartBusRuleCode(){
 
-	// Script Include
 	var setupSysID = current.sys_id;
+	
+	current.start_sending_requested = true;
+	current.connection_test_requested = true; // This will trigger the BR - Setup When Connection Test Req Changes
+	current.last_button_clicked = 'Start Sending (Requested)';
+	current.connection_status = 'Sending Process Starting - Please Wait';	
+	
+	// This will always be updated
+	var gdt = new GlideDateTime();
+	current.connection_test_requested_at = gdt.getDisplayValue();	
+	current.start_sending_requested_at = gdt.getDisplayValue();	
+	current.update();
+
+	// Script Include	
 	var si = new x_tekso_twxapp01.UpdateScheduledJob();
 	si.updateScheduledJob(setupSysID);
-
-	current.start_sending_requested = true;
-	current.connection_test_requested = true;
-	current.last_button_clicked = 'Start Sending (Requested)';
-	current.update();
 	
-	// This will trigger the BR - Check Connection Setting
-	// The connection_status_details = 'Connection Requires Testing And Start will also tell the BR to start if all is okay
-	action.setRedirectURL(current);	
+	action.setRedirectURL(current);		
 }
 ]]></script>
         <show_insert>false</show_insert>
@@ -102,7 +107,7 @@ function runStartBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ce03073adb6a085035a38a723996197f</sys_id>
-        <sys_mod_count>47</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>Start Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -110,7 +115,7 @@ function runStartBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_ce03073adb6a085035a38a723996197f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-14 22:11:46</sys_updated_on>
+        <sys_updated_on>2020-03-20 11:28:44</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="start_sending_requested_at" label="Start Sending Requested At" language="en" table="x_tekso_twxapp01_setup">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>start_sending_requested_at</element>
+            <help/>
+            <hint/>
+            <label>Start Sending Requested At</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <plural>Start Sending Requested Ats</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-20 11:28:23</sys_created_on>
+            <sys_id>d2f43423db634c104f29252b139619c3</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Start Sending Requested At</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_start_sending_requested_at_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-20 11:28:23</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

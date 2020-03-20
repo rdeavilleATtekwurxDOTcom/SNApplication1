@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition/>
+        <condition>current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -32,6 +32,7 @@
 function runTestClientCode(){
 
 	var abort = false;
+	
 	var url = g_form.getValue('ucontrol_url') || '';
 	var mid_server = '';
 	var canReadMIDServerField = true;
@@ -51,13 +52,13 @@ function runTestClientCode(){
 		g_form.showFieldMsg('ucontrol_url','The field is blank','error');
 		abort = true;
 	}
-	
+
 	if (canReadMIDServerField == false) {
 		g_form.clearMessages();
 		g_form.addErrorMessage("Test Connection Action Cannot Be Performed - Cannot access the MID Server table");
 		abort = true;
 	}
-	
+
 	if (canReadMIDServerField == true && mid_server == "") {
 		g_form.hideFieldMsg('ucontrol_mid_server');
 		g_form.showFieldMsg('ucontrol_mid_server','The field is blank','error');
@@ -79,19 +80,21 @@ if(typeof window == 'undefined')
 //Server-side function
 function runTestBusRuleCode(){
 
-	// Script Include
 	var setupSysID = current.sys_id;
-	var si = new x_tekso_twxapp01.UpdateScheduledJob();
-	si.updateScheduledJob(setupSysID);
-
+	
 	current.last_button_clicked = 'Test Connection';
-	current.connection_test_requested = true;
+	current.connection_test_requested = true; // This will trigger the BR - Setup When Connection Test Req Changes
+	current.connection_status = 'Testing Connection - Please Wait';
+	
 	// This will always be updated
 	var gdt = new GlideDateTime();
 	current.connection_test_requested_at = gdt.getDisplayValue();
 	current.update();
+
+	// Script Include
+	var si = new x_tekso_twxapp01.UpdateScheduledJob();
+	si.updateScheduledJob(setupSysID);
 	
-	// This will trigger the BR - Check Connection Setting
 	action.setRedirectURL(current);	
 }
 
@@ -106,7 +109,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>113</sys_mod_count>
+        <sys_mod_count>124</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -114,7 +117,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 11:16:29</sys_updated_on>
+        <sys_updated_on>2020-03-20 11:28:57</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

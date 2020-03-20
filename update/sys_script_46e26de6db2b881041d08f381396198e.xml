@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_setup</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Setup Track Changes - Update</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var updateCnt = 0;
+	var fieldsUpdated = '';
+
+	var fieldsArr = [];
+	fieldsArr.push('ucontrol_url');
+	fieldsArr.push('ucontrol_mid_server');
+	fieldsArr.push('ucontrol_integration_user');
+	fieldsArr.push('ucontrol_polling_interval_minutes');
+	fieldsArr.push('status');
+	fieldsArr.push('max_retries');
+	fieldsArr.push('connection_status');
+	fieldsArr.push('cmdb_tracking'); 
+	fieldsArr.push('last_button_clicked');
+	fieldsArr.push('cmdb_tracking_details');
+	fieldsArr.push('cmdb_tracking_error_details'); 
+	fieldsArr.push('connection_status_details');
+	fieldsArr.push('status_details');
+	fieldsArr.push('status_error_details'); 
+	fieldsArr.push('ucontrol_integration_user_is_valid');
+	fieldsArr.push('number_of_supported_classes');
+	fieldsArr.push('good_connection_failed_at');
+	fieldsArr.push('connection_test_requested');
+	fieldsArr.push('connection_test_requested_at');
+	fieldsArr.push('connection_tested_at');
+	fieldsArr.push('start_sending_requested');
+	fieldsArr.push('start_sending_requested_at');	
+
+	for (var x in current){
+		if (fieldsArr.indexOf(x) > -1) {
+			if (current[x] != previous[x]) {
+				if (updateCnt == 0) {
+					fieldsUpdated = x;
+				}
+				else {
+					fieldsUpdated = fieldsUpdated + ', ' + x;
+				}
+				updateCnt++;				
+			} // if (current[x] != previous[x])
+		}
+	} // for
+	if (updateCnt > 0) {
+		var gr1 = new GlideRecord('x_tekso_twxapp01_setup_history');
+		gr1.initialize();
+		gr1.setValue('sh_operation',current.operation()); // Update
+		gr1.setValue('sh_ucontrol_url',current.ucontrol_url);
+		gr1.setValue('sh_ucontrol_mid_server_name',current.ucontrol_mid_server.name);
+		gr1.setValue('sh_ucontrol_mid_server_sys_id',current.ucontrol_mid_server.sys_id);
+		gr1.setValue('sh_ucontrol_integration_user_name',current.ucontrol_integration_user.name);
+		gr1.setValue('sh_ucontrol_integration_user_sys_id',current.ucontrol_integration_user.sys_id);
+		gr1.setValue('sh_ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
+		gr1.setValue('sh_max_retries',current.max_retries);
+		gr1.setValue('sh_status',current.status);
+		gr1.setValue('sh_status_details',current.status_details);
+		gr1.setValue('sh_status_error_details',current.status_error_details);
+		gr1.setValue('sh_connection_status',current.connection_status);
+		gr1.setValue('sh_connection_status_details',current.connection_status_details);
+		gr1.setValue('sh_cmdb_tracking',current.cmdb_tracking);	
+		gr1.setValue('sh_cmdb_tracking_details',current.cmdb_tracking_details);	
+		gr1.setValue('sh_cmdb_tracking_error_details',current.cmdb_tracking_error_details);	
+		gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
+		gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_number_of_supported_classes',current.number_of_supported_classes);	
+		gr1.setValue('sh_good_connection_failed_at',current.good_connection_failed_at);
+		gr1.setValue('sh_connection_test_requested',current.connection_test_requested);
+		gr1.setValue('sh_connection_test_requested_at',current.connection_test_requested_at);
+		gr1.setValue('sh_connection_tested_at',current.connection_tested_at);
+		gr1.setValue('sh_start_sending_requested',current.start_sending_requested);
+		gr1.setValue('sh_start_sending_requested_at',current.start_sending_requested_at);	
+		
+		// For an update - capture the previous values as well
+		gr1.setValue('sh_previous_ucontrol_url',previous.ucontrol_url);
+		gr1.setValue('sh_previous_ucontrol_mid_server_name',previous.ucontrol_mid_server.name);
+		gr1.setValue('sh_previous_ucontrol_mid_server_sys_id',previous.ucontrol_mid_server.sys_id);
+		gr1.setValue('sh_previous_ucontrol_integration_user_name',previous.ucontrol_integration_user.name);
+		gr1.setValue('sh_previous_ucontrol_integration_user_sys_id',previous.ucontrol_integration_user.sys_id);
+		gr1.setValue('sh_previous_ucontrol_polling_interval_minutes',previous.ucontrol_polling_interval_minutes);
+		gr1.setValue('sh_previous_max_retries',previous.max_retries);
+		gr1.setValue('sh_previous_status',previous.status);
+		gr1.setValue('sh_previous_status_details',previous.status_details);
+		gr1.setValue('sh_previous_status_error_details',previous.status_error_details);			
+		gr1.setValue('sh_previous_connection_status',previous.connection_status);
+		gr1.setValue('sh_previous_connection_status_details',previous.connection_status_details);
+		gr1.setValue('sh_previous_cmdb_tracking',previous.cmdb_tracking);	
+		gr1.setValue('sh_previous_cmdb_tracking_error_details',previous.cmdb_tracking_error_details);	
+		gr1.setValue('sh_previous_cmdb_tracking_details',previous.cmdb_tracking_details);	
+		gr1.setValue('sh_previous_last_button_clicked',previous.last_button_clicked);
+		gr1.setValue('sh_previous_ucontrol_integration_user_is_valid',previous.ucontrol_integration_user_is_valid);
+		gr1.setValue('sh_previous_number_of_supported_classes',previous.number_of_supported_classes);	
+		gr1.setValue('sh_previous_good_connection_failed_at',previous.good_connection_failed_at);
+		gr1.setValue('sh_previous_connection_test_requested',previous.connection_test_requested);
+		gr1.setValue('sh_previous_connection_test_requested_at',previous.connection_test_requested_at);
+		gr1.setValue('sh_previous_connection_tested_at',previous.connection_tested_at);
+		gr1.setValue('sh_previous_start_sending_requested',previous.start_sending_requested);	
+		gr1.setValue('sh_previous_start_sending_requested_at',previous.start_sending_requested_at);			
+		
+		gr1.setValue('sh_fields_updated',fieldsUpdated); 		
+		gr1.insert();		
+	}
+		
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-17 12:19:47</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>46e26de6db2b881041d08f381396198e</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Setup Track Changes - Update</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_46e26de6db2b881041d08f381396198e</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-20 12:04:55</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=46e26de6db2b881041d08f381396198e"/>
+</record_update>

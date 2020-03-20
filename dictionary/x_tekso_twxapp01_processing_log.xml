@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Processing Log" max_length="40" name="x_tekso_twxapp01_processing_log" type="collection">
+        <element default="0" label="Current Max Retries" max_length="40" name="current_max_retries" type="integer"/>
+        <element label="Current uControl Integration User Name" max_length="40" name="current_ucontrol_integration_user_name" type="string"/>
+        <element label="Current uControl Integration User Sys ID" max_length="32" name="current_ucontrol_integration_user_sys_id" type="string"/>
+        <element label="Current uControl MID Server Name" max_length="40" name="current_ucontrol_mid_server_name" type="string"/>
+        <element label="Current uControl MID Server Sys ID" max_length="32" name="current_ucontrol_mid_server_sys_id" type="string"/>
+        <element label="Current uControl URL" max_length="200" name="current_ucontrol_url" type="string"/>
         <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
         <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
@@ -8,10 +14,10 @@
         <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
-        <element default="0" label="Polling Interval" max_length="40" name="polling_interval" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
+        <element default="0" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
     </element>
 </database>
