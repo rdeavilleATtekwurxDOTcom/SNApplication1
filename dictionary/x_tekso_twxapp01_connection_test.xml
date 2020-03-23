@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Connection Test" max_length="40" name="x_tekso_twxapp01_connection_test" type="collection">
+        <element label="Aborted" max_length="40" name="aborted" type="boolean"/>
         <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
@@ -18,12 +19,15 @@
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
         <element choice="3" label="Status" max_length="40" name="status" type="string">
             <choice>
+                <element inactive_on_update="false" label="Aborted" value="Aborted"/>
                 <element inactive_on_update="false" label="Pending" value="Pending"/>
                 <element inactive_on_update="false" label="Processed" value="Processed"/>
                 <element inactive_on_update="false" label="Sent" value="Sent"/>
+                <element inactive_on_update="false" label="Timed Out" value="Timed Out"/>
             </choice>
         </element>
         <element label="Test Connection Triggered By" max_length="100" name="test_connection_triggered_by" type="string"/>
+        <element label="Timed Out" max_length="40" name="timed_out" type="boolean"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>

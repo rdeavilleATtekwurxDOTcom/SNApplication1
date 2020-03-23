@@ -30,7 +30,7 @@ if (gr0.next()) {
 	var setupSysID = gr0.sys_id; // Needed for test connection
 	var setupStatus = gr0.getValue('status') || '';
 	var pollingInterval = gr0.getValue('ucontrol_polling_interval_minutes') || 0;
-	
+	var timeout = gr0.getValue('ucontrol_connection_timeout_minutes') || 0;
 	var url = gr0.getValue('ucontrol_url') || '';
 
 	//Need to use getElement to do dot walking.
@@ -51,7 +51,7 @@ if (gr0.next()) {
 	// need to get midServerSysID and midServerName
 	if (setupStatus == 'Sending') {
 		// Only do some work if the status is Sending
-		mainBit(pollingInterval,url,midServerSysID,midServerName,integrationUserSysID,integrationUserName,maxRetries);
+		mainBit(pollingInterval,timeout,url,midServerSysID,midServerName,integrationUserSysID,integrationUserName,maxRetries);
 	}
 	// update the number of Pending Records in the Setup Table
 	updateNumberOfPendingRecordsInSetupTable(setupTable,trackingTable);	
@@ -143,7 +143,7 @@ function setProcessingCompleteAtInLog(logTable,logSysID) {
 }
 
 // Create a new log record - x_tekso_twxapp01_processing_log and return the sys_id
-function createNewLogRecord(logTable,pollingInt,curURL,curMIDServSysID,curMIDServName,curIntUserSysID,curIntUserName,curMaxRetries) {
+function createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDServSysID,curMIDServName,curIntUserSysID,curIntUserName,curMaxRetries) {
 	var rtnSysID = '';
 	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
 	gr1.initialize();
@@ -159,6 +159,7 @@ function createNewLogRecord(logTable,pollingInt,curURL,curMIDServSysID,curMIDSer
 	gr1.setValue('current_ucontrol_integration_user_name',curIntUserName);
 	gr1.setValue('current_max_retries',curMaxRetries);
 	gr1.setValue('ucontrol_polling_interval_minutes',pollingInt);
+	gr1.setValue('ucontrol_connection_timeout_minutes',timeout);
 	
 	rtnSysID = gr1.insert();
 	return rtnSysID;
@@ -290,7 +291,7 @@ function addJSONToDataRecord(dataTable,data_sys_id,jsonRequestBody,noOfRecsInJSO
 }
 
 
-function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr) {
+function mainBit(pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr) {
 
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -470,7 +471,7 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
 			if (logRecordCreated == false) {
 				// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
 				//x_tekso_twxapp01_processing_log
-				logSysID = createNewLogRecord(logTable,pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
+				logSysID = createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
 				// Add the sys_id for the log to the setup table
 				updateSetupAddProcessingLogRef(setupTable,logSysID);
 				logRecordCreated = true;
@@ -497,7 +498,7 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(logTable,pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
+					logSysID = createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
 					// Add the sys_id for the log to the setup table
 					updateSetupAddProcessingLogRef(setupTable,logSysID);					
 					logRecordCreated = true;
@@ -515,7 +516,7 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(logTable,pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
+					logSysID = createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
 					// Add the sys_id for the log to the setup table
 					updateSetupAddProcessingLogRef(setupTable,logSysID);					
 					logRecordCreated = true;
@@ -538,7 +539,7 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(logTable,pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
+					logSysID = createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
 					// Add the sys_id for the log to the setup table
 					updateSetupAddProcessingLogRef(setupTable,logSysID);					
 					logRecordCreated = true;
@@ -555,7 +556,7 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get batch the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(logTable,pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
+					logSysID = createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,curIntUsrNm,curMaxRetr); 
 					// Add the sys_id for the log to the setup table
 					updateSetupAddProcessingLogRef(setupTable,logSysID);
 					logRecordCreated = true;
@@ -659,14 +660,14 @@ function mainBit(pollingInt,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrSysID,cur
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-30 15:00:07</sys_created_on>
         <sys_id>45dfbb5bdbe6001041d08f381396193a</sys_id>
-        <sys_mod_count>145</sys_mod_count>
+        <sys_mod_count>147</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_45dfbb5bdbe6001041d08f381396193a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-19 13:08:34</sys_updated_on>
+        <sys_updated_on>2020-03-23 14:00:22</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

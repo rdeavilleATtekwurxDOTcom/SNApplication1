@@ -89,7 +89,9 @@
 			json = json + '\"user\":\"' + userName + '\"}'; // No comma at the end				
 
 			var gdt = new GlideDateTime();
-			gdt.addSeconds(10); // Timeout after 10 seconds
+			var timeoutMinutes = current.ucontrol_connection_timeout_minutes;
+			var timeoutSeconds = timeoutMinutes * 60;
+			gdt.addSeconds(timeoutSeconds);
 			
 			var gr3 = new GlideRecord(connectionTestTable);
 			gr3.initialize();
@@ -108,7 +110,7 @@
 				gr3.setValue('start_sending_requested',false);
 			}
 			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
-			gr3.insert();
+			gr3.insert();						
 		}
 	}
 })(current, previous);
@@ -122,7 +124,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
-        <sys_mod_count>69</sys_mod_count>
+        <sys_mod_count>76</sys_mod_count>
         <sys_name>Setup When Connection Test Req Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -130,7 +132,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 17:27:40</sys_updated_on>
+        <sys_updated_on>2020-03-23 10:47:01</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

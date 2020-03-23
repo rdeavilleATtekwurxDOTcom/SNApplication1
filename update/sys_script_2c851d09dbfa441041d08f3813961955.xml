@@ -34,58 +34,6 @@
 		var si = new x_tekso_twxapp01.UpdateScheduledJob();
 		si.updateScheduledJob(setupSysID);
 	
-/*
-	var interval = current.ucontrol_polling_interval_minutes;
-
-	var intervalStr = '';
-	if (interval < 10) {
-		intervalStr = '0' + interval.toString();
-	}
-	else {
-		intervalStr = interval.toString();	
-	}
-
-	// D HH:MM:SS
-	var durationStr = '0 00:' + intervalStr + ':00';
-	
-	var duration = new GlideDuration(durationStr);
-	
-	// If the scheduled job is running it should have sent down its sys id
-	var foundScheduledJob = false;
-	
-	var scheduledJobSysID = current.scheduled_job_sys_id.toString();
-	if (scheduledJobSysID.length < 32) {
-		var gr1 = new GlideRecord('sysauto');
-		gr1.addQuery('name','Send Data to uControl');
-		gr1.query();
-		if (gr1.next()) {
-			scheduledJobSysID = gr1.getValue('sys_id');
-			current.scheduled_job_sys_id = scheduledJobSysID;
-		}
-	} 
-	
-	if (scheduledJobSysID.length >= 32) {
-		var gr2 = new GlideRecord('sysauto');
-		gr2.addQuery('sys_id',scheduledJobSysID);
-		gr2.query();	
-		if (gr2.next()) {
-			foundScheduledJob = true;	
-			gr2.setValue('active',true);
-			gr2.setValue('run_type','periodically');
-			gr2.setValue('run_period',duration);
-			gr2.update();			
-		}
-	}
-
-	if (foundScheduledJob == false) {
-		// There is a problem with the scheduled job
-		current.system_configuration_checks = 'Cannot find the scheduled job: Send Data to uControl';
-	}
-	else {
-		current.system_configuration_checks = 'OK';
-	}
-*/
-	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -93,7 +41,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2c851d09dbfa441041d08f3813961955</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>When Polling Interval Is Changed</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -101,7 +49,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2c851d09dbfa441041d08f3813961955</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-01 21:44:29</sys_updated_on>
+        <sys_updated_on>2020-03-23 16:59:32</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -19,6 +19,7 @@
         </element>
         <element default="A uControl URL and MID Server are required" label="Connection Status Details" max_length="200" name="connection_status_details" type="string"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
+        <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
         <element label="Good Connection Failed At" max_length="40" name="good_connection_failed_at" type="glide_date_time"/>
@@ -58,10 +59,24 @@
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>
         <element label="Status Set To Sending At" max_length="40" name="status_set_to_sending_at" type="glide_date_time"/>
         <element label="Status Set To Sending By" max_length="40" name="status_set_to_sending_by" type="string"/>
+        <element choice="3" default="2" hint="When a connection request is sent to uControl - the number of minutes the system will wait for a reply before marking it as 'Timed Out'" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="1" sequence="1" value="1"/>
+                <element inactive_on_update="false" label="2" sequence="2" value="2"/>
+                <element inactive_on_update="false" label="3" sequence="3" value="3"/>
+                <element inactive_on_update="false" label="4" sequence="4" value="4"/>
+                <element inactive_on_update="false" label="5" sequence="5" value="5"/>
+                <element inactive_on_update="false" label="6" sequence="6" value="6"/>
+                <element inactive_on_update="false" label="7" sequence="7" value="7"/>
+                <element inactive_on_update="false" label="8" sequence="8" value="8"/>
+                <element inactive_on_update="false" label="9" sequence="9" value="9"/>
+                <element inactive_on_update="false" label="10" sequence="10" value="10"/>
+            </choice>
+        </element>
         <element attributes="ref_decoration_disabled=true" hint="Will be set automatically when the system connects to uControl" label="uControl Integration User" max_length="32" name="ucontrol_integration_user" reference="sys_user" type="reference"/>
         <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
         <element hint="Can only be updated when system is not sending - Click on the Stop Sending buton to change the MID Server" label="uControl MID Server" max_length="32" name="ucontrol_mid_server" reference="ecc_agent" type="reference"/>
-        <element choice="3" default="1" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer">
+        <element choice="3" default="1" hint="The frequency of the scheduled job which sends pending data to uControl" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer">
             <choice>
                 <element inactive_on_update="false" label="1" sequence="1" value="1"/>
                 <element inactive_on_update="false" label="2" sequence="2" value="2"/>
@@ -81,6 +96,9 @@
         </index>
         <index name="index2">
             <element name="ucontrol_mid_server"/>
+        </index>
+        <index name="index3">
+            <element name="connection_test_link"/>
         </index>
     </element>
 </database>

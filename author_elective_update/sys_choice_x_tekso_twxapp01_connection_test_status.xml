@@ -5,6 +5,25 @@
             <element>status</element>
             <hint/>
             <inactive>false</inactive>
+            <label>Aborted</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_connection_test</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-23 09:41:24</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>2639ff5cdb3300504f29252b1396199d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-23 09:41:24</sys_updated_on>
+            <value>Aborted</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>status</element>
+            <hint/>
+            <inactive>false</inactive>
             <label>Pending</label>
             <language>en</language>
             <name>x_tekso_twxapp01_connection_test</name>
@@ -56,6 +75,25 @@
             <sys_updated_by>robin</sys_updated_by>
             <sys_updated_on>2020-03-19 15:25:16</sys_updated_on>
             <value>Sent</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Timed Out</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_connection_test</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-23 09:41:36</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>a149bb5cdb3300504f29252b13961998</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-23 09:41:36</sys_updated_on>
+            <value>Timed Out</value>
         </sys_choice>
         <sys_choice_set action="INSERT_OR_UPDATE">
             <element>status</element>

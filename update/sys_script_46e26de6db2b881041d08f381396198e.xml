@@ -55,7 +55,7 @@
 	fieldsArr.push('connection_tested_at');
 	fieldsArr.push('start_sending_requested');
 	fieldsArr.push('start_sending_requested_at');	
-
+	fieldsArr.push('ucontrol_connection_timeout_minutes');
 	for (var x in current){
 		if (fieldsArr.indexOf(x) > -1) {
 			if (current[x] != previous[x]) {
@@ -97,6 +97,7 @@
 		gr1.setValue('sh_connection_tested_at',current.connection_tested_at);
 		gr1.setValue('sh_start_sending_requested',current.start_sending_requested);
 		gr1.setValue('sh_start_sending_requested_at',current.start_sending_requested_at);	
+		gr1.setValue('sh_ucontrol_connection_timeout_minutes',current.ucontrol_connection_timeout_minutes);		
 		
 		// For an update - capture the previous values as well
 		gr1.setValue('sh_previous_ucontrol_url',previous.ucontrol_url);
@@ -122,7 +123,8 @@
 		gr1.setValue('sh_previous_connection_test_requested_at',previous.connection_test_requested_at);
 		gr1.setValue('sh_previous_connection_tested_at',previous.connection_tested_at);
 		gr1.setValue('sh_previous_start_sending_requested',previous.start_sending_requested);	
-		gr1.setValue('sh_previous_start_sending_requested_at',previous.start_sending_requested_at);			
+		gr1.setValue('sh_previous_start_sending_requested_at',previous.start_sending_requested_at);	
+		gr1.setValue('sh_previous_ucontrol_connection_timeout_minutes',previous.ucontrol_connection_timeout_minutes);
 		
 		gr1.setValue('sh_fields_updated',fieldsUpdated); 		
 		gr1.insert();		
@@ -135,7 +137,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>46e26de6db2b881041d08f381396198e</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Setup Track Changes - Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -143,7 +145,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_46e26de6db2b881041d08f381396198e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 12:04:55</sys_updated_on>
+        <sys_updated_on>2020-03-23 10:50:40</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

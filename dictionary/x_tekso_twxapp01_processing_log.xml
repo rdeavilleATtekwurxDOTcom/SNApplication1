@@ -18,6 +18,7 @@
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
+        <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element default="0" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
     </element>
 </database>

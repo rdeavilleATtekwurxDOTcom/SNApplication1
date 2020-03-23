@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Connection Test Insert</name>
+        <name>Connection Test - Insert</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -28,11 +28,27 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-
 	// Only if status is Pending	
+	
+	// Put the sys_id for the x_tekso_twxapp01_connection_test record
+	// back on to the x_tekso_twxapp01_setup
+	var connectionTestSysID = current.sys_id; // sys_id for this record x_tekso_twxapp01_connection_test
+	var setupSysID = current.setup_record; // sys_id for the setup reocrd x_tekso_twxapp01_setup
+	
+	var setupTable = 'x_tekso_twxapp01_setup';
+	var gr1 = new GlideRecord(setupTable);	
+	gr1.addQuery('sys_id',setupSysID); // sys_id for the setup record
+	gr1.query();
+	if (gr1.next()) {
+		gr1.setValue('connection_test_link',connectionTestSysID);
+		gr1.update();
+	}	
+	
+	// Script Action to kill the test - but delayed
+	// current.request_will_time_out_at is set in BR Setup When Connection Test Req Changes
 	gs.eventQueueScheduled('x_tekso_twxapp01.testconnectiontimeout', current, gs.getUserID(), gs.getUserName(), current.request_will_time_out_at);
 	
-	// Now done in a script action
+	// Script Action to perform the test
 	gs.eventQueue('x_tekso_twxapp01.testconnection', current, gs.getUserID(), gs.getUserName());
 		
 })(current, previous);]]></script>
@@ -42,15 +58,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>085fc86fdbaf0c104f29252b13961938</sys_id>
-        <sys_mod_count>17</sys_mod_count>
-        <sys_name>Connection Test Insert</sys_name>
+        <sys_mod_count>23</sys_mod_count>
+        <sys_name>Connection Test - Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_085fc86fdbaf0c104f29252b13961938</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 17:26:28</sys_updated_on>
+        <sys_updated_on>2020-03-23 11:31:12</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

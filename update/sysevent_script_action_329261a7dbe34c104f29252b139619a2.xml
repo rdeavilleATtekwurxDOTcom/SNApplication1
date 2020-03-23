@@ -6,10 +6,12 @@
         <event_name>x_tekso_twxapp01.testconnectiontimeout</event_name>
         <name>TestConnectionTimeOut</name>
         <order>100</order>
-        <script><![CDATA[TestConnectionTimeOutScriptAction();
+        <script><![CDATA[// Event x_tekso_twxapp01.testconnectiontimeout is triggered by BR - Connection Test - Insert
+
+TestConnectionTimeOutScriptAction();
 
 function TestConnectionTimeOutScriptAction() {
-	gs.info('TestConnectionTimeOutScriptAction - Start');
+	gs.info('TestConnectionTimeOutScriptAction - Triggered');
 	//Note: parm not param
 	//gs.info('event.parm1: ' + event.parm1); // gs.getUserID()
 	//gs.info('event.parm2: ' + event.parm2); // gs.getUserName()
@@ -19,27 +21,58 @@ function TestConnectionTimeOutScriptAction() {
 	
 	// current should be the x_tekso_twxapp01_connection_test record
 	var sysID = current.sys_id;
+	// Get the connection test record
 	var gr1 = new GlideRecord(connectionTestTable);
 	gr1.addQuery('sys_id',sysID);
 	gr1.query();
 	if (gr1.next()) {
+		// Got the connection test record
 		var status = gr1.getValue('status') || '';
-		var setupRecord = gr1.getValue('setup_record');
-		if (status == 'Pending' || status == 'Sent') {			
-			gr1.setValue('status','Timed Out');
+		var setupRecord = gr1.getValue('setup_record') || '';
+		var timedOutStatus = gr1.getValue('timed_out') || false;
+		var abortedStatus = gr1.getValue('aborted') || false;		
+		
+		// This may have already been aborted or timed out
+		
+		if (abortedStatus == true && status != 'Aborted') {
+			// Because of timing between various async threads the status may not have been set to Aborted
+			// or it was set to Aborted but then overwritten by another process
+			// Hence the need for a separated Aborted flag
+			// If Status is not Aborted - set it now			
+			gr1.setValue('status','Aborted');	
 			gr1.update();
-			var gr2 = new GlideRecord(setupTable);
-			gr2.addQuery('sys_id',setupRecord);
-			gr2.query();
-			if (gr2.next()) {
-				gr2.setValue('connection_status','Failed');				
-				gr2.setValue('connection_status_details','Connection Test Timed Out');
-				gr2.setValue('start_sending_requested',false);
-				gr2.setValue('connection_test_requested',false);				
-				gr2.update();
-			}
 		}
-	}	
+
+		if (timedOutStatus == true && status != 'Timed Out') {
+			// Because of timing between various async threads the status may not have been set to Timed Out
+			// or it was set to Timed Out but then overwritten by another process
+			// Hence the need for a separated Timed Out flag
+			// If Status is not Timed Out - set it now			
+			gr1.setValue('status','Timed Out');	
+			gr1.update();
+		}
+		
+		if (abortedStatus == false && timedOutStatus == false) {
+			// Not alredy aborted
+			if (status == 'Pending' || status == 'Sent') {		
+				gr1.setValue('status','Timed Out');
+				gr1.setValue('timed_out',true);
+				gr1.update();
+				var gr2 = new GlideRecord(setupTable);
+				gr2.addQuery('sys_id',setupRecord);
+				gr2.query();
+				if (gr2.next()) {
+					var gdt = new GlideDateTime();
+					gr2.setValue('connection_status','Failed');				
+					gr2.setValue('connection_status_details','Connection Test Timed Out At: ' + gdt); // .getDisplayValue()
+					gr2.setValue('start_sending_requested',false);
+					gr2.setValue('connection_test_requested',false);
+					gr2.setValue('connection_test_link','');
+					gr2.update();
+				} // if (gr2.next())
+			} // if (status == 'Pending' || status == 'Sent')
+		} // if (abortedStatus == false && timedOutStatus == false)
+	} // if (gr1.next()) 
 }
 ]]></script>
         <synchronous>false</synchronous>
@@ -49,7 +82,7 @@ function TestConnectionTimeOutScriptAction() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>329261a7dbe34c104f29252b139619a2</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>TestConnectionTimeOut</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -57,6 +90,6 @@ function TestConnectionTimeOutScriptAction() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 16:22:39</sys_updated_on>
+        <sys_updated_on>2020-03-23 11:28:45</sys_updated_on>
     </sysevent_script_action>
 </record_update>

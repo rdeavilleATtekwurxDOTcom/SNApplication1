@@ -2,9 +2,9 @@
     <sys_app_application action="INSERT_OR_UPDATE">
         <active>true</active>
         <category display_value="">Custom Applications</category>
-        <description>Application 1</description>
+        <description>TekWurx uControl Data Connector</description>
         <device_type>browser</device_type>
-        <hint>Application 1</hint>
+        <hint>TekWurx uControl Data Connector</hint>
         <name/>
         <order/>
         <roles>x_tekso_twxapp01.admin</roles>
@@ -14,16 +14,16 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>f9dc6436db62085035a38a72399619d4</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>Application 1</sys_name>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>TekWurx uControl Data Connector</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_app_application_f9dc6436db62085035a38a72399619d4</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-01-28 09:54:37</sys_updated_on>
-        <title>Application 1</title>
+        <sys_updated_on>2020-03-21 15:39:50</sys_updated_on>
+        <title>TekWurx uControl Data Connector</title>
         <view_name/>
     </sys_app_application>
 </record_update>

@@ -367,234 +367,257 @@ OutboundREST.prototype = {
 			gr1.setValue('status','Sent');
 			gr1.setValue('sent_to_ucontrol_at',dtSent);
 			gr1.update();
+			
 			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
-			
-			// Need to check if the request has been aborted / time out since it was called
-			// If so then we need to do something?
-			
-			var resultSuccessFail = '';
-			var resultStatusCode = 0;
-			var resultRestResponse = '';
-			var resultStatusMsg = '';
-			var resultConnection = false;
-			var resultUserAccount = '';
-			var resultUserAccountMatched = false;
-			var resultUserAccountSysID = '';
-			var resultClassesArr = [];
-						
-			if (rtnArr.length > 2) {
-				resultSuccessFail= rtnArr[0];
-				resultStatusCode = parseInt(rtnArr[1]);
-				resultRestResponse = rtnArr[2];
-				// Need to check if string contains 'result', 'statusCode', 'connection'
-				if (resultRestResponse.indexOf('result') >= 0 && 
-					resultRestResponse.indexOf('statusCode') && 
-					resultRestResponse.indexOf('connection')) {				
-					var parser = new global.JSON();
-					var jsonBack = parser.decode(resultRestResponse);	
-					resultStatusCode = parseInt(jsonBack.result.statusCode);
-					resultStatusMsg = jsonBack.result.statusMsg;	
-					resultConnection = jsonBack.result.connection;
-					resultUserAccount = jsonBack.result.user_account;		
-					
-					resultClassesArr = jsonBack.result.classes;		
-			
-				} // if got result / statusCode / connection
-				else {
-					resultStatusMsg = resultRestResponse;
-				}
-			}
-			
-			var dtBack = new GlideDateTime();
 
-			gr1.setValue('status','Processed');
-			gr1.setValue('response_from_ucontrol',resultRestResponse);
-			gr1.setValue('response_received_at',dtBack);
-			gr1.setValue('response_status_code',resultStatusCode);
-			gr1.setValue('response_status_message',resultStatusMsg);
-			gr1.setValue('response_connection',resultConnection);
-			gr1.setValue('response_user_account',resultUserAccount);
-			
-			if (resultSuccessFail == 'SUCCESS' && resultStatusCode == 200 && resultConnection == true) {
-				gr1.setValue('connection_status','OK');
-				connectionOK = true;
+			var abort = false;
+			var gr9 = new GlideRecord(connectionTestTable);
+			gr9.addQuery('sys_id',connection_sys_id);
+			gr9.query();
+			if (gr9.next()) {
+				var status = gr9.getValue('status') || '';
+				var timedOutStatus =  gr9.getValue('timed_out') || false;
+				var abortedStatus =  gr9.getValue('aborted') || false;				
+				if (status == 'Aborted') {
+					abort = true;
+				}
+				if (status == 'Timed Out') {
+					abort = true;
+				}
+				if (timedOutStatus == true) {
+					abort = true;
+				}
+				if (abortedStatus == true) {
+					abort = true;
+				}						
 			}
-			else
-			{
-				gr1.setValue('connection_status','Failed');		
-				connectionFailed = true;
-			}
 			
-			if (connectionOK == true) {
-				if (resultUserAccount.length > 0) {
-					// Check if we can find a matching user record
-					var gr5 = new GlideRecord('sys_user');
-					gr5.addQuery('user_name',resultUserAccount);
-					gr5.query();
-					if (gr5.next()) {
-						// Found a matching user account
-						// Success	
-						gr1.setValue('response_user_account_matched',true);
-						gr1.setValue('response_user_account_sys_id',gr5.sys_id);
-						gr1.setValue('response_user_account_record',gr5.sys_id);	
-						resultUserAccountMatched = true;
-						resultUserAccountSysID = gr5.sys_id;
-						setupuControlIntegrationUser = gr5.sys_id;
-						setupuControlIntegrationUserIsValid = true;
-						connectionOKAndGotUser = true;
-						// SUCCESS
-						setupConnectionStatus = 'OK';
-						setupConnectionStatusDetails = 'Connection Working';
-					}
+			if (abort == false) {
+				var resultSuccessFail = '';
+				var resultStatusCode = 0;
+				var resultRestResponse = '';
+				var resultStatusMsg = '';
+				var resultConnection = false;
+				var resultUserAccount = '';
+				var resultUserAccountMatched = false;
+				var resultUserAccountSysID = '';
+				var resultClassesArr = [];
+
+				if (rtnArr.length > 2) {
+					resultSuccessFail= rtnArr[0];
+					resultStatusCode = parseInt(rtnArr[1]);
+					resultRestResponse = rtnArr[2];
+					// Need to check if string contains 'result', 'statusCode', 'connection'
+					if (resultRestResponse.indexOf('result') >= 0 && 
+						resultRestResponse.indexOf('statusCode') && 
+						resultRestResponse.indexOf('connection')) {				
+						var parser = new global.JSON();
+						var jsonBack = parser.decode(resultRestResponse);	
+						resultStatusCode = parseInt(jsonBack.result.statusCode);
+						resultStatusMsg = jsonBack.result.statusMsg;	
+						resultConnection = jsonBack.result.connection;
+						resultUserAccount = jsonBack.result.user_account;		
+
+						resultClassesArr = jsonBack.result.classes;		
+
+					} // if got result / statusCode / connection
 					else {
-						// No user account match found
-						connectionOKButNoValidUser = true;
-						setupConnectionStatus = 'Failed';
-						setupConnectionStatusDetails = 'No matching user account found for : ' + resultUserAccount;						
+						resultStatusMsg = resultRestResponse;
 					}
 				}
-				else {
-					// No user account provided
-					connectionOKButMissingUser = true;
-					setupConnectionStatus = 'Failed';
-					setupConnectionStatusDetails = 'No user account returned';				
-				}
-			}
-			else {
-				setupConnectionStatus = 'Failed';		
-				setupConnectionStatusDetails = resultStatusMsg;
-			}
-					
-			gr1.update();	
-					
-			var setupTable = 'x_tekso_twxapp01_setup';
-			var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';
-			var setupExistingStatus = '';
-			var setupExistingStatusDetails = '';
-			var setupExistingNumberOfSuppportedClasses = 0;
-			var numberOfSupportedClasses = 0;
-			var cmdbTracking = '';
-			var gr2 = new GlideRecord(setupTable);
-			gr2.addQuery('sys_id',setupSysID);
-			gr2.query();
-			if (gr2.next()) {
-				cmdbTracking = gr2.getValue('cmdb_tracking') || '';
-				setupExistingStatus = gr2.getValue('status') || '';
-				setupExistingStatusDetails = gr2.getValue('status_details') || '';
-				setupExistingNumberOfSuppportedClasses = gr2.getValue('number_of_supported_classes') || 0;
 
-				if (connectionOKAndGotUser == true) {
-					// Update the classes - we should only do that if this is a success
+				var dtBack = new GlideDateTime();
 
-					// Read the existing classes and store in an array: name and internal name	
-					var newClassesInternalNameArr = [];
-					for(var x=0; x<resultClassesArr.length; x++){
-						var newClassInternalName = resultClassesArr[x];
-						// Get the class display name
-						var gr6 = new GlideRecord('sys_db_object');
-						gr6.addQuery('name',newClassInternalName);
-						gr6.query();
-						if (gr6.next()) {
-							// Class is valid
-							var newClassDisplayName = gr6.getValue('label') || '';
-							this.updateSupportedClassesTable(setupSysID,newClassInternalName,newClassDisplayName);
-							newClassesInternalNameArr.push(newClassInternalName);
-						}
-					} // for
-					
-					// There may be some classes in the table that need to be removed
-					var gr7 = new GlideRecord(classTable);
-					gr7.addQuery('setup_record',setupSysID);
-					gr7.query();
-					while(gr7.next()) {
-						var classInternalName = gr7.getValue('class') || '';	
-						if (classInternalName.length > 0) {
-							if (newClassesInternalNameArr.indexOf(classInternalName) == -1) {
-								// The class is not in the new list
-								gr7.deleteRecord();
-							}
-						}
-					}
+				gr1.setValue('status','Processed');
+				gr1.setValue('response_from_ucontrol',resultRestResponse);
+				gr1.setValue('response_received_at',dtBack);
+				gr1.setValue('response_status_code',resultStatusCode);
+				gr1.setValue('response_status_message',resultStatusMsg);
+				gr1.setValue('response_connection',resultConnection);
+				gr1.setValue('response_user_account',resultUserAccount);
 				
-				} // if (connectionOKAndGotUser == true)
-				
-				numberOfSupportedClasses = setupExistingNumberOfSuppportedClasses;
-				var gr8 = new GlideRecord(classTable);
-				gr8.addQuery('setup_record',setupSysID);
-				gr8.query();
-				numberOfSupportedClasses = gr8.getRowCount();
-				
-				gr2.setValue('connection_status',setupConnectionStatus);
-				gr2.setValue('connection_status_details',setupConnectionStatusDetails);
-				gr2.setValue('connection_tested_at',dtBack);
-				gr2.setValue('ucontrol_integration_user',setupuControlIntegrationUser);		
-				gr2.setValue('ucontrol_integration_user_is_valid',setupuControlIntegrationUserIsValid);						
-				gr2.setValue('number_of_supported_classes',numberOfSupportedClasses);
-				gr2.setValue('start_sending_requested',false);
-				gr2.setValue('connection_test_requested',false);
-				// Was Sending has now Failed connection
-				if (setupConnectionStatus == 'Failed') {
-					if (setupExistingStatus == 'Sending') {
-						// Status = Error
-						// Status Error Details = Connection Lost At
-						// Was Sending Connection Failed At
-						gr2.setValue('status','Error');
-						gr2.setValue('good_connection_failed_at',dtBack);
-						gr2.setValue('status_error_details','Connection failed at ' + dtBack);
-					}
+				if (resultSuccessFail == 'SUCCESS' && resultStatusCode == 200 && resultConnection == true) {
+					gr1.setValue('connection_status','OK');
+					connectionOK = true;
 				}
-				
-				if (setupConnectionStatus == 'OK') {
-					if (startIfSuccess == true && setupExistingStatus != 'Sending') {
-						// Set status to Sending
-						gr2.setValue('status','Sending');
-						gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes) and Max Retries can only be updated when Sending is Stopped');
-						if (cmdbTracking == 'Off') {
-							// The onLoad client script to display a pop-up when the 
-							// form reloads
-							var popupmsg = 'x_tekso_twxapp01_start_sending_message';
-							gr2.setValue('show_message_on_form_reload',popupmsg);		
-						}
-						if (setupExistingStatus == 'Error') {
-							gr2.setValue('good_connection_failed_at','');
-							gr2.setValue('status_error_details','');							
-						}
+				else
+				{
+					gr1.setValue('connection_status','Failed');		
+					connectionFailed = true;
+				}
+
+				if (connectionOK == true) {
+					if (resultUserAccount.length > 0) {
+						// Check if we can find a matching user record
+						var gr5 = new GlideRecord('sys_user');
+						gr5.addQuery('user_name',resultUserAccount);
+						gr5.query();
+						if (gr5.next()) {
+							// Found a matching user account
+							// Success	
+							gr1.setValue('response_user_account_matched',true);
+							gr1.setValue('response_user_account_sys_id',gr5.sys_id);
+							gr1.setValue('response_user_account_record',gr5.sys_id);	
+							resultUserAccountMatched = true;
+							resultUserAccountSysID = gr5.sys_id;
+							setupuControlIntegrationUser = gr5.sys_id;
+							setupuControlIntegrationUserIsValid = true;
+							connectionOKAndGotUser = true;
+							// SUCCESS
+							setupConnectionStatus = 'OK';
+							setupConnectionStatusDetails = 'Connection Working';
+						} // if (gr5.next())
 						else {
-							// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
-							// i.e this is the user who requested the test/start
-							gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testConnectionUser);	
-							gr2.setValue('status_set_to_sending_by',testConnectionUser);
-							gr2.setValue('status_set_to_sending_at',dtBack);
-						}						
-					}
-					// 
-					// "Not Sending"
-					
+							// No user account match found
+							connectionOKButNoValidUser = true;
+							setupConnectionStatus = 'Failed';
+							setupConnectionStatusDetails = 'No matching user account found for : ' + resultUserAccount;						
+						} // if (gr5.next())
+					} // if (resultUserAccount.length > 0)
 					else {
-						// Connection OK but do not start
-						if (setupExistingStatus == 'Not Sending') {
-							if (setupExistingStatusDetails == 'Connection Requires Testing') {
-								gr2.setValue('status_details',setupExistingStatus);	
+						// No user account provided
+						connectionOKButMissingUser = true;
+						setupConnectionStatus = 'Failed';
+						setupConnectionStatusDetails = 'No user account returned';				
+					} // if (resultUserAccount.length > 0)
+				} // if (connectionOK == true) 
+				else {
+					setupConnectionStatus = 'Failed';		
+					setupConnectionStatusDetails = resultStatusMsg;
+				} // if (connectionOK == true) {
+
+				gr1.update();	
+
+				var setupTable = 'x_tekso_twxapp01_setup';
+				var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';
+				var setupExistingStatus = '';
+				var setupExistingStatusDetails = '';
+				var setupExistingNumberOfSuppportedClasses = 0;
+				var numberOfSupportedClasses = 0;
+				var cmdbTracking = '';
+				var gr2 = new GlideRecord(setupTable);
+				gr2.addQuery('sys_id',setupSysID);
+				gr2.query();
+				if (gr2.next()) {
+					cmdbTracking = gr2.getValue('cmdb_tracking') || '';
+					setupExistingStatus = gr2.getValue('status') || '';
+					setupExistingStatusDetails = gr2.getValue('status_details') || '';
+					setupExistingNumberOfSuppportedClasses = gr2.getValue('number_of_supported_classes') || 0;
+
+					if (connectionOKAndGotUser == true) {
+						// Update the classes - we should only do that if this is a success
+
+						// Read the existing classes and store in an array: name and internal name	
+						var newClassesInternalNameArr = [];
+						for(var x=0; x<resultClassesArr.length; x++){
+							var newClassInternalName = resultClassesArr[x];
+							// Get the class display name
+							var gr6 = new GlideRecord('sys_db_object');
+							gr6.addQuery('name',newClassInternalName);
+							gr6.query();
+							if (gr6.next()) {
+								// Class is valid
+								var newClassDisplayName = gr6.getValue('label') || '';
+								this.updateSupportedClassesTable(setupSysID,newClassInternalName,newClassDisplayName);
+								newClassesInternalNameArr.push(newClassInternalName);
+							}
+						} // for
+
+						// There may be some classes in the table that need to be removed
+						var gr7 = new GlideRecord(classTable);
+						gr7.addQuery('setup_record',setupSysID);
+						gr7.query();
+						while(gr7.next()) {
+							var classInternalName = gr7.getValue('class') || '';	
+							if (classInternalName.length > 0) {
+								if (newClassesInternalNameArr.indexOf(classInternalName) == -1) {
+									// The class is not in the new list
+									gr7.deleteRecord();
+								}
+							}
+						} // while(gr7.next())
+
+					} // if (connectionOKAndGotUser == true)
+
+					numberOfSupportedClasses = setupExistingNumberOfSuppportedClasses;
+					var gr8 = new GlideRecord(classTable);
+					gr8.addQuery('setup_record',setupSysID);
+					gr8.query();
+					numberOfSupportedClasses = gr8.getRowCount();
+
+					gr2.setValue('connection_status',setupConnectionStatus);
+					gr2.setValue('connection_status_details',setupConnectionStatusDetails);
+					gr2.setValue('connection_tested_at',dtBack);
+					gr2.setValue('ucontrol_integration_user',setupuControlIntegrationUser);		
+					gr2.setValue('ucontrol_integration_user_is_valid',setupuControlIntegrationUserIsValid);						
+					gr2.setValue('number_of_supported_classes',numberOfSupportedClasses);
+					gr2.setValue('start_sending_requested',false);
+					gr2.setValue('connection_test_requested',false);
+					gr2.setValue('connection_test_link','');
+					// Was Sending has now Failed connection
+					if (setupConnectionStatus == 'Failed') {
+						if (setupExistingStatus == 'Sending') {
+							// Status = Error
+							// Status Error Details = Connection Lost At
+							// Was Sending Connection Failed At
+							gr2.setValue('status','Error');
+							gr2.setValue('good_connection_failed_at',dtBack);
+							gr2.setValue('status_error_details','Connection failed at ' + dtBack);
+						}
+					} // if (setupConnectionStatus == 'Failed') 
+
+					if (setupConnectionStatus == 'OK') {
+						if (startIfSuccess == true && setupExistingStatus != 'Sending') {
+							// Set status to Sending
+							gr2.setValue('status','Sending');
+							gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped');
+							if (cmdbTracking == 'Off') {
+								// The onLoad client script to display a pop-up when the 
+								// form reloads
+								var popupmsg = 'x_tekso_twxapp01_start_sending_message';
+								gr2.setValue('show_message_on_form_reload',popupmsg);		
+							}
+							if (setupExistingStatus == 'Error') {
+								gr2.setValue('good_connection_failed_at','');
+								gr2.setValue('status_error_details','');							
+							}
+							else {
+								// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
+								// i.e this is the user who requested the test/start
+								gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testConnectionUser);	
+								gr2.setValue('status_set_to_sending_by',testConnectionUser);
+								gr2.setValue('status_set_to_sending_at',dtBack);
+							}						
+						}
+						// 
+						// "Not Sending"
+
+						else {
+							// Connection OK but do not start
+							if (setupExistingStatus == 'Not Sending') {
+								if (setupExistingStatusDetails == 'Connection Requires Testing') {
+									gr2.setValue('status_details',setupExistingStatus);	
+								}
 							}
 						}
+					} // if (setupConnectionStatus == 'OK') 
+
+					// CMDB Tracking is Running but we have lost the user
+					if (setupuControlIntegrationUserIsValid == false && cmdbTracking == 'Running') {
+						gr2.setValue('cmdb_tracking','Error');
+						gr2.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
 					}
-				} // if (setupConnectionStatus == 'OK') 
 
-				// CMDB Tracking is Running but we have lost the user
-				if (setupuControlIntegrationUserIsValid == false && cmdbTracking == 'Running') {
-					gr2.setValue('cmdb_tracking','Error');
-					gr2.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
-				}
+					// Now got a valid user set status back to Running
+					if (setupuControlIntegrationUserIsValid == true && cmdbTracking == 'Error') {
+						gr2.setValue('cmdb_tracking','Running');
+						gr2.setValue('cmdb_tracking_error_details','');
+					}
 
-				// Now got a valid user set status back to Running
-				if (setupuControlIntegrationUserIsValid == true && cmdbTracking == 'Error') {
-					gr2.setValue('cmdb_tracking','Running');
-					gr2.setValue('cmdb_tracking_error_details','');
-				}
-				
-				gr2.update();	
-			} // if (gr2.next())		
-		}	
+					gr2.update();	
+				} // if (gr2.next())	
+			} // if (abort == false)
+		} // if (gr1.next()) 
 	},
 	process: function (data_sys_id){
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -714,13 +737,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>158</sys_mod_count>
+        <sys_mod_count>165</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 17:32:43</sys_updated_on>
+        <sys_updated_on>2020-03-23 16:56:08</sys_updated_on>
     </sys_script_include>
 </record_update>

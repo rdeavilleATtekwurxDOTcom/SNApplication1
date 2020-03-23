@@ -602,6 +602,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ucontrol_connection_timeout_minutes</element>
+            <position>43</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-23 13:52:10</sys_created_on>
+            <sys_id>21a2bcacdbf300504f29252b139619ea</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_processing_log" sys_domain="global" view="Default view">0441485edbaf08104f29252b1396190d</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-23 13:52:10</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>
