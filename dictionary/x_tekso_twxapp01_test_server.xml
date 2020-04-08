@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="x_tekso_twxapp01_test_computer" label="Test Server" max_length="40" name="x_tekso_twxapp01_test_server" type="collection">
+        <element label="Alternative Value Classification" max_length="40" name="alternative_value_classification" type="string"/>
+        <element label="Alternative Value DR Backup" max_length="32" name="alternative_value_dr_backup" type="string"/>
+        <element label="Alternative Value Firewall Status" max_length="40" name="alternative_value_firewall_status" type="string"/>
+        <element label="Alternative Value Host Name" max_length="255" name="alternative_value_host_name" type="string"/>
+        <element label="Alternative Value Used for" max_length="40" name="alternative_value_used_for" type="string"/>
+        <element choice="1" default="Production" label="Classification" max_length="40" name="classification" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Development" value="Development"/>
+                <element inactive_on_update="false" label="Producton" value="Production"/>
+                <element inactive_on_update="false" label="UAT" value="UAT"/>
+            </choice>
+        </element>
+        <element label="DR Backup" max_length="32" name="dr_backup" reference="x_tekso_twxapp01_test_server" type="reference"/>
+        <element choice="1" default="Intranet" label="Firewall Status" max_length="40" name="firewall_status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="DMZ" value="DMZ"/>
+                <element inactive_on_update="false" label="Internet" value="Internet"/>
+                <element inactive_on_update="false" label="Intranet" value="Intranet"/>
+            </choice>
+        </element>
+        <element label="Host Name" max_length="255" name="host_name" type="string"/>
+        <element label="Original Value Classification" max_length="40" name="original_value_classification" type="string"/>
+        <element label="Original Value DR Backup" max_length="32" name="original_value_dr_backup" type="string"/>
+        <element label="Original Value Firewall Status" max_length="40" name="original_value_firewall_status" type="string"/>
+        <element label="Original Value Host Name" max_length="255" name="original_value_host_name" type="string"/>
+        <element label="Original Value Used for" max_length="40" name="original_value_used_for" type="string"/>
+        <element choice="3" default="Production" label="Used for" max_length="40" name="used_for" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Production" value="Production"/>
+                <element inactive_on_update="false" label="Staging" value="Staging"/>
+            </choice>
+        </element>
+        <index name="index">
+            <element name="dr_backup"/>
+        </index>
+    </element>
+</database>

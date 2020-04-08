@@ -49,6 +49,7 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 				gr1.setValue('link_to_previous_record','');
 				gr1.setValue('link_to_next_record','');	
 				gr1.setValue('send_to_ucontrol_attempt_no',1);
+				gr1.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
 				gr1.update();			
 			}
 		} // if (cnt == 1)
@@ -83,6 +84,7 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 				gr2.setValue('link_to_previous_record','');
 				gr2.setValue('link_to_next_record',last_sys_id);
 				gr2.setValue('send_to_ucontrol_attempt_no',attempt_no);
+				gr2.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
 				gr2.update();				
 			}
 			// Set last record to point to first record
@@ -96,6 +98,7 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 				gr3.setValue('link_to_previous_record',first_sys_id);
 				gr3.setValue('link_to_next_record','');	
 				gr3.setValue('send_to_ucontrol_attempt_no',attempt_no);
+				gr3.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug					
 				gr3.update();				
 			}		
 		} // if (cnt == 2)
@@ -159,6 +162,7 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 					gr4.setValue('link_to_previous_record',prev_sys_id);
 					gr4.setValue('link_to_next_record',next_sys_id);	
 					gr4.setValue('send_to_ucontrol_attempt_no',attempt_no);
+					gr4.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
 					gr4.update();
 					attempt_no++;
 				}
@@ -171,13 +175,13 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 15:49:39</sys_created_on>
         <sys_id>0b2e503edb13405041d08f3813961968</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>SetPrevNextRecordsForCMDBLinkToREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_0b2e503edb13405041d08f3813961968</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-10 13:31:05</sys_updated_on>
+        <sys_updated_on>2020-03-24 17:25:29</sys_updated_on>
     </sys_script_include>
 </record_update>

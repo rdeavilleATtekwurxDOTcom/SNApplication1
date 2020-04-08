@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="total_number_of_fields" label="Total Number Of Fields" language="en" table="x_tekso_twxapp01_cmdb_supported_classes">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>total_number_of_fields</element>
+            <help/>
+            <hint/>
+            <label>Total Number Of Fields</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_cmdb_supported_classes</name>
+            <plural>Total Number Of Fields</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-26 14:33:10</sys_created_on>
+            <sys_id>6fc810e1dbb7845041d08f3813961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Total Number Of Fields</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_supported_classes_total_number_of_fields_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-26 14:33:10</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

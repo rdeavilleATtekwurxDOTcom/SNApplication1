@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="connection_strength" table="x_tekso_twxapp01_test_ci_relationship" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_strength</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Always</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_ci_relationship</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 16:15:38</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>499611b6dbf7401041d08f3813961964</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 16:15:38</sys_updated_on>
+            <value>always</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_strength</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Cluster</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_ci_relationship</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 16:15:55</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>99a611b6dbf7401041d08f3813961967</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 16:15:55</sys_updated_on>
+            <value>cluster</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_strength</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Infrequent</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_ci_relationship</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 16:16:20</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ceb6d976dbf7401041d08f381396198c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 16:16:20</sys_updated_on>
+            <value>infrequent</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>connection_strength</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Occassional</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_ci_relationship</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 16:17:01</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d5d65d76dbf7401041d08f3813961966</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 16:17:01</sys_updated_on>
+            <value>occassional</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>connection_strength</element>
+            <name>x_tekso_twxapp01_test_ci_relationship</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 16:15:38</sys_created_on>
+            <sys_id>df96d976dbf7401041d08f3813961989</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>connection_strength</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_ci_relationship_connection_strength</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 16:15:38</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

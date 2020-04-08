@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Soft Delete Of A Test CI</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-04-02 19:39:58</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[var updateSilently = true;
+restoreSoftDeletes(updateSilently);
+//softDeleteCIRelationships(10,false);
+softDeleteCI(10,false);
+
+function softDeleteCI(qty,updateSilently) {
+	var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+	
+	var gr1 = new GlideRecord(ciTable);
+	if (qty > 0) {
+		gr1.setLimit(qty);	
+	}
+	gr1.addQuery('soft_delete',false);
+	gr1.query();
+	while (gr1.next()) {		
+		if (updateSilently == true) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);			
+		}			
+		gr1.setValue('soft_delete',true);
+		gr1.update();
+	}
+}
+
+function softDeleteCIRelationships(qty,updateSilently) {
+	
+	var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+	
+	var gr1 = new GlideRecord(relTable);
+	if (qty > 0) {
+		gr1.setLimit(qty);	
+	}
+	gr1.addQuery('soft_delete',false);
+	gr1.query();
+	while (gr1.next()) {
+		if (updateSilently == true) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);			
+		}			
+		gr1.setValue('soft_delete',true);
+		gr1.update();
+	}
+}
+
+function restoreSoftDeletes(updateSilently) {
+	restoreSoftDeletedCIs(updateSilently);
+	restoreSoftDeletedCIRelationships(updateSilently);
+}
+
+function restoreSoftDeletedCIs(updateSilently) {
+	var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+	
+	var gr1 = new GlideRecord(ciTable);
+	gr1.addQuery('soft_delete',true);
+	gr1.query();
+	while (gr1.next()) {
+		if (updateSilently == true) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);			
+		}		
+		gr1.setValue('soft_delete',false);
+		gr1.update();
+	}
+}
+
+function restoreSoftDeletedCIRelationships(updateSilently) {
+	
+	var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+	var gr1 = new GlideRecord(relTable);
+	gr1.addQuery('soft_delete',true);
+	gr1.query();
+	while (gr1.next()) {
+		if (updateSilently == true) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);			
+		}	
+		gr1.setValue('soft_delete',false);
+		gr1.update();
+	}	
+}
+
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-02 19:42:39</sys_created_on>
+        <sys_id>7922a53bdb3344104f29252b139619cd</sys_id>
+        <sys_mod_count>18</sys_mod_count>
+        <sys_name>Soft Delete Of A Test CI</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_7922a53bdb3344104f29252b139619cd</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-07 13:53:15</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Update All CMDB Rel CI Test Records</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-04-02 15:26:24</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[var updateSilently = true;
+restoreAllCMDBRelationRecords(updateSilently);
+var qty = 1;
+updateCMDBRelationRecords(qty,false);
+
+function updateCMDBRelationRecords(qty,updateSilently) {
+	
+	var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+	var gr1 = new GlideRecord(relTable);
+	gr1.addQuery('original_or_alternative','original');
+	if (qty > 0) {
+		gr1.setLimit(qty);
+	}
+	gr1.query();
+	while (gr1.next()) {
+		var sysID = gr1.getValue('sys_id').toString();
+		updateCMDBRelation(sysID,updateSilently);
+	}
+}
+
+function restoreAllCMDBRelationRecords(updateSilently) {
+	
+	var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+	var gr1 = new GlideRecord(relTable);
+	gr1.addQuery('original_or_alternative','alternative');
+	gr1.query();
+	while (gr1.next()) {
+		var sysID = gr1.getValue('sys_id').toString();
+		updateCMDBRelation(sysID,updateSilently);
+	}
+}
+
+
+function updateCMDBRelation(sys_id,updateSilently) {
+	var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+	
+	var gr1 = new GlideRecord(relTable);
+	gr1.addQuery('sys_id',sys_id);
+	gr1.query();
+	if (gr1.next()) {
+		var originalOrAlternative = gr1.getValue('original_or_alternative').toString();
+		var gotAlternativeValues = gr1.getValue('got_alternative_values') || false;
+		
+		var typeSysID = gr1.getValue('type').toString();
+		var parentSysID = gr1.getValue('parent').toString();
+		var childSysID = gr1.getValue('child').toString();
+		var connectionStrength = gr1.getValue('connection_strength');
+		var port = gr1.getValue('port') || 0;
+		var percentOutage = gr1.getValue('percent_outage') || 0;
+				
+		if (originalOrAlternative == 'Alternative') {
+
+			var originalTypeSysID = gr1.getValue('original_value_type').toString();
+			var originalParentSysID = gr1.getValue('original_value_parent').toString();
+			var originalChildSysID = gr1.getValue('original_value_child').toString();
+			var originalConnectionStrength = gr1.getValue('original_value_connection_strength');
+			var originalPort = gr1.getValue('original_value_port') || 0;
+			var originalPercentOutage = gr1.getValue('original_value_percent_outage') || 0;
+			
+			gr1.setValue('parent',originalParentSysID);
+			gr1.setValue('child',originalChildSysID);
+			gr1.setValue('type',originalTypeSysID);
+			gr1.setValue('port',originalPort);
+			gr1.setValue('percent_outage',originalPercentOutage);	
+			gr1.setValue('connection_strength',originalConnectionStrength); // Choice always, cluster, infrequent, occassional
+			gr1.setValue('original_or_alternative','Original');
+		} // if (originalOrAlternative == 'Alternative')
+		else {
+			// Original
+			if (gotAlternativeValues == true) {
+				
+				var alternativeTypeSysID = gr1.getValue('alternative_value_type').toString();
+				var alternativeParentSysID = gr1.getValue('alternative_value_parent').toString();
+				var alternativeChildSysID = gr1.getValue('alternative_value_child').toString();
+				var alternativeConnectionStrength = gr1.getValue('alternative_value_connection_strength');
+				var alternativePort = gr1.getValue('alternative_value_port') || 0;
+				var alternativePercentOutage = gr1.getValue('alternative_value_percent_outage') || 0;
+				
+				gr1.setValue('parent',alternativeParentSysID);
+				gr1.setValue('child',alternativeChildSysID);
+				gr1.setValue('type',alternativeTypeSysID);
+				gr1.setValue('port',alternativePort);
+				gr1.setValue('percent_outage',alternativePercentOutage);	
+				gr1.setValue('connection_strength',alternativeConnectionStrength); // Choice always, cluster, infrequent, occassional
+				gr1.setValue('original_or_alternative','Alternative');
+			} // if (gotAlternativeValues == true)
+			else {
+				// Need to create
+				var relTypeSysID1 = findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
+				var relTypeSysID2 = findOrInsertTestRelType('Depends on','Used by','Depends on::Used by');
+				
+				if (typeSysID == relTypeSysID1) {
+						alternativeTypeSysID = relTypeSysID2;
+				}
+				else {
+					alternativeTypeSysID = relTypeSysID1;	
+				}	
+				
+				alternativeParentSysID = childSysID;
+				alternativeChildSysID = parentSysID;
+				
+				if (connectionStrength == 'always') {
+					alternativeConnectionStrength = 'occassional';
+				}
+				else {
+					alternativeConnectionStrength = 'always';
+				}
+				
+				alternativePort = port + 1;
+				alternativePercentOutage = percentOutage + 1;
+			
+				gr1.setValue('parent',alternativeParentSysID);
+				gr1.setValue('child',alternativeChildSysID);
+				gr1.setValue('type',alternativeTypeSysID);
+				gr1.setValue('port',alternativePort);
+				gr1.setValue('percent_outage',alternativePercentOutage);	
+				gr1.setValue('connection_strength',alternativeConnectionStrength); // Choice always, cluster, infrequent, occassional
+
+				gr1.setValue('alternative_value_parent',alternativeParentSysID);
+				gr1.setValue('alternative_value_child',alternativeChildSysID);
+				gr1.setValue('alternative_value_type',alternativeTypeSysID);
+				gr1.setValue('alternative_value_port',alternativePort);
+				gr1.setValue('alternative_value_percent_outage',alternativePercentOutage);	
+				gr1.setValue('alternative_value_connection_strength',alternativeConnectionStrength); // Choice always, cluster, infrequent, occassional
+				gr1.setValue('got_alternative_values',true);
+				gr1.setValue('original_or_alternative','Alternative');
+				
+			} // if (gotAlternativeValues == true)	
+		} // // if (originalOrAlternative == 'Alternative')
+		
+		if (updateSilently == true) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);			
+		}		
+		gr1.update();		
+	} // if (gr1.next())
+}
+
+function findOrInsertTestRelType(parent,child,name) {
+	//('Runs on','Runs','Runs on::Runs');
+	//('Depends on','Used by','Depends on::Used by');
+	var rtnSysID = '';
+	relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
+	var gr1 = new GlideRecord(relTable);
+	gr1.addQuery('parent_descriptor',parent); // Runs on
+	gr1.addQuery('child_descriptor',child); // Runs
+	gr1.addQuery('name',name); // Runs on::Runs
+	gr1.query();
+	if (!gr1.next()) {		
+		// Does not exist
+		var gr2 = new GlideRecord(relTable);
+		gr1.initialize();
+		gr1.setValue('parent_descriptor',parent); // Runs on
+		gr1.setValue('child_descriptor',child); // Runs
+		rtnSysID = gr1.insert();	
+	}
+	else {
+		rtnSysID = gr1.getValue('sys_id').toString();
+	}
+	return rtnSysID;
+}
+
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-02 15:46:08</sys_created_on>
+        <sys_id>931824b3db7f04104f29252b13961956</sys_id>
+        <sys_mod_count>29</sys_mod_count>
+        <sys_name>Update All CMDB Rel CI Test Records</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_931824b3db7f04104f29252b13961956</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-07 14:00:26</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

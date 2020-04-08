@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section caption="Computer" section_id="59bfadcfdbb7801041d08f38139619f1" sys_domain="global" table="x_tekso_twxapp01_test_server" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_core_count</element>
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2b08bdc7dbf7801041d08f38139619eb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_count</element>
+            <position>1</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>ab08bdc7dbf7801041d08f38139619eb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_name</element>
+            <position>2</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2f08bdc7dbf7801041d08f38139619eb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_type</element>
+            <position>3</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>af08bdc7dbf7801041d08f38139619eb</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>disk_space</element>
+            <position>4</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2308bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>form_factor</element>
+            <position>5</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>a308bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>os_address_width</element>
+            <position>6</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2708bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>os_service_pack</element>
+            <position>7</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>a708bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>object_id</element>
+            <position>8</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2b08bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>virtual</element>
+            <position>9</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>ab08bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cd_rom</element>
+            <position>10</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2f08bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>11</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>af08bdc7dbf7801041d08f38139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cd_speed</element>
+            <position>12</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2308bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_core_thread</element>
+            <position>13</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>a308bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_manufacturer</element>
+            <position>14</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2708bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>cpu_speed</element>
+            <position>15</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>a708bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>chassis_type</element>
+            <position>16</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2b08bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>floppy</element>
+            <position>17</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>ab08bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>os</element>
+            <position>18</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2f08bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>os_domain</element>
+            <position>19</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>af08bdc7dbf7801041d08f38139619ed</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>os_version</element>
+            <position>20</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>2308bdc7dbf7801041d08f38139619ee</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ram</element>
+            <position>21</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 13:20:13</sys_created_on>
+            <sys_id>a308bdc7dbf7801041d08f38139619ee</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Computer" display_value="Computer" name="x_tekso_twxapp01_test_server" sys_domain="global" view="Default view">59bfadcfdbb7801041d08f38139619f1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 13:20:13</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="INSERT_OR_UPDATE">
+            <caption>Computer</caption>
+            <header>false</header>
+            <name>x_tekso_twxapp01_test_server</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:43:45</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>59bfadcfdbb7801041d08f38139619f1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Computer</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_section_59bfadcfdbb7801041d08f38139619f1</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:43:45</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+</record_update>

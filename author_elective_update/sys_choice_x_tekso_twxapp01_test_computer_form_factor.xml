@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="form_factor" table="x_tekso_twxapp01_test_computer" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>form_factor</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Blade</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:04:54</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>dac621c7dbb7801041d08f38139619a8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:04:54</sys_updated_on>
+            <value>Blade</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>form_factor</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Desktop</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:05:10</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>e5d62947dbb7801041d08f3813961983</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:05:10</sys_updated_on>
+            <value>Desktop</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>form_factor</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Rack Mount</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:05:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>99e621c7dbb7801041d08f38139619ac</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:05:27</sys_updated_on>
+            <value>Rack Mount</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>form_factor</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Stand Alone</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:05:41</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>71f661c7dbb7801041d08f381396193c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:05:41</sys_updated_on>
+            <value>Stand Alone</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>form_factor</element>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:04:54</sys_created_on>
+            <sys_id>10d661c7dbb7801041d08f3813961939</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>form_factor</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_computer_form_factor</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:04:54</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

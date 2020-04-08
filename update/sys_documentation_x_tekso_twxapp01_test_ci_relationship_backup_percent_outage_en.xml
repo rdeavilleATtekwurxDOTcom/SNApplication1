@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="percent_outage" label="Percent Outage" language="en" table="x_tekso_twxapp01_test_ci_relationship_backup">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>percent_outage</element>
+            <help/>
+            <hint/>
+            <label>Percent Outage</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_ci_relationship_backup</name>
+            <plural>Percent Outages</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-02 20:14:14</sys_created_on>
+            <sys_id>fbf9a133db7344104f29252b13961959</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Percent Outage</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_test_ci_relationship_backup_percent_outage_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-02 20:14:14</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

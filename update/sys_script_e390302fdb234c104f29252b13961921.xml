@@ -46,6 +46,7 @@
 				gr1.setValue('connection_test_requested',true);
 				var gdt = new GlideDateTime();
 				gr1.setValue('connection_test_requested_at',gdt.getDisplayValue());
+				gr1.setValue('updated_by_script','BR Setup When MID Server Or URL Is Changed'); // Debug					
 				gr1.update(); // This will trigger the BR - Setup When Connection Test Req Changes
 			}
 		}
@@ -57,7 +58,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e390302fdb234c104f29252b13961921</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Setup When MID Server Or URL Is Changed</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -65,7 +66,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_e390302fdb234c104f29252b13961921</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 13:06:58</sys_updated_on>
+        <sys_updated_on>2020-03-24 17:16:01</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

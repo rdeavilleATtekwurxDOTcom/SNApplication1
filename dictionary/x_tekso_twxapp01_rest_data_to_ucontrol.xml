@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="REST Data To uControl" max_length="40" name="x_tekso_twxapp01_rest_data_to_ucontrol" type="collection">
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
@@ -12,9 +13,12 @@
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
         <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
+        <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
+        <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="link_to_processing_log_record"/>
         </index>

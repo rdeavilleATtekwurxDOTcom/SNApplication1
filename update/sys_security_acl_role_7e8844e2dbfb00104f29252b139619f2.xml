@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="INSERT_OR_UPDATE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-29 15:56:04</sys_created_on>
+        <sys_id>7e8844e2dbfb00104f29252b139619f2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_test_location.x_tekso_twxapp01.admin</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_security_acl display_value="x_tekso_twxapp01_test_location">fa8844e2dbfb00104f29252b139619ef</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_7e8844e2dbfb00104f29252b139619f2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-29 15:56:04</sys_updated_on>
+        <sys_user_role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</sys_user_role>
+        <transaction_id/>
+    </sys_security_acl_role>
+</record_update>

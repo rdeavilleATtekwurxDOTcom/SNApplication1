@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="cd_speed" table="x_tekso_twxapp01_test_computer" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>cd_speed</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Main System Chassis</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 11:47:36</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>3fc2e583dbb7801041d08f381396191c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 11:47:36</sys_updated_on>
+            <value>Main System Chassis</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>cd_speed</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Main Tower</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 11:47:20</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>a4c2a143dbb7801041d08f3813961978</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 11:47:20</sys_updated_on>
+            <value>Main Tower</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>cd_speed</element>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 11:47:20</sys_created_on>
+            <sys_id>cfc2e583dbb7801041d08f381396194c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>cd_speed</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_computer_cd_speed</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 11:47:20</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="firewall_status" table="x_tekso_twxapp01_test_server" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>firewall_status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>DMZ</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_server</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:41:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>102f298fdbb7801041d08f3813961917</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:41:27</sys_updated_on>
+            <value>DMZ</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>firewall_status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Internet</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_server</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:41:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>211f6d8fdbb7801041d08f38139619a9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:41:09</sys_updated_on>
+            <value>Internet</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>firewall_status</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Intranet</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_server</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:40:51</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>940fe1cfdbb7801041d08f381396190a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:40:51</sys_updated_on>
+            <value>Intranet</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>firewall_status</element>
+            <name>x_tekso_twxapp01_test_server</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:40:51</sys_created_on>
+            <sys_id>b20f6d8fdbb7801041d08f38139619cd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>firewall_status</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_server_firewall_status</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:40:51</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

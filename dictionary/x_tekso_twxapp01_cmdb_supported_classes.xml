@@ -2,7 +2,15 @@
     <element label="CMDB Supported Classes" max_length="40" name="x_tekso_twxapp01_cmdb_supported_classes" type="collection">
         <element label="Class" max_length="80" name="class" type="string"/>
         <element label="Class Display Name" max_length="80" name="class_display_name" type="string"/>
+        <element label="Field Data Type And Size List" max_length="4000" name="field_data_type_and_size_list" type="string"/>
+        <element label="Field List" max_length="4000" name="field_list" type="string"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element default="0" label="Max REST Data Size" max_length="40" name="max_rest_data_size" type="integer"/>
         <element display="true" label="Setup Record" max_length="32" name="setup_record" reference="x_tekso_twxapp01_setup" type="reference"/>
+        <element default="0" label="Total Data Size Of All Fields" max_length="40" name="total_data_size_of_all_fields" type="integer"/>
+        <element default="0" label="Total Length Of All Field Names" max_length="40" name="total_length_of_all_field_names" type="integer"/>
+        <element default="0" label="Total Number Of Fields" max_length="40" name="total_number_of_fields" type="integer"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="setup_record"/>
         </index>

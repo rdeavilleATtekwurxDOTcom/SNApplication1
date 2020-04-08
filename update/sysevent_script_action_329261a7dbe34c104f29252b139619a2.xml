@@ -11,7 +11,6 @@
 TestConnectionTimeOutScriptAction();
 
 function TestConnectionTimeOutScriptAction() {
-	gs.info('TestConnectionTimeOutScriptAction - Triggered');
 	//Note: parm not param
 	//gs.info('event.parm1: ' + event.parm1); // gs.getUserID()
 	//gs.info('event.parm2: ' + event.parm2); // gs.getUserName()
@@ -40,6 +39,7 @@ function TestConnectionTimeOutScriptAction() {
 			// Hence the need for a separated Aborted flag
 			// If Status is not Aborted - set it now			
 			gr1.setValue('status','Aborted');	
+			gr1.setValue('updated_by_script','Script Action TestConnectionTimeOut');	// Debug
 			gr1.update();
 		}
 
@@ -49,6 +49,7 @@ function TestConnectionTimeOutScriptAction() {
 			// Hence the need for a separated Timed Out flag
 			// If Status is not Timed Out - set it now			
 			gr1.setValue('status','Timed Out');	
+			gr1.setValue('updated_by_script','Script Action TestConnectionTimeOut');	// Debug			
 			gr1.update();
 		}
 		
@@ -57,6 +58,7 @@ function TestConnectionTimeOutScriptAction() {
 			if (status == 'Pending' || status == 'Sent') {		
 				gr1.setValue('status','Timed Out');
 				gr1.setValue('timed_out',true);
+				gr1.setValue('updated_by_script','Script Action TestConnectionTimeOut');	// Debug
 				gr1.update();
 				var gr2 = new GlideRecord(setupTable);
 				gr2.addQuery('sys_id',setupRecord);
@@ -68,6 +70,7 @@ function TestConnectionTimeOutScriptAction() {
 					gr2.setValue('start_sending_requested',false);
 					gr2.setValue('connection_test_requested',false);
 					gr2.setValue('connection_test_link','');
+					gr2.setValue('updated_by_script','Script Action TestConnectionTimeOut');	// Debug
 					gr2.update();
 				} // if (gr2.next())
 			} // if (status == 'Pending' || status == 'Sent')
@@ -82,7 +85,7 @@ function TestConnectionTimeOutScriptAction() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>329261a7dbe34c104f29252b139619a2</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>TestConnectionTimeOut</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -90,6 +93,6 @@ function TestConnectionTimeOutScriptAction() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 11:28:45</sys_updated_on>
+        <sys_updated_on>2020-04-06 09:20:02</sys_updated_on>
     </sysevent_script_action>
 </record_update>

@@ -12,6 +12,10 @@
         <order/>
         <script><![CDATA[function onLoad() {
 	
+	// Hide Updated By Script and Inserted By Script
+	g_form.setDisplay('updated_by_script',false);
+	g_form.setDisplay('inserted_by_script',false);
+	
 	if (g_scratchpad.start_sending_requested == 1) {
 		sendingStartingUp();
 		return;
@@ -22,7 +26,6 @@
 		return;
 	}
 
-	
 	// Set fields ReadOnly
 	g_form.setReadOnly('status',true);   
 	g_form.setReadOnly('status_details',true);	
@@ -291,8 +294,8 @@ function testConnectionIsRunning() {
 	fieldsToDisplayArr.push('help');
 	fieldsToDisplayArr.push('ucontrol_polling_interval_minutes');
 	fieldsToDisplayArr.push('ucontrol_connection_timeout_minutes');	
-
-
+	//fieldsToDisplayArr.push('updated_by_script');
+	
 	var fields = g_form.getEditableFields();
 	for (var x = 0; x < fields.length; x++) {
 		var fieldName = fields[x];	
@@ -371,7 +374,7 @@ function sendingStartingUp() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>182</sys_mod_count>
+        <sys_mod_count>194</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -379,7 +382,7 @@ function sendingStartingUp() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 11:35:36</sys_updated_on>
+        <sys_updated_on>2020-04-06 12:59:54</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

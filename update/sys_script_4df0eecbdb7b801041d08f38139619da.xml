@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_test_configuration_item</collection>
+        <condition>current.soft_delete == true</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Test uControl Track Del cmdb_ci</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[// Soft Delete
+(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as all info is lost for a delete
+	// After BR - this writes to x_tekso_twxapp01_cmdb_deletes
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_deletes which is triggered on insert
+	// BR uControl Track Deletes
+	var tblName = current.getTableName();
+	
+	var fieldCnt = 0;
+	var allFields = '';
+	for (var x in current){
+		var y = x.substring(0,15); // original_value_
+		var z = x.substring(0,18); // alternative_value_
+		// Exclude real_table_name and soft_delete and got_alternative_values
+		var excludeArr = ['sys_meta','real_table_name','soft_delete','got_alternative_values','original_or_alternative'];
+		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {		
+			if (fieldCnt == 0) {
+				allFields = x;
+			}
+			else {
+				allFields = allFields + ',' + x;
+			}
+			fieldCnt++;
+		}
+	}
+	
+	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+	gr1.initialize();
+	gr1.setValue('record_sys_id',current.sys_id);
+	gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+	gr1.setValue('table_name',current.real_table_name); 	
+	gr1.setValue('record_originally_created_by',current.sys_created_by);
+	gr1.setValue('record_originally_created_on',current.sys_created_on);	
+	gr1.setValue('record_updated_by',current.sys_updated_by);
+	gr1.setValue('record_updated_on',current.sys_updated_on);		
+	gr1.setValue('correlation_id1',current.correlation_id);
+	gr1.setValue('discovery_source1',current.discovery_source);
+	gr1.setValue('name',current.name);
+	gr1.setValue('base_table','cmdb_ci');
+	gr1.setValue('all_fields',allFields);
+	gr1.setValue('no_of_fields',fieldCnt);
+	gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+	gr1.setValue('test_data',true); // TESTING
+	gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+	gr1.setValue('inserted_by_script','BR Test uControl Track Del cmdb_ci');
+	gr1.insert();
+	
+	// Record that the br has run
+	//var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si.setDTLastRunAt('br_ucontrol_track_del_cmdb_ci_last_ran_at');
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-31 16:21:21</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>4df0eecbdb7b801041d08f38139619da</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Test uControl Track Del cmdb_ci</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_4df0eecbdb7b801041d08f38139619da</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-03 11:28:35</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=4df0eecbdb7b801041d08f38139619da"/>
+</record_update>

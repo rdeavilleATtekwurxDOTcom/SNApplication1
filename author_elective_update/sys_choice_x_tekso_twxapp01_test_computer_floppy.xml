@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="floppy" table="x_tekso_twxapp01_test_computer" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>floppy</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>3.5 inch</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:01:38</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>8de5a187dbb7801041d08f3813961904</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:01:38</sys_updated_on>
+            <value>3.5 inch</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>floppy</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>5.25 inch</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:02:13</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1916a947dbb7801041d08f38139619a5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:02:13</sys_updated_on>
+            <value>5.25 inch</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>floppy</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>None</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:02:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>1e366507dbb7801041d08f38139619a2</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:02:27</sys_updated_on>
+            <value>None</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>floppy</element>
+            <name>x_tekso_twxapp01_test_computer</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 12:01:38</sys_created_on>
+            <sys_id>dc16ad07dbb7801041d08f3813961916</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>floppy</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_computer_floppy</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 12:01:38</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

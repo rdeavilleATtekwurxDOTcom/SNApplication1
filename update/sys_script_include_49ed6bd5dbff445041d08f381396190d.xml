@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.UpdateSupportedClasses</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UpdateSupportedClasses</name>
+        <script><![CDATA[var UpdateSupportedClasses = Class.create();
+UpdateSupportedClasses.prototype = {
+    initialize: function() {
+    },
+	updateSupportedClassesTable: function(setupSysID,classesArr) {	
+		var setupTable = 'x_tekso_twxapp01_setup';
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';	
+
+		var newClassesInternalNameArr = [];
+		var newClassesDisplayNameArr = [];
+		var newClassesCnt = 0;
+		var newClassInternalName = '';
+		var newClassDisplayName = '';
+		for(var x=0; x<classesArr.length; x++){
+			newClassInternalName = classesArr[x];
+			// Get the class display name
+			var gr1 = new GlideRecord('sys_db_object');
+			gr1.addQuery('name',newClassInternalName);
+			gr1.query();
+			if (gr1.next()) {
+				// Class is valid
+				newClassDisplayName = gr1.getValue('label') || '';
+				newClassesInternalNameArr.push(newClassInternalName);
+				newClassesDisplayNameArr.push(newClassDisplayName);
+				newClassesCnt++;
+			}
+		}						
+		
+		if (newClassesCnt > 0) {
+			// We got back at least one good class
+			for(var y=0; y<newClassesInternalNameArr.length; y++){
+				newClassInternalName = newClassesInternalNameArr[y];
+				newClassDisplayName = newClassesDisplayNameArr[y];
+				this.insertOrUpdateClass(setupSysID,newClassInternalName,newClassDisplayName);
+			}
+			
+			// There may be some classes in the table that need to be removed
+			this.removeOldClassesFromSetup(setupSysID,newClassesInternalNameArr);
+			
+			// If Setup record has been deleted and recreated there may be records from other setup that need to be removed
+			this.removeOldClassesOtherSetup(setupSysID);		
+		}
+		
+		this.updateNumberOfSupportedClassesInSetupTable(setupSysID);		
+	},
+	updateNumberOfSupportedClassesInSetupTable: function(setupSysID) {
+
+		var setupTable = 'x_tekso_twxapp01_setup';
+		var setupExistingNumberOfSuppportedClasses = 0;
+		var gr1 = new GlideRecord(setupTable);
+		gr1.addQuery('sys_id',setupSysID);
+		gr1.query();
+		if (gr1.next()) {
+			setupExistingNumberOfSuppportedClasses = gr1.getValue('number_of_supported_classes') || 0;
+			var numberOfSupportedClasses = this.getNumberOfSupportedClasses(setupSysID);
+			if (numberOfSupportedClasses != setupExistingNumberOfSuppportedClasses) {
+				gr1.setValue('number_of_supported_classes',numberOfSupportedClasses);
+				gr1.setValue('updated_by_script','SI insertOrUpdateClass'); // Debug	
+				gr1.update();				
+			}
+		}	
+	},
+	getNumberOfSupportedClasses: function(setupSysID) {
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';	
+		var numberOfSupportedClasses = 0;
+		var gr1 = new GlideRecord(classTable);
+		gr1.addQuery('setup_record',setupSysID);
+		gr1.query();
+		numberOfSupportedClasses = gr1.getRowCount();	
+		
+		return numberOfSupportedClasses;
+	},
+	removeOldClassesOtherSetup: function(setupSysID) {
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';		
+		var gr1 = new GlideRecord(classTable);
+		gr1.query();
+		while(gr1.next()) {
+			var existingSetupSysID = gr1.getValue('setup_record') || '';
+			if (existingSetupSysID.length == 32) {
+				if (existingSetupSysID != setupSysID) {
+					gr1.deleteRecord();
+				}
+			}
+			else {
+				gr1.deleteRecord();
+			}
+		}
+	},
+	removeOldClassesFromSetup: function(setupSysID,newClassesInternalNameArr) {
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';		
+		
+		var gr1= new GlideRecord(classTable);
+		gr1.addQuery('setup_record',setupSysID);
+		gr1.query();
+		while(gr1.next()) {
+			var classInternalName = gr1.getValue('class') || '';	
+			if (classInternalName.length > 0) {
+				if (newClassesInternalNameArr.indexOf(classInternalName) == -1) {
+					// The class is not in the new list
+					gr1.deleteRecord();
+				}
+			}
+		} 							
+	},
+	insertOrUpdateClass: function(setupSysID,internalName,displayName) {
+		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';		
+
+		var totalNumberOfFields = 0;
+		var fieldList = '';
+		var totalDataSizeOfAllFields = 0;
+		var totalLengthOfAllFieldNames = 0;
+		var maxRESTDataSize = 0;
+		var fieldDataTypeAndSizeList = '';
+		
+		var ln = 0;
+		var gr1 = new GlideRecord('sys_dictionary');
+		gr1.addQuery('name',internalName);
+		gr1.query();
+		while(gr1.next()) {
+			var max_length = parseInt(gr1.getValue('max_length')) || 40; 
+			var element = gr1.getValue('element') || '';
+			var type = gr1.getValue('internal_type') || '';
+			if (type != 'collection') {	
+				ln = element.length;
+				if (totalNumberOfFields == 0) {
+					fieldList = element;						
+					// "field":"value", "field2":"value2" = 4 DQ + Colon + Comma = 6 additional chars
+					maxRESTDataSize = ln + max_length + 6;
+					fieldDataTypeAndSizeList = type + ' (' + max_length.toString() + ')';
+					totalDataSizeOfAllFields = max_length;
+					totalLengthOfAllFieldNames = ln;
+				}
+				else {
+					fieldList = fieldList + ',' + element;
+					maxRESTDataSize = maxRESTDataSize + ln + max_length + 6;
+					fieldDataTypeAndSizeList = fieldDataTypeAndSizeList + ',' + type + ' (' + max_length.toString() + ')';
+					totalDataSizeOfAllFields = totalDataSizeOfAllFields + max_length;
+					totalLengthOfAllFieldNames = totalLengthOfAllFieldNames + ln;				}
+				totalNumberOfFields++;
+			}
+		}
+		// Need to include the { } at the start and end of the rest
+		maxRESTDataSize = maxRESTDataSize + 2;
+		
+		var gr2 = new GlideRecord(classTable);
+		gr2.addQuery('setup_record',setupSysID);
+		gr2.addQuery('class',internalName);
+		gr2.addQuery('class_display_name',displayName);
+		gr2.query();
+		if (!gr2.next()) {			
+			// Record does not exist with this combo of name and label
+			// Check if a record exists with just the name alone
+			var gr3 = new GlideRecord(classTable);
+			gr3.addQuery('setup_record',setupSysID);
+			gr3.addQuery('class',internalName);
+			gr3.query();
+			if (gr3.next()) {	
+				// Record exists - this means the display name has changed
+				// Update the record with the new display name
+				gr3.setValue('class_display_name',displayName);
+				gr3.setValue('total_number_of_fields',totalNumberOfFields);
+				gr3.setValue('max_rest_data_size',maxRESTDataSize);	
+				gr3.setValue('field_list',fieldList);
+				gr3.setValue('field_data_type_and_size_list',fieldDataTypeAndSizeList);
+				gr3.setValue('total_data_size_of_all_fields',totalDataSizeOfAllFields);
+				gr3.setValue('total_length_of_all_field_names',totalLengthOfAllFieldNames);
+				gr3.setValue('updated_by_script','SI insertOrUpdateClass'); // Debug	
+				gr3.update();
+			}
+			else {
+				// Record does not exist - Insert
+				var gr4 = new GlideRecord(classTable);
+				gr4.initialize();
+				gr4.setValue('setup_record',setupSysID);
+				gr4.setValue('class',internalName);
+				gr4.setValue('class_display_name',displayName);		
+				gr4.setValue('total_number_of_fields',totalNumberOfFields);
+				gr4.setValue('max_rest_data_size',maxRESTDataSize);
+				gr4.setValue('field_list',fieldList);
+				gr4.setValue('field_data_type_and_size_list',fieldDataTypeAndSizeList);	
+				gr4.setValue('total_data_size_of_all_fields',totalDataSizeOfAllFields);
+				gr4.setValue('total_length_of_all_field_names',totalLengthOfAllFieldNames);
+				gr4.setValue('inserted_by_script','SI insertOrUpdateClass'); // Debug					
+				gr4.insert();
+			}							
+		}
+		else {
+			// Record already exists
+			// Need to check if the stats have changed	
+			var changed = false;
+			
+			var currentTotalNumberOfFields = gr2.getValue('total_number_of_fields') || 0;
+			var currentFieldList = gr2.getValue('field_list') || '';
+			var currentTotalDataSizeOfAllFields = gr2.getValue('total_data_size_of_all_fields') || 0;
+			var currentTotalLengthOfAllFieldNames = gr2.getValue('total_length_of_all_field_names') || 0;
+			var currentMaxRESTDataSize = gr2.getValue('max_rest_data_size') || 0;
+			var currentFieldDataTypeAndSizeList = gr2.getValue('field_data_type_and_size_list') || '';
+			
+			if (currentTotalNumberOfFields != totalNumberOfFields) {
+				changed = true;
+			}
+
+			if (currentFieldList != fieldList) {
+				changed = true;
+			}
+			
+			if (currentTotalDataSizeOfAllFields != totalDataSizeOfAllFields) {
+				changed = true;
+			}
+			
+			if (currentTotalLengthOfAllFieldNames != totalLengthOfAllFieldNames) {
+				changed = true;
+			}
+			
+			if (currentMaxRESTDataSize != maxRESTDataSize) {
+				changed = true;
+			}
+			
+			if (currentFieldDataTypeAndSizeList != fieldDataTypeAndSizeList) {
+				changed = true;
+			}
+			
+			if (changed == true) {
+				gr2.setValue('total_number_of_fields',totalNumberOfFields);
+				gr2.setValue('max_rest_data_size',maxRESTDataSize);
+				gr2.setValue('field_list',fieldList);
+				gr2.setValue('field_data_type_and_size_list',fieldDataTypeAndSizeList);
+				gr2.setValue('total_data_size_of_all_fields',totalDataSizeOfAllFields);
+				gr2.setValue('total_length_of_all_field_names',totalLengthOfAllFieldNames);
+				gr2.setValue('updated_by_script','SI insertOrUpdateClass'); // Debug	
+				gr2.update();
+			}			
+		}
+	},
+    type: 'UpdateSupportedClasses'
+};
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-26 13:26:45</sys_created_on>
+        <sys_id>49ed6bd5dbff445041d08f381396190d</sys_id>
+        <sys_mod_count>20</sys_mod_count>
+        <sys_name>UpdateSupportedClasses</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_49ed6bd5dbff445041d08f381396190d</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-26 17:24:38</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="x_tekso_twxapp01_test_configuration_item" label="Test Hardware" max_length="40" name="x_tekso_twxapp01_test_hardware" type="collection">
+        <element label="Alternative Value Default Gateway" max_length="40" name="alternative_value_default_gateway" type="string"/>
+        <element label="Alternative Value Hardware Status" max_length="40" name="alternative_value_hardware_status" type="string"/>
+        <element label="Alternative Value Hardware Substatus" max_length="40" name="alternative_value_hardware_substatus" type="string"/>
+        <element label="Default Gateway" max_length="40" name="default_gateway" type="string"/>
+        <element choice="1" default="installed" label="Hardware Status" max_length="40" name="hardware_status" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Defective" value="defective"/>
+                <element inactive_on_update="false" label="Installed" value="installed"/>
+                <element inactive_on_update="false" label="Retired" value="retired"/>
+            </choice>
+        </element>
+        <element choice="3" default="in use" dependent="hardware_status" dependent_on_field="hardware_status" label="Hardware Substatus" max_length="40" name="hardware_substatus" type="string" use_dependent_field="true">
+            <choice>
+                <element dependent_value="defective" inactive_on_update="false" label="Disposable" value="disposable"/>
+                <element dependent_value="installed" inactive_on_update="false" label="In Use" value="in use"/>
+                <element dependent_value="retired" inactive_on_update="false" label="Lost" value="lost"/>
+                <element dependent_value="defective" inactive_on_update="false" label="Repairable" value="repairable"/>
+                <element dependent_value="retired" inactive_on_update="false" label="Sold" value="sold"/>
+            </choice>
+        </element>
+        <element label="Original Value Default Gateway" max_length="40" name="original_value_default_gateway" type="string"/>
+        <element label="Original Value Hardware Status" max_length="40" name="original_value_hardware_status" type="string"/>
+        <element label="Original Value Hardware Substatus" max_length="40" name="original_value_hardware_substatus" type="string"/>
+    </element>
+</database>

@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Debug Log" max_length="40" name="x_tekso_twxapp01_debug_log" type="collection">
+    <element label="Debug Log" max_length="40" name="x_tekso_twxapp01_debug_log" sizeclass="58773" type="collection">
+        <element label="Column Name" max_length="80" name="column_name" type="string"/>
+        <element default="0" label="Debug Int" max_length="40" name="debug_int" type="integer"/>
+        <element default="0" label="Debug Int2" max_length="40" name="debug_int2" type="integer"/>
+        <element default="0" label="Debug Int3" max_length="40" name="debug_int3" type="integer"/>
+        <element default="0" label="Debug Int4" max_length="40" name="debug_int4" type="integer"/>
+        <element label="Debug Text" max_length="5000000" name="debug_text" type="string"/>
+        <element label="Debug Text2" max_length="5000000" name="debug_text2" type="string"/>
+        <element label="Debug Text3" max_length="5000000" name="debug_text3" type="string"/>
+        <element label="Debug Text4" max_length="5000000" name="debug_text4" type="string"/>
         <element label="Message" max_length="200" name="message" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Table" max_length="80" name="table" type="string"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
     </element>
 </database>

@@ -2,12 +2,44 @@
     <sys_ui_page action="INSERT_OR_UPDATE">
         <category>general</category>
         <client_script><![CDATA[function onAbort() {
-	//var sys_id = gel("sysID").value;
-	//var now = gel("now").value;
+	// Don't need to do anything here - really
+	// as this will trigger the processing script
 	
+	// These lines are not necessary
 	GlideDialogWindow.get().destroy();
 	return true;
-}]]></client_script>
+}
+
+function myTimer() {
+	// This does not trigger the Processing Script
+	
+	// Call a client script to check if the connection_status is OK
+	// if so - then call g_form.save()
+	
+	// Get the value from <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	var sysID = gel("sysID").value;
+	
+	// Use a script include to check the current connnection_status
+	
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientReadSetupRecord');
+	ga.addParam('sysparm_name','getConnectionStatus');
+	ga.addParam("sysparm_sys_id", sysID);
+	ga.getXML(callBack);
+
+}
+
+// This is the return from the script include
+function callBack(response){
+	var connectionStatus = response.responseXML.documentElement.getAttribute("answer");
+	if (connectionStatus == 'OK' || connectionStatus == 'Failed') {
+		g_form.save();
+	}
+}
+
+// Trigger myTimer every 1 second
+// This will check to see if the connetion_status is now OK
+// If so - it will call g_form.save
+var myVar = setInterval(myTimer ,1000);]]></client_script>
         <description/>
         <direct>false</direct>
         <endpoint>x_tekso_twxapp01_sending_starting_please_wait.do</endpoint>
@@ -74,6 +106,7 @@ if (gr1.next()) {
 	gr1.setValue('connection_status_details','Sending Aborted At: ' + gdt.getDisplayValue() + ' By: ' + usr);
 	gr1.setValue('start_sending_requested',false);
 	gr1.setValue('connection_test_requested',false);	
+	gr1.setValue('updated_by_script','UI Page sending_starting_please_wait'); // Debug
 	gr1.update();
 	
 	// Set the status of the connection test record to Aborted
@@ -85,10 +118,12 @@ if (gr1.next()) {
 	if (gr2.next()) {
 		gr2.setValue('status','Aborted');
 		gr2.setValue('aborted',true);
+		gr2.setValue('updated_by_script','UI Page sending_starting_please_wait'); // Debug
 		gr2.update();
 	}
 
 	gr1.setValue('connection_test_link','');
+	gr1.setValue('updated_by_script','UI Page sending_starting_please_wait'); // Debug
 	gr1.update();
 	
 	var url = '/x_tekso_twxapp01_setup.do?sys_id=' + sysID;
@@ -98,13 +133,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 18:26:40</sys_created_on>
         <sys_id>0621848bdbefc81041d08f38139619b2</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>sending_starting_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_0621848bdbefc81041d08f38139619b2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 13:29:17</sys_updated_on>
+        <sys_updated_on>2020-04-06 13:23:20</sys_updated_on>
     </sys_ui_page>
 </record_update>

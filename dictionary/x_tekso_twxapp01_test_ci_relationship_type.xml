@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Test CI Relationship Type" max_length="40" name="x_tekso_twxapp01_test_ci_relationship_type" type="collection">
+        <element label="Child Descriptor" max_length="40" name="child_descriptor" type="string"/>
+        <element calculation="(function calculatedFieldValue(current) {&#13;&#10;&#13;&#10;&#9;return current.parent_descriptor.getDisplayValue() + '::' + current.child_descriptor.getDisplayValue();&#13;&#10;&#13;&#10;})(current);" display="true" label="Name" max_length="100" name="name" type="string" virtual="true"/>
+        <element label="Parent Descriptor" max_length="40" name="parent_descriptor" type="string"/>
+        <element default="cmdb_rel_type" label="Real Table Name" max_length="80" name="real_table_name" type="string"/>
+    </element>
+</database>

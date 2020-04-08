@@ -24,6 +24,7 @@
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
         <element label="Good Connection Failed At" max_length="40" name="good_connection_failed_at" type="glide_date_time"/>
         <element default="Enter a valid uControl URL and uControl MID Server and then click on Test Connection" label="Help" max_length="200" name="help" type="string"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
         <element label="Last Processing At" max_length="40" name="last_processing_at" type="glide_date_time"/>
         <element label="Last Processing Data Sent Summary" max_length="40" name="last_processing_data_sent_summary" type="string"/>
@@ -91,6 +92,7 @@
             </choice>
         </element>
         <element attributes="edge_encryption_enabled=true" display="true" hint="Can only be updated when system is not sending - Click on the Stop Sending buton to edit this field" label="uControl URL" max_length="200" name="ucontrol_url" type="string"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="ucontrol_integration_user"/>
         </index>

@@ -51,6 +51,7 @@
 		gr2.query();
 		if (gr2.next()) {
 			gr2.setValue('link_to_last_processing_log_record',gr1.sys_id);
+			gr2.setValue('updated_by_script','BR Setup Add In Process Log Ref'); // Debug			
 			gr2.update();
 		}
 	}
@@ -62,7 +63,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>18a9e220db2fc01041d08f381396199e</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Setup Add In Process Log Ref</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -70,7 +71,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_18a9e220db2fc01041d08f381396199e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-11 12:35:33</sys_updated_on>
+        <sys_updated_on>2020-03-24 17:13:42</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

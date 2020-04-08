@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="updated_by_script" label="Updated By Script" language="en" table="x_tekso_twxapp01_setup">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>updated_by_script</element>
+            <help/>
+            <hint/>
+            <label>Updated By Script</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <plural>Updated By Scripts</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-24 17:04:42</sys_created_on>
+            <sys_id>3f486674db7b805041d08f3813961912</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Updated By Script</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_updated_by_script_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-24 17:04:42</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

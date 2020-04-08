@@ -55,6 +55,7 @@
 			
 			if (connectionStatus != connectionStatus2) {
 				gr1.setValue('connection_status',connectionStatus2);	
+				gr1.setValue('updated_by_script','BR Setup When Connection Test Req Changes'); // Debug	
 				gr1.update();			
 			}
 		}	
@@ -103,12 +104,15 @@
 			gr3.setValue('test_connection_triggered_by','BR Setup When Connection Test Req Changes');
 			gr3.setValue('request_will_time_out_at',gdt);
 			gr3.setValue('json_request_body',json);
+			gr3.setValue('total_length_of_json_request_body',json.length);
 			if (current.start_sending_requested == true) {
 				gr3.setValue('start_sending_requested',true);				
 			}
 			else {
 				gr3.setValue('start_sending_requested',false);
 			}
+			gr3.setValue('inserted_by_script','BR Setup When Connection Test Req Changes'); // Debug	
+			
 			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
 			gr3.insert();						
 		}
@@ -124,7 +128,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
-        <sys_mod_count>76</sys_mod_count>
+        <sys_mod_count>79</sys_mod_count>
         <sys_name>Setup When Connection Test Req Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -132,7 +136,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 10:47:01</sys_updated_on>
+        <sys_updated_on>2020-04-02 14:08:22</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -2,12 +2,45 @@
     <sys_ui_page action="INSERT_OR_UPDATE">
         <category>general</category>
         <client_script><![CDATA[function onAbort() {
-	//var sys_id = gel("sysID").value;
-	//var now = gel("now").value;
+	// Don't need to do anything here - really
+	// as this will trigger the processing script
 	
+	// These lines are not necessary
 	GlideDialogWindow.get().destroy();
 	return true;
-}]]></client_script>
+}
+
+function myTimer() {
+	// This does not trigger the Processing Script
+	
+	// Call a client script to check if the connection_status is OK
+	// if so - then call g_form.save()
+	
+	// Get the value from <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	var sysID = gel("sysID").value;
+	
+	// Use a script include to check the current connnection_status
+	
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientReadSetupRecord');
+	ga.addParam('sysparm_name','getConnectionStatus');
+	ga.addParam("sysparm_sys_id", sysID);
+	ga.getXML(callBack);
+
+}
+
+// This is the return from the script include
+function callBack(response){
+	var connectionStatus = response.responseXML.documentElement.getAttribute("answer");
+	if (connectionStatus == 'OK' || connectionStatus == 'Failed') {
+		g_form.save();
+	}
+}
+
+// Trigger myTimer every 1 second
+// This will check to see if the connetion_status is now OK
+// If so - it will call g_form.save
+var myVar = setInterval(myTimer ,1000);
+]]></client_script>
         <description/>
         <direct>false</direct>
         <endpoint>x_tekso_twxapp01_testing_connection_please_wait.do</endpoint>
@@ -23,8 +56,8 @@
 	border-color: #10463f !important;
 	border: 1px solid transparent !important;
 }
-</style>	
-<g:ui_form>
+</style>
+<g:ui_form>	
 	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
 	<img src="logo1.jpg"/>
 	<table border="0">		
@@ -59,7 +92,8 @@
 </g:ui_form>	
 </j:jelly>]]></html>
         <name>testing_connection_please_wait</name>
-        <processing_script><![CDATA[var setupTable = 'x_tekso_twxapp01_setup';
+        <processing_script><![CDATA[// This is only triggered by the Abort button - Submit
+var setupTable = 'x_tekso_twxapp01_setup';
 var gr1 = new GlideRecord(setupTable);
 gr1.addQuery('sys_id',sysID);
 gr1.query();
@@ -72,6 +106,7 @@ if (gr1.next()) {
 	gr1.setValue('connection_status_details','Connection Test Aborted At: ' + gdt.getDisplayValue() + ' By: ' + usr);
 	gr1.setValue('start_sending_requested',false);
 	gr1.setValue('connection_test_requested',false);	
+	gr1.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug
 	gr1.update();
 	
 	// Set the status of the connection test record to Aborted
@@ -82,11 +117,13 @@ if (gr1.next()) {
 	gr2.query();
 	if (gr2.next()) {
 		gr2.setValue('status','Aborted');
-		gr2.setValue('aborted',true);		
+		gr2.setValue('aborted',true);
+		gr2.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug		
 		gr2.update();
 	}
 	
 	gr1.setValue('connection_test_link','');
+	gr1.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug	
 	gr1.update();
 	
 	var url = '/x_tekso_twxapp01_setup.do?sys_id=' + sysID;
@@ -96,13 +133,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 17:56:41</sys_created_on>
         <sys_id>207ab7b2dbefc81041d08f3813961980</sys_id>
-        <sys_mod_count>43</sys_mod_count>
+        <sys_mod_count>103</sys_mod_count>
         <sys_name>testing_connection_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_207ab7b2dbefc81041d08f3813961980</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 13:28:34</sys_updated_on>
+        <sys_updated_on>2020-04-06 13:22:09</sys_updated_on>
     </sys_ui_page>
 </record_update>

@@ -9,6 +9,7 @@
         <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
         <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
         <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
@@ -20,5 +21,6 @@
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
         <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element default="0" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
     </element>
 </database>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Generate Test Data" max_length="40" name="x_tekso_twxapp01_generate_test_data" type="collection">
+        <element default="0" label="Delete Relations Qty" max_length="40" name="delete_relations_qty" type="integer"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element default="New" label="Status" max_length="20" name="status" type="string"/>
+        <element default="0" label="Update Relations Qty" max_length="40" name="update_relations_qty" type="integer"/>
+    </element>
+</database>

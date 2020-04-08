@@ -45,6 +45,7 @@ if (gr0.next()) {
 	var setupScheduledJobSysID = gr0.getValue('scheduled_job_sys_id') || '';
 	if (sysIDForThisScript != setupScheduledJobSysID) {
 		gr0.setValue('scheduled_job_sys_id',sysIDForThisScript);
+		gr0.setValue('updated_by_script','SJ Send Data to uControl'); // Debug
 		gr0.update();
 	}
 		
@@ -106,8 +107,8 @@ if (gr0.next()) {
 			gr1.setValue('ucontrol_mid_server_name',midServerName);
 			gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);	
 			gr1.setValue('json_request_body',json);
-			gr1.setValue('triggered_by_script','Scheduled Job Send Data To uControl');
 			gr1.setValue('test_connection_triggered_by',true);
+			gr1.setValue('inserted_by_script','SJ Send Data to uControl'); // Debug
 			var connectionTestSysID = gr1.insert();
 
 			var si = new x_tekso_twxapp01.OutboundREST();
@@ -127,6 +128,7 @@ function setLastScanPerformedAt(setupTable) {
 	gr1.query();
 	if (gr1.next()) {
 		gr1.setValue('last_scan_performed_at',now);	
+		gr1.setValue('updated_by_script','SJ setLastScanPerformedAt'); // Debug
 		gr1.update();
 	}
 }
@@ -138,6 +140,7 @@ function setProcessingCompleteAtInLog(logTable,logSysID) {
 	if (gr1.next()) {
 		var completedAt = GlideDateTime();
 		gr1.setValue('processing_completed_at',completedAt);
+		gr1.setValue('updated_by_script','SJ setProcessingCompleteAtInLog'); // Debug		
 		gr1.update();
 	}
 }
@@ -160,6 +163,7 @@ function createNewLogRecord(logTable,pollingInt,timeout,curURL,curMIDServSysID,c
 	gr1.setValue('current_max_retries',curMaxRetries);
 	gr1.setValue('ucontrol_polling_interval_minutes',pollingInt);
 	gr1.setValue('ucontrol_connection_timeout_minutes',timeout);
+	gr1.setValue('inserted_by_script','SJ createNewLogRecord'); // Debug
 	
 	rtnSysID = gr1.insert();
 	return rtnSysID;
@@ -172,6 +176,7 @@ function updateSetupAddProcessingLogRef(setupTable,logSysID) {
 	gr1.query();
 	if (gr1.next()) {
 		gr1.setValue('link_to_last_processing_log_record',logSysID);
+		gr1.setValue('updated_by_script','SJ updateSetupAddProcessingLogRef'); // Debug		
 		gr1.update();
 	}
 }
@@ -212,6 +217,7 @@ function updateNumberOfPendingRecordsInSetupTable(setupTable,trackingTable) {
 		// Only update if the value has changed
 		if (noOfRecsOld != noOfRecsNew) {
 			gr1.setValue('number_of_pending_records',noOfRecsNew);
+			gr1.setValue('updated_by_script','SJ updateNumberOfPendingRecordsInSetupTable'); // Debug			
 			gr1.update();
 		}
 	}
@@ -239,6 +245,7 @@ function createLinkRecord(linkTable,operation,table,baseTable,recordSysID,data_s
 	gr1.setValue('link_to_rest_data_record',data_sys_id);
 	gr1.setValue('link_to_processing_record',trackingSysID);
 	gr1.setValue('link_to_processing_log_record',logSysID);
+	gr1.setValue('inserted_by_script','SJ createLinkRecord'); // Debug	
 	gr1.insert();
 }
 
@@ -252,8 +259,10 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
 	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
 	gr1.setValue('ucontrol_url',url);						
 	gr1.setValue('json_request_body',JSONRequestBody);
+	gr1.setValue('total_length_of_json_request_body',JSONRequestBody.length);
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
 	gr1.setValue('link_to_processing_log_record',logSysID);
+	gr1.setValue('inserted_by_script','SJ createDataRecordWithJSON'); // Debug	
 	var rtn_sys_id = gr1.insert();
 	
 	return rtn_sys_id;
@@ -270,8 +279,10 @@ function createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerNa
 	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
 	gr1.setValue('ucontrol_url',url);
 	gr1.setValue('json_request_body','');
+	gr1.setValue('total_length_of_json_request_body',0);	
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',0);
 	gr1.setValue('link_to_processing_log_record',logSysID);	
+	gr1.setValue('inserted_by_script','SJ createDataRecordWithEmptyJSON'); // Debug	
 	var rtn_sys_id = gr1.insert();
 	
 	return rtn_sys_id;
@@ -285,7 +296,9 @@ function addJSONToDataRecord(dataTable,data_sys_id,jsonRequestBody,noOfRecsInJSO
 	gr1.query();
 	if (gr1.next()) {
 		gr1.setValue('json_request_body',jsonRequestBody);
+		gr1.setValue('total_length_of_json_request_body',jsonRequestBody.length);		
 		gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
+		gr1.setValue('updated_by_script','SJ addJSONToDataRecord'); // Debug		
 		gr1.update();
 	}	
 }
@@ -404,6 +417,7 @@ function mainBit(pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrS
 
 		// Update to Processing - so no longer pending?
 		gr1.setValue('status','Processing');
+		gr1.setValue('updated_by_script','SJ Send Data to uControl'); // Debug		
 		gr1.update();
 
 		// Is there any delete or update data that needs to be pushed out first?
@@ -645,6 +659,7 @@ function mainBit(pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrS
 				}			
 			}
 			gr2.setValue('data_sent_deletes_per_class',stsDelPerCls);
+			gr2.setValue('updated_by_script','SJ Send Data to uControl'); // Debug			
 			gr2.update();
 			
 		} // if (gr2.next()) 
@@ -660,14 +675,14 @@ function mainBit(pollingInt,timeout,curURL,curMIDSrvSysID,curMIDSrvNm,curIntUsrS
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-30 15:00:07</sys_created_on>
         <sys_id>45dfbb5bdbe6001041d08f381396193a</sys_id>
-        <sys_mod_count>147</sys_mod_count>
+        <sys_mod_count>152</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_45dfbb5bdbe6001041d08f381396193a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 14:00:22</sys_updated_on>
+        <sys_updated_on>2020-04-02 15:07:55</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

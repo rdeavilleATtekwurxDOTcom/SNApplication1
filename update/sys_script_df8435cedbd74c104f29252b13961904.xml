@@ -27,9 +27,12 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[function getName(sys_id,tbl) {
+        <script><![CDATA[function getName(sys_id,tbl,testData) {
 	var nm = '';	
 	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (testData == true) {
+		reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];	
+	}
 	if (sys_id.length == 32 && reference_tbl_arr.indexOf(tbl) >= 0) {
 		var gr = new GlideRecord(tbl);
 		gr.addQuery('sys_id',sys_id);
@@ -96,11 +99,19 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var thisRecordStatus = current.status.toString();
 	
 	// This BR should only be on cmdb_ci and cmdb_rel_ci
-	var br = 'uControl Track Upd cmdb_ci';
+	var br = 'BR uControl Track Upd cmdb_ci';
 	
 	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
 	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
 
+	// This is the table that contains the data we need to read. 
+	// For real will be cmdb_ci_appl etc
+	// For test will be x_tekso_twxapp01_test_application etc
+	var dataTable = tableName;
+	if (current.test_data == true) {
+		dataTable = current.test_table_name;
+	}
+	
 	var matchedCriteriaForProcessing = false;
 	
 	// If the tableName is cmdb_rel_ci then the base table is also cmdb_rel_ci
@@ -158,6 +169,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			cmdbTrackingRunning = 'Error';
 			gr1.setValue('cmdb_tracking','Error');
 			gr1.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
+			gr1.setValue('updated_by_script','BR uControl Track Updates'); // Debug				
 			gr1.update();
 		}
 	}
@@ -166,6 +178,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			cmdbTrackingRunning = 'Running';
 			gr1.setValue('cmdb_tracking','Running');
 			gr1.setValue('cmdb_tracking_error_details','');	
+			gr1.setValue('updated_by_script','BR uControl Track Updates'); // Debug				
 			gr1.update();
 		}		
 	}
@@ -178,6 +191,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		// These are the only reference tables we are interested in
 		var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
 
+		if (current.test_data == true) {
+				reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];
+		}
+		
 		var recordOriginallyCreatedBy = current.record_originally_created_by;		
 		var recordOriginallyCreatedOn = current.record_originally_created_on;
 		var recordUpdatedBy = current.record_updated_by;		
@@ -192,6 +209,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			carryOn = true;
 		}
 		carryOn = true; //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		
 		if (carryOn == true) {
 			// e.g. dev91664
@@ -210,11 +228,11 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			var discoverySource1 = '';
 			var discoverySource2 = '';			
 			
-			var allFields = current.all_fields;
+			var allFields = current.all_fields.toString();
 			var allFieldsArr = allFields.split(',');
 			var noOfFields = allFieldsArr.length;
 
-			var fieldsChanged = current.fields_changed;
+			var fieldsChanged = current.fields_changed.toString();
 			var fieldsChangedArr = fieldsChanged.split(',');
 
 			var include_arr = [];
@@ -257,9 +275,12 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			
 			if (allFieldsExcluded == false) {
 				// At least one field to be processed
-
+				
 				// Get back the record that has changed
-				var gr2 = new GlideRecord(tableName);
+				// This is the table that contians the data we need to read. 
+				// For real will be cmdb_ci_appl etc
+				// For test will be x_tekso_twxapp01_test_application etc				
+				var gr2 = new GlideRecord(dataTable);
 				gr2.addQuery('sys_id',recordSysID);
 				gr2.query();
 				if (gr2.next()) {
@@ -358,7 +379,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 								lookup = -1;
 							}
 							else {
-								var val_lookup = getName(val,ref_table); // sys_id, table_name	
+								var val_lookup = getName(val,ref_table,current.test_data); // sys_id, table_name	
 								// Include the reference
 								lookup = 1;
 							}						
@@ -437,19 +458,30 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					var gr3 = new GlideRecord(trackingTable);
 					gr3.initialize();
 					gr3.setValue('operation',operation);
+					if (operation == 'update') {
+						gr3.setValue('link_to_originating_update_record',thisRecordSysID);
+					}
+					if (operation == 'delete') {
+						gr3.setValue('link_to_originating_delete_record',thisRecordSysID);	
+					}
 					gr3.setValue('table',tableName);
 					gr3.setValue('base_table',baseTable);
 					gr3.setValue('record_sys_id',recordSysID);
 					gr3.setValue('status',status);
 					gr3.setValue('no_of_fields',noOfFields);
 					gr3.setValue('all_fields',allFields);
+					gr3.setValue('total_length_of_all_fields_list',allFields.length);					
 					gr3.setValue('no_of_excluded_fields',noOfExcludedFields);
 					gr3.setValue('excluded_fields',excludedFields);
+					gr3.setValue('total_length_of_excluded_fields_list',excludedFields.length);					
 					gr3.setValue('no_of_dropped_fields',noOfDroppedFields);
 					gr3.setValue('dropped_fields',droppedFields);
+					gr3.setValue('total_length_of_dropped_fields_list',droppedFields.length);					
 					gr3.setValue('no_of_fields_to_process',noOfFieldsToProcess);
 					gr3.setValue('fields_to_process',fieldsToProcess);
+					gr3.setValue('total_length_of_fields_to_process_list',fieldsToProcess.length);					
 					gr3.setValue('data_to_process',data);
+					gr3.setValue('total_length_of_data_to_process',data.length);
 					gr3.setValue('no_of_times_sent_to_ucontrol',0);
 					gr3.setValue('ucontrol_url',configURL);
 					gr3.setValue('ucontrol_mid_server_name',configMIDServerName);
@@ -457,9 +489,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					gr3.setValue('ucontrol_integration_user_name',configUsrName);
 					gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
 					gr3.setValue('max_retries',configMaxRetries);
-					gr3.setValue('triggered_by_script',br);
 					gr3.setValue('json_request_body',jsonRequestBody);
+					gr3.setValue('total_length_of_json_request_body',jsonRequestBody.length);
 					gr3.setValue('metadata',dbInfo);
+					gr3.setValue('total_length_of_metadata',dbInfo.length);
 					gr3.setValue('rel_parent_sys_id',parentSysID);
 					gr3.setValue('rel_child_sys_id',childSysID);
 					gr3.setValue('correlation_id1',correlationID1);
@@ -468,9 +501,18 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					gr3.setValue('discovery_source2',discoverySource2);
 					gr3.setValue('record_originally_created_by',recordOriginallyCreatedBy);
 					gr3.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+					if (current.test_data == true) {
+						gr3.setValue('test_data',true);		
+						gr3.setValue('test_table_name',current.test_table_name);
+					}
+					else {
+						gr3.setValue('test_data',false);		
+						gr3.setValue('test_table_name','');						
+					}
 
+					gr3.setValue('inserted_by_script','BR uControl Track Updates'); // Debug					
 					var trackingSysID = gr3.insert();
-
+					
 					// Only update if the status field is blank - this should stop the risk of the BR's looping
 					if (thisRecordStatus.length < 1) {
 						var gr4 = new GlideRecord(thisTable);
@@ -484,8 +526,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							gr4.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
 							gr4.setValue('ucontrol_integration_user_name',configUsrName);
 							gr4.setValue('ucontrol_integration_user_sys_id',configUsrSysID);	
+							gr4.setValue('updated_by_script','BR uControl Track Updates'); // Debug							
 							gr4.setWorkflow(false);
-							gr4.autoSysFields(false);
 							gr4.update();
 							matchedCriteriaForProcessing = true;
 						}		
@@ -506,9 +548,9 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			gr5.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
 			gr5.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
 			gr5.setValue('ucontrol_integration_user_name',configUsrName);
-			gr5.setValue('ucontrol_integration_user_sys_id',configUsrSysID);			
-			gr5.setWorkflow(false);
-			gr5.autoSysFields(false);			
+			gr5.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
+			gr5.setValue('updated_by_script','BR uControl Track Updates'); // Debug					
+			gr5.setWorkflow(false);		
 			gr5.update();	
 		}
 	}
@@ -524,7 +566,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>27</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -532,7 +574,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-16 09:55:53</sys_updated_on>
+        <sys_updated_on>2020-04-02 14:16:40</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

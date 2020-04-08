@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="CMDB Deletes" max_length="40" name="x_tekso_twxapp01_cmdb_deletes" type="collection">
+        <element label="Actual Table Name" max_length="80" name="actual_table_name" type="string"/>
         <element label="All Fields" max_length="4000" name="all_fields" type="string"/>
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="CMDB Tracking Status" max_length="40" name="cmdb_tracking_status" type="string"/>
@@ -7,6 +8,7 @@
         <element label="Correlation ID2" max_length="512" name="correlation_id2" type="string"/>
         <element label="Discovery Source1" max_length="100" name="discovery_source1" type="string"/>
         <element label="Discovery Source2" max_length="100" name="discovery_source2" type="string"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Is In The List Of uControl Supported Classes" max_length="40" name="is_in_the_list_of_ucontrol_supported_classes" type="boolean"/>
         <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Name" max_length="255" name="name" type="string"/>
@@ -25,10 +27,13 @@
         <element label="Rel Type Sys ID" max_length="32" name="rel_type_sys_id" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
-        <element label="Triggered By Script" max_length="40" name="triggered_by_script" type="string"/>
+        <element label="Test Data" max_length="40" name="test_data" type="boolean"/>
+        <element label="Test Table Name" max_length="80" name="test_table_name" type="string"/>
+        <element default="0" label="Total Length Of All Fields List" max_length="40" name="total_length_of_all_fields_list" type="integer"/>
         <element label="uControl Integration User Is Valid" max_length="40" name="ucontrol_integration_user_is_valid" type="boolean"/>
         <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
         <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="link_to_processing_record"/>
         </index>

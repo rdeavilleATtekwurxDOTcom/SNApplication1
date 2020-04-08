@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Test Location" max_length="40" name="x_tekso_twxapp01_test_location" type="collection">
+        <element display="true" label="Name" max_length="100" name="name" type="string"/>
+        <element default="cmn_location" label="Real Table Name" max_length="80" name="real_table_name" type="string"/>
+    </element>
+</database>

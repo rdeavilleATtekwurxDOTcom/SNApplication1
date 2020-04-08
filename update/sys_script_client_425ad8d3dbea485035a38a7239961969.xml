@@ -24,7 +24,8 @@
 		g_form.showFieldMsg('ucontrol_mid_server', 'No MID Server - Test Connection cannot be performed until this is provided');
 		
 		//g_form.setValue('ucontrol_integration_user','');
-		g_form.setValue('connection_status','Missing Connection Details');			
+		g_form.setValue('connection_status','Missing Connection Details');
+		g_form.setValue('updated_by_script','CS Setup When MID Server is changed'); // Debug		
 		// Is the URL also blank?
 		if (g_form.getValue('ucontrol_url') == '') {
 			// URL is also blank
@@ -46,6 +47,7 @@
 		if (g_form.getValue('ucontrol_url') == '') {
 			//g_form.setValue('ucontrol_integration_user','');
 			g_form.setValue('connection_status','Missing Connection Details');	
+			g_form.setValue('updated_by_script','CS Setup When MID Server is changed'); // Debug	
 			g_form.setValue('connection_status_details','No URL');
 			g_form.getElement('connection_status').style.backgroundColor = "yellow";	
 			g_form.getElement('connection_status_details').style.backgroundColor = "yellow";					
@@ -54,6 +56,7 @@
 			// URL is not blank
 			//g_form.setValue('ucontrol_integration_user','');
 			g_form.setValue('connection_status','Connection Requires Testing');	
+			g_form.setValue('updated_by_script','CS Setup When MID Server is changed'); // Debug	
 			g_form.setValue('connection_status_details','MID Server Changed');
 			g_form.getElement('connection_status').style.backgroundColor = "coral";	
 			g_form.getElement('connection_status_details').style.backgroundColor = "coral";		
@@ -66,7 +69,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>425ad8d3dbea485035a38a7239961969</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>Setup When MID Server Is Changed</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -74,7 +77,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_425ad8d3dbea485035a38a7239961969</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-09 10:31:29</sys_updated_on>
+        <sys_updated_on>2020-04-02 14:47:18</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onChange</type>
         <ui_type>10</ui_type>

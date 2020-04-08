@@ -6,6 +6,8 @@
         <element label="BR uControl Track Updates Last Run At" max_length="40" name="br_ucontrol_track_updates_last_run_at" type="glide_date_time"/>
         <element label="BR uControl Track Upd cmdb_ci Last Ran At" max_length="40" name="br_ucontrol_track_upd_cmdb_ci_last_ran_at" type="glide_date_time"/>
         <element label="BR uControl Track Upd cmdb_rel_ci Last Ran At" max_length="40" name="br_ucontrol_track_upd_cmdb_rel_ci_last_ran_at" type="glide_date_time"/>
+        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="SJ Send Data to uControl Last Ran At" max_length="40" name="sj_send_data_to_ucontrol_last_ran_at" type="glide_date_time"/>
+        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
     </element>
 </database>

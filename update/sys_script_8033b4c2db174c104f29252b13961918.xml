@@ -67,7 +67,9 @@
 	gr1.setValue('rel_type_name',current.type.name);
 	gr1.setValue('all_fields',allFields);
 	gr1.setValue('no_of_fields',fieldCnt);	
-	gr1.setValue('triggered_by_script','uControl Track Del cmdb_rel_ci');
+	gr1.setValue('total_length_of_all_fields_list',allFields.length);	
+	gr1.setValue('actual_table_name','cmdb_rel_ci');
+	gr1.setValue('inserted_by_script','BR uControl Track Del cmdb_rel_ci');
 	gr1.insert();
 
 	// Record that the br has run
@@ -81,7 +83,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8033b4c2db174c104f29252b13961918</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>uControl Track Del cmdb_rel_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -89,7 +91,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_8033b4c2db174c104f29252b13961918</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-16 11:13:30</sys_updated_on>
+        <sys_updated_on>2020-04-02 14:10:45</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

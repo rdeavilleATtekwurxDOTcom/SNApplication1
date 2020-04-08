@@ -90,10 +90,18 @@ function isCMDBTrackingRunning(configTable) {
 	var thisRecordSysID = current.sys_id.toString();
 	var thisRecordStatus = current.status.toString();
 	
-	var br = 'uControl Track Deletes';
+	var br = 'BR uControl Track Deletes';
 	
 	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
 	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
+
+	// This is the table that contians the data we need to read. 
+	// For real will be cmdb_ci_appl etc
+	// For test will be x_tekso_twxapp01_test_application etc
+	var dataTable = tableName;
+	if (current.test_data == true) {
+		dataTable = current.test_table_name;
+	}
 	
 	var matchedCriteriaForProcessing = false;
 	
@@ -152,6 +160,7 @@ function isCMDBTrackingRunning(configTable) {
 			cmdbTrackingRunning = 'Error';
 			gr1.setValue('cmdb_tracking','Error');
 			gr1.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
+			gr1.setValue('updated_by_script','BR uControl Track Deletes'); // Debug	
 			gr1.update();
 		}
 	}
@@ -160,6 +169,7 @@ function isCMDBTrackingRunning(configTable) {
 			cmdbTrackingRunning = 'Running';
 			gr1.setValue('cmdb_tracking','Running');
 			gr1.setValue('cmdb_tracking_error_details','');	
+			gr1.setValue('updated_by_script','BR uControl Track Deletes'); // Debug				
 			gr1.update();
 		}		
 	}
@@ -184,7 +194,7 @@ function isCMDBTrackingRunning(configTable) {
 		var recordUpdatedBy = current.record_updated_by;		
 		var recordUpdatedOn = current.record_updated_on;
 		var noOfFields = current.no_of_fields;
-		var allFields = current.all_fields;
+		var allFields = current.all_fields.toString();
 		
 		// gets the user name
 		var userName = gs.getUserName();
@@ -285,13 +295,18 @@ function isCMDBTrackingRunning(configTable) {
 			gr2.setValue('status',status);
 			gr2.setValue('no_of_fields',noOfFields); // 0 for Delete
 			gr2.setValue('all_fields',allFields); // '' for Delete
+			gr2.setValue('total_length_of_all_fields_list',allFields.length);		
 			gr2.setValue('no_of_excluded_fields',noOfExcludedFields); // 0 for Delete
 			gr2.setValue('excluded_fields',excludedFields); // '' for Delete
+			gr2.setValue('total_length_of_excluded_fields_list',excludedFields.length);
 			gr2.setValue('no_of_dropped_fields',noOfDroppedFields); // 0 for Delete
 			gr2.setValue('dropped_fields',droppedFields); // '' for Delete
+			gr2.setValue('total_length_of_dropped_fields_list',droppedFields.length);
 			gr2.setValue('no_of_fields_to_process',noOfFieldsToProcess);
 			gr2.setValue('fields_to_process',fieldsToProcess);
+			gr2.setValue('total_length_of_fields_to_process_list',fieldsToProcess.length);
 			gr2.setValue('data_to_process',data);
+			gr2.setValue('total_length_of_data_to_process',data.length);			
 			gr2.setValue('no_of_times_sent_to_ucontrol',0);
 			gr2.setValue('ucontrol_url',configURL);
 			gr2.setValue('ucontrol_mid_server_name',configMIDServerName);
@@ -299,9 +314,10 @@ function isCMDBTrackingRunning(configTable) {
 			gr2.setValue('ucontrol_integration_user_name',configUsrName);
 			gr2.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
 			gr2.setValue('max_retries',configMaxRetries);
-			gr2.setValue('triggered_by_script',br);
 			gr2.setValue('json_request_body',jsonRequestBody);
+			gr2.setValue('total_length_of_json_request_body',jsonRequestBody.length);			
 			gr2.setValue('metadata',dbInfo);
+			gr2.setValue('total_length_of_metadata',dbInfo.length);			
 			gr2.setValue('rel_parent_sys_id',parentSysID);
 			gr2.setValue('rel_child_sys_id',childSysID);
 			gr2.setValue('correlation_id1',correlationID1);
@@ -310,6 +326,15 @@ function isCMDBTrackingRunning(configTable) {
 			gr2.setValue('discovery_source2',discoverySource2);
 			gr2.setValue('record_originally_created_by',recordOriginallyCreatedBy);
 			gr2.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+			if (current.test_data == true) {
+				gr2.setValue('test_data',true);		
+				gr2.setValue('test_table_name',current.test_table_name);
+			}
+			else {
+				gr2.setValue('test_data',false);		
+				gr2.setValue('test_table_name','');						
+			}
+			gr2.setValue('inserted_by_script','BR uControl Track Deletes'); // Debug	
 			
 			var trackingSysID = gr2.insert();
 
@@ -325,9 +350,9 @@ function isCMDBTrackingRunning(configTable) {
 					gr3.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
 					gr3.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
 					gr3.setValue('ucontrol_integration_user_name',configUsrName);
-					gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);						
+					gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);
+					gr3.setValue('updated_by_script','BR uControl Track Deletes'); // Debug
 					gr3.setWorkflow(false);
-					gr3.autoSysFields(false);
 					gr3.update();
 					matchedCriteriaForProcessing = true;
 				}		
@@ -346,9 +371,9 @@ function isCMDBTrackingRunning(configTable) {
 			gr4.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
 			gr4.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
 			gr4.setValue('ucontrol_integration_user_name',configUsrName);
-			gr4.setValue('ucontrol_integration_user_sys_id',configUsrSysID);			
-			gr4.setWorkflow(false);
-			gr4.autoSysFields(false);			
+			gr4.setValue('ucontrol_integration_user_sys_id',configUsrSysID);	
+			gr4.setValue('updated_by_script','BR uControl Track Deletes'); // Debug			
+			gr4.setWorkflow(false);		
 			gr4.update();	
 		}
 	}
@@ -364,7 +389,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -372,7 +397,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-16 09:49:57</sys_updated_on>
+        <sys_updated_on>2020-04-02 14:13:42</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

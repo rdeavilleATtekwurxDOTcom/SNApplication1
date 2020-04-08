@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="discovery_source" table="x_tekso_twxapp01_test_configuration_item" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>discovery_source</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>ImportSet</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_configuration_item</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 10:40:39</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d6c908bedbb3401041d08f381396193b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 10:40:39</sys_updated_on>
+            <value>ImportSet</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>discovery_source</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Manual Entry</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_configuration_item</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 10:41:05</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c5f908bedbb3401041d08f381396193e</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 10:41:05</sys_updated_on>
+            <value>Manual Entry</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>discovery_source</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>ServiceNow</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_configuration_item</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 10:41:38</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>452a0c7edbb3401041d08f3813961977</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 10:41:38</sys_updated_on>
+            <value>ServiceNow</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>discovery_source</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>TekWurx uControl</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_test_configuration_item</name>
+            <sequence/>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 10:42:20</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>934ac4bedbb3401041d08f381396190b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 10:42:20</sys_updated_on>
+            <value>TekWurx uControl</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>discovery_source</element>
+            <name>x_tekso_twxapp01_test_configuration_item</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 10:40:39</sys_created_on>
+            <sys_id>58f90c7edbb3401041d08f3813961973</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>discovery_source</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_test_configuration_item_discovery_source</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 10:40:39</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>

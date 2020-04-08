@@ -36,20 +36,23 @@ if (gr1.next()) {
 	gr1.setValue('last_button_clicked',x);
 	gr1.setValue('ucontrol_integration_user_is_valid',false);	
 	gr1.setValue('cmdb_tracking_error_details',x);
+	gr1.setValue('start_sending_requested',false);
+	gr1.setValue('connection_test_requested',false);
+	
 	gr1.update();
 }]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-17 13:44:55</sys_created_on>
         <sys_id>0ad5b5aadb6b881041d08f38139619d9</sys_id>
-        <sys_mod_count>17</sys_mod_count>
+        <sys_mod_count>18</sys_mod_count>
         <sys_name>Testing - Update Setup</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_0ad5b5aadb6b881041d08f38139619d9</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-19 14:09:48</sys_updated_on>
+        <sys_updated_on>2020-03-27 14:23:21</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

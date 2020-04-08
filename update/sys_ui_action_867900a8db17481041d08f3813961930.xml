@@ -39,6 +39,7 @@ if (current.status != 'Sending') {
 	// This will trigger a message to be displayed when the form is reloaded		
 	current.show_message_on_form_reload = 'x_tekso_twxapp01_start_tracking_message';	
 }
+current.updated_by_script = 'UI Action Start CMDB Tracking';
 current.update();
 action.setRedirectURL(current);	]]></script>
         <show_insert>false</show_insert>
@@ -51,7 +52,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>867900a8db17481041d08f3813961930</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>Start CMDB Tracking</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -59,7 +60,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_867900a8db17481041d08f3813961930</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-19 10:38:22</sys_updated_on>
+        <sys_updated_on>2020-03-24 17:59:02</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

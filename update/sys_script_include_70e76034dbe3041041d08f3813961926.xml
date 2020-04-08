@@ -20,6 +20,7 @@ ClientUpdateSetup.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
 		if (gr1.next()) {		
 			// Clear this field so that the client load won't display this message next time
 			gr1.setValue('show_message_on_form_reload','');
+			gr1.setValue('updated_by_script','SI ClientUpdateSetups'); // Debug	
 			gr1.update();
 		}
 		
@@ -37,13 +38,13 @@ ClientUpdateSetup.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-11 21:32:25</sys_created_on>
         <sys_id>70e76034dbe3041041d08f3813961926</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>ClientUpdateSetup</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_70e76034dbe3041041d08f3813961926</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-12 10:28:34</sys_updated_on>
+        <sys_updated_on>2020-03-24 17:23:46</sys_updated_on>
     </sys_script_include>
 </record_update>

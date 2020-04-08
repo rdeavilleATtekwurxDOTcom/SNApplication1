@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_form_sections form_id="49b2123edbbb401041d08f3813961994" sys_domain="global" table="x_tekso_twxapp01_test_application" version="3">
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 20:38:10</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>c9b2123edbbb401041d08f3813961997</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_tekso_twxapp01_test_application" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">49b2123edbbb401041d08f3813961994</sys_ui_form>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">8ddb217adb3b401041d08f381396196b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 20:38:10</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>1</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 20:38:10</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>85b2523edbbb401041d08f3813961908</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_tekso_twxapp01_test_application" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">49b2123edbbb401041d08f3813961994</sys_ui_form>
+            <sys_ui_section caption="Application" display_value="Application" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">41b2123edbbb401041d08f3813961993</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 20:38:10</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>2</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 20:39:58</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>63131a3edbbb401041d08f38139619d4</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_tekso_twxapp01_test_application" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">49b2123edbbb401041d08f3813961994</sys_ui_form>
+            <sys_ui_section caption="Class" display_value="Class" name="x_tekso_twxapp01_test_application" sys_domain="global" view="Default view">27131a3edbbb401041d08f38139619d1</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 20:39:58</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form action="INSERT_OR_UPDATE">
+            <name>x_tekso_twxapp01_test_application</name>
+            <roles/>
+            <sys_class_name>sys_ui_form</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-30 20:38:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>49b2123edbbb401041d08f3813961994</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_test_application</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_form_sections_49b2123edbbb401041d08f3813961994</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-30 20:38:09</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_form>
+    </sys_ui_form_sections>
+</record_update>

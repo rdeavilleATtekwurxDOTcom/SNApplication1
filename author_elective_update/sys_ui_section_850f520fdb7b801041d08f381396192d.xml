@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="New Section" section_id="850f520fdb7b801041d08f381396192d" sys_domain="global" table="x_tekso_twxapp01_cmdb_updates" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>test_data</element>
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 16:10:26</sys_created_on>
+            <sys_id>050f520fdb7b801041d08f381396198f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 16:10:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>1</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 16:10:26</sys_created_on>
+            <sys_id>850f520fdb7b801041d08f381396198f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 16:10:26</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>test_table_name</element>
+            <position>2</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 16:10:26</sys_created_on>
+            <sys_id>090f520fdb7b801041d08f381396198f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 16:10:26</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption>New Section</caption>
+            <header>false</header>
+            <name>x_tekso_twxapp01_cmdb_updates</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-31 16:10:26</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>850f520fdb7b801041d08f381396192d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>New Section</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_section_850f520fdb7b801041d08f381396192d</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-31 16:10:26</sys_updated_on>
+            <sys_user/>
+            <title>false</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_section_850f520fdb7b801041d08f381396192d</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="New Section" section_id="850f520fdb7b801041d08f381396192d" sys_domain="global" table="x_tekso_twxapp01_cmdb_updates" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>test_data</element><position>0</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-31 16:10:26</sys_created_on><sys_id>050f520fdb7b801041d08f381396198f</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-31 16:10:26</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>.split</element><position>1</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-31 16:10:26</sys_created_on><sys_id>850f520fdb7b801041d08f381396198f</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-31 16:10:26</sys_updated_on><sys_user/><type>.split</type></sys_ui_element><sys_ui_element action="INSERT_OR_UPDATE"><element>test_table_name</element><position>2</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-31 16:10:26</sys_created_on><sys_id>090f520fdb7b801041d08f381396198f</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="New Section" display_value="New Section" name="x_tekso_twxapp01_cmdb_updates" sys_domain="global" view="Default view">850f520fdb7b801041d08f381396192d</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-31 16:10:26</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption>New Section</caption><header>false</header><name>x_tekso_twxapp01_cmdb_updates</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-31 16:10:26</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>850f520fdb7b801041d08f381396192d</sys_id><sys_mod_count>0</sys_mod_count><sys_name>New Section</sys_name><sys_overrides/><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_section_850f520fdb7b801041d08f381396192d</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-03-31 16:10:26</sys_updated_on><sys_user/><title>false</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>1848852677</payload_hash>
+        <record_name>CMDB Updates</record_name>
+        <reverted_from/>
+        <source>f36b3852dba348104f29252b139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-31 16:10:26</sys_created_on>
+        <sys_id>cd0f520fdb7b801041d08f3813961990</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>171315bb9270000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-31 16:10:26</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>490f520fec7b8010402bc45eb2836e90</update_guid>
+        <update_guid_history>490f520fec7b8010402bc45eb2836e90:1848852677</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-31 19:46:18</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>aa7a17ccf1b84f54b740eafd32dc4811</sys_id>
+        <sys_metadata>850f520fdb7b801041d08f381396192d</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>New Section</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="CMDB Updates">b321e1cadb974c104f29252b13961989</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_section_850f520fdb7b801041d08f381396192d</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_850f520fdb7b801041d08f381396192d">cd0f520fdb7b801041d08f3813961990</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-31 19:46:18</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

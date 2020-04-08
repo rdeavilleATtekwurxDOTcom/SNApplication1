@@ -1,0 +1,463 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Testing - Get Max Size Of CMDB</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-03-25 09:48:31</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[clearLog();
+//getSizeOfAllFieldNamesForAllTables(); //
+//getSizeOfAllTables(); //
+//findBigFieldsInAllTables(1000);//
+listColumnsAndSizesForAllTables();
+//getSizeOfRestDataForAllTables();//
+
+//tbl: cmdb_ci_endpoint_ems_queue biggest size: 4167787
+//tbl: cmdb_ci_appl_sp_service size: 137818
+//var tbl = 'cmdb_ci_endpoint_ems_queue';
+//var tbl = 'cmdb_ci_appl_sp_service';
+//var size = getSizeOfTable(tbl);
+//gs.info(size);
+//running_process_command string 65000
+//running_process_key_parameters string 65000
+//details_xml string 4000
+//service_level_requirement translated_html 8000
+//description string 4000
+//work_notes journal_input 4000
+//command string 65000
+//postgres_conf string 8000
+//prerequisites translated_html 65536
+//pfile string 8000
+//configuration string 8000
+//user_data string 4000
+//recent_changes string 4096000
+//unit_description html 4000
+//content compressed 65535
+//image_id string 1024
+//object_id string 1024
+//view_map glide_action_list 4000
+//site_xml string 8000
+//url url 1024
+//rule script 8000
+//myconf string 8000
+//custom_specs string 4000
+//mongodb_conf string 8000
+//view_service glide_action_list 4000
+//post_validation_results string 4000
+//target_node_name string 1024
+//fullpath string 1024
+
+function getSizeOfAllTables() {
+	
+	var biggest_size = 0;
+	var biggest_tbl = '';
+	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
+	for (var i = 0; i < arr.length; i++) {
+		var gr1 = new GlideRecord('sys_db_object');
+		gr1.addQuery('sys_id',arr[i]);
+		gr1.query();
+		if(gr1.next()) {
+			var tbl = gr1.getValue('name') || '';
+			var size = getSizeOfTable(tbl);
+			if (size > biggest_size) {
+				biggest_size = size;
+				biggest_tbl = tbl;
+			}
+		}		
+	}
+	writeLog(biggest_tbl,'biggest size','','',biggest_size,0,0,0);
+}
+
+
+function findBigFieldsInAllTables(threshold) {
+	
+	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
+	for (var i = 0; i < arr.length; i++) {
+		var gr1 = new GlideRecord('sys_db_object');
+		gr1.addQuery('sys_id',arr[i]);
+		gr1.query();
+		if(gr1.next()) {
+			var tbl = gr1.getValue('name') || '';
+			findBigFieldsInTable(tbl,threshold);
+		}		
+	}
+}
+
+ 
+function listColumnsAndSizesForAllTables() {
+	
+	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
+	var dataArr = [];
+	for (var i = 0; i < arr.length; i++) {
+		var gr1 = new GlideRecord('sys_db_object');
+		gr1.addQuery('sys_id',arr[i]);
+		gr1.query();
+		if(gr1.next()) {
+			var tbl = gr1.getValue('name') || '';
+			var arr2 = listColumnAndSizes(dataArr,tbl);
+			for (var j = 0; j < arr2.length; j++) {
+				// Add the sys_id to the master array if it is not already present
+				if (dataArr.indexOf(arr2[j]) == -1) {
+					dataArr.push(arr2[j]);
+				}	
+			}
+		}		
+	}
+}
+
+function getSizeOfRestDataForAllTables() {
+	
+	var biggest_size = 0;
+	var biggest_tbl = '';	
+	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
+	for (var i = 0; i < arr.length; i++) {
+		var gr1 = new GlideRecord('sys_db_object');
+		gr1.addQuery('sys_id',arr[i]);
+		gr1.query();
+		if(gr1.next()) {
+			var tbl = gr1.getValue('name') || '';
+			var size = getSizeOfRestData(tbl);
+			if (size > biggest_size) {
+				biggest_size = size;
+				biggest_tbl = tbl;
+			}
+		}		
+	}
+	writeLog(biggest_tbl,'biggest size','','',biggest_size,0,0,0);
+}
+
+
+function getSizeOfAllFieldNamesForAllTables() {
+	
+	var biggest_size = 0;
+	var biggest_tbl = '';
+	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
+	for (var i = 0; i < arr.length; i++) {
+		var gr1 = new GlideRecord('sys_db_object');
+		gr1.addQuery('sys_id',arr[i]);
+		gr1.query();
+		if(gr1.next()) {
+			var tbl = gr1.getValue('name') || '';
+			var size = getSizeOfAllFieldNames(tbl);
+			if (size > biggest_size) {
+				biggest_size = size;
+				biggest_tbl = tbl;
+			}
+		}		
+	}
+	writeLog(biggest_tbl,'biggest size','','',biggest_size,0,0,0);
+}
+
+function getAllCMDBSysIDs() {
+	// Returns an array of sys_ids
+	var masterArr = [];
+	// Get the sys_id for cmdb
+	var cmdb_sys_id = getTableSysID('cmdb');
+	for (var j = 0; j < 10; j++) {
+		// Returns an array of sys_ids extended from cmdb
+		var arr = getExtendedSysIDs(cmdb_sys_id,j);
+		for (var i = 0; i < arr.length; i++) {
+			// Add the sys_id to the master array if it is not already present
+			if (masterArr.indexOf(arr[i]) == -1) {
+				masterArr.push(arr[i]);
+			}
+		}
+	}
+
+	// Get the sys_id for cmdb_ci
+	var cmdb_ci_sys_id = getTableSysID('cmdb_ci');
+	for (j = 0; j < 10; j++) {
+		// Returns an array of sys_ids extended from cmdb_ci
+		arr = getExtendedSysIDs(cmdb_ci_sys_id,j);
+		for (i = 0; i < arr.length; i++) {
+			// Add the sys_id to the master array if it is not already present
+			if (masterArr.indexOf(arr[i]) == -1) {
+				masterArr.push(arr[i]);
+			}
+		}
+	}
+	
+	// Return the array of sys_ids
+	return masterArr;
+}
+
+function getExtendedSysIDs(rootSysID,lvl) {
+
+	// lvl 0 sys_id=35b71a49db21001035a38a72399619c8
+	// lvl 1 super_class=35b71a49db21001035a38a72399619c8
+	// lvl 2 super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 3 super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 4 super_class.super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 5 super_class.super_class.super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 6 super_class.super_class.super_class.super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 7 super_class.super_class.super_class.super_class.super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+	// lvl 8 super_class.super_class.super_class.super_class.super_class.super_class.super_class.super_class=35b71a49db21001035a38a72399619c8
+
+	var rtnArr = [];
+	var qry = '';
+	if (lvl > 10) {
+		lvl = 10;
+	}
+	
+	if (rootSysID.length > 0) {
+		if (lvl == 0) {
+			qry = 'sys_id=' + rootSysID;
+		}
+		
+		var lp = 1;
+		while (lp <= lvl) {
+			if (lp == 1) {
+				qry = 'super_class='+ rootSysID;	
+			}
+			else {
+				qry = 'super_class.' + qry;
+			}
+			lp++;
+		}
+
+		if (qry.length > 0) {
+			var gr1 = new GlideRecord('sys_db_object');
+			gr1.addEncodedQuery(qry);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id');
+				rtnArr.push(sys_id);
+			}
+		}
+	}
+	// Return the array of sys_ids
+	return rtnArr;
+}
+
+
+function getTableSysID(tbl) {
+	var sys_id = '';
+	var gr1 = new GlideRecord('sys_db_object');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	if (gr1.next()) {
+		sys_id = gr1.getValue('sys_id') || '';
+	}
+	//gs.info('tbl: ' + tbl + ' sys_id: ' + sys_id);
+	return sys_id;
+}
+	
+function getSizeOfTable(tbl) {
+
+	var gr1 = new GlideRecord('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	var totalSize = 0;
+	var noOfFields = 0;
+	var lst = '';
+	while (gr1.next()) {
+		var max_length = parseInt(gr1.getValue('max_length')) || 40; 
+		var element = gr1.getValue('element') || '';
+		var type = gr1.getValue('internal_type') || '';
+		if (type != 'collection') {
+			totalSize = parseInt(totalSize) + parseInt(max_length);
+			if (noOfFields == 0) {
+				lst = element;
+			}
+			else {
+				lst = lst + ',' + element;
+			}			
+			noOfFields++;
+		}
+	}
+	var msg = 'Table, Comma Separated List Of Fields, Size Of Table, No Of Fields';
+	writeLog(tbl,lst,'',msg,totalSize,noOfFields,0,0,0);
+	return totalSize;
+}
+
+function findBigFieldsInTable(tbl,threshold) {
+
+	var gr1 = new GlideRecord('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	while (gr1.next()) {
+		var max_length = parseInt(gr1.getValue('max_length')) || 40; 
+		var element = gr1.getValue('element') || '';
+		var type = gr1.getValue('internal_type') || '';
+		if (type != 'collection') {
+			if (max_length > threshold) {
+				var msg = 'Table, Column, Type, Size, Threshold';
+				writeLog(tbl,element,type,msg,max_length,threshold,0,0);			
+			}
+		}
+	}
+}
+
+function getSizeOfRestData(tbl) {
+
+	var size = 0;
+	var size2 = 0;
+	var restData2 = '';
+	var cnt = 0;
+	var lst = '';
+	var gr1 = new GlideRecord('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	while (gr1.next()) {
+		var max_length = parseInt(gr1.getValue('max_length')) || 40; 
+		var element = gr1.getValue('element') || '';
+		var type = gr1.getValue('internal_type') || '';
+		if (type != 'collection') {
+			var data = '';
+			if (type == 'boolean') {
+				data = 'true';
+			}
+			else if (type == 'glide_date_time') {
+				var gdt = new GlideDateTime();
+				data = gdt.getDisplayValue();
+			}
+			else if (type == 'glide_date') {
+				var gd = new GlideDate();
+				data = gd.getDisplayValue();				
+			}
+			else {
+				data = stringPad(max_length);
+			}
+			var restData = '\"' + element + '\":\"' + data + '\"';
+			if (cnt == 0) {
+				restData2 = '{' + restData;
+				lst = element;
+			}
+			else {
+				restData2 = restData2 + ',' + restData;
+				lst = lst + ',' + element;
+			}
+			cnt++; // field cnt
+		}
+	}
+	restData2 = restData2 + '}';
+	size = restData2.length;
+	size2 = lst.length;
+	// What is in the fields:
+	var msg = 'Table, Rest Data, Comma Separated Field List, Size of Rest Data, No Of Fields, Size Of Comma Separated Field List';
+	if (size < 5000000) {
+		writeLog(tbl,restData2,lst,msg,size,cnt,size2,0);	
+	}
+	else {
+		writeLog(tbl,'',lst,size,msg,cnt,size2,0);			
+	}
+	return size;
+}
+
+function listColumnAndSizes(dataArr,tbl) {
+
+	var rtnArr = [];
+	var gr1 = new GlideRecord('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	while (gr1.next()) {
+		var max_length = parseInt(gr1.getValue('max_length')) || 40; 
+		var element = gr1.getValue('element') || '';
+		var type = gr1.getValue('internal_type') || '';
+		if (type != 'collection') {
+			var txt = element + '(' + type + ') (' + max_length.toString() + ')';
+			// Not already used
+			if (dataArr.indexOf(txt) == -1) {
+				var gr2 = new GlideRecord('x_tekso_twxapp01_debug_log');
+				gr2.addQuery('debug_text2',element);
+				gr2.addQuery('debug_text3',type);
+				gr2.addQuery('debug_int',max_length);
+				gr2.query();
+				if (!gr2.next()) {	
+					rtnArr.push(txt);
+					var msg = 'Table, Column, Type, Size';
+					writeLog(tbl,element,type,msg,max_length,0,0,0);
+				}
+			}
+		}
+	}
+	return rtnArr;
+}
+
+function getSizeOfAllFieldNames(tbl) {
+
+	var gr1 = new GlideRecord('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.query();
+	var totalSize = 0;
+	var noOfFields = 0;
+	var lst = '';
+	while (gr1.next()) {
+		var element = gr1.getValue('element') || '';
+		var type = gr1.getValue('internal_type') || '';
+		if (type != 'collection') { 
+			var ln = element.length;
+			if (noOfFields == 0) {
+				lst = element;
+			}
+			else {
+				lst = lst + ',' + element;
+			}
+			noOfFields++;
+		}
+	}
+	totalSize = lst.length;
+	var msg = 'Table, Comma Separated List Of Fields, Size Of The Comma Separated List, No Of Fields';
+	writeLog(tbl,lst,'',msg,totalSize,noOfFields,0,0);
+	return totalSize;
+}
+
+
+function writeLog(txt1,txt2,txt3,txt4,int1,int2,int3,int4) {
+	var debugTbl = 'x_tekso_twxapp01_debug_log';
+	var gr1 = new GlideRecord(debugTbl);
+	gr1.initialize();
+	gr1.setValue('debug_text',txt1);
+	gr1.setValue('debug_text2',txt2);	
+	gr1.setValue('debug_text3',txt3);	
+	gr1.setValue('debug_text4',txt4);		
+	gr1.setValue('debug_int',int1);	
+	gr1.setValue('debug_int2',int2);		
+	gr1.setValue('debug_int3',int3);
+	gr1.setValue('debug_int4',int4);	
+	gr1.insert();
+}
+
+function clearLog() {
+	var gr1 = new GlideRecord('x_tekso_twxapp01_debug_log');
+	gr1.deleteMultiple();
+}
+
+function stringPad(size) {
+	var pad = '12345678901234567890';
+	var rtnString = '';
+	var j = 0;
+	for (var i = 0; i <= size; i++) {
+		var padChar = pad.charAt(j);
+		j++;
+		if (j > 9) {
+			j = 0;
+		}
+		rtnString = rtnString + padChar;
+	}	
+	return rtnString;
+}
+
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-25 09:51:25</sys_created_on>
+        <sys_id>481ec641dbf380504f29252b13961997</sys_id>
+        <sys_mod_count>111</sys_mod_count>
+        <sys_name>Testing - Get Max Size Of CMDB</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_481ec641dbf380504f29252b13961997</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-26 11:01:13</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element extends="x_tekso_twxapp01_test_hardware" label="Test Computer" max_length="40" name="x_tekso_twxapp01_test_computer" type="collection">
+        <element label="Alternative Value CD Rom" max_length="40" name="alternative_value_cd_rom" type="boolean"/>
+        <element label="Alternative Value CD Speed" max_length="40" name="alternative_value_cd_speed" type="integer"/>
+        <element label="Alternative Value Chassis Type" max_length="40" name="alternative_value_chassis_type" type="string"/>
+        <element label="Alternative Value CPU Core Count" max_length="40" name="alternative_value_cpu_core_count" type="integer"/>
+        <element label="Alternative Value CPU Core Thread" max_length="40" name="alternative_value_cpu_core_thread" type="integer"/>
+        <element label="Alternative Value CPU Count" max_length="40" name="alternative_value_cpu_count" type="integer"/>
+        <element label="Alternative Value CPU Manufacturer" max_length="32" name="alternative_value_cpu_manufacturer" type="string"/>
+        <element label="Alternative Value CPU Name" max_length="100" name="alternative_value_cpu_name" type="string"/>
+        <element label="Alternative Value CPU Speed" max_length="15" name="alternative_value_cpu_speed" type="decimal"/>
+        <element label="Alternative Value CPU Type" max_length="40" name="alternative_value_cpu_type" type="string"/>
+        <element label="Alternative Value Disk Space" max_length="15" name="alternative_value_disk_space" type="decimal"/>
+        <element label="Alternative Value Floppy" max_length="40" name="alternative_value_floppy" type="string"/>
+        <element label="Alternative Value Form Factor" max_length="40" name="alternative_value_form_factor" type="string"/>
+        <element label="Alternative Value Object ID" max_length="512" name="alternative_value_object_id" type="string"/>
+        <element label="Alternative Value OS" max_length="50" name="alternative_value_os" type="string"/>
+        <element label="Alternative Value OS Address Width" max_length="40" name="alternative_value_os_address_width" type="integer"/>
+        <element label="Alternative Value OS Domain" max_length="40" name="alternative_value_os_domain" type="string"/>
+        <element label="Alternative Value OS Service Pack" max_length="40" name="alternative_value_os_service_pack" type="string"/>
+        <element label="Alternative Value OS Version" max_length="40" name="alternative_value_os_version" type="string"/>
+        <element label="Alternative Value RAM" max_length="40" name="alternative_value_ram" type="integer"/>
+        <element label="Alternative Value Virtual" max_length="40" name="alternative_value_virtual" type="boolean"/>
+        <element label="CD Rom" max_length="40" name="cd_rom" type="boolean"/>
+        <element label="CD Speed" max_length="40" name="cd_speed" type="integer"/>
+        <element choice="1" label="Chassis Type" max_length="40" name="chassis_type" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Desktop" value="Desktop"/>
+                <element inactive_on_update="false" label="Laptop" value="Laptop"/>
+            </choice>
+        </element>
+        <element label="CPU Core Count" max_length="40" name="cpu_core_count" type="integer"/>
+        <element label="CPU Core Thread" max_length="40" name="cpu_core_thread" type="integer"/>
+        <element label="CPU Count" max_length="40" name="cpu_count" type="integer"/>
+        <element label="CPU Manufacturer" max_length="32" name="cpu_manufacturer" reference="x_tekso_twxapp01_test_company" type="reference"/>
+        <element label="CPU Name" max_length="100" name="cpu_name" type="string"/>
+        <element label="CPU Speed" max_length="15" name="cpu_speed" type="decimal"/>
+        <element label="CPU Type" max_length="40" name="cpu_type" type="string"/>
+        <element label="Disk Space" max_length="15" name="disk_space" type="decimal"/>
+        <element choice="1" label="Floppy" max_length="40" name="floppy" type="string">
+            <choice>
+                <element inactive_on_update="false" label="3.5 inch" value="3.5 inch"/>
+                <element inactive_on_update="false" label="5.25 inch" value="5.25 inch"/>
+                <element inactive_on_update="false" label="None" value="None"/>
+            </choice>
+        </element>
+        <element choice="1" label="Form Factor" max_length="40" name="form_factor" type="string">
+            <choice>
+                <element inactive_on_update="false" label="Blade" value="Blade"/>
+                <element inactive_on_update="false" label="Desktop" value="Desktop"/>
+                <element inactive_on_update="false" label="Rack Mount" value="Rack Mount"/>
+                <element inactive_on_update="false" label="Stand Alone" value="Stand Alone"/>
+            </choice>
+        </element>
+        <element label="Object ID" max_length="512" name="object_id" type="string"/>
+        <element label="Original Value CD Rom" max_length="40" name="original_value_cd_rom" type="boolean"/>
+        <element label="Original Value CD Speed" max_length="40" name="original_value_cd_speed" type="integer"/>
+        <element label="Original Value Chassis Type" max_length="40" name="original_value_chassis_type" type="string"/>
+        <element label="Original Value CPU Core Count" max_length="40" name="original_value_cpu_core_count" type="integer"/>
+        <element label="Original Value CPU Core Thread" max_length="40" name="original_value_cpu_core_thread" type="integer"/>
+        <element label="Original Value CPU Count" max_length="40" name="original_value_cpu_count" type="integer"/>
+        <element label="Original Value CPU Manufacturer" max_length="32" name="original_value_cpu_manufacturer" type="string"/>
+        <element label="Original Value CPU Name" max_length="100" name="original_value_cpu_name" type="string"/>
+        <element label="Original Value CPU Speed" max_length="15" name="original_value_cpu_speed" type="decimal"/>
+        <element label="Original Value CPU Type" max_length="40" name="original_value_cpu_type" type="string"/>
+        <element label="Original Value Disk Space" max_length="15" name="original_value_disk_space" type="decimal"/>
+        <element label="Original Value Floppy" max_length="40" name="original_value_floppy" type="string"/>
+        <element label="Original Value Form Factor" max_length="40" name="original_value_form_factor" type="string"/>
+        <element label="Original Value Object ID" max_length="512" name="original_value_object_id" type="string"/>
+        <element label="Original Value OS" max_length="50" name="original_value_os" type="string"/>
+        <element label="Original Value OS Address Width" max_length="40" name="original_value_os_address_width" type="integer"/>
+        <element label="Original Value OS Domain" max_length="40" name="original_value_os_domain" type="string"/>
+        <element label="Original Value OS Service Pack" max_length="40" name="original_value_os_service_pack" type="string"/>
+        <element label="Original Value OS Version" max_length="40" name="original_value_os_version" type="string"/>
+        <element label="Original Value RAM" max_length="40" name="original_value_ram" type="integer"/>
+        <element label="Original Value Virtual" max_length="40" name="original_value_virtual" type="boolean"/>
+        <element choice="1" label="OS" max_length="50" name="os" type="string">
+            <choice>
+                <element inactive_on_update="false" label="AIX" value="AIX"/>
+                <element inactive_on_update="false" label="ESX" value="ESX"/>
+                <element inactive_on_update="false" label="Linux Red Hat" value="Linux Red Hat"/>
+                <element inactive_on_update="false" label="Solaris" value="Solaris"/>
+                <element inactive_on_update="false" label="Windows" value="Windows"/>
+            </choice>
+        </element>
+        <element choice="1" label="OS Address Width" max_length="40" name="os_address_width" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="32" value="32"/>
+                <element inactive_on_update="false" label="64" value="64"/>
+            </choice>
+        </element>
+        <element label="OS Domain" max_length="40" name="os_domain" type="string"/>
+        <element label="OS Service Pack" max_length="40" name="os_service_pack" type="string"/>
+        <element label="OS Version" max_length="40" name="os_version" type="string"/>
+        <element label="RAM" max_length="40" name="ram" type="integer"/>
+        <element label="Virtual" max_length="40" name="virtual" type="boolean"/>
+        <index name="index">
+            <element name="cpu_manufacturer"/>
+        </index>
+    </element>
+</database>
