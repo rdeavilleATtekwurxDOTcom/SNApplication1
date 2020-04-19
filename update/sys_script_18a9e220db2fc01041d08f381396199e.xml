@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Setup Add In Process Log Ref</name>
+        <name>Setup - Add In Process Log Ref</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -46,11 +46,20 @@
 	gr1.query();
 	if (gr1.next()) {
 		// Got a log record
+		
+		var dataSentSummary = gr1.getValue('data_sent_summary') || '';
+		var dt = gr1.getValue('sys_created_on');
+		var processingSummary = getValue('processing_summary') || '';		
 		var setupTable = 'x_tekso_twxapp01_setup';
+		
 		var gr2 = new GlideRecord(setupTable);
 		gr2.query();
 		if (gr2.next()) {
 			gr2.setValue('link_to_last_processing_log_record',gr1.sys_id);
+			gr2.setValue('last_processing_data_sent_summary',dataSentSummary);
+			gr2.setValue('last_processing_at',dt);
+			gr2.setValue('last_scan_performed_at',dt);		
+			gr2.setValue('last_processing_results_summary',processingSummary);
 			gr2.setValue('updated_by_script','BR Setup Add In Process Log Ref'); // Debug			
 			gr2.update();
 		}
@@ -63,15 +72,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>18a9e220db2fc01041d08f381396199e</sys_id>
-        <sys_mod_count>3</sys_mod_count>
-        <sys_name>Setup Add In Process Log Ref</sys_name>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Setup - Add In Process Log Ref</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_18a9e220db2fc01041d08f381396199e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-24 17:13:42</sys_updated_on>
+        <sys_updated_on>2020-04-16 12:12:06</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

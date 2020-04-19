@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_generate_test_data</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Generate Test Data - Async</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[// Async
+(function executeRule(current, previous /*null when async*/) {
+	
+	var delete_cmdb_ci_qty = current.delete_cmdb_ci_qty;
+	var delete_relations_qty = current.delete_relations_qty;
+	var update_relations_qty = current.update_relations_qty;
+	var update_cmdb_ci_qty = current.update_cmdb_ci_qty;
+	
+	// Restore any deleted items
+	new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
+
+	// Restore any updated items
+	new x_tekso_twxapp01.UpdateOfTestRels().restoreAllCMDBRelationRecordsSilently();
+
+	new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently();
+	
+	if (delete_cmdb_ci_qty > 0) {
+		// Cap at 100
+		if (delete_cmdb_ci_qty > 100) {
+			delete_cmdb_ci_qty = 100;
+		}
+		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(delete_cmdb_ci_qty);
+	}
+	
+	if (delete_relations_qty > 0) {
+		// Cap at 100
+		if (delete_relations_qty > 100) {
+			delete_relations_qty = 100;
+		}		
+		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(delete_relations_qty);		
+	}
+	
+	if (update_relations_qty > 0) {
+		// Cap at 100
+		if (update_relations_qty > 100) {
+			update_relations_qty = 100;
+		}
+		new x_tekso_twxapp01.UpdateOfTestRels().updateCMDBRelationRecords(update_relations_qty);		
+	}
+	
+	if (update_cmdb_ci_qty > 0) {
+		if (update_cmdb_ci_qty == 1) {
+			// Just 1 record
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(1);				
+		}
+		else {
+			// Cap at 100
+			if (update_cmdb_ci_qty > 100) {
+				update_cmdb_ci_qty = 100;
+			}
+			
+			// Divide the qty by 2 = split the updates between servers and applications
+			var qty = update_cmdb_ci_qty;
+			var qty2 = qty / 2;  // e.g. 1.5
+			var qty3 = parseInt(qty2); // convert to int e.g. 1
+			var qty4 = qty - qty3;	// e.g. 3 - 1 = 2		
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBAppplicationRecords(qty4);
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(qty3);
+		}	
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-15 10:38:52</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>fea12ebfdb84d81041d08f38139619d1</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Generate Test Data - Async</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_fea12ebfdb84d81041d08f38139619d1</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 17:39:58</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=fea12ebfdb84d81041d08f38139619d1"/>
+</record_update>

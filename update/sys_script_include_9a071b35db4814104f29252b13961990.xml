@@ -1,0 +1,1460 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.BuildTestData</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>BuildTestData</name>
+        <script><![CDATA[// new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently(); // Timing - aout 7 minutes to delete 100,000
+
+// new x_tekso_twxapp01.BuildTestData().buildTestData(); // Timing - about 30 minutes to build 100,000 records
+
+// new x_tekso_twxapp01.BuildTestData().createBatchOfTestData(1000);
+
+// new x_tekso_twxapp01.BuildTestData().recordCountTestCMDBCI();
+
+// new x_tekso_twxapp01.BuildTestData().recordCountTestRel();
+
+var BuildTestData = Class.create();
+BuildTestData.prototype = {
+    initialize: function() {
+    },
+	buildTestData: function() {
+		var cnt = this.recordCountTestCMDBCI();
+		// Cap at 100,000
+		if (cnt < 100000) {
+			var lp = 0;
+			while (lp < 20) {
+				// createBatchOfTestData(1000) Generates 1000 servers and 4 x 1000 appls = 5000 records
+				// loop 20 times to generate 100000
+				this.createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
+				lp++;
+			}
+		}
+	},
+
+	createFiveThousandTestRecords: function() { // Generates 1000 servers and 4 x 1000 appls = 5000 records
+		var cnt = this.recordCountTestCMDBCI();
+		// Cap at 100,000
+		if (cnt < 100000) {
+			this.createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
+		}
+	},
+	
+	createBatchOfTestData: function(qty) {
+		// Cap at 100,000
+		var cnt = this.recordCountTestCMDBCI();
+		if (cnt < 100000) {
+			var typeSysID = this.findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
+
+			// Create the 1st Server	
+			var ci1 = this.createOrCopyServerSysID();
+
+			var ci2 = this.createOrCopyApplicationSysID();
+
+			this.newRelation(ci1,ci2,typeSysID,false);
+
+			var num = this.getLastNumber();
+			num++;
+
+			// Copy the application 3 more times
+			var ciTable = 'x_tekso_twxapp01_test_application';
+			var appQty = 3;
+			var sysIDArr = this.createMultipleCopies(ciTable,ci2,appQty,num); 
+			num = num + appQty; //6
+
+			//sysIDArr should contain an array of 3 sys_id's
+			for (var i=0; i<sysIDArr.length; i++) {
+				var sysID = sysIDArr[i];
+				// Link the 3 sys_ids to the server
+				this.newRelation(ci1,sysID,typeSysID,false);
+			}
+
+			//Now we have got 1 
+			//Create qty -1 copies of the server and 4 x applications
+			qty = qty - 1;
+			if (qty > 0) {
+				this.createServerAndFourApplicationsMultiple(ci1,ci2,typeSysID,qty); // Creates 999 servers and 999 x 4 applications
+			}
+		}
+	},
+
+	recordCountTestCMDBCI: function() {
+		var table = 'x_tekso_twxapp01_test_configuration_item';
+		gr1 = new GlideRecord(table);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		return rowCnt;
+	},
+
+	recordCountTestRel: function() {
+		var table = 'x_tekso_twxapp01_test_ci_relationship';
+		gr1 = new GlideRecord(table);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		return rowCnt;
+	},
+	
+	createServerAndFourApplicationsMultiple: function(templateServerSysID,templateApplSysID,typeSysID,qty) {
+		// Creates QTY x servers and QTY x 4 x applications
+		// then links Server1 to app1,2,3,4
+		//            Server2 to app5,6,7,8
+
+		var num = this.getLastNumber();
+		num++;
+
+		var ciTable = 'x_tekso_twxapp01_test_server';
+		var serverSysIDArr = this.createMultipleCopies(ciTable,templateServerSysID,qty,num); 
+		num = num + qty;
+
+		ciTable = 'x_tekso_twxapp01_test_application';
+		var application1SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
+		num = num + qty;
+
+		var application2SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
+		num = num + qty;
+
+		var application3SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
+		num = num + qty;
+
+		var application4SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
+		num = num + qty;
+
+		for (var j=0; j<serverSysIDArr.length; j++) {
+			var serverSysID = serverSysIDArr[j];
+			var app1SysID = application1SysIDArr[j];
+			var app2SysID = application2SysIDArr[j];
+			var app3SysID = application3SysIDArr[j];
+			var app4SysID = application4SysIDArr[j];
+
+			// Link the 4 sys_ids to the server
+			this.newRelation(serverSysID,app1SysID,typeSysID,false);
+			this.newRelation(serverSysID,app2SysID,typeSysID,false);
+			this.newRelation(serverSysID,app3SysID,typeSysID,false);
+			this.newRelation(serverSysID,app4SysID,typeSysID,false);	
+		}
+	},
+
+	createOrCopyServerSysID: function() {
+		var sysID = '';
+		var num = getLastNumber();
+		num++;	
+		var table = 'x_tekso_twxapp01_test_server';
+		sysID = this.getFirstRecord(table);
+		if (sysID.length > 0) {
+			// Create a copy
+			var sysIDArr = this.createMultipleCopies(table,sysID,1,num); 
+			rtnSysID = sysIDArr[0];		
+		}
+		else {
+			var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+			var ciName = '[' + zeroPaddedNumStr + '] srvr name';
+			rtnSysID = this.newCMDBServer(ciName,true,zeroPaddedNumStr);		
+		}
+		return rtnSysID;
+	},
+
+	createOrCopyApplicationSysID: function() {
+		var sysID = '';
+		var num = getLastNumber();
+		num++;	
+		var table = 'x_tekso_twxapp01_test_application';
+		sysID = this.getFirstRecord(table);
+		if (sysID.length > 0) {
+			// Create a copy
+			var sysIDArr = this.createMultipleCopies(table,sysID,1,num); 
+			rtnSysID = sysIDArr[0];		
+		}
+		else {
+			var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+			var ciName = '[' + zeroPaddedNumStr + '] appl name';
+			rtnSysID = this.newCMDBApplication(ciName,true,zeroPaddedNumStr);		
+		}
+		return rtnSysID;
+	},
+
+	getFirstRecord: function(table) {
+		rtnSysID = '';
+		gr1 = new GlideRecord(table);
+		gr1.orderBy('name'); //Ascending Order
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+		return rtnSysID;
+	},
+
+	getLastNumber: function() {
+		var num = 0;
+		var table = 'x_tekso_twxapp01_test_configuration_item';
+		gr1 = new GlideRecord(table);
+		gr1.orderByDesc('name'); //Descending Order
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			var name = gr1.getValue('name');
+			var br1 = name.indexOf('[');
+			var br2 = name.indexOf(']');
+			var zeroPaddedNumStr = name.substring(br1 + 1,br2);		
+			num = parseInt(zeroPaddedNumStr);
+		}
+		return num;
+	},
+
+	deleteAllTestDataSilently: function() {
+		this.deleteAllTestCIRelationshipsSilently();
+		this.deleteAllTestCIsSilently();
+	},
+	
+	deleteAllTestCIsSilently: function() {
+
+		var table = 'x_tekso_twxapp01_test_configuration_item';
+		this.deleteAllSilently(table);
+
+		/*
+		var gr1 = new GlideRecord(table);
+		// Do not trigger Business Rules
+		gr1.setWorkflow(false);
+
+		gr1.deleteMultiple();	
+		*/	
+	},
+	
+	deleteAllTestCIRelationshipsSilently: function() {
+
+		var table = 'x_tekso_twxapp01_test_ci_relationship';
+
+		this.deleteAllSilently(table);
+		/*
+		var gr1 = new GlideRecord(table);
+		// Do not trigger Business Rules	
+		gr1.setWorkflow(false);
+
+		gr1.deleteMultiple();	
+		*/
+	},
+
+	deleteAllSilently: function(table) {
+
+		var gr1 = new GlideRecord(table);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		while (rowCnt > 0) {
+			// Delete in blocks of 1000
+			this.deleteChunkSilently(table,1000);
+			rowCnt = rowCnt - 1000;
+		}	
+	},
+
+	deleteChunkSilently: function(table,limit) {
+
+		var gr1 = new GlideRecord(table);
+
+		// Do not trigger Business Rules	
+		gr1.setWorkflow(false);	
+		gr1.setLimit(limit);
+		gr1.deleteMultiple();	
+	},
+
+
+	findOrInsertTestCompany: function(name) {
+		var rtnSysID = '';
+		var cmpTable = 'x_tekso_twxapp01_test_company';
+		var gr1 = new GlideRecord(cmpTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(cmpTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+	findOrInsertTestProductModel: function(name) {
+		var rtnSysID = '';
+		var prdTable = 'x_tekso_twxapp01_test_product_model';
+		var gr1 = new GlideRecord(prdTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(prdTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+	findOrInsertTestGroup: function(name) {
+		var rtnSysID = '';
+		var grpTable = 'x_tekso_twxapp01_test_group';
+		var gr1 = new GlideRecord(grpTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(grpTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+	findOrInsertTestDepartment: function(name) {
+		var rtnSysID = '';
+		var depTable = 'x_tekso_twxapp01_test_department';
+		var gr1 = new GlideRecord(depTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(depTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+
+	findOrInsertTestLocation: function(name) {
+		var rtnSysID = '';
+		var locTable = 'x_tekso_twxapp01_test_location';
+		var gr1 = new GlideRecord(locTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(locTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+
+	findOrInsertTestCostCenter: function(name) {
+		var rtnSysID = '';
+		var cstTable = 'x_tekso_twxapp01_test_cost_center';
+		var gr1 = new GlideRecord(cstTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(cstTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+
+	findOrInsertTestSchedule: function(name) {
+		var rtnSysID = '';
+		var schTable = 'x_tekso_twxapp01_test_schedule';
+		var gr1 = new GlideRecord(schTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(schTable);
+			gr2.initialize();
+			gr2.setValue('name',name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+	findOrInsertTestAsset: function(display_name) {
+		var rtnSysID = '';
+		var assTable = 'x_tekso_twxapp01_test_asset';
+		var gr1 = new GlideRecord(assTable);
+		gr1.addQuery('display_name',display_name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(assTable);
+			gr2.initialize();
+			gr2.setValue('display_name',display_name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+
+	findOrInsertTestUser: function(user_name) {
+		var rtnSysID = '';
+		var usrTable = 'x_tekso_twxapp01_test_user';
+		var gr1 = new GlideRecord(usrTable);
+		gr1.addQuery('user_name',user_name);
+		gr1.query();
+		if (!gr1.next()) {
+			var gr2 = new GlideRecord(usrTable);
+			gr2.initialize();
+			gr2.setValue('user_name',user_name);
+			rtnSysID = gr2.insert();
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+
+		return rtnSysID;
+	},
+	
+	findOrInsertTestRelType: function(parent,child,name) {
+		//('Runs on','Runs','Runs on::Runs');
+		var rtnSysID = '';
+		relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
+		var gr1 = new GlideRecord(relTable);
+		gr1.addQuery('parent_descriptor',parent); // Runs on
+		gr1.addQuery('child_descriptor',child); // Runs
+		gr1.addQuery('name',name); // Runs on::Runs
+		gr1.query();
+		if (!gr1.next()) {		
+			// Does not exist
+			var gr2 = new GlideRecord(relTable);
+			gr2.initialize();
+			gr2.setValue('parent_descriptor',parent); // Runs on
+			gr2.setValue('child_descriptor',child); // Runs
+			rtnSysID = gr2.insert();	
+		}
+		else {
+			rtnSysID = gr1.getValue('sys_id').toString();
+		}
+		return rtnSysID;
+	},
+
+	newCMDBCI: function(name,ciTable,realTableName,padOut,zeroPaddedNumStr) {
+		//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+		//var ciTable = 'x_tekso_twxapp01_test_application';
+
+		var sysID = '';
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('name',name);
+		gr1.query();
+		if (!gr1.next()) {
+
+			var gd = new GlideDate();
+			var gdt = new GlideDateTime();
+
+			var cmpSysID = this.findOrInsertTestCompany('Test Company');
+			var productSysID = this.findOrInsertTestProductModel('Test Product Model');
+			var grpSysID = this.findOrInsertTestGroup('Test Group');
+			var depSysID = this.findOrInsertTestDepartment('Test Department');
+			var locSysID = this.findOrInsertTestLocation('Test Location');
+			var costCenterSysID = this.findOrInsertTestCostCenter('Test Cost Center');
+			var scheduleSysID = this.findOrInsertTestSchedule('Test Schedule');
+			var assetSysID = this.findOrInsertTestAsset('Test Asset');
+			var usrSysID = this.findOrInsertTestUser('Test User');	
+
+			var plainAssetTag = 'asset tag'; // 40
+			var plainAttributes = 'attributes'; // 65000
+			var plainCategory = 'category'; // 40
+			var plainComments = 'comments'; // 4000
+			var plainCorrelationID = 'correlation id [' + zeroPaddedNumStr + ']'; // 512
+			var plainDNSDomain = 'dns domain'; // 255
+			var plainFQDN = 'fqdn'; // 255
+			var plainGLAccount = 'gl account'; // 40
+			var plainInvoiceNumber = 'invoice number'; // 40
+			var plainIPAddress = 'ip address'; // 255
+			var plainLeaseID = 'lease id'; // 40
+			var plainMACAddress = 'mac address'; // 18
+			var plainModelNumber = 'model number'; // 255
+			var plainPONumber = 'po number'; // 40
+			var plainSerialNumber = 'serial number [' + zeroPaddedNumStr + ']'; // 255
+			var plainShortDescription = 'short description'; // 1000
+			var plainSubcategory = 'subcategory'; // 40
+
+			var strAssetTag = plainAssetTag; // 40
+			var strAttributes = plainAttributes; // 65000
+			var strCategory = plainCategory; // 40
+			var strComments = plainComments; // 4000
+			var strCorrelationID = plainCorrelationID; // 512
+			var strDNSDomain = plainDNSDomain; // 255
+			var strFQDN = plainFQDN; // 255
+			var strGLAccount = plainGLAccount; // 40
+			var strInvoiceNumber = plainInvoiceNumber; // 40
+			var strIPAddress = plainIPAddress; // 255
+			var strLeaseID = plainLeaseID; // 40
+			var strMACAddress = plainMACAddress; // 18
+			var strModelNumber = plainModelNumber; // 255
+			var strPONumber = plainPONumber; // 40
+			var strSerialNumber = plainSerialNumber; // 255
+			var strShortDescription = plainShortDescription; // 1000
+			var strSubcategory = plainSubcategory; // 40
+
+			if (padOut == true) {
+				strAssetTag = this.padOutString(plainAssetTag,40,'!!'); // 40
+				strAttributes = this.padOutString(plainAttributes,65000,'!!'); // 65000
+				strCategory = this.padOutString(plainCategory,40,'!!'); // 40
+				strComments = this.padOutString(plainComments,4000,'!!'); // 4000
+				strCorrelationID = this.padOutString(plainCorrelationID,512,'!!'); // 512
+				strDNSDomain = this.padOutString(plainDNSDomain,255,'!!'); // 255
+				strFQDN = this.padOutString(plainFQDN,255,'!!'); // 255
+				strGLAccount = this.padOutString(plainGLAccount,40,'!!'); // 40
+				strInvoiceNumber = this.padOutString(plainInvoiceNumber,40,'!!'); // 40
+				strIPAddress = this.padOutString(plainIPAddress,255,'!!'); // 255
+				strLeaseID = this.padOutString(plainLeaseID,40,'!!'); // 40
+				strMACAddress = this.padOutString(plainMACAddress,18,'!!'); // 18
+				strModelNumber = this.padOutString(plainModelNumber,255,'!!'); // 255
+				strPONumber = this.padOutString(plainPONumber,40,'!!'); // 40
+				strSerialNumber = this.padOutString(plainSerialNumber,255,'!!'); // 255
+				strShortDescription = this.padOutString(plainShortDescription,1000,'!!'); // 1000
+				strSubcategory = this.padOutString(plainSubcategory,40,'!!'); // 40
+			}
+
+			var gr2 = new GlideRecord(ciTable);
+			gr2.initialize();
+
+			gr2.setValue('name',name); // 255
+			gr2.setValue('real_table_name',realTableName);
+			gr2.setValue('discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
+			gr2.setValue('install_status',1); // Choice Installed: 1, Absent: 100
+			gr2.setValue('operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3
+
+			// String
+			gr2.setValue('asset_tag',strAssetTag); // 40
+			gr2.setValue('attributes',strAttributes); // 65000
+			gr2.setValue('category',strCategory); // 40
+			gr2.setValue('comments',strComments); // 4000
+			gr2.setValue('correlation_id',strCorrelationID); // 512		
+			gr2.setValue('dns_domain',strDNSDomain); // 255
+			gr2.setValue('fqdn',strFQDN); // 255
+			gr2.setValue('gl_account',strGLAccount); // 40
+			gr2.setValue('invoice_number',strInvoiceNumber); // 40
+			gr2.setValue('ip_address',strIPAddress); // 255
+			gr2.setValue('lease_id',strLeaseID); // 40
+			gr2.setValue('mac_address',strMACAddress); // 18
+			gr2.setValue('model_number',strModelNumber); // 255
+			gr2.setValue('po_number',strPONumber); // 40
+			gr2.setValue('serial_number',strSerialNumber); // 255
+			gr2.setValue('short_description',strShortDescription); // 1000		
+			gr2.setValue('subcategory',strSubcategory);
+
+			// References
+			gr2.setValue('asset',assetSysID); // Asset
+
+			gr2.setValue('assigned_to',usrSysID); //User
+			gr2.setValue('managed_by',usrSysID);
+			gr2.setValue('owned_by',usrSysID);
+			gr2.setValue('supported_by',usrSysID);
+
+			gr2.setValue('assignment_group',grpSysID); //Group
+			gr2.setValue('change_control',grpSysID);
+			gr2.setValue('support_group',grpSysID);
+
+			gr2.setValue('company',cmpSysID); //Company
+			gr2.setValue('manufacturer',cmpSysID);
+			gr2.setValue('vendor',cmpSysID);
+
+			gr2.setValue('model_id',productSysID); //Product Model
+
+			gr2.setValue('cost_center',costCenterSysID); //Cost Center
+
+			gr2.setValue('department',depSysID); //Department
+
+			//duplicate_of //cmdb_ci
+
+			gr2.setValue('location',locSysID); //location
+
+			gr2.setValue('maintenance_schedule',scheduleSysID); //schedule
+			gr2.setValue('schedule',scheduleSysID);  
+
+			// DateTime
+			gr2.setValue('assigned',gdt);
+			gr2.setValue('checked_in',gdt);
+			gr2.setValue('checked_out',gdt);
+			gr2.setValue('delivery_date',gdt);
+			gr2.setValue('due',gdt);
+			gr2.setValue('first_discovered',gdt);
+			gr2.setValue('install_date',gdt);
+			gr2.setValue('last_discovered',gdt);
+			gr2.setValue('order_date',gdt);
+			gr2.setValue('start_date',gdt);
+
+			// Date		
+			gr2.setValue('warranty_expiration',gd);
+			gr2.setValue('purchase_date',gd);
+
+			// True/False
+			gr2.setValue('can_print',true);
+			gr2.setValue('monitor',true);
+			gr2.setValue('skip_sync',true);			
+			gr2.setValue('unverified',true);
+
+			//Integer
+			gr2.setValue('fault_count',1);
+
+			//Float
+			gr2.setValue('cost',12.45);
+
+			//Choice
+			gr2.setValue('justification','Testing'); //Replacement, Testing, Upgrade
+			gr2.setValue('due_in','1 Week'); //1 Hour, 1 Day, 1 Week
+			gr2.setValue('cost_cc','USD'); // USD, EUR, GBP
+
+
+			// Original Values
+			gr2.setValue('original_value_name',name); // 255
+			gr2.setValue('original_value_discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
+			gr2.setValue('original_value_install_status',1); // Choice Installed: 1, Absent: 100
+			gr2.setValue('original_value_operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3
+
+			// String
+			gr2.setValue('original_value_asset_tag',strAssetTag); // 40
+			gr2.setValue('original_value_attributes',strAttributes); // 65000
+			gr2.setValue('original_value_category',strCategory); // 40
+			gr2.setValue('original_value_comments',strComments); // 4000
+			gr2.setValue('original_value_correlation_id',strCorrelationID); // 512		
+			gr2.setValue('original_value_dns_domain',strDNSDomain); // 255
+			gr2.setValue('original_value_fqdn',strFQDN); // 255
+			gr2.setValue('original_value_gl_account',strGLAccount); // 40
+			gr2.setValue('original_value_invoice_number',strInvoiceNumber); // 40
+			gr2.setValue('original_value_ip_address',strIPAddress); // 255
+			gr2.setValue('original_value_lease_id',strLeaseID); // 40
+			gr2.setValue('original_value_mac_address',strMACAddress); // 18
+			gr2.setValue('original_value_model_number',strModelNumber); // 255
+			gr2.setValue('original_value_po_number',strPONumber); // 40
+			gr2.setValue('original_value_serial_number',strSerialNumber); // 255
+			gr2.setValue('original_value_short_description',strShortDescription); // 1000		
+			gr2.setValue('original_value_subcategory',strSubcategory);
+
+			// References
+			gr2.setValue('original_value_asset',assetSysID); // Asset
+
+			gr2.setValue('original_value_assigned_to',usrSysID); //User
+			gr2.setValue('original_value_managed_by',usrSysID);
+			gr2.setValue('original_value_owned_by',usrSysID);
+			gr2.setValue('original_value_supported_by',usrSysID);
+
+			gr2.setValue('original_value_assignment_group',grpSysID); //Group
+			gr2.setValue('original_value_change_control',grpSysID);
+			gr2.setValue('original_value_support_group',grpSysID);
+
+			gr2.setValue('original_value_company',cmpSysID); //Company
+			gr2.setValue('original_value_manufacturer',cmpSysID);
+			gr2.setValue('original_value_vendor',cmpSysID);
+
+			gr2.setValue('original_value_model_id',productSysID); //Product Model
+
+			gr2.setValue('original_value_cost_center',costCenterSysID); //Cost Center
+
+			gr2.setValue('original_value_department',depSysID); //Department
+
+			//duplicate_of //cmdb_ci
+
+			gr2.setValue('original_value_location',locSysID); //location
+
+			gr2.setValue('original_value_maintenance_schedule',scheduleSysID); //schedule
+			gr2.setValue('original_value_schedule',scheduleSysID);  
+
+			// DateTime
+			gr2.setValue('original_value_assigned',gdt);
+			gr2.setValue('original_value_checked_in',gdt);
+			gr2.setValue('original_value_checked_out',gdt);
+			gr2.setValue('original_value_delivery_date',gdt);
+			gr2.setValue('original_value_due',gdt);
+			gr2.setValue('original_value_first_discovered',gdt);
+			gr2.setValue('original_value_install_date',gdt);
+			gr2.setValue('original_value_last_discovered',gdt);
+			gr2.setValue('original_value_order_date',gdt);
+			gr2.setValue('original_value_start_date',gdt);
+
+			// Date		
+			gr2.setValue('original_value_warranty_expiration',gd);
+			gr2.setValue('original_value_purchase_date',gd);
+
+			// True/False
+			gr2.setValue('original_value_can_print',true);
+			gr2.setValue('original_value_monitor',true);
+			gr2.setValue('original_value_skip_sync',true);			
+			gr2.setValue('original_value_unverified',true);
+
+			//Integer
+			gr2.setValue('original_value_fault_count',1);
+
+			//Float
+			gr2.setValue('original_value_cost',12.45);
+
+			//Choice
+			gr2.setValue('original_value_justification','Testing'); //Replacement, Testing, Upgrade
+			gr2.setValue('original_value_due_in','1 Week'); //1 Hour, 1 Day, 1 Week
+			gr2.setValue('original_value_cost_cc','USD'); // USD, EUR, GBP
+
+			gr2.setValue('original_or_alternative','Original');
+
+			// Do not trigger Business Rules
+			gr2.setWorkflow(false);
+
+			sysID = gr2.insert();				
+
+		}	
+		else {
+			sysID = gr1.getValue('sys_id').toString();
+			this.updateCMDBCISpecificFields(sysID,name,ciTable,realTableName,padOut,zeroPaddedNumStr);
+		}
+		return sysID;
+	},
+	
+	updateCMDBCISpecificFields: function(sys_id,name,ciTable,realTableName,padOut,zeroPaddedNumStr) {
+		//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+		//var ciTable = 'x_tekso_twxapp01_test_application';
+
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var gd = new GlideDate();
+			var gdt = new GlideDateTime();
+
+			var cmpSysID = this.findOrInsertTestCompany('Test Company');
+			var productSysID = this.findOrInsertTestProductModel('Test Product Model');
+			var grpSysID = this.findOrInsertTestGroup('Test Group');
+			var depSysID = this.findOrInsertTestDepartment('Test Department');
+			var locSysID = this.findOrInsertTestLocation('Test Location');
+			var costCenterSysID = this.findOrInsertTestCostCenter('Test Cost Center');
+			var scheduleSysID = this.findOrInsertTestSchedule('Test Schedule');
+			var assetSysID = this.findOrInsertTestAsset('Test Asset');
+			var usrSysID = this.findOrInsertTestUser('Test User');	
+
+			var plainAssetTag = 'asset tag'; // 40
+			var plainAttributes = 'attributes'; // 65000
+			var plainCategory = 'category'; // 40
+			var plainComments = 'comments'; // 4000	
+			var plainCorrelationID = 'correlation id [' + zeroPaddedNumStr + ']'; // 512		
+			var plainDNSDomain = 'dns domain'; // 255
+			var plainFQDN = 'fqdn'; // 255
+			var plainGLAccount = 'gl account'; // 40
+			var plainInvoiceNumber = 'invoice number'; // 40
+			var plainIPAddress = 'ip address'; // 255
+			var plainLeaseID = 'lease id'; // 40
+			var plainMACAddress = 'mac address'; // 18
+			var plainModelNumber = 'model number'; // 255
+			var plainPONumber = 'po number'; // 40
+			var plainSerialNumber = 'serial number [' + zeroPaddedNumStr + ']'; // 255	
+			var plainShortDescription = 'short description'; // 1000
+			var plainSubcategory = 'subcategory'; // 40
+
+			var strAssetTag = plainAssetTag; // 40
+			var strAttributes = plainAttributes; // 65000
+			var strCategory = plainCategory; // 40
+			var strComments = plainComments; // 4000
+			var strCorrelationID = plainCorrelationID; // 512			
+			var strDNSDomain = plainDNSDomain; // 255
+			var strFQDN = plainFQDN; // 255
+			var strGLAccount = plainGLAccount; // 40
+			var strInvoiceNumber = plainInvoiceNumber; // 40
+			var strIPAddress = plainIPAddress; // 255
+			var strLeaseID = plainLeaseID; // 40
+			var strMACAddress = plainMACAddress; // 18
+			var strModelNumber = plainModelNumber; // 255
+			var strPONumber = plainPONumber; // 40
+			var strSerialNumber = plainSerialNumber; // 255
+			var strShortDescription = plainShortDescription; // 1000
+			var strSubcategory = plainSubcategory; // 40
+
+			if (padOut == true) {
+				strAssetTag = this.padOutString(plainAssetTag,40,'!!');
+				strAttributes = this.padOutString(plainAttributes,65000,'!!'); // 65000
+				strCategory = this.padOutString(plainCategory,40,'!!'); // 40
+				strComments = this.padOutString(plainComments,4000,'!!'); // 4000
+				strCorrelationID = this.padOutString(plainCorrelationID,512,'!!'); // 512
+				strDNSDomain = this.padOutString(plainDNSDomain,255,'!!'); // 255
+				strFQDN = this.padOutString(plainFQDN,255,'!!'); // 255
+				strGLAccount = this.padOutString(plainGLAccount,40,'!!'); // 40
+				strInvoiceNumber = this.padOutString(plainInvoiceNumber,40,'!!'); // 40
+				strIPAddress = this.padOutString(plainIPAddress,255,'!!'); // 255
+				strLeaseID = this.padOutString(plainLeaseID,40,'!!'); // 40
+				strMACAddress = this.padOutString(plainMACAddress,18,'!!'); // 18
+				strModelNumber = this.padOutString(plainModelNumber,255,'!!'); // 255
+				strPONumber = this.padOutString(plainPONumber,40,'!!'); // 40
+				strSerialNumber = this.padOutString(plainSerialNumber,255,'!!'); // 255
+				strShortDescription = this.padOutString(plainShortDescription,1000,'!!'); // 1000
+				strSubcategory = this.padOutString(plainSubcategory,40,'!!'); // 40
+			}
+
+			gr1.setValue('name',name); // 255
+			gr1.setValue('real_table_name',realTableName);
+			gr1.setValue('discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
+			gr1.setValue('install_status',1); // Choice Installed: 1, Absent: 100
+			gr1.setValue('operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3		
+
+			// String
+			gr1.setValue('asset_tag',strAssetTag); // 40
+			gr1.setValue('attributes',strAttributes); // 65000
+			gr1.setValue('category',strCategory); // 40
+			gr1.setValue('comments',strComments); // 4000
+			gr1.setValue('correlation_id',strCorrelationID); // 512		
+			gr1.setValue('dns_domain',strDNSDomain); // 255
+			gr1.setValue('fqdn',strFQDN); // 255
+			gr1.setValue('gl_account',strGLAccount); // 40
+			gr1.setValue('invoice_number',strInvoiceNumber); // 40
+			gr1.setValue('ip_address',strIPAddress); // 255
+			gr1.setValue('lease_id',strLeaseID); // 40
+			gr1.setValue('mac_address',strMACAddress); // 18
+			gr1.setValue('model_number',strModelNumber); // 255
+			gr1.setValue('po_number',strPONumber); // 40
+			gr1.setValue('serial_number',strSerialNumber); // 255
+			gr1.setValue('short_description',strShortDescription); // 1000		
+			gr1.setValue('subcategory',strSubcategory);
+
+			// References
+			gr1.setValue('asset',assetSysID); // Asset
+
+			gr1.setValue('assigned_to',usrSysID); //User
+			gr1.setValue('managed_by',usrSysID);
+			gr1.setValue('owned_by',usrSysID);
+			gr1.setValue('supported_by',usrSysID);
+
+			gr1.setValue('assignment_group',grpSysID); //Group
+			gr1.setValue('change_control',grpSysID);
+			gr1.setValue('support_group',grpSysID);
+
+			gr1.setValue('company',cmpSysID); //Company
+			gr1.setValue('manufacturer',cmpSysID);
+			gr1.setValue('vendor',cmpSysID);
+
+			gr1.setValue('model_id',productSysID); //Product Model
+
+			gr1.setValue('cost_center',costCenterSysID); //Cost Center
+
+			gr1.setValue('department',depSysID); //Department
+
+			//duplicate_of //cmdb_ci
+
+			gr1.setValue('location',locSysID); //location
+
+			gr1.setValue('maintenance_schedule',scheduleSysID); //schedule
+			gr1.setValue('schedule',scheduleSysID);  
+
+			// DateTime
+			gr1.setValue('assigned',gdt);
+			gr1.setValue('checked_in',gdt);
+			gr1.setValue('checked_out',gdt);
+			gr1.setValue('delivery_date',gdt);
+			gr1.setValue('due',gdt);
+			gr1.setValue('first_discovered',gdt);
+			gr1.setValue('install_date',gdt);
+			gr1.setValue('last_discovered',gdt);
+			gr1.setValue('order_date',gdt);
+			gr1.setValue('start_date',gdt);
+
+			// Date		
+			gr1.setValue('warranty_expiration',gd);
+			gr1.setValue('purchase_date',gd);
+
+			// True/False
+			gr1.setValue('can_print',true);
+			gr1.setValue('monitor',true);
+			gr1.setValue('skip_sync',true);			
+			gr1.setValue('unverified',true);
+
+			//Integer
+			gr1.setValue('fault_count',1);
+
+			//Float
+			gr1.setValue('cost',12.45);
+
+			//Choice
+			gr1.setValue('justification','Testing'); //Replacement, Testing, Upgrade
+			gr1.setValue('due_in','1 Week'); //1 Hour, 1 Day, 1 Week
+			gr1.setValue('cost_cc','USD'); // USD, EUR, GBP
+
+			//Original Values
+			gr1.setValue('original_value_name',name); // 255
+			gr1.setValue('original_value_discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
+			gr1.setValue('original_value_install_status',1); // Choice Installed: 1, Absent: 100
+			gr1.setValue('original_value_operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3
+
+			// String
+			gr1.setValue('original_value_asset_tag',strAssetTag); // 40
+			gr1.setValue('original_value_attributes',strAttributes); // 65000
+			gr1.setValue('original_value_category',strCategory); // 40
+			gr1.setValue('original_value_comments',strComments); // 4000
+			gr1.setValue('original_value_correlation_id',strCorrelationID); // 512		
+			gr1.setValue('original_value_dns_domain',strDNSDomain); // 255
+			gr1.setValue('original_value_fqdn',strFQDN); // 255
+			gr1.setValue('original_value_gl_account',strGLAccount); // 40
+			gr1.setValue('original_value_invoice_number',strInvoiceNumber); // 40
+			gr1.setValue('original_value_ip_address',strIPAddress); // 255
+			gr1.setValue('original_value_lease_id',strLeaseID); // 40
+			gr1.setValue('original_value_mac_address',strMACAddress); // 18
+			gr1.setValue('original_value_model_number',strModelNumber); // 255
+			gr1.setValue('original_value_po_number',strPONumber); // 40
+			gr1.setValue('original_value_serial_number',strSerialNumber); // 255
+			gr1.setValue('original_value_short_description',strShortDescription); // 1000		
+			gr1.setValue('original_value_subcategory',strSubcategory);
+
+			// References
+			gr1.setValue('original_value_asset',assetSysID); // Asset
+
+			gr1.setValue('original_value_assigned_to',usrSysID); //User
+			gr1.setValue('original_value_managed_by',usrSysID);
+			gr1.setValue('original_value_owned_by',usrSysID);
+			gr1.setValue('original_value_supported_by',usrSysID);
+
+			gr1.setValue('original_value_assignment_group',grpSysID); //Group
+			gr1.setValue('original_value_change_control',grpSysID);
+			gr1.setValue('original_value_support_group',grpSysID);
+
+			gr1.setValue('original_value_company',cmpSysID); //Company
+			gr1.setValue('original_value_manufacturer',cmpSysID);
+			gr1.setValue('original_value_vendor',cmpSysID);
+
+			gr1.setValue('original_value_model_id',productSysID); //Product Model
+
+			gr1.setValue('original_value_cost_center',costCenterSysID); //Cost Center
+
+			gr1.setValue('original_value_department',depSysID); //Department
+
+			//duplicate_of //cmdb_ci
+
+			gr1.setValue('original_value_location',locSysID); //location
+
+			gr1.setValue('original_value_maintenance_schedule',scheduleSysID); //schedule
+			gr1.setValue('original_value_schedule',scheduleSysID);  
+
+			// DateTime
+			gr1.setValue('original_value_assigned',gdt);
+			gr1.setValue('original_value_checked_in',gdt);
+			gr1.setValue('original_value_checked_out',gdt);
+			gr1.setValue('original_value_delivery_date',gdt);
+			gr1.setValue('original_value_due',gdt);
+			gr1.setValue('original_value_first_discovered',gdt);
+			gr1.setValue('original_value_install_date',gdt);
+			gr1.setValue('original_value_last_discovered',gdt);
+			gr1.setValue('original_value_order_date',gdt);
+			gr1.setValue('original_value_start_date',gdt);
+
+			// Date		
+			gr1.setValue('original_value_warranty_expiration',gd);
+			gr1.setValue('original_value_purchase_date',gd);
+
+			// True/False
+			gr1.setValue('original_value_can_print',true);
+			gr1.setValue('original_value_monitor',true);
+			gr1.setValue('original_value_skip_sync',true);			
+			gr1.setValue('original_value_unverified',true);
+
+			//Integer
+			gr1.setValue('original_value_fault_count',1);
+
+			//Float
+			gr1.setValue('original_value_cost',12.45);
+
+			//Choice
+			gr1.setValue('original_value_justification','Testing'); //Replacement, Testing, Upgrade
+			gr1.setValue('original_value_due_in','1 Week'); //1 Hour, 1 Day, 1 Week
+			gr1.setValue('original_value_cost_cc','USD'); // USD, EUR, GBP
+
+			gr1.setValue('original_or_alternative','Original');
+
+			rtnSysID = gr1.getValue('sys_id').toString();
+
+			// Do not trigger Business Rules
+			gr1.setWorkflow(false);
+
+			gr1.update();				
+		}
+	},
+
+	updateCMDBApplicationSpecificFields: function(sys_id,padOut) {
+		// Class specific fields
+		var ciTable = 'x_tekso_twxapp01_test_application';	
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {		
+			var plainConfigDirectory = 'Config Directory'; // String 255
+			var plainConfigFile = 'Config File'; // String 255
+			var plainEdition = 'Edition'; // String 100
+			var plainInstallDirectory = 'Install Directory'; // String 255
+			var plainRPCommandHash = 'RP Command Hash'; // String 255
+			var plainRPKeyParametersHash = 'RP Key Parameters Hash'; // String 255
+			var plainRunningProcessCommand = 'Running Process Command'; // String 65000
+			var plainRunningProcessKeyParameters = 'Running Process Key Parameters'; // String 65000
+			var plainTCPPort = 'TCP Port'; // String 255
+			var plainVersion = 'Version'; // String 255
+
+			var strConfigDirectory = plainConfigDirectory;
+			var strConfigFile = plainConfigFile;
+			var strEdition = plainEdition;
+			var strInstallDirectory = plainInstallDirectory;
+			var strRPCommandHash = plainRPCommandHash;
+			var strRPKeyParametersHash = plainRPKeyParametersHash;
+			var strRunningProcessCommand = plainRunningProcessCommand;
+			var strRunningProcessKeyParameters = plainRunningProcessKeyParameters;
+			var strTCPPort = plainTCPPort;
+			var strVersion = plainVersion;		
+			if (padOut == true) {
+				strConfigDirectory = this.padOutString(plainConfigDirectory,255,'!!');
+				strConfigFile = this.padOutString(plainConfigFile,255,'!!');
+				strEdition = this.padOutString(plainEdition,100,'!!');
+				strInstallDirectory = this.padOutString(plainInstallDirectory,255,'!!');
+				strRPCommandHash = this.padOutString(plainRPCommandHash,255,'!!');
+				strRPKeyParametersHash = this.padOutString(plainRPKeyParametersHash,255,'!!');
+				strRunningProcessCommand = this.padOutString(plainRunningProcessCommand,65000,'!!');
+				strRunningProcessKeyParameters = this.padOutString(plainRunningProcessKeyParameters,65000,'!!');
+				strTCPPort = this.padOutString(plainTCPPort,255,'!!');
+				strVersion = this.padOutString(plainVersion,255,'!!');			
+			}
+
+			gr1.setValue('cl_port',1); // Integer		
+			gr1.setValue('config_directory',strConfigDirectory); // String 255
+			gr1.setValue('config_file',strConfigFile); // String 255		
+			gr1.setValue('edition',strEdition); // String 100		
+			gr1.setValue('install_directory',strInstallDirectory); // String 255		
+			gr1.setValue('is_clustered',true); // t/f		
+			gr1.setValue('pid',1); // Integer		
+			gr1.setValue('rp_command_hash',strRPCommandHash); // String 255		
+			gr1.setValue('rp_key_parameters_hash',strRPKeyParametersHash); // String 255		
+			gr1.setValue('running_process_command',strRunningProcessCommand); // String 65000	
+			gr1.setValue('running_process_key_parameters',strRunningProcessKeyParameters); // String 65000		
+			gr1.setValue('tcp_port',strTCPPort); // String 255		
+			gr1.setValue('used_for','Production'); // Choice Production, Staging		
+			gr1.setValue('version',strVersion); // String 255
+
+			gr1.setValue('original_value_cl_port',1); // Integer		
+			gr1.setValue('original_value_config_directory',strConfigDirectory); // String 255
+			gr1.setValue('original_value_config_file',strConfigFile); // String 255		
+			gr1.setValue('original_value_edition',strEdition); // String 100		
+			gr1.setValue('original_value_install_directory',strInstallDirectory); // String 255		
+			gr1.setValue('original_value_is_clustered',true); // t/f		
+			gr1.setValue('original_value_pid',1); // Integer		
+			gr1.setValue('original_value_rp_command_hash',strRPCommandHash); // String 255		
+			gr1.setValue('original_value_rp_key_parameters_hash',strRPKeyParametersHash); // String 255		
+			gr1.setValue('original_value_running_process_command',strRunningProcessCommand); // String 65000	
+			gr1.setValue('original_value_running_process_key_parameters',strRunningProcessKeyParameters); // String 65000		
+			gr1.setValue('original_value_tcp_port',strTCPPort); // String 255		
+			gr1.setValue('original_value_used_for','Production'); // Choice Production, Staging		
+			gr1.setValue('original_value_version',strVersion); // String 255
+
+			// Do not trigger Business Rules		
+			gr1.setWorkflow(false);		
+
+			gr1.update();		
+		}
+	},
+
+	updateCMDBHardwareSpecificFields: function(sys_id,padOut) {
+		// Class specific fields
+		var ciTable = 'x_tekso_twxapp01_test_hardware';	
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var plainDefaultGateway = 'Default Gateway'; // String 40
+			var strDefaultGateway = plainDefaultGateway;
+			if (padOut == true) {
+				strDefaultGateway = this.padOutString(plainDefaultGateway,40,'!!');
+			}
+
+			gr1.setValue('default_gateway',strDefaultGateway); // String 40
+
+			gr1.setValue('hardware_status','installed'); // String 40 Choice Installed: installed, Retired: retired, Defective: defective
+			gr1.setValue('hardware_substatus','in use'); // String 40 Choice installed	In Use: in use		
+																			//defective	Disposable: disposable; Repairable: repairable					
+																			//retired	Lost: lost, Sold: sold
+
+
+			gr1.setValue('original_value_default_gateway',strDefaultGateway); // String 40
+
+			gr1.setValue('original_value_hardware_status','installed'); // String 40 Choice Installed: installed, Retired: retired, Defective: defective
+			gr1.setValue('original_value_hardware_substatus','in use');
+
+			// Do not trigger Business Rules		
+			gr1.setWorkflow(false);	
+
+			gr1.update();		
+		}
+	},
+
+	updateCMDBComputerSpecificFields: function(sys_id,padOut) {
+		// Class specific fields
+		var ciTable = 'x_tekso_twxapp01_test_computer';	
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {
+
+			var plainCPUName = 'CPU Name'; // String 100
+			var plainCPUType = 'CPU Type'; // String 40	
+			var plainObjectID = 'Object ID'; // String 512	
+			var plainOSDomain = 'OS Domain'; // String 40
+			var plainOSServicePack = 'OS Service Pack'; // String 40
+			var plainOSVersion = 'OS Version'; // String 40	
+
+			var strCPUName = plainCPUName;
+			var strCPUType = plainCPUType;
+			var strObjectID = plainObjectID;		
+			var strOSDomain = plainOSDomain;
+			var strOSServicePack = plainOSServicePack;
+			var strOSVersion = plainOSVersion;
+
+			if (padOut == true) {
+				strCPUName = this.padOutString(plainCPUName,100,'!!');
+				strCPUType = this.padOutString(plainCPUType,40,'!!');
+				strObjectID = this.padOutString(plainObjectID,512,'!!');
+				strOSDomain = this.padOutString(plainOSDomain,40,'!!');
+				strOSServicePack = this.padOutString(plainOSServicePack,40,'!!');
+				strOSVersion = this.padOutString(plainOSVersion,40,'!!');			
+			}
+
+			gr1.setValue('cd_rom','true'); // True/False	
+			gr1.setValue('cd_speed',10); // Integer
+			gr1.setValue('chassis_type','Desktop');  // String 40 Choice Desktop, Laptop, Mini Tower, Main System Chassis
+			gr1.setValue('cpu_core_count',10); // Integer
+			gr1.setValue('cpu_core_thread',10); // Integer
+			gr1.setValue('cpu_count',10); // Integer	
+			var manSysID = this.findOrInsertTestCompany('Test Company');
+			gr1.setValue('cpu_manufacturer',manSysID); // Reference		
+			gr1.setValue('cpu_name',strCPUName); // String 100		
+			gr1.setValue('cpu_speed',33); // Decimal			
+			gr1.setValue('cpu_type',strCPUType); // String 100		
+			gr1.setValue('disk_space',33); // Decimal
+			gr1.setValue('floppy','3.5 inch');  // String 40 Choice 3.5 inch, 5.25 inch, None
+			gr1.setValue('form_factor','Blade');  // String 40 Choice Blade, Desktop, Rack Mount, Stand Alone		
+			gr1.setValue('object_id',strObjectID); // String 512			
+			gr1.setValue('os','Windows');  // String 40 Choice AIX, ESX, linux Red Hat, Solaris, Windows
+			gr1.setValue('os_address_width',64); // Integer Choice 32, 64		
+			gr1.setValue('os_domain',strOSDomain); // String 40		
+			gr1.setValue('os_service_pack',strOSServicePack); // String 40		
+			gr1.setValue('os_version',strOSVersion); // String 40		
+			gr1.setValue('ram',32); // Integer
+			gr1.setValue('virtual',true); // True/False
+
+			gr1.setValue('original_value_cd_rom','true'); // True/False	
+			gr1.setValue('original_value_cd_speed',10); // Integer
+			gr1.setValue('original_value_chassis_type','Desktop');  // String 40 Choice Desktop, Laptop, Mini Tower, Main System Chassis
+			gr1.setValue('original_value_cpu_core_count',10); // Integer
+			gr1.setValue('original_value_cpu_core_thread',10); // Integer
+			gr1.setValue('original_value_cpu_count',10); // Integer	
+			gr1.setValue('original_value_cpu_manufacturer',manSysID); // Reference		
+			gr1.setValue('original_value_cpu_name',strCPUName); // String 100		
+			gr1.setValue('original_value_cpu_speed',33); // Decimal			
+			gr1.setValue('original_value_cpu_type',strCPUType); // String 100		
+			gr1.setValue('original_value_disk_space',33); // Decimal
+			gr1.setValue('original_value_floppy','3.5 inch');  // String 40 Choice 3.5 inch, 5.25 inch, None
+			gr1.setValue('original_value_form_factor','Blade');  // String 40 Choice Blade, Desktop, Rack Mount, Stand Alone		
+			gr1.setValue('original_value_object_id',strObjectID); // String 512			
+			gr1.setValue('original_value_os','Windows');  // String 40 Choice AIX, ESX, linux Red Hat, Solaris, Windows
+			gr1.setValue('original_value_os_address_width',64); // Integer Choice 32, 64		
+			gr1.setValue('original_value_os_domain',strOSDomain); // String 40		
+			gr1.setValue('original_value_os_service_pack',strOSServicePack); // String 40		
+			gr1.setValue('original_value_os_version',strOSVersion); // String 40		
+			gr1.setValue('original_value_ram',32); // Integer
+			gr1.setValue('original_value_virtual',true); // True/False
+
+			// Do not trigger Business Rules		
+			gr1.setWorkflow(false);	
+
+			gr1.update();		
+		}
+	},
+
+	updateCMDBServerSpecificFields: function(sys_id,padOut) {
+		// Class specific fields
+		var ciTable = 'x_tekso_twxapp01_test_server';	
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {
+
+			var plainHostName = 'Host Name'; // String 255
+			var strHostName = plainHostName;
+			if (padOut == true) {
+				strHostName = this.padOutString(plainHostName,255,'!!');
+			}
+
+			gr1.setValue('classification','Production'); // String 40 Choice Production, Development, UAT
+			//dr_backup	Reference	Server		32	
+			gr1.setValue('firewall_status','Intranet');	// String 40 Choice Internet, Intranet, DMZ	
+			gr1.setValue('host_name',strHostName); // String 255
+
+			gr1.setValue('original_value_used_for','Production');  // String 40 Choice Production, Staging
+			gr1.setValue('original_value_classification','Production'); // String 40 Choice Production, Development, UAT
+			//dr_backup	Reference	Server		32	
+			gr1.setValue('original_value_firewall_status','Intranet');	// String 40 Choice Internet, Intranet, DMZ		
+			gr1.setValue('original_value_host_name',strHostName); // String 255		
+			gr1.setValue('original_value_used_for','Production');  // String 40 Choice Production, Staging		
+
+			// Do not trigger Business Rules		
+			gr1.setWorkflow(false);	
+
+			gr1.update();		
+		}
+	},
+
+	newCMDBApplication: function(name,padOut,zeroPaddedNumStr) {
+		var ciTable = 'x_tekso_twxapp01_test_application';
+		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_appl',padOut,zeroPaddedNumStr);
+		this.updateCMDBApplicationSpecificFields(ciSysID,padOut);
+		return ciSysID;
+	},
+
+	newCMDBHardware: function(name,padOut,zeroPaddedNumStr) {
+		var ciTable = 'x_tekso_twxapp01_test_hardware';
+		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_hardware',padOut,zeroPaddedNumStr);
+		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
+		return ciSysID;
+	},
+
+	newCMDBComputer: function(name,padOut,zeroPaddedNumStr) {
+		var ciTable = 'x_tekso_twxapp01_test_computer';
+		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_computer',padOut,zeroPaddedNumStr);
+		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
+		this.updateCMDBComputerSpecificFields(ciSysID,padOut);	
+		return ciSysID;
+	},
+
+	newCMDBServer: function(name,padOut,zeroPaddedNumStr) {
+		var ciTable = 'x_tekso_twxapp01_test_server';
+		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_server',padOut,zeroPaddedNumStr);
+		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
+		this.updateCMDBComputerSpecificFields(ciSysID,padOut);	
+		this.updateCMDBServerSpecificFields(ciSysID,padOut);		
+		return ciSysID;
+	},
+
+	newRelation: function(parent,child,type,checkIfAlreadyExists) {
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+		if (checkIfAlreadyExists == true) {
+			var gr1 = new GlideRecord(relTable);
+			gr1.addQuery('parent',parent);
+			gr1.addQuery('child',child);	
+			gr1.addQuery('type',type);
+			gr1.query();
+			if (!gr1.next()) {
+				var gr2 = new GlideRecord(relTable);
+				gr2.initialize();
+				gr2.setValue('parent',parent); // Ref
+				gr2.setValue('child',child); // Ref
+				gr2.setValue('type',type); // Type
+				gr2.setValue('port',0); // Int
+				gr2.setValue('percent_outage',0); // Int
+				gr2.setValue('connection_strength','always'); // Choice always, cluster, infrequent, occassional
+
+				gr2.setValue('original_or_alternative','Original');
+				gr2.setValue('original_value_parent',parent); // Ref
+				gr2.setValue('original_value_child',child); // Ref
+				gr2.setValue('original_value_type',type); // Type
+				gr2.setValue('original_value_port',0); // Int
+				gr2.setValue('original_value_percent_outage',0); // Int
+				gr2.setValue('original_value_connection_strength','always'); // Choice always, cluster, infrequent, occassional
+
+				// Do not trigger Business Rules
+				gr2.setWorkflow(false);	
+
+				gr2.insert();
+			}
+		}
+		else {
+			// Don't check if it already exists
+			var gr3 = new GlideRecord(relTable);
+			gr3.initialize();
+			gr3.setValue('parent',parent); // Ref
+			gr3.setValue('child',child); // Ref
+			gr3.setValue('type',type); // Type
+			gr3.setValue('port',0); // Int
+			gr3.setValue('percent_outage',0); // Int
+			gr3.setValue('connection_strength','always'); // Choice always, cluster, infrequent, occassional
+
+			gr3.setValue('original_or_alternative','Original');		
+			gr3.setValue('original_value_parent',parent); // Ref
+			gr3.setValue('original_value_child',child); // Ref
+			gr3.setValue('original_value_type',type); // Type
+			gr3.setValue('original_value_port',0); // Int
+			gr3.setValue('original_value_percent_outage',0); // Int
+			gr3.setValue('original_value_connection_strength','always'); // Choice always, cluster, infrequent, occassional
+
+			// Do not trigger Business Rules
+			gr3.setWorkflow(false);	
+
+			gr3.insert();		
+		}
+	},
+
+	padOutString: function(existingText,maxSize,tail) {
+		var rtnStr = '';
+		var str = '';
+		var ln = 0;
+		var ln2 = 0;
+
+		str = existingText + ' ' + tail;		
+
+		ln = str.length;
+		if (ln >= maxSize) {
+			// String + tail is biiger than max size 
+			// so do a left() to get back the maxsize
+			rtnStr = str.substring(0,maxSize);
+		}		
+		else {
+			ln2 = maxSize - ln;
+			str = this.generateString(ln2);
+			rtnStr = existingText + ' ' + str + tail;			
+		}
+		return rtnStr;
+	},
+
+	generateString: function(size) {
+		var rtnStr = '';
+
+		var template = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789';
+
+		var str = '';
+		var ln = 0;
+		str = template;
+		ln = str.length;
+		while (ln < size) {
+			str = str + template;
+			ln = str.length;
+		}
+
+		rtnStr = str.substring(0, size);
+
+		return rtnStr;
+	},
+	
+	zeroPad: function(number,maxSize) {
+		var maxSize2 = maxSize * -1;
+		var template = '000000000000000';
+		var numStr = number.toString();
+		var str = template + numStr;
+		rtnStr = str.substr(maxSize2);
+		return rtnStr;
+	},
+
+	createMultipleCopies: function(ciTable,sysID,numberOfCopies,startingNumber) {	
+		rtnSysIDArr = [];
+
+		//var ciTable = 'x_tekso_twxapp01_test_application';
+		var excludedArr = ['sys_id','sys_created_on','sys_created_by','sys_updated_on','sys_updated_by','sys_mod_count'];
+
+		var fldArr = [];
+		var valArr = [];
+
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('sys_id',sysID);
+		gr1.query();
+		if (gr1.next()) {
+			var name = gr1.getValue('name'); // We need the name as this has the [00001] in it that we will need to replace
+			var br1 = name.indexOf('[');
+			var br2 = name.indexOf(']');
+			var zeroPaddedNumStr = name.substring(br1 + 1,br2);
+
+			//get all the fields for this record
+			/*	
+			GlideRecord also has a getElements method. This returns an array (if in scope) or an ArrayList (if in global) of all of the elements 
+			on the record. You can then loop through the array (in scope) or iterate through it (in global) to get things like the label, field name, 
+			and value.
+			*/	
+			var elements = gr1.getElements();
+			for (var i=0; i<elements.length; i++) {
+				var element = elements[i];
+				var elementName = element.getName();
+				var elementVal = gr1.getValue(elementName);
+				// Exclude certain fields e.g. sys_id
+				if (excludedArr.indexOf(elementName) == -1) {
+					// Copy the fields and values to arrays
+					fldArr.push(elementName);
+					valArr.push(elementVal);
+				}
+			}
+
+			//create a new record - multiple times
+			var fieldsToAdjustArr = ['name','serial_number','correlation_id'];
+			var valtoReplace = '[' + zeroPaddedNumStr + ']';
+			var numStrLn = zeroPaddedNumStr.length;
+
+			var cnt = 0;
+			var num = startingNumber;
+			while (cnt < numberOfCopies) {
+				var gr2 = new GlideRecord(ciTable);
+				gr2.initialize();
+
+				for (var j=0; j<fldArr.length; j++) {
+					var fld2 = fldArr[j];
+					var val2 = valArr[j];
+					if (fieldsToAdjustArr.indexOf(fld2) == -1) {
+						gr2[fld2] = val2;
+					}
+					else {
+						// field needs tweaking e.g. serial_number [000001] to be serial_number [000002]
+						var newZeroPaddedNumStr = this.zeroPad(num,numStrLn);
+						var newVal =  '[' + newZeroPaddedNumStr + ']';
+						var val3 = val2.replace(valtoReplace,newVal);
+						gr2[fld2] = val3;
+					}
+				}
+				var newSysID = gr2.insert();
+				rtnSysIDArr.push(newSysID);
+				num++;
+				cnt++;
+			}
+		}
+		return rtnSysIDArr; // An array of sys_id's
+	},
+	
+    type: 'BuildTestData'
+};
+
+
+/* Example calling
+new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently();
+
+// or
+
+var si = new  x_tekso_twxapp01.BuildTestData();
+si.deleteAllTestDataSilently();
+
+
+new x_tekso_twxapp01.BuildTestData().buildTestData();
+*/
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-09 10:01:50</sys_created_on>
+        <sys_id>9a071b35db4814104f29252b13961990</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>BuildTestData</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_9a071b35db4814104f29252b13961990</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 12:44:22</sys_updated_on>
+    </sys_script_include>
+</record_update>

@@ -33,7 +33,11 @@ function runClientCode(){
 	
 	g_form.clearMessages();
 	var del_rel_qty = g_form.getValue('delete_relations_qty');
-	if (del_rel_qty < 1) {
+	var upd_rel_qty = g_form.getValue('update_relations_qty');
+	var del_ci_qty = g_form.getValue('delete_cmdb_ci_qty');
+	var upd_ci_qty = g_form.getValue('update_cmdb_ci_qty');
+	
+	if (del_rel_qty < 1 && upd_rel_qty < 1 && del_ci_qty < 1 && upd_ci_qty < 1 ) {
 		g_form.addInfoMessage("At least one of the qty fields must be > 0 for submission to be performed");
 		return false; //Abort submission
 	}
@@ -52,7 +56,7 @@ function runClientCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>af27e519db48901041d08f3813961973</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Submit</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -60,7 +64,7 @@ function runClientCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_af27e519db48901041d08f3813961973</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-07 13:05:23</sys_updated_on>
+        <sys_updated_on>2020-04-15 10:31:53</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

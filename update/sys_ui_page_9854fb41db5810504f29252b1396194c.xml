@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
+    <sys_ui_page action="INSERT_OR_UPDATE">
+        <category>general</category>
+        <client_script><![CDATA[//Client script
+function invokePromptCallBack(type) {
+	var gdw = GlideDialogWindow.get();
+	var f;
+	if (type == 'continue') {
+		f = gdw.getPreference('onContinue');
+	}
+	else {
+		f = gdw.getPreference('onCancel');
+	}
+	if (typeof(f) == 'function') {
+		try {
+			f.call(gdw);
+			//f.call(gdw, gdw.getPreference('oldValue'));
+        } 
+		catch(e) {
+        }
+	}
+	gdw.destroy();
+	return false;
+}]]></client_script>
+        <description/>
+        <direct>false</direct>
+        <endpoint>x_tekso_twxapp01_mid_server_queue_is_busy.do</endpoint>
+        <html><![CDATA[<?xml version="1.0" encoding="utf-8" ?>
+<j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
+<style>
+.aligncenter {
+    text-align: center;
+}
+.button {
+	color: #ffffff !important;
+	background-color: #1f8476 !important;
+	border-color: #10463f !important;
+	border: 1px solid transparent !important;
+}
+</style>	
+<g:ui_form>	
+	<img src="logo1.jpg"/>	
+	<input type="hidden" id="queueSize" name="queueSize" value="${sysparm_queuesize}"/> 
+	<table border="0">		
+	<tr>
+		<td>
+			<h3>The MID Server queue is busy processing data.</h3>
+		</td>
+	</tr>		
+	<tr>
+		<td>
+			<h3>There are ${sysparm_queuesize} records already in the queue.</h3>			
+		</td>
+	</tr>	
+	<tr>
+		<td>
+			<h3>The system may not respond to this request for some time and may time-out before completing.</h3>
+			<br/>			
+		</td>
+	</tr>		
+	<td align="center">
+	  	<button class="button" type="button" onclick="invokePromptCallBack('continue');">Continue</button>
+		<button class="button" type="button" onclick="invokePromptCallBack('cancel');">Cancel</button>
+	  </td>
+	</table>
+</g:ui_form>	
+</j:jelly>]]></html>
+        <name>mid_server_queue_is_busy</name>
+        <processing_script/>
+        <sys_class_name>sys_ui_page</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-19 13:47:39</sys_created_on>
+        <sys_id>9854fb41db5810504f29252b1396194c</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>mid_server_queue_is_busy</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_page_9854fb41db5810504f29252b1396194c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-19 17:11:54</sys_updated_on>
+    </sys_ui_page>
+</record_update>

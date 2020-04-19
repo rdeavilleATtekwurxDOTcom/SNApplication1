@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="CMDB Link to REST Data" max_length="40" name="x_tekso_twxapp01_cmdb_link_to_rest_data" type="collection">
+    <element label="CMDB Link to REST Data" max_length="40" name="x_tekso_twxapp01_cmdb_link_to_rest_data" sizeclass="20000" type="collection">
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="First Process Record" max_length="40" name="first_process_record" type="boolean"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>delete_relations_qty</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Generate Test Data - Delete Relations Qt</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading) {
+      return;
+   }
+
+	if (newValue < 0) {
+		g_form.showFieldMsg('delete_relations_qty','Value cannot be negative');	
+	}
+	else{
+		var avail = g_form.getValue('available_qty_of_test_relations');
+		var other = g_form.getValue('update_relations_qty');
+		// Remove commas
+		avail = avail.replace(/,/g, "");
+		other = other.replace(/,/g, "");
+		newValue = newValue.replace(/,/g, "");
+		var total = parseInt(other) + parseInt(newValue);
+		if (parseInt(total) > parseInt(avail)) {
+			g_form.showFieldMsg('delete_relations_qty','Delete Relations Qty and Update Relations Qty combined cannot be more than ' + avail.toString());	
+		}
+		else {
+			g_form.hideFieldMsg('delete_relations_qty');					
+		}
+	}
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-15 14:00:42</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>d540d73bdb48d81041d08f3813961916</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Generate Test Data - Delete Relations Qt</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_d540d73bdb48d81041d08f3813961916</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 15:01:48</sys_updated_on>
+        <table>x_tekso_twxapp01_generate_test_data</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+</record_update>

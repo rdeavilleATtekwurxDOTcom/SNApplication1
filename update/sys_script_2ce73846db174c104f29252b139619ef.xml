@@ -217,6 +217,13 @@ function isCMDBTrackingRunning(configTable) {
 			// e.g. https://dev91664.service-now.com/
 			var snURL = gs.getProperty("glide.servlet.uri");
 
+			if (snURL.length > 0) {
+				// Remove the last character if it is a /
+				if (snURL.charAt(snURL.length - 1) == '/') {
+					snURL = snURL.substr(0, snURL.length - 1);
+				}
+			}		
+			
 			var recordSysID = current.record_sys_id;			
 			
 			var source = 'ServiceNow';
@@ -378,9 +385,13 @@ function isCMDBTrackingRunning(configTable) {
 		}
 	}
 
-	// Record that the br has run
-	var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
-	si.setDTLastRunAt('br_ucontrol_track_deletes_last_run_at');
+	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
+	//Event x_tekso_twxapp01.configurationchecksetdt
+	var brevent = 'br_ucontrol_track_deletes_last_run_at';
+	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),brevent);
+	//This event will trigger script action ConfigurationCheckSetDT
+	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//               si2.setDTLastRunAt('br_ucontrol_track_deletes_last_run_at'); // Fld
 	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -389,7 +400,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>31</sys_mod_count>
+        <sys_mod_count>33</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -397,7 +408,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-02 14:13:42</sys_updated_on>
+        <sys_updated_on>2020-04-16 16:53:29</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

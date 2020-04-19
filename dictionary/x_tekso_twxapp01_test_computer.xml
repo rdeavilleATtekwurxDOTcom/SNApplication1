@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="x_tekso_twxapp01_test_hardware" label="Test Computer" max_length="40" name="x_tekso_twxapp01_test_computer" type="collection">
+    <element extends="x_tekso_twxapp01_test_hardware" label="Test Computer" max_length="40" name="x_tekso_twxapp01_test_computer" sizeclass="20000" type="collection">
         <element label="Alternative Value CD Rom" max_length="40" name="alternative_value_cd_rom" type="boolean"/>
         <element label="Alternative Value CD Speed" max_length="40" name="alternative_value_cd_speed" type="integer"/>
         <element label="Alternative Value Chassis Type" max_length="40" name="alternative_value_chassis_type" type="string"/>

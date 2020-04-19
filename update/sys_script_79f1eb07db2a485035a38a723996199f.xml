@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Setup When Connection Test Req Changes</name>
+        <name>Setup - When Connection Test Req Changes</name>
         <order>110</order>
         <priority>100</priority>
         <rest_method/>
@@ -27,7 +27,10 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous) {
+        <script><![CDATA[// Triggered by UI Action's - Test Connection and Start Sending
+// Triggered by BR - Setup - When MID Server Or URL Changes
+
+(function executeRule(current, previous) {
 	// AFTER INSERT UPDATE
 	// NEEDS TO RUN AFTER - BR Setup When MID Server Or URL Is Changed
 	var sysID = current.sys_id;
@@ -37,7 +40,7 @@
 	var url = current.ucontrol_url.toString(); 		
 	if (midServerName.length > 0 && midServerSysID.length > 0 && url.length > 0 ) {
 		// Update the connection status - but we only need to do this if this BR has been triggered by a change to the URL or MID Server
-		// If someohe has clicked on the Test Connection or Start Sending then connection status should have already been set correctly
+		// If someone has clicked on the Test Connection or Start Sending then connection status should have already been set correctly
 		// This is needed if someone has changed the MID Server or URL and then hit the update button
 		var setupTable = 'x_tekso_twxapp01_setup';
 		var gr1 = new GlideRecord(setupTable);
@@ -81,6 +84,13 @@
 			// e.g. https://dev91664.service-now.com/
 			var snURL = gs.getProperty("glide.servlet.uri");
 
+			if (snURL.length > 0) {
+				// Remove the last character if it is a /
+				if (snURL.charAt(snURL.length - 1) == '/') {
+					snURL = snURL.substr(0, snURL.length - 1);
+				}
+			}	
+			
 			var source = 'ServiceNow';
 
 			var json = '{\"source\":\"' + source + '\",';	// ServiceNow
@@ -128,15 +138,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
-        <sys_mod_count>79</sys_mod_count>
-        <sys_name>Setup When Connection Test Req Changes</sys_name>
+        <sys_mod_count>82</sys_mod_count>
+        <sys_name>Setup - When Connection Test Req Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-02 14:08:22</sys_updated_on>
+        <sys_updated_on>2020-04-19 13:21:22</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -14,12 +14,12 @@ UpdateScheduledJob.prototype = {
     updateScheduledJob: function(setupSysID) {
 		
 		var setupTable = 'x_tekso_twxapp01_setup';
+		var setupSysID2 = setupSysID.toString();
 		
 		var gr1 = new GlideRecord(setupTable);
-		gr1.addQuery('sys_id',setupSysID);
-		gr1.query;
+		gr1.addQuery('sys_id',setupSysID2);
+		gr1.query();
 		if (gr1.next()) {
-			
 			var interval = gr1.getValue('ucontrol_polling_interval_minutes');
 			
 			var intervalStr = '';
@@ -36,45 +36,69 @@ UpdateScheduledJob.prototype = {
 			var duration = new GlideDuration(durationStr);
 		
 			var scheduledJobSysID = gr1.getValue('scheduled_job_sys_id').toString();
-
-			if (scheduledJobSysID.length < 32) {
+			var gotGoodScheduledJobSysID = false;
+			
+			if (scheduledJobSysID.length > 31) {
+				// Check if the sysID is still valid
 				var gr2 = new GlideRecord('sysauto');
+				gr2.addQuery('sys_id',scheduledJobSysID);
 				gr2.addQuery('name','Send Data to uControl');
 				gr2.query();
 				if (gr2.next()) {
-					scheduledJobSysID = gr2.getValue('sys_id');
+					//Still valid
+					gotGoodScheduledJobSysID = true;
+				}
+			}
+			
+			if (scheduledJobSysID.length < 32 || gotGoodScheduledJobSysID == false) {
+				// Not got a sysid of the one we had was not valid
+				var gr3 = new GlideRecord('sysauto');
+				gr3.addQuery('name','Send Data to uControl');
+				gr3.query();
+				if (gr3.next()) {
+					//Now we have got the sys_id for the scheduled job
+					scheduledJobSysID = gr3.getValue('sys_id').toString();
 					gr1.setValue('scheduled_job_sys_id',scheduledJobSysID);
 					gr1.setValue('updated_by_script','SI updateScheduledJob'); // Debug	
-					gr1.update();						
+					gr1.update();	
+					gotGoodScheduledJobSysID = true;
 				}
 			} 
 
-			if (scheduledJobSysID.length >= 32) {
-				var gr3 = new GlideRecord('sysauto');
-				gr3.addQuery('sys_id',scheduledJobSysID);
-				gr3.query();	
-				if (gr3.next()) {
-					gr3.setValue('active',true);
-					gr3.setValue('run_type','periodically');
-					gr3.setValue('run_period',duration);
-					gr3.update();			
+
+			//If we have got a sys_id for the scheduled job - either because we always had it
+			//or beceause we have just got it in the previous block
+			if (scheduledJobSysID.length >= 32 && gotGoodScheduledJobSysID == true) {
+				var gr4 = new GlideRecord('sysauto');
+				gr4.addQuery('sys_id',scheduledJobSysID);
+				gr4.query();	
+				if (gr4.next()) {
+					gr4.setValue('active',true);
+					gr4.setValue('run_type','periodically');
+					gr4.setValue('run_period',duration);
+					gr4.update();			
 				}
 			}
-		}	
+		}//	if (gr1.next()) {
 	},
     type: 'UpdateScheduledJob'
-};]]></script>
+};
+
+/* Example calling
+var si = new x_tekso_twxapp01.UpdateScheduledJob();
+si.updateScheduledJob(setupSysID);
+*/]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-01 21:35:55</sys_created_on>
         <sys_id>e6850d25db134c1041d08f381396195f</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>UpdateScheduledJob</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e6850d25db134c1041d08f381396195f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-02 15:21:27</sys_updated_on>
+        <sys_updated_on>2020-04-18 20:34:51</sys_updated_on>
     </sys_script_include>
 </record_update>

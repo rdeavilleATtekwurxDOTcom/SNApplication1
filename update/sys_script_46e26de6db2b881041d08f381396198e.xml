@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Setup Track Changes - Update</name>
+        <name>Setup - Track Changes - Update</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -137,15 +137,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>46e26de6db2b881041d08f381396198e</sys_id>
-        <sys_mod_count>12</sys_mod_count>
-        <sys_name>Setup Track Changes - Update</sys_name>
+        <sys_mod_count>13</sys_mod_count>
+        <sys_name>Setup - Track Changes - Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_46e26de6db2b881041d08f381396198e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-23 10:50:40</sys_updated_on>
+        <sys_updated_on>2020-04-15 10:42:58</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

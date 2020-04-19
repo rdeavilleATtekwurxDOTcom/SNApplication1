@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="REST Data To uControl" max_length="40" name="x_tekso_twxapp01_rest_data_to_ucontrol" type="collection">
+    <element label="REST Data To uControl" max_length="40" name="x_tekso_twxapp01_rest_data_to_ucontrol" sizeclass="9426" type="collection">
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
-        <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
+        <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>

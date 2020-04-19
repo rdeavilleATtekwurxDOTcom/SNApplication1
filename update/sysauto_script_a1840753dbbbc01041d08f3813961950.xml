@@ -3,7 +3,7 @@
         <active>true</active>
         <condition/>
         <conditional>false</conditional>
-        <name>Update All CMDB CI Test Records</name>
+        <name>Update All CMDB CI Test Records - Delete</name>
         <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
@@ -12,17 +12,17 @@
         <run_start>2020-04-01 13:32:47</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[restoreAllCMDBApplicationRecords(true);
-restoreAllCMDBServerRecords(true);
-updateCMDBAppplicationRecords(2,false);
-updateCMDBServerRecords(2,false);
+        <script><![CDATA[//restoreAllCMDBApplicationRecords(true);
+//restoreAllCMDBServerRecords(true);
+//updateCMDBAppplicationRecords(2,false);
+//updateCMDBServerRecords(2,false);
 
 //updateCMDBAppplicationRecords(qty,restore,updateSilently);
 //updateCMDBHardwareRecords(qty,restore,updateSilently);
 //updateCMDBComputerRecords(qty,restore,updateSilently);
 //updateCMDBServerRecords(qty,restore,updateSilently);
 
-
+/*
 
 
 						
@@ -5767,19 +5767,21 @@ function reverseBoolean(tf){
 	else {
 		return true;
 	}
-}]]></script>
+}
+*/
+]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-01 13:33:29</sys_created_on>
         <sys_id>a1840753dbbbc01041d08f3813961950</sys_id>
-        <sys_mod_count>101</sys_mod_count>
-        <sys_name>Update All CMDB CI Test Records</sys_name>
+        <sys_mod_count>103</sys_mod_count>
+        <sys_name>Update All CMDB CI Test Records - Delete</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a1840753dbbbc01041d08f3813961950</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-07 14:58:10</sys_updated_on>
+        <sys_updated_on>2020-04-15 17:05:32</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

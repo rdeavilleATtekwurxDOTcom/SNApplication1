@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.outboundrestprocess</event_name>
+        <name>OutboundRestProcess</name>
+        <order>100</order>
+        <script><![CDATA[//x_tekso_twxapp01.outboundrestprocess
+//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+OutboundRestProcess();
+
+function OutboundRestProcess() {
+	//Note: parm not param
+	//gs.info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs.info('event.parm2: ' + event.parm2); 
+
+	//Need to ensure that this is a string
+	var data_sys_id = event.parm2;
+	var data_sys_id2 = data_sys_id.toString();
+	
+	var si = new x_tekso_twxapp01.OutboundREST();	
+	//processNoWait does not get a result - need to query ecc_queue to get the response
+	//this is handled by a business rule
+	si.processNoWait(data_sys_id2);
+	
+}]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-16 19:30:40</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5f94ad5cdb909c1041d08f38139619e2</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>OutboundRestProcess</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_5f94ad5cdb909c1041d08f38139619e2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-17 12:52:54</sys_updated_on>
+    </sysevent_script_action>
+</record_update>

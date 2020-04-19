@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element extends="x_tekso_twxapp01_test_computer" label="Test Server" max_length="40" name="x_tekso_twxapp01_test_server" type="collection">
+    <element extends="x_tekso_twxapp01_test_computer" label="Test Server" max_length="40" name="x_tekso_twxapp01_test_server" sizeclass="20000" type="collection">
         <element label="Alternative Value Classification" max_length="40" name="alternative_value_classification" type="string"/>
         <element label="Alternative Value DR Backup" max_length="32" name="alternative_value_dr_backup" type="string"/>
         <element label="Alternative Value Firewall Status" max_length="40" name="alternative_value_firewall_status" type="string"/>

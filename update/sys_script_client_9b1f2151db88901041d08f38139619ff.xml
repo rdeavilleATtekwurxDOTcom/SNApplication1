@@ -13,7 +13,11 @@
         <script><![CDATA[function onSubmit() {
 	g_form.clearMessages();
 	var del_rel_qty = g_form.getValue('delete_relations_qty');
-	if (del_rel_qty < 1) {
+	var upd_rel_qty = g_form.getValue('update_relations_qty');
+	var del_ci_qty = g_form.getValue('delete_cmdb_ci_qty');
+	var upd_ci_qty = g_form.getValue('update_cmdb_ci_qty');
+
+	if (del_rel_qty < 1 && upd_rel_qty < 1 && del_ci_qty < 1 && upd_ci_qty < 1 ) {
 		g_form.addInfoMessage("At least one of the qty fields must be > 0 for submission to be performed");
 		return false; //Abort submission
 	}
@@ -24,7 +28,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9b1f2151db88901041d08f38139619ff</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Generate Test Data - Submit</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -32,7 +36,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_9b1f2151db88901041d08f38139619ff</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-07 13:05:21</sys_updated_on>
+        <sys_updated_on>2020-04-15 10:29:00</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onSubmit</type>
         <ui_type>10</ui_type>

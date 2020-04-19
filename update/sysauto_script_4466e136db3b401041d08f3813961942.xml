@@ -12,67 +12,108 @@
         <run_start>2020-03-30 17:24:29</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+        <script><![CDATA[writeDebugLog('Start Build Test Data');
+//34 mins to create 100,000 records
+//29 mins on 2nd attemp
+new x_tekso_twxapp01.BuildTestData().buildTestData();
+writeDebugLog('End Build Test Data');
+
+function writeDebugLog(msg) {
+	var debugTable = 'x_tekso_twxapp01_debug_log';
+	var gr1 = new GlideRecord(debugTable);
+	gr1.initialize();
+	gr1.setValue('message',msg);
+	gr1.insert();
+}
+
+//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 //var ciTable = 'x_tekso_twxapp01_test_application';
 //var ciTable = 'x_tekso_twxapp01_test_hardware';
 //var ciTable = 'x_tekso_twxapp01_test_computer';	
 //var ciTable = 'x_tekso_twxapp01_test_server';
 
-writeDebugLog('Build Test Data - Start');
 //7 mins to delete all 100,000 records
+//7 mins - on 2nd attempt
 //deleteAllTestCIRelationshipsSilently();
 //deleteAllTestCIsSilently();
 //34 mins to create 100,000 records
-var cnt = 0;
-while (cnt < 20) {
-	createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
-	cnt++;
+//29 mins on 2nd attempt
+/*
+buildTestData();
+*/
+
+/*
+function buildTestData() {
+	writeDebugLog('buildTestData - Start');
+	var cnt =  recordCount();
+	// Cap at 100,000
+	if (cnt < 100000) {
+		var lp = 0;
+		while (lp < 20) {
+			// createBatchOfTestData(1000) Generates 1000 servers and 4 x 1000 appls = 5000 records
+			// loop 20 times to generate 100000
+			createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
+			lp++;
+		}
+	}
+	writeDebugLog('buildTestData - End');
 }
 
-writeDebugLog('Build Test Data - End');
 
 function createBatchOfTestData(qty) {
-	writeDebugLog('createBatchOfTestData - Start');
-	var typeSysID = findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
+	// Cap at 100,000
+	var cnt =  recordCount();
+	writeDebugLog('recordCount: ' + cnt.toString());	
+	if (cnt < 100000) {
+		writeDebugLog('createBatchOfTestData - Start');
+		var typeSysID = findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
 
-	// Create the 1st Server	
-	writeDebugLog('createBatchOfTestData - createOrCopyServerSysID()');
-	var ci1 = createOrCopyServerSysID();
+		// Create the 1st Server	
+		writeDebugLog('createBatchOfTestData - createOrCopyServerSysID()');
+		var ci1 = createOrCopyServerSysID();
 
-	writeDebugLog('createBatchOfTestData - createOrCopyApplicationSysID()');
-	var ci2 = createOrCopyApplicationSysID();
-	
-	writeDebugLog('createBatchOfTestData - newRelation()');
-	newRelation(ci1,ci2,typeSysID,false);
+		writeDebugLog('createBatchOfTestData - createOrCopyApplicationSysID()');
+		var ci2 = createOrCopyApplicationSysID();
 
-	writeDebugLog('createBatchOfTestData - getLastNumber()');
-	var num = getLastNumber();
-	num++;
-	
-	// Copy the application 3 more times
-	var ciTable = 'x_tekso_twxapp01_test_application';
-	var appQty = 3;
-	writeDebugLog('createBatchOfTestData - createMultipleCopies');
-	var sysIDArr = createMultipleCopies(ciTable,ci2,appQty,num); 
-	num = num + appQty; //6
+		writeDebugLog('createBatchOfTestData - newRelation()');
+		newRelation(ci1,ci2,typeSysID,false);
 
-	//sysIDArr should contain an array of 3 sys_id's
-	for (var i=0; i<sysIDArr.length; i++) {
-		var sysID = sysIDArr[i];
-		// Link the 3 sys_ids to the server
-		newRelation(ci1,sysID,typeSysID,false);
-	}
+		writeDebugLog('createBatchOfTestData - getLastNumber()');
+		var num = getLastNumber();
+		num++;
 
-	//Now we have got 1 
-	//Create qty -1 copies of the server and 4 x applications
-	qty = qty - 1;
-	if (qty > 0) {
-		writeDebugLog('createBatchOfTestData - createServerAndFourApplicationsMultiple');
-		createServerAndFourApplicationsMultiple(ci1,ci2,typeSysID,qty); // Creates 999 servers and 999 x 4 applications
+		// Copy the application 3 more times
+		var ciTable = 'x_tekso_twxapp01_test_application';
+		var appQty = 3;
+		writeDebugLog('createBatchOfTestData - createMultipleCopies');
+		var sysIDArr = createMultipleCopies(ciTable,ci2,appQty,num); 
+		num = num + appQty; //6
+
+		//sysIDArr should contain an array of 3 sys_id's
+		for (var i=0; i<sysIDArr.length; i++) {
+			var sysID = sysIDArr[i];
+			// Link the 3 sys_ids to the server
+			newRelation(ci1,sysID,typeSysID,false);
+		}
+
+		//Now we have got 1 
+		//Create qty -1 copies of the server and 4 x applications
+		qty = qty - 1;
+		if (qty > 0) {
+			writeDebugLog('createBatchOfTestData - createServerAndFourApplicationsMultiple');
+			createServerAndFourApplicationsMultiple(ci1,ci2,typeSysID,qty); // Creates 999 servers and 999 x 4 applications
+		}
 	}
 	writeDebugLog('createBatchOfTestData - End');	
 }
 
+function recordCount() {
+	var table = 'x_tekso_twxapp01_test_configuration_item';
+	gr1 = new GlideRecord(table);
+	gr1.query();
+	var rowCnt = gr1.getRowCount();
+	return rowCnt;
+}
 
 function createServerAndFourApplicationsMultiple(templateServerSysID,templateApplSysID,typeSysID,qty) {
 	// Creates QTY x servers and QTY x 4 x applications
@@ -185,6 +226,7 @@ function getLastNumber() {
 	}
 	return num;
 }
+*/
 
 function deleteAllTestCIsSilently() {
 	writeDebugLog('deleteAllTestCIsSilently - Start');
@@ -217,7 +259,7 @@ function deleteAllTestCIRelationshipsSilently() {
 	*/
 	writeDebugLog('deleteAllTestCIRelationshipsSilently - End');	
 }
-
+/*
 function deleteAllSilently(table) {
 	writeDebugLog('deleteAllSilently - Start');	
 	var gr1 = new GlideRecord(table);
@@ -1363,6 +1405,7 @@ function zeroPad(number,maxSize) {
 	rtnStr = str.substr(maxSize2);
 	return rtnStr;
 }
+*/
 
 function createMultipleCopies(ciTable,sysID,numberOfCopies,startingNumber) {	
 	rtnSysIDArr = [];
@@ -1436,26 +1479,19 @@ function createMultipleCopies(ciTable,sysID,numberOfCopies,startingNumber) {
 }
 
 
-function writeDebugLog(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecord(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.insert();
-}
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-30 17:36:56</sys_created_on>
         <sys_id>4466e136db3b401041d08f3813961942</sys_id>
-        <sys_mod_count>135</sys_mod_count>
+        <sys_mod_count>146</sys_mod_count>
         <sys_name>Build Test Data</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_4466e136db3b401041d08f3813961942</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-08 21:27:27</sys_updated_on>
+        <sys_updated_on>2020-04-15 09:58:46</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

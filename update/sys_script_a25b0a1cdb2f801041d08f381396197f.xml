@@ -6,7 +6,7 @@
         <action_insert>false</action_insert>
         <action_query>false</action_query>
         <action_update>true</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -28,12 +28,12 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-
+/*
 	// Async Update
 	var logSysID = current.link_to_processing_log_record;
 	var si = new x_tekso_twxapp01.UpdateProcessLogResults();
 	si.process(logSysID);
-
+*/
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -41,7 +41,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a25b0a1cdb2f801041d08f381396197f</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>CMDB LINK to REST Update Process Log Cnt</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -49,7 +49,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_a25b0a1cdb2f801041d08f381396197f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-12 10:13:56</sys_updated_on>
+        <sys_updated_on>2020-04-16 11:15:49</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

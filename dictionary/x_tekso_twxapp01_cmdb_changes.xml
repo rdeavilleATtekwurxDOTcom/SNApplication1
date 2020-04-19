@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="CMDB Changes" max_length="40" name="x_tekso_twxapp01_cmdb_changes" type="collection">
+    <element label="CMDB Changes" max_length="40" name="x_tekso_twxapp01_cmdb_changes" sizeclass="162907" type="collection">
         <element label="All Fields" max_length="4000" name="all_fields" type="string"/>
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="Correlation ID1" max_length="512" name="correlation_id1" type="string"/>
         <element label="Correlation ID2" max_length="512" name="correlation_id2" type="string"/>
-        <element label="Data To Process" max_length="4000" name="data_to_process" type="string"/>
+        <element label="Data To Process" max_length="5000000" name="data_to_process" type="string"/>
         <element label="Discovery Source1" max_length="100" name="discovery_source1" type="string"/>
         <element label="Discovery Source2" max_length="100" name="discovery_source2" type="string"/>
         <element label="Dropped Fields" max_length="4000" name="dropped_fields" type="string"/>
         <element label="Excluded Fields" max_length="4000" name="excluded_fields" type="string"/>
         <element label="Fields To Process" max_length="4000" name="fields_to_process" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
-        <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
+        <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="Link To Latest REST Data Record" max_length="32" name="link_to_latest_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
         <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
         <element label="Link To Originating Delete Record" max_length="32" name="link_to_originating_delete_record" reference="x_tekso_twxapp01_cmdb_deletes" type="reference"/>

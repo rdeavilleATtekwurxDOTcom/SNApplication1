@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.HandleRESTResponse</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>HandleRESTResponse</name>
+        <script><![CDATA[var HandleRESTResponse = Class.create();
+HandleRESTResponse.prototype = {
+    initialize: function() {
+    },
+	handleRESTResponse: function(resultRestResponse,dataSysID) {
+		// resultRestResponse e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
+		// dataSysID = sys_id for x_tekso_twxapp01_rest_data_to_ucontrol
+		
+		writeDebugLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
+		
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var logTable = 'x_tekso_twxapp01_processing_log';
+		var setupTable = 'x_tekso_twxapp01_setup';
+		
+		var resultStatusCode = 0;
+		var resultStatusMsg = '';
+
+		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+		gr1.addQuery('sys_id',dataSysID);
+		gr1.query();
+		if (gr1.next()) {
+			
+			// Need to check if string contains 'result', 'statusCode'
+			if (resultRestResponse.indexOf('result') >= 0 && 
+				resultRestResponse.indexOf('statusCode') >= 0) {				
+				var parser = new global.JSON();
+				var jsonBack = parser.decode(resultRestResponse);	
+				resultStatusCode = parseInt(jsonBack.result.statusCode);
+				resultStatusMsg = jsonBack.result.statusMsg;	
+			} // if got result / statusCode
+			else {
+				resultStatusMsg = resultRestResponse;
+			}
+			
+			var dtBack = new GlideDateTime();	
+			
+			// sys_id for the corresponsing processing_log record
+			var logSysID = gr1.getValue('link_to_processing_log_record');
+			var operation = gr1.getValue('operation');
+			var noOfRecords = gr1.getValue('no_of_cmdb_records_in_json_request_body') || 0;
+			var noOfRecords2 = parseInt(noOfRecords);
+			
+			gr1.setValue('response_from_ucontrol',resultRestResponse); 
+			gr1.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
+			gr1.setValue('response_received_at',dtBack);
+			gr1.setValue('response_received',true);
+			gr1.setValue('response_status_code',resultStatusCode);
+			gr1.setValue('response_status_message',resultStatusMsg);	
+			gr1.setValue('updated_by_script','SI HandleRESTResponse'); // Debug					
+			gr1.update(); //x_tekso_twxapp01_rest_data_to_ucontrol
+			
+			// Get all the link records that have this data_sys_id
+			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			gr2.addQuery('link_to_rest_data_record',dataSysID);
+			gr2.query();
+			while(gr2.next()) {
+				// For each one - loop through and get each change record
+				var link_sys_id = gr2.sys_id;
+				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
+				// Update the REST response on the link record
+				gr2.setValue('response_from_ucontrol',resultRestResponse); 
+				gr2.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
+				gr2.setValue('response_received_at',dtBack);
+				gr2.setValue('response_received',true);
+				gr2.setValue('response_status_code',resultStatusCode);
+				gr2.setValue('response_status_message',resultStatusMsg);
+				gr2.setValue('updated_by_script','SI HandleRESTResponse'); // Debug								
+				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data
+				// Get the change record
+				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				gr3.addQuery('sys_id',cmdb_changes_sys_id);
+				gr3.query();
+				while(gr3.next()) {
+					// Update the REST response on the change record
+					// There should only be 1 record
+					gr3.setValue('status','Processed'); // If success?????????????????????????????????
+					gr3.setValue('response_from_ucontrol',resultRestResponse); 
+					gr3.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
+					gr3.setValue('response_received_at',dtBack);	
+					gr3.setValue('response_received',true);
+					gr3.setValue('response_status_code',resultStatusCode);
+					gr3.setValue('response_status_message',resultStatusMsg);
+					gr3.setValue('rest_response_record_created',true);
+					gr3.setValue('updated_by_script','SI HandleRESTResponse'); // Debug	
+					gr3.update(); //x_tekso_twxapp01_cmdb_changes					
+				} // while(gr3.next())
+			} //while(gr2.next())
+			
+			// Update the log record
+			var gr4 = new GlideRecord(logTable);
+			gr4.addQuery('sys_id',logSysID);
+			gr4.query();
+			if (gr4.next()) {
+				var recCnt = gr4.getValue('total_number_of_records_processed') || 0;
+				var delCnt = gr4.getValue('number_of_deletes_processed') || 0;
+				var updCnt = gr4.getValue('number_of_updates_processed') || 0;
+				var recCnt2 = parseInt(recCnt);
+				var delCnt2 = parseInt(delCnt);
+				var updCnt2 = parseInt(updCnt);
+				
+				recCnt2 = recCnt2 + noOfRecords2;
+				if (operation == 'delete') {
+					delCnt2 = delCnt2 + noOfRecords2;
+				}
+				if (operation == 'update') {
+					updCnt2 = updCnt2 + noOfRecords2;
+				}
+				
+				var summary = this.processSummary(recCnt2,updCnt2,delCnt2);
+				gr4.setValue('number_of_updates_processed',updCnt2);
+				gr4.setValue('number_of_deletes_processed',delCnt2);
+				gr4.setValue('total_number_of_records_processed',recCnt2);
+				gr4.setValue('processing_summary',summary);
+				var completedAt = GlideDateTime();
+				gr4.setValue('processing_completed_at',completedAt);
+				gr4.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
+				gr4.update();
+			} //if (gr4.next())
+			
+			// Update Setup
+			var gr5 = new GlideRecord(setupTable);
+			gr5.addQuery('link_to_last_processing_log_record',logSysID);
+			gr5.query();
+			if (gr5.next()) {
+				// This log record is the latest one and is attached to the setup table
+				gr5.setValue('last_processing_results_summary',summary);
+				gr5.setValue('updated_by_script','SI handleRESTResponse'); // Debug					
+				gr5.update();
+			} //if (gr5.next()) 
+			
+		} //if (gr1.next()) 		
+	},
+	processSummary: function(recCnt,updCnt,delCnt) {
+		// Builds a string like this: 3 records (3 updates , 0 deletes)
+		var rtn = '';
+		if (recCnt == 1) {
+			rtn = '1 record';
+		}
+		else {
+			rtn = recCnt.toString() + ' records';
+		}	
+
+		if (updCnt == 1) {
+			rtn = rtn + ' (1 update';
+		}
+		else {
+			rtn = rtn + ' (' + updCnt.toString() + ' updates';
+		}
+
+		if (delCnt == 1) {
+			rtn = rtn + ' , 1 delete)';
+		}
+		else {
+			rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+		}
+
+		return rtn;
+	},	
+	writeDebugLog: function(msg) {
+		var debugTable = 'x_tekso_twxapp01_debug_log';
+		var gr1 = new GlideRecord(debugTable);
+		gr1.initialize();
+		gr1.setValue('debug_text',msg);
+		gr1.insert();
+	},	
+    type: 'HandleRESTResponse'
+};
+
+/* Example calling
+
+var si = new x_tekso_twxapp01.HandleRESTResponse();
+si.handleRESTResponse(resultRestResponse,dataSysID);
+
+*/]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-17 10:15:37</sys_created_on>
+        <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>HandleRESTResponse</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-17 14:44:53</sys_updated_on>
+    </sys_script_include>
+</record_update>

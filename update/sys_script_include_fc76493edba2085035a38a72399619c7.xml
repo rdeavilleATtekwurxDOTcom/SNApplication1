@@ -112,6 +112,17 @@ OutboundREST.prototype = {
 			successFail= rtnArr[0];
 			statusCode = parseInt(rtnArr[1]);
 			restResponse = rtnArr[2];
+			/*
+			{
+			"result": {
+			"statusCode": 200,
+			"statusMsg": "OK",
+			"connection": true,
+			"user_account": "ucontrol.integration",
+			"classes": ["cmdb_ci_chassis_server", "cmdb_ci_cluster", "cmdb_ci_storage_cluster", "cmdb_ci_solaris_instance"]
+						}
+			}
+			*/
 			// Need to check if string contains 'result', 'statusCode', 'connection'
 			if (restResponse.indexOf('result') >= 0 && 
 				restResponse.indexOf('statusCode') && 
@@ -280,6 +291,7 @@ OutboundREST.prototype = {
 		}	
 		return abort;
 	},	
+	// Not currently used
 	sendRESTRequest: function(midServerName,httpMethod,endPoint) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
@@ -303,7 +315,9 @@ OutboundREST.prototype = {
 			response = sm.executeAsync(); 
 	
 			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
+			// {"result":{"statusCode":200,"statusMsg":"OK","connection":true}}
 			status = response.getStatusCode();
+			// 200
 		} catch(ex) {
 			responseBody = ex.getMessage();
 			status = '500';
@@ -351,8 +365,8 @@ OutboundREST.prototype = {
 	sendRESTRequestWithBody: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
-		// [1] = REST Status Number
-		// [2] = REST Response
+		// [1] = REST Status Number e.g. 200
+		// [2] = REST Response e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		
 		var responseBody = '';
 		var status = 500;
@@ -369,10 +383,36 @@ OutboundREST.prototype = {
 			sm.setRequestBody(requestBody);
 			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
 	
-			response = sm.executeAsync(); 
-	
+			//When you don't care about the response it is better to use executeAsync (fire and forget)
+			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
+			//From there, if you need the response then you can set up a sensor business rule to listen to the ecc_queue 
+			//and listen for the response.
+			response = sm.executeAsync(); 			
+			//sm.executeAsync(); //RMD
+			
+			//response.getBody Get the content of the REST response body.
 			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
+			/*
+			{
+			"result": {
+			"statusCode": 200,
+			"statusMsg": "OK",
+			"connection": true,
+			"user_account": "ucontrol.integration",
+			"classes": ["cmdb_ci_chassis_server", "cmdb_ci_cluster", "cmdb_ci_storage_cluster", "cmdb_ci_solaris_instance"]
+						}
+			}
+			
+			or
+			
+			{"result":{"statusCode":200,"statusMsg":"OK"}}
+			
+			*/
+						
+			//The numeric status code returned by the REST provider, such as 200 for a successful response.
 			status = response.getStatusCode();
+			//status = '200';//RMD
+			//responseBody = '{"result":{"statusCode":200,"statusMsg":"OK","connection":true}}'; //RMD			
 		} catch(ex) {
 			responseBody = ex.getMessage();
 			status = '500';
@@ -417,11 +457,40 @@ OutboundREST.prototype = {
 			// Unknown host
 		}	
 	},
+	
+	sendRESTRequestWithBodyNoWait: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
+		// Same as sendRESTRequestWithBody but does not wait for a response
+		// does sm.executeAsync(); 
+		// instead of response = sm.executeAsync(); 
+		// Need to check the ecc_queue for the response - this is done via a business rule
+		var sm;		
+		try{
+			sm = new sn_ws.RESTMessageV2();
+
+			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setRequestHeader('Content-Type','application/json');
+			sm.setRequestHeader('Accept','application/json');
+			sm.setHttpMethod(httpMethod); // e.g. get / post		
+			sm.setRequestBody(requestBody);
+			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+	
+			//When you don't care about the response it is better to use executeAsync (fire and forget)
+			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
+			//From there, if you need the response then you can set up a sensor business rule to listen to the ecc_queue 
+			//and listen for the response.
+			sm.executeAsync(); 				
+		} catch(ex) {
+			var a = 1; //Fake statement - do nothing
+		} finally {
+			var b = 2; //Fake statement - do nothing
+		}	
+	},
+	
 	updateCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
-		// [1] = REST Status Number
-		// [2] = REST Response		
+		// [1] = REST Status Number e.g. 200
+		// [2] = REST Response e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		
 		var rtnArr = [];
 		
@@ -449,11 +518,23 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},
+	updateCINoWait: function(midServerName,url,requestBody) {
+		// Same as updateCI but does not wait for a response or return a result
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/update/ci';
+
+				// 200 = Success for update
+				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,200);
+			}
+		}
+	},	
 	deleteCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
-		// [1] = REST Status Number
-		// [2] = REST Response		
+		// [1] = REST Status Number e.g. 200
+		// [2] = REST Response	e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		
 		var rtnArr = [];
 		
@@ -481,11 +562,23 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},	
+	deleteCINoWait: function(midServerName,url,requestBody) {
+		// Same as deleteCI but does not wait for a response or return a result		
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/delete/ci';
+
+				// 200 = Success for delete
+				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,200);
+			}
+		}		
+	},		
 	createCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
-		// [1] = REST Status Number
-		// [2] = REST Response		
+		// [1] = REST Status Number e.g. 200
+		// [2] = REST Response e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}	
 		
 		var rtnArr = [];
 		
@@ -512,12 +605,35 @@ OutboundREST.prototype = {
 		}
 		
 		return rtnArr;		
+	},		
+	createCINoWait: function(midServerName,url,requestBody) {
+		// Same as createCI but does not wait for a response or return a result	
+		if (midServerName.length > 0) {
+			if (url.length > 0) {
+				var httpMethod = 'post';
+				var endPoint = url + '/uControl/rest/servicenow/create/ci';
+
+				// 201 = Success for create
+				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,201);
+			}
+		}	
 	},	
 	testConnection: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number
-		// [2] = REST Response		
+		// [2] = REST Response:
+		/*
+		{
+		"result": {
+		"statusCode": 200,
+		"statusMsg": "OK",
+		"connection": true,
+		"user_account": "ucontrol.integration",
+		"classes": ["cmdb_ci_chassis_server", "cmdb_ci_cluster", "cmdb_ci_storage_cluster", "cmdb_ci_solaris_instance"]
+					}
+		}
+		*/
 		var rtnArr = [];
 				
 		if (midServerName.length > 0) {
@@ -601,19 +717,17 @@ OutboundREST.prototype = {
 				this.handleTestResults(rtnArr,setupSysID2,connection_sys_id2,startIfSuccess,testConnectionUser);
 			}
 			
+			/* Not used
 			if (abort == false) {
 				var resultSuccessFail = '';
 			} 
+			*/
 		} // if (gr1.next()) 
 	},
 	process: function (data_sys_id){
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-		var resultSucessFail = '';
-		var resultStatusCode = 0;
-		var resultRestResponse = '';
-		var resultStatusMsg = '';
 		
 		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 		gr1.addQuery('sys_id',data_sys_id);
@@ -635,6 +749,39 @@ OutboundREST.prototype = {
 					url = url.substr(0, url.length - 1);
 				}
 			}
+
+			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('updated_by_script','SI process'); // Debug
+			gr1.update();
+
+			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			gr2.addQuery('link_to_rest_data_record',data_sys_id);
+			gr2.query();
+			while(gr2.next()) {
+				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('updated_by_script','SI process'); // Debug						
+				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
+				
+				var link_sys_id = gr2.sys_id;
+				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
+				// Get the change record
+				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				gr3.addQuery('sys_id',cmdb_changes_sys_id);
+				gr3.query();
+				while(gr3.next()) {
+					// Update the REST response on the change record
+					// There should only be 1 record
+					gr3.setValue('status','Sent'); // If success?????????????????????????????????
+					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
+					no_of_times_sent_to_ucontrol++;
+					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
+					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+					gr3.setValue('rest_data_record_created',true);
+					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.update();
+				} //while(gr3.next())	
+			} //while(gr2.next())
 			
 			if (operation == 'update') {
 				rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
@@ -647,27 +794,23 @@ OutboundREST.prototype = {
 			if (operation == 'insert') {
 				rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
 			}	
+
+			//var resultStatusCode = 0;
+			var resultRestResponse = '';
+			//var resultStatusMsg = '';
 			
 			// Handle the result
 			if (rtnArr.length > 2) {
-				resultSuccessFail= rtnArr[0];
-				resultStatusCode = parseInt(rtnArr[1]);
-				resultRestResponse = rtnArr[2];
-				// Need to check if string contains 'result', 'statusCode'
-				if (resultRestResponse.indexOf('result') >= 0 && 
-					resultRestResponse.indexOf('statusCode') >= 0) {				
-					var parser = new global.JSON();
-					var jsonBack = parser.decode(resultRestResponse);	
-					resultStatusCode = parseInt(jsonBack.result.statusCode);
-					resultStatusMsg = jsonBack.result.statusMsg;	
-				} // if got result / statusCode
-				else {
-					resultStatusMsg = resultRestResponse;
-				}
+				//resultStatusCode = parseInt(rtnArr[1]); // e.g. 200
+				resultRestResponse = rtnArr[2]; // e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 			}
-					
+				
+			var si = new x_tekso_twxapp01.HandleRESTResponse();
+			si.handleRESTResponse(resultRestResponse,data_sys_id);
+			
+			/*
 			var dtBack = new GlideDateTime();
-			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			
 			gr1.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
 			gr1.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
 			gr1.setValue('response_received_at',dtBack);
@@ -721,8 +864,89 @@ OutboundREST.prototype = {
 					gr3.setValue('updated_by_script','SI process'); // Debug	
 					gr3.update(); //x_tekso_twxapp01_cmdb_changes
 				} // while(gr3.next())
-			} //while(gr2.next())		 
+			} //while(gr2.next())	
+			*/
 		}	
+	},
+	processNoWait: function (data_sys_id){
+		//Same as process but does not wait for a response or return a result	
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		
+		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+		gr1.addQuery('sys_id',data_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var jsonRequestBody = gr1.getValue('json_request_body');
+			var midServerName = gr1.getValue('ucontrol_mid_server_name');
+			var url = gr1.getValue('ucontrol_url');
+			var operation = gr1.getValue('operation');
+			var dtSent = new GlideDateTime();
+			var rtnArr = [];
+			
+			// Remove any leading or trailing spaces from the URL
+			url = url.replace(/^\s+|\s+$/g, '');
+
+			if (url.length > 0) {
+				// Remove the last character if it is a /
+				if (url.charAt(url.length - 1) == '/') {
+					url = url.substr(0, url.length - 1);
+				}
+			}
+
+			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('updated_by_script','SI process'); // Debug	
+			gr1.update();
+
+			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			gr2.addQuery('link_to_rest_data_record',data_sys_id);
+			gr2.query();
+			while(gr2.next()) {
+				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('updated_by_script','SI process'); // Debug						
+				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
+				
+				var link_sys_id = gr2.sys_id;
+				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
+				// Get the change record
+				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				gr3.addQuery('sys_id',cmdb_changes_sys_id);
+				gr3.query();
+				while(gr3.next()) {
+					// Update the REST response on the change record
+					// There should only be 1 record
+					gr3.setValue('status','Sent'); // If success?????????????????????????????????
+					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
+					no_of_times_sent_to_ucontrol++;
+					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
+					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+					gr3.setValue('rest_data_record_created',true);
+					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.update();
+				} //while(gr3.next())	
+			} //while(gr2.next())
+			
+			if (operation == 'update') {
+				this.updateCINoWait(midServerName,url,jsonRequestBody);	
+			}
+			
+			if (operation == 'delete') {
+				this.deleteCINoWait(midServerName,url,jsonRequestBody);	
+			}		
+			
+			if (operation == 'insert') {
+				this.createCINoWait(midServerName,url,jsonRequestBody);	
+			}	
+		}	
+	},	
+	writeDebugLog: function(msg) {
+	var debugTable = 'x_tekso_twxapp01_debug_log';
+	var gr1 = new GlideRecord(debugTable);
+	gr1.initialize();
+	gr1.setValue('message',msg);
+	gr1.insert();
 	},
     type: 'OutboundREST'
 };]]></script>
@@ -730,13 +954,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>200</sys_mod_count>
+        <sys_mod_count>212</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-06 12:42:37</sys_updated_on>
+        <sys_updated_on>2020-04-17 14:44:10</sys_updated_on>
     </sys_script_include>
 </record_update>

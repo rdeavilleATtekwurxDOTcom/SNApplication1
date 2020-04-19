@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="DELETE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.ClientOutboundRest</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description>Client version of OutboundRest</description>
+        <name>ClientOutboundRest</name>
+        <script><![CDATA[var ClientOutboundRest = Class.create();
+ClientOutboundRest.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	processTestConnection: function() {
+		// sysID from sysparm_connection_test_sys_id
+		var connectionTestSysID = this.getParameter('sysparm_connection_test_sys_id');
+
+		// Call the real version
+		var si = new x_tekso_twxapp01.OutboundREST();
+		si.processTestConnection(connectionTestSysID);
+	},	
+	
+    type: 'ClientOutboundRest'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-15 20:23:56</sys_created_on>
+        <sys_id>df08a4c4dbd41c1041d08f3813961934</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>ClientOutboundRest</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_df08a4c4dbd41c1041d08f3813961934</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 20:28:27</sys_updated_on>
+    </sys_script_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_include_df08a4c4dbd41c1041d08f3813961934</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;true&lt;/active&gt;&lt;api_name&gt;x_tekso_twxapp01.ClientOutboundRest&lt;/api_name&gt;&lt;caller_access/&gt;&lt;client_callable&gt;true&lt;/client_callable&gt;&lt;description&gt;Client version of OutboundRest&lt;/description&gt;&lt;name&gt;ClientOutboundRest&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var ClientOutboundRest = Class.create();
+ClientOutboundRest.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	processTestConnection: function() {
+		// sysID from sysparm_connection_test_sys_id
+		var connectionTestSysID = this.getParameter('sysparm_connection_test_sys_id');
+
+		// Call the real version
+		var si = new x_tekso_twxapp01.OutboundREST();
+		si.processTestConnection(connectionTestSysID);
+	},	
+	
+    type: 'ClientOutboundRest'
+});]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-15 20:23:56&lt;/sys_created_on&gt;&lt;sys_id&gt;df08a4c4dbd41c1041d08f3813961934&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;ClientOutboundRest&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_df08a4c4dbd41c1041d08f3813961934&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-04-15 20:28:27&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1664647825</payload_hash>
+        <record_name>ClientOutboundRest</record_name>
+        <reverted_from/>
+        <source>f36b3852dba348104f29252b139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-15 20:28:27</sys_created_on>
+        <sys_id>7ee9a008dbd41c1041d08f3813961901</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1717f8754ac0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 20:28:27</sys_updated_on>
+        <type>Script Include</type>
+        <update_guid>76e9a0081fd41c100c18e8b5501b3901</update_guid>
+        <update_guid_history>76e9a0081fd41c100c18e8b5501b3901:-1664647825,dce828444ad41c107027f7599d327511:34725162</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-15 20:33:03</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_include">sys_script_include</sys_db_object>
+        <sys_id>58718be47830435686b9f00eb2ef6ba9</sys_id>
+        <sys_metadata>df08a4c4dbd41c1041d08f3813961934</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ClientOutboundRest</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_include_df08a4c4dbd41c1041d08f3813961934</sys_update_name>
+        <sys_update_version display_value="sys_script_include_df08a4c4dbd41c1041d08f3813961934">7ee9a008dbd41c1041d08f3813961901</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-04-15 20:33:03</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

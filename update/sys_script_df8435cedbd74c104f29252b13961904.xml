@@ -216,7 +216,14 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			var snInstance = gs.getProperty("instance_name");	
 			// e.g. https://dev91664.service-now.com/
 			var snURL = gs.getProperty("glide.servlet.uri");
-						
+
+			if (snURL.length > 0) {
+				// Remove the last character if it is a /
+				if (snURL.charAt(snURL.length - 1) == '/') {
+					snURL = snURL.substr(0, snURL.length - 1);
+				}
+			}	
+			
 			var source = 'ServiceNow';
 			var status = 'Pending';
 			
@@ -555,9 +562,13 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		}
 	}
 
-	// Record that the br has run
-	var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
-	si.setDTLastRunAt('br_ucontrol_track_updates_last_run_at');	
+	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
+	//Event x_tekso_twxapp01.configurationchecksetdt
+	var brevent = 'br_ucontrol_track_updates_last_run_at';
+	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),brevent);
+	//This event will trigger script action ConfigurationCheckSetDT
+	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//               si2.setDTLastRunAt('br_ucontrol_track_updates_last_run_at'); // Fld
 	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -566,7 +577,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>43</sys_mod_count>
+        <sys_mod_count>45</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -574,7 +585,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-02 14:16:40</sys_updated_on>
+        <sys_updated_on>2020-04-16 16:53:56</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
