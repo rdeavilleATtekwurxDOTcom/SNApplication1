@@ -22,7 +22,6 @@
         <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
-        <element label="Good Connection Failed At" max_length="40" name="good_connection_failed_at" type="glide_date_time"/>
         <element default="Enter a valid uControl URL and uControl MID Server and then click on Test Connection" label="Help" max_length="200" name="help" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
@@ -60,6 +59,8 @@
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>
         <element label="Status Set To Sending At" max_length="40" name="status_set_to_sending_at" type="glide_date_time"/>
         <element label="Status Set To Sending By" max_length="40" name="status_set_to_sending_by" type="string"/>
+        <element label="Status Was Sending When Connection Failed" max_length="40" name="status_was_sending_when_connection_failed" type="boolean"/>
+        <element label="Status Was Sending When Connection Failed At" max_length="40" name="status_was_sending_when_connection_failed_at" type="glide_date_time"/>
         <element choice="3" default="2" hint="When a connection request is sent to uControl - the number of minutes the system will wait for a reply before marking it as 'Timed Out'" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer">
             <choice>
                 <element inactive_on_update="false" label="1" sequence="1" value="1"/>

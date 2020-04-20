@@ -12,11 +12,19 @@
         <run_start>2020-03-30 17:24:29</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[writeDebugLog('Start Build Test Data');
-//34 mins to create 100,000 records
-//29 mins on 2nd attemp
+        <script><![CDATA[/*
+writeDebugLog('Delete Start');
+// 8 minutes to delete 80,000 rels and 100,000 cis
+new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently(); // Timing - about 7 minutes to delete 100,000 ci's and 80,000 rels
+writeDebugLog('Delete End');
+*/
+
+writeDebugLog('Build Test Data Start');
+//34 mins to create 100,000 records, 80,000 rels
+//29 mins on 2nd attempt
+//31 mins on 3rd attempt
 new x_tekso_twxapp01.BuildTestData().buildTestData();
-writeDebugLog('End Build Test Data');
+writeDebugLog('Build Test Data End');
 
 function writeDebugLog(msg) {
 	var debugTable = 'x_tekso_twxapp01_debug_log';
@@ -31,6 +39,7 @@ function writeDebugLog(msg) {
 //var ciTable = 'x_tekso_twxapp01_test_hardware';
 //var ciTable = 'x_tekso_twxapp01_test_computer';	
 //var ciTable = 'x_tekso_twxapp01_test_server';
+//var table = 'x_tekso_twxapp01_test_ci_relationship';
 
 //7 mins to delete all 100,000 records
 //7 mins - on 2nd attempt
@@ -259,7 +268,7 @@ function deleteAllTestCIRelationshipsSilently() {
 	*/
 	writeDebugLog('deleteAllTestCIRelationshipsSilently - End');	
 }
-/*
+
 function deleteAllSilently(table) {
 	writeDebugLog('deleteAllSilently - Start');	
 	var gr1 = new GlideRecord(table);
@@ -287,7 +296,7 @@ function deleteChunkSilently(table,limit) {
 	gr1.deleteMultiple();	
 	writeDebugLog('deleteChunkSilently - End');	
 }
-
+/*
 function findOrInsertTestCompany(name) {
 	var rtnSysID = '';
 	var cmpTable = 'x_tekso_twxapp01_test_company';
@@ -1406,7 +1415,7 @@ function zeroPad(number,maxSize) {
 	return rtnStr;
 }
 */
-
+/*
 function createMultipleCopies(ciTable,sysID,numberOfCopies,startingNumber) {	
 	rtnSysIDArr = [];
 	
@@ -1424,13 +1433,14 @@ function createMultipleCopies(ciTable,sysID,numberOfCopies,startingNumber) {
 		var br1 = name.indexOf('[');
 		var br2 = name.indexOf(']');
 		var zeroPaddedNumStr = name.substring(br1 + 1,br2);
-		
+*/		
 		//get all the fields for this record
 		/*	
 		GlideRecord also has a getElements method. This returns an array (if in scope) or an ArrayList (if in global) of all of the elements 
 		on the record. You can then loop through the array (in scope) or iterate through it (in global) to get things like the label, field name, 
 		and value.
 		*/	
+/*
 		var elements = gr1.getElements();
 		for (var i=0; i<elements.length; i++) {
 			var element = elements[i];
@@ -1477,21 +1487,21 @@ function createMultipleCopies(ciTable,sysID,numberOfCopies,startingNumber) {
 	}
 	return rtnSysIDArr; // An array of sys_id's
 }
-
+*/
 
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-30 17:36:56</sys_created_on>
         <sys_id>4466e136db3b401041d08f3813961942</sys_id>
-        <sys_mod_count>146</sys_mod_count>
+        <sys_mod_count>150</sys_mod_count>
         <sys_name>Build Test Data</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_4466e136db3b401041d08f3813961942</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 09:58:46</sys_updated_on>
+        <sys_updated_on>2020-04-20 11:43:57</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

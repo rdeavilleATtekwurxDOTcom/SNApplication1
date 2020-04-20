@@ -75,7 +75,7 @@
 	var gr1 = new GlideRecord(trackingTable);
 	gr1.addQuery('status','Pending');
 	gr1.query();
-	var cnt = gr1.getRowCount();
+	var cnt = gr1.getRowCount();	
 	current.number_of_pending_records = cnt;
 	
 })(current, previous);]]></script>
@@ -85,7 +85,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>49893934db5b881041d08f38139619ff</sys_id>
-        <sys_mod_count>27</sys_mod_count>
+        <sys_mod_count>28</sys_mod_count>
         <sys_name>Setup - Display BR Scratchpad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -93,7 +93,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_49893934db5b881041d08f38139619ff</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 10:41:49</sys_updated_on>
+        <sys_updated_on>2020-04-20 21:09:22</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>

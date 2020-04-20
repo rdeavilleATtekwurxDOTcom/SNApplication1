@@ -95,7 +95,7 @@ function isCMDBTrackingRunning(configTable) {
 	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
 	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
 
-	// This is the table that contians the data we need to read. 
+	// This is the table that contains the data we need to read. 
 	// For real will be cmdb_ci_appl etc
 	// For test will be x_tekso_twxapp01_test_application etc
 	var dataTable = tableName;
@@ -280,7 +280,12 @@ function isCMDBTrackingRunning(configTable) {
 				data = data + ',';
 				data = data + '\"sys_updated_by\":\"' + recordUpdatedBy + '\"';	
 				data = data + ',';
-				data = data + '\"sys_id\":\"' + recordSysID + '\"';								
+				data = data + '\"sys_id\":\"' + recordSysID + '\"';		
+				// If this is test data add in test_data:true
+				if (current.test_data == true) {
+					data = data + ',';
+					data = data + '\"test_data\":\"true\"';		
+				}
 			}
 
 			var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
@@ -400,7 +405,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>35</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -408,7 +413,7 @@ function isCMDBTrackingRunning(configTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-16 16:53:29</sys_updated_on>
+        <sys_updated_on>2020-04-20 08:19:53</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -50,7 +50,8 @@
 	gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
 	gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
 	gr1.setValue('sh_number_of_supported_classes',current.number_of_supported_classes);	
-	gr1.setValue('sh_good_connection_failed_at',current.good_connection_failed_at);
+	gr1.setValue('sh_status_was_sending_when_connection_failed',current.status_was_sending_when_connection_failed);
+	gr1.setValue('sh_status_was_sending_when_connection_failed_at',current.status_was_sending_when_connection_failed_at);
 	gr1.setValue('sh_connection_test_requested',current.connection_test_requested);
 	gr1.setValue('sh_connection_test_requested_at',current.connection_test_requested_at);
 	gr1.setValue('sh_connection_tested_at',current.connection_tested_at);	
@@ -66,7 +67,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>36a16126db2b881041d08f3813961916</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Setup - Track Changes - Delete</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -74,7 +75,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_36a16126db2b881041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 10:42:32</sys_updated_on>
+        <sys_updated_on>2020-04-20 20:04:31</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

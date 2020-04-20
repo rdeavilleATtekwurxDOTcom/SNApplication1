@@ -32,6 +32,8 @@
         <element label="SH Previous Status" max_length="40" name="sh_previous_status" type="string"/>
         <element label="SH Previous Status Details" max_length="100" name="sh_previous_status_details" type="string"/>
         <element label="SH Previous Status Error Details" max_length="100" name="sh_previous_status_error_details" type="string"/>
+        <element label="SH Previous Status Was Sending When Connection Failed" max_length="40" name="sh_previous_status_was_sending_when_connection_failed" type="boolean"/>
+        <element label="SH Previous Status Was Sending When Connection Failed At" max_length="40" name="sh_previous_status_was_sending_when_connection_failed_at" type="glide_date_time"/>
         <element label="SH Previous uControl Connection Timeout (minutes)" max_length="40" name="sh_previous_ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="SH Previous uControl Integration User Is Valid" max_length="40" name="sh_previous_ucontrol_integration_user_is_valid" type="boolean"/>
         <element label="SH Previous uControl Integration User Name" max_length="40" name="sh_previous_ucontrol_integration_user_name" type="string"/>
@@ -45,6 +47,8 @@
         <element label="SH Status" max_length="40" name="sh_status" type="string"/>
         <element label="SH Status Details" max_length="100" name="sh_status_details" type="string"/>
         <element label="SH Status Error Details" max_length="100" name="sh_status_error_details" type="string"/>
+        <element label="SH Status Was Sending When Connection Failed" max_length="40" name="sh_status_was_sending_when_connection_failed" type="boolean"/>
+        <element label="SH Status Was Sending When Connection Failed At" max_length="40" name="sh_status_was_sending_when_connection_failed_at" type="glide_date_time"/>
         <element label="SH uControl Connection Timeout (minutes)" max_length="40" name="sh_ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="SH uControl Integration User Is Valid" max_length="40" name="sh_ucontrol_integration_user_is_valid" type="boolean"/>
         <element label="SH uControl Integration User Name" max_length="40" name="sh_ucontrol_integration_user_name" type="string"/>

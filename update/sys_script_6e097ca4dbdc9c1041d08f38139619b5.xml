@@ -30,6 +30,17 @@
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 
 	var payload = current.payload;
+	// Large payload bodies will create an attachment on the ECC Queue record.
+	if(payload == "<see_attachment/>"){		
+		var gr1 = new GlideRecord("sys_attachment");
+		gr1.addQuery( "table_name", "=", "ecc_queue");
+		gr1.addQuery( "table_sys_id", "=" , current.sys_id + "");
+		gr1.query();
+		if (gr1.next()) {
+			var sa = new GlideSysAttachment();
+			payload = sa.getContent(gr1);
+		}
+	}
 	var xmlDoc = new XMLDocument2();
 	xmlDoc.parseXML(payload.toString());
 	var response = xmlDoc.getNodeText('//result/output');
@@ -78,7 +89,7 @@ function writeDebugLog(msg) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6e097ca4dbdc9c1041d08f38139619b5</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>ECC Queue - uControl Response I</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -86,7 +97,7 @@ function writeDebugLog(msg) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-17 12:07:49</sys_updated_on>
+        <sys_updated_on>2020-04-20 14:04:56</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -3,47 +3,50 @@
         <active>true</active>
         <applies_extended>false</applies_extended>
         <condition/>
-        <description>This reloads the form - This is needed if a server side change updates the Connection Status while a user has the form open</description>
-        <field>connection_status</field>
+        <description>This reloads the form - This is needed if a server side change updates the Status while a user has the form open</description>
+        <field>status</field>
         <global>true</global>
         <isolate_script>true</isolate_script>
         <messages/>
-        <name>Setup When Connection Status Changes</name>
+        <name>Setup When Status Changes</name>
         <order/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
    if (isLoading || newValue === '') {
       return;
    }
 	
-	if (newValue == 'OK') {
+	if (newValue == 'Sending') {
 		//The reload() method does the same as the reload button in your browser.
 		//By default, the reload() method reloads the page from the cache,
 		//but you can force it to reload the page from the server by setting the forceGet parameter to true: 
 		//location.reload(true).
 		location.reload(true);
 	}
-	else if (newValue == 'Failed'){
+	else if (newValue == 'Not Sending'){
+		location.reload(true);
+	}
+	else if (newValue == 'Error'){
 		location.reload(true);
 	}
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-03-18 17:06:10</sys_created_on>
+        <sys_created_on>2020-04-20 21:46:27</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>34eea33adbafc81041d08f3813961931</sys_id>
-        <sys_mod_count>13</sys_mod_count>
-        <sys_name>Setup When Connection Status Changes</sys_name>
+        <sys_id>787b2ea9dbd090504f29252b13961955</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Setup When Status Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_script_client_34eea33adbafc81041d08f3813961931</sys_update_name>
+        <sys_update_name>sys_script_client_787b2ea9dbd090504f29252b13961955</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 22:01:21</sys_updated_on>
+        <sys_updated_on>2020-04-20 22:01:09</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onChange</type>
-        <ui_type>10</ui_type>
+        <ui_type>0</ui_type>
         <view/>
     </sys_script_client>
 </record_update>

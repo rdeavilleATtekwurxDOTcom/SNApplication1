@@ -158,6 +158,7 @@ OutboundREST.prototype = {
 		}
 	},
 	// Update x_tekso_twxapp01_setup with the results of the connection test
+	// Called by processTestConnection -> handleTestResults and processTestConnection -> handleTestResults -> handleTestResults2
 	updateSetupRecord: function(setupSysID,connOKAndGotUser,connStatus,connStatusDetails,dtBack,usr,usrIsValid,startIfSuccess,testUsr,classesArr) {
 
 		var setupSysID2 = setupSysID.toString();
@@ -165,6 +166,7 @@ OutboundREST.prototype = {
 		var setupTable = 'x_tekso_twxapp01_setup';
 		var setupExistingStatus = '';
 		var setupExistingStatusDetails = '';
+		var setupStatusWasSendingWhenConnectionFailed = false;
 		var cmdbTracking = '';
 		var gr2 = new GlideRecord(setupTable);
 		gr2.addQuery('sys_id',setupSysID2);
@@ -173,7 +175,7 @@ OutboundREST.prototype = {
 			cmdbTracking = gr2.getValue('cmdb_tracking') || '';
 			setupExistingStatus = gr2.getValue('status') || '';
 			setupExistingStatusDetails = gr2.getValue('status_details') || '';
-
+			setupStatusWasSendingWhenConnectionFailed = gr2.getValue('status_was_sending_when_connection_failed') || false;
 			if (connOKAndGotUser == true) {
 				// Update the classes - we should only do that if this is a success
 				var osi = new UpdateSupportedClasses();
@@ -195,7 +197,8 @@ OutboundREST.prototype = {
 					// Status Error Details = Connection Lost At
 					// Was Sending Connection Failed At
 					gr2.setValue('status','Error'); //
-					gr2.setValue('good_connection_failed_at',dtBack);
+					gr2.setValue('status_was_sending_when_connection_failed',true);
+					gr2.setValue('status_was_sending_when_connection_failed_at',dtBack);
 					gr2.setValue('status_error_details','Connection failed at ' + dtBack);
 				}
 			} // if (setupConnectionStatus == 'Failed') 
@@ -203,26 +206,32 @@ OutboundREST.prototype = {
 			if (connStatus == 'OK') {
 				if (startIfSuccess == true && setupExistingStatus != 'Sending') {
 					// Set status to Sending
-					gr2.setValue('status','Sending'); //
-					gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); //
+					gr2.setValue('status','Sending'); 
+					gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); 
+					gr2.setValue('status_was_sending_when_connection_failed',false);
+					gr2.setValue('status_was_sending_when_connection_failed_at','');					
 					if (cmdbTracking == 'Off') {
 						// The onLoad client script to display a pop-up when the 
 						// form reloads
 						var popupmsg = 'x_tekso_twxapp01_start_sending_message';
-						gr2.setValue('show_message_on_form_reload',popupmsg);		//
+						gr2.setValue('show_message_on_form_reload',popupmsg);		
 					}
 					if (setupExistingStatus == 'Error') {
-						gr2.setValue('good_connection_failed_at',''); //
-						gr2.setValue('status_error_details',''); //							
+						// If the previous status was Error then clear the error details
+						gr2.setValue('status_error_details',''); 						
 					}
 					else {
+						// Record when and who set the status to Sending - but only do this if the previous
+						// status was not an Error. If we are recovering from an Error then we should retain the earlier 
+						// values
+						
 						// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
 						// i.e this is the user who requested the test/start
 						gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testUsr);	
 						gr2.setValue('status_set_to_sending_by',testUsr);
 						gr2.setValue('status_set_to_sending_at',dtBack);
-					}						
-				}
+					} //if (setupExistingStatus == 'Error')					
+				} //if (startIfSuccess == true && setupExistingStatus != 'Sending') {
 				// 
 				// "Not Sending"
 
@@ -232,6 +241,13 @@ OutboundREST.prototype = {
 						if (setupExistingStatusDetails == 'Connection Requires Testing') {
 							gr2.setValue('status_details',setupExistingStatus);	
 						}
+					}
+					if (setupExistingStatus == 'Error' && setupStatusWasSendingWhenConnectionFailed == true) {
+						//Restart the status - back to Sending
+						gr2.setValue('status','Sending'); //
+						gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); //
+						gr2.setValue('status_was_sending_when_connection_failed',false);
+						gr2.setValue('status_was_sending_when_connection_failed_at','');						
 					}
 				}
 			} // if (setupConnectionStatus == 'OK') 
@@ -954,13 +970,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>212</sys_mod_count>
+        <sys_mod_count>215</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-17 14:44:10</sys_updated_on>
+        <sys_updated_on>2020-04-20 20:37:47</sys_updated_on>
     </sys_script_include>
 </record_update>

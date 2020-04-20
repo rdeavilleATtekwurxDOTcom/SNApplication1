@@ -31,6 +31,8 @@
         <script><![CDATA[//Client-side 'onclick' function
 function runStartClientCode(){
 
+	var abort = false;
+	
 	var url = g_form.getValue('ucontrol_url');
 	
 	var mid_server = '';
@@ -45,29 +47,70 @@ function runStartClientCode(){
 		mid_server = '';
 		canReadMIDServerField = false;
 	}
-	
+			
 	if (url == "") {
 		g_form.hideFieldMsg('ucontrol_url');
 		g_form.showFieldMsg('ucontrol_url','The field is blank','error');
-		return false; //Abort submission
+		abort = true;
 	}
 
 	if (canReadMIDServerField == false) {
 		g_form.clearMessages();
 		g_form.addErrorMessage("Start Sending Action Cannot Be Performed - Cannot access the MID Server table");
-		return false; //Abort submission
+		abort = true;
 	}
-	
+
 	if (canReadMIDServerField == true && mid_server == "") {
 		g_form.hideFieldMsg('ucontrol_mid_server');
 		g_form.showFieldMsg('ucontrol_mid_server','The field is blank','error');
-		return false; //Abort submission
+		abort = true;
 	}	
-		
-	gsftSubmit(null, g_form.getFormElement(), 'start_action'); //MUST call the 'Action name' set in this UI Action	
+	
+	if (abort == true) {
+		return false; //Abort submission		
+	}
+	
+	if (abort == false) {
+		// Check the load on ecc_queue
+		var ga = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
+		ga.addParam('sysparm_name','checkECCQueueOutput');
+		ga.getXML(checkECCQueueOutputCallBackFunction);
+	}	
 	
 }
 
+//Call back function for checkECCQueueOutput
+function checkECCQueueOutputCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+
+	if (answer < 3) {
+		gsftSubmit(null, g_form.getFormElement(), 'start_action'); //MUST call the 'Action name' set in this UI Action		
+	}
+	else {
+		var cancelIt = function(){
+			//do nothing
+		};
+		var doIt = function(){
+			//Call the UI Action and skip the 'onclick' function
+			gsftSubmit(null, g_form.getFormElement(), 'start_action'); //MUST call the 'Action name' set in this UI Action	
+		};
+
+		var gdw = new GlideDialogWindow('x_tekso_twxapp01_mid_server_queue_is_busy');
+		gdw.setTitle('<h1><strong>MID Server queue is busy...</strong></h1>');
+		gdw.setPreference('sysparm_queuesize',answer);
+		gdw.setPreference('onCancel', cancelIt.bind(this));
+		gdw.setPreference('onContinue', doIt.bind(this));
+
+		// To hide the x in the window
+		gdw.removeCloseDecoration();
+		gdw.render();	
+	}
+}
+
+
+//Server Side Code..........
 
 //Code that runs without 'onclick'
 //Ensure call to server-side function with no browser errors
@@ -110,7 +153,7 @@ function runStartBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ce03073adb6a085035a38a723996197f</sys_id>
-        <sys_mod_count>57</sys_mod_count>
+        <sys_mod_count>60</sys_mod_count>
         <sys_name>Start Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -118,7 +161,7 @@ function runStartBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_ce03073adb6a085035a38a723996197f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-18 20:20:40</sys_updated_on>
+        <sys_updated_on>2020-04-20 10:09:23</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

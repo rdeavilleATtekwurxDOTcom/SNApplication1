@@ -450,7 +450,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							noOfDroppedFields++;						
 						}
 
-					} // Read back the fields that we need to process to get their values
+					} // for(var m = 0; m < fieldsToProcessArr.length; m++)
+					// Read back the fields that we need to process to get their values
 
 					var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
 					dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
@@ -460,6 +461,12 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 					var tag = 'changedData';
 
+					// If this is test data add in test_data:true
+					if (current.test_data == true) {
+						data = data + ',';
+						data = data + '\"test_data\":\"true\"';		
+					}
+					
 					var jsonRequestBody = '{' + data + '}';	
 
 					var gr3 = new GlideRecord(trackingTable);
@@ -577,7 +584,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>45</sys_mod_count>
+        <sys_mod_count>46</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -585,7 +592,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-16 16:53:56</sys_updated_on>
+        <sys_updated_on>2020-04-20 08:19:45</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
