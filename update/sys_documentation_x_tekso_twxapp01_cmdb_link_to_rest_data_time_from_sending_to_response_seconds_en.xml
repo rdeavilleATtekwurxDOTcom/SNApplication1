@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="time_from_sending_to_response_seconds" label="Time From Sending To Response (seconds)" language="en" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>time_from_sending_to_response_seconds</element>
+            <help/>
+            <hint/>
+            <label>Time From Sending To Response (seconds)</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
+            <plural>Time From Sending To Response (seconds)</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-21 17:48:47</sys_created_on>
+            <sys_id>5eeefab9db90d0504f29252b1396194a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Time From Sending To Response (seconds)</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_link_to_rest_data_time_from_sending_to_response_seconds_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-21 17:48:47</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

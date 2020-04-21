@@ -28,6 +28,8 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[function getName(sys_id,tbl,testData) {
+	//Gets the value in the name field for a given table and sys id
+	//e.g. core_company, sys_id = company_name
 	var nm = '';	
 	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
 	if (testData == true) {
@@ -386,6 +388,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 								lookup = -1;
 							}
 							else {
+								//Gets the value in the name field for a given table and sys id
+								//e.g. core_company, sys_id = company_name
 								var val_lookup = getName(val,ref_table,current.test_data); // sys_id, table_name	
 								// Include the reference
 								lookup = 1;
@@ -427,6 +431,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						if (lookup == 1) {
 							if (noOfFieldsToProcess == 0) {
 								fieldsToProcess = fld;
+								// val_lookup is the corresponding name e.g. name from core_company
 								data = '\"' + fld + '\":{\"sys_id\":\"' + val + '\",\"name\":\"' + val_lookup + '\"}';
 							}
 							else {
@@ -434,7 +439,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 								// "parent": {
 								//		"sys_id": "56f10ff92f310010c57149e72799b6b4",
 								//		"name": "My Azure Datacenter"
-								//	},								
+								//	},				
+								// val_lookup is the corresponding name e.g. name from core_company								
 								data = data + ',\"' + fld + '\":{\"sys_id\":\"' + val + '\",\"name\":\"' + val_lookup + '\"}';
 							}
 							noOfFieldsToProcess++;
@@ -529,7 +535,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					
 					// Only update if the status field is blank - this should stop the risk of the BR's looping
 					if (thisRecordStatus.length < 1) {
-						var gr4 = new GlideRecord(thisTable);
+						var gr4 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_updates
 						gr4.addQuery('sys_id',thisRecordSysID);
 						gr4.query();
 						if (gr4.next()) {
@@ -553,7 +559,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	} // if (supportedClass == true && cmdbTrackingRunning == true) {
 
 	if (matchedCriteriaForProcessing == false && thisRecordStatus.length < 1) {
-		var gr5 = new GlideRecord(thisTable);
+		var gr5 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_updates
 		gr5.addQuery('sys_id',thisRecordSysID);
 		gr5.query();
 		if (gr5.next()) {
@@ -584,7 +590,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>47</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -592,7 +598,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 08:19:45</sys_updated_on>
+        <sys_updated_on>2020-04-21 21:08:13</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

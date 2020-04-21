@@ -20,6 +20,7 @@
         <element default="0" label="Send to uControl Attempt No" max_length="40" name="send_to_ucontrol_attempt_no" type="integer"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element label="Table" max_length="80" name="table" type="string"/>
+        <element default="0" label="Time From Sending To Response (seconds)" max_length="40" name="time_from_sending_to_response_seconds" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
         <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
         <index name="index">
