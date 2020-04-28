@@ -9,8 +9,8 @@
         <element label="SH Connection Tested At" max_length="40" name="sh_connection_tested_at" type="glide_date_time"/>
         <element label="SH Connection Test Requested" max_length="40" name="sh_connection_test_requested" type="boolean"/>
         <element label="SH Connection Test Requested At" max_length="40" name="sh_connection_test_requested_at" type="glide_date_time"/>
+        <element label="SH Delete Criteria" max_length="40" name="sh_delete_criteria" type="integer"/>
         <element label="SH Fields Updated" max_length="200" name="sh_fields_updated" type="string"/>
-        <element label="SH Good Connection Failed At" max_length="40" name="sh_good_connection_failed_at" type="glide_date_time"/>
         <element label="SH Last Button Clicked" max_length="40" name="sh_last_button_clicked" type="string"/>
         <element default="0" label="SH Max Retries" max_length="40" name="sh_max_retries" type="integer"/>
         <element default="0" label="SH Number Of Supported Classes" max_length="40" name="sh_number_of_supported_classes" type="integer"/>
@@ -23,7 +23,7 @@
         <element label="SH Previous Connection Tested At" max_length="40" name="sh_previous_connection_tested_at" type="glide_date_time"/>
         <element label="SH Previous Connection Test Requested" max_length="40" name="sh_previous_connection_test_requested" type="boolean"/>
         <element label="SH Previous Connection Test Requested At" max_length="40" name="sh_previous_connection_test_requested_at" type="glide_date_time"/>
-        <element label="SH Previous Good Connection Failed At" max_length="40" name="sh_previous_good_connection_failed_at" type="glide_date_time"/>
+        <element label="SH Previous Delete Criteria" max_length="40" name="sh_previous_delete_criteria" type="integer"/>
         <element label="SH Previous Last Button Clicked" max_length="40" name="sh_previous_last_button_clicked" type="string"/>
         <element default="0" label="SH Previous Max Retries" max_length="40" name="sh_previous_max_retries" type="integer"/>
         <element default="0" label="SH Previous Number Of Supported Classes" max_length="40" name="sh_previous_number_of_supported_classes" type="integer"/>
@@ -42,6 +42,7 @@
         <element label="SH Previous uControl MID Server Sys ID" max_length="32" name="sh_previous_ucontrol_mid_server_sys_id" type="string"/>
         <element default="0" label="SH Previous uControl Polling Interval (minutes)" max_length="40" name="sh_previous_ucontrol_polling_interval_minutes" type="integer"/>
         <element label="SH Previous uControl URL" max_length="200" name="sh_previous_ucontrol_url" type="string"/>
+        <element label="SH Previous Update Criteria" max_length="40" name="sh_previous_update_criteria" type="integer"/>
         <element label="SH Start Sending Requested" max_length="40" name="sh_start_sending_requested" type="boolean"/>
         <element label="SH Start Sending Requested At" max_length="40" name="sh_start_sending_requested_at" type="glide_date_time"/>
         <element label="SH Status" max_length="40" name="sh_status" type="string"/>
@@ -57,5 +58,6 @@
         <element label="SH uControl MID Server Sys ID" max_length="32" name="sh_ucontrol_mid_server_sys_id" type="string"/>
         <element default="0" label="SH uControl Polling Interval (minutes)" max_length="40" name="sh_ucontrol_polling_interval_minutes" type="integer"/>
         <element label="SH uControl URL" max_length="200" name="sh_ucontrol_url" type="string"/>
+        <element label="SH Update Criteria" max_length="40" name="sh_update_criteria" type="integer"/>
     </element>
 </database>

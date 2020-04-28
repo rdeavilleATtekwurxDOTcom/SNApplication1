@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="sh_previous_good_connection_failed_at" label="SH Previous Good Connection Failed At" language="en" table="x_tekso_twxapp01_setup_history">
+    <sys_documentation element="sh_delete_criteria" label="SH Delete Criteria" language="en" table="x_tekso_twxapp01_setup_history">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>sh_previous_good_connection_failed_at</element>
+            <element>sh_delete_criteria</element>
             <help/>
             <hint/>
-            <label>SH Previous Good Connection Failed At</label>
+            <label>SH Delete Criteria</label>
             <language>en</language>
             <name>x_tekso_twxapp01_setup_history</name>
-            <plural>SH Previous Good Connection Failed Ats</plural>
+            <plural>SH Delete Criterias</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-19 13:46:25</sys_created_on>
-            <sys_id>5efac097dbaf0c1041d08f3813961937</sys_id>
+            <sys_created_on>2020-04-22 16:50:42</sys_created_on>
+            <sys_id>193bff0edb9c945041d08f381396194b</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>SH Previous Good Connection Failed At</sys_name>
+            <sys_name>SH Delete Criteria</sys_name>
             <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
             <sys_policy/>
             <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_history_sh_previous_good_connection_failed_at_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_history_sh_delete_criteria_en</sys_update_name>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-19 13:46:25</sys_updated_on>
+            <sys_updated_on>2020-04-22 16:50:42</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

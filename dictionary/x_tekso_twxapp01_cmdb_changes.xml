@@ -27,6 +27,7 @@
         <element label="Operation" max_length="10" name="operation" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Record Originally Created By" max_length="40" name="record_originally_created_by" type="string"/>
+        <element label="Record Originally Created By Sys ID" max_length="32" name="record_originally_created_by_sys_id" type="string"/>
         <element label="Record Originally Created On" max_length="40" name="record_originally_created_on" type="glide_date_time"/>
         <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
         <element label="Rel Child Sys ID" max_length="32" name="rel_child_sys_id" type="string"/>

@@ -616,6 +616,34 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>update_criteria</element>
+            <position>44</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:04:32</sys_created_on>
+            <sys_id>3ca0bf82db9c945041d08f3813961948</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Setup" display_value="Setup" name="x_tekso_twxapp01_setup" sys_domain="global" view="Default view">7a88fcbedb62085035a38a7239961962</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:04:32</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>delete_criteria</element>
+            <position>45</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:08:58</sys_created_on>
+            <sys_id>8aa1fbc2db9c945041d08f38139619fd</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Setup" display_value="Setup" name="x_tekso_twxapp01_setup" sys_domain="global" view="Default view">7a88fcbedb62085035a38a7239961962</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:08:58</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption>Setup</caption>
             <header>false</header>

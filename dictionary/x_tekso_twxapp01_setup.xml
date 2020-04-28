@@ -22,6 +22,13 @@
         <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
+        <element choice="3" default="0" label="Delete Criteria" max_length="40" name="delete_criteria" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="Created by uControl Integration User &amp; deleted by another user" sequence="0" value="0"/>
+                <element inactive_on_update="false" label="Deleted by a user other than uControl Integration User" sequence="1" value="1"/>
+                <element inactive_on_update="false" label="Any delete" sequence="2" value="2"/>
+            </choice>
+        </element>
         <element default="Enter a valid uControl URL and uControl MID Server and then click on Test Connection" label="Help" max_length="200" name="help" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
@@ -94,6 +101,13 @@
         </element>
         <element attributes="edge_encryption_enabled=true" display="true" hint="Can only be updated when system is not sending - Click on the Stop Sending buton to edit this field" label="uControl URL" max_length="200" name="ucontrol_url" type="string"/>
         <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <element choice="3" default="0" label="Update Criteria" max_length="40" name="update_criteria" type="integer">
+            <choice>
+                <element inactive_on_update="false" label="Created by uControl Integration User &amp; updated by another user" sequence="0" value="0"/>
+                <element inactive_on_update="false" label="Updated by a user other than uControl Integration User" sequence="1" value="1"/>
+                <element inactive_on_update="false" label="Any update" sequence="2" value="2"/>
+            </choice>
+        </element>
         <index name="index">
             <element name="ucontrol_integration_user"/>
         </index>

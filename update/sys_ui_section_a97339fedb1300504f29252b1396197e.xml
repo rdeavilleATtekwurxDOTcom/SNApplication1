@@ -4,13 +4,13 @@
             <element>x_tekso_twxapp01_ui_macro_tekwurx_logo1.xml</element>
             <position>0</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>a6b06c3fdb3f04104f29252b139619e6</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>29a809fbdb5858504f29252b13961983</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter display_value="REST Data ui_formatter_tekwurx_logo1">4e2275bedb1300504f29252b139619c3</sys_ui_formatter>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type>formatter</type>
         </sys_ui_element>
@@ -18,13 +18,13 @@
             <element>.begin_split</element>
             <position>1</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eab06c3fdb3f04104f29252b139619e6</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>6da809fbdb5858504f29252b13961983</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -32,13 +32,13 @@
             <element>number</element>
             <position>2</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6eb06c3fdb3f04104f29252b139619e6</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>eda809fbdb5858504f29252b13961983</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -46,13 +46,13 @@
             <element>.split</element>
             <position>3</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eeb06c3fdb3f04104f29252b139619e6</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>61a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -60,13 +60,13 @@
             <element>operation</element>
             <position>4</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>62b06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e1a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -74,13 +74,13 @@
             <element>.end_split</element>
             <position>5</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e2b06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>65a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -88,13 +88,13 @@
             <element>json_request_body</element>
             <position>6</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>66b06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e5a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -102,13 +102,13 @@
             <element>total_length_of_json_request_body</element>
             <position>7</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e6b06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>69a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -116,13 +116,13 @@
             <element>sent_to_ucontrol_at</element>
             <position>8</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6ab06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e9a809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -130,13 +130,13 @@
             <element>ucontrol_url</element>
             <position>9</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eab06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>6da809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -144,13 +144,13 @@
             <element>ucontrol_mid_server_name</element>
             <position>10</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6eb06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>eda809fbdb5858504f29252b13961984</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -158,13 +158,13 @@
             <element>ucontrol_mid_server_sys_id</element>
             <position>11</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eeb06c3fdb3f04104f29252b139619e7</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>61a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -172,13 +172,13 @@
             <element>base_table</element>
             <position>12</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>62b06c3fdb3f04104f29252b139619e8</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e1a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -186,13 +186,13 @@
             <element>no_of_cmdb_records_in_json_request_body</element>
             <position>13</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e2b06c3fdb3f04104f29252b139619e8</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>65a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -200,13 +200,13 @@
             <element>.begin_split</element>
             <position>14</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>66b06c3fdb3f04104f29252b139619e8</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e5a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -214,167 +214,167 @@
             <element>response_received</element>
             <position>15</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e6b06c3fdb3f04104f29252b139619e8</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>69a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>.split</element>
-            <position>16</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6ab06c3fdb3f04104f29252b139619e8</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type>.split</type>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>response_received_at</element>
-            <position>17</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eab06c3fdb3f04104f29252b139619e8</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>.end_split</element>
-            <position>18</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6eb06c3fdb3f04104f29252b139619e8</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type>.end_split</type>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>response_from_ucontrol</element>
-            <position>19</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eeb06c3fdb3f04104f29252b139619e8</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>total_length_of_response_from_ucontrol</element>
-            <position>20</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>62b06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>response_status_code</element>
-            <position>21</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e2b06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>response_status_message</element>
-            <position>22</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>66b06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>link_to_processing_log_record</element>
-            <position>23</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>e6b06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>inserted_by_script</element>
-            <position>24</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>6ab06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>updated_by_script</element>
-            <position>25</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-02 14:54:07</sys_created_on>
-            <sys_id>eab06c3fdb3f04104f29252b139619e9</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-02 14:54:07</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>time_from_sending_to_response_seconds</element>
-            <position>26</position>
+            <position>16</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-21 17:15:47</sys_created_on>
-            <sys_id>b657fef1db90d0504f29252b13961974</sys_id>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e9a809fbdb5858504f29252b13961985</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-21 17:15:47</sys_updated_on>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>17</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>6da809fbdb5858504f29252b13961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_received_at</element>
+            <position>18</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>eda809fbdb5858504f29252b13961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>19</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>61a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_from_ucontrol</element>
+            <position>20</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e1a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>total_length_of_response_from_ucontrol</element>
+            <position>21</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>65a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_status_code</element>
+            <position>22</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e5a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_status_message</element>
+            <position>23</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>69a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>link_to_processing_log_record</element>
+            <position>24</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>e9a809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>inserted_by_script</element>
+            <position>25</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>6da809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>updated_by_script</element>
+            <position>26</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-27 14:19:56</sys_created_on>
+            <sys_id>eda809fbdb5858504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-27 14:19:56</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

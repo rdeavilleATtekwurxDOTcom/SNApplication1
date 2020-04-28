@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_choice action="INSERT_OR_UPDATE" field="update_criteria" table="x_tekso_twxapp01_setup" version="3">
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>update_criteria</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Created by uControl Integration User &amp; updated by another user</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <sequence>0</sequence>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:05:36</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>aec0b3c2db9c945041d08f381396192f</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:07:50</sys_updated_on>
+            <value>0</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>update_criteria</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Updated by a user other than uControl Integration User</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <sequence>1</sequence>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:06:09</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>29e037c2db9c945041d08f3813961918</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:08:00</sys_updated_on>
+            <value>1</value>
+        </sys_choice>
+        <sys_choice action="INSERT_OR_UPDATE">
+            <dependent_value/>
+            <element>update_criteria</element>
+            <hint/>
+            <inactive>false</inactive>
+            <label>Any update</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup</name>
+            <sequence>2</sequence>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:06:39</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>9e0133c2db9c945041d08f381396197b</sys_id>
+            <sys_mod_count>1</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:08:05</sys_updated_on>
+            <value>2</value>
+        </sys_choice>
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>update_criteria</element>
+            <name>x_tekso_twxapp01_setup</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:05:36</sys_created_on>
+            <sys_id>64e0f3c2db9c945041d08f381396199d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>update_criteria</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_setup_update_criteria</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:05:36</sys_updated_on>
+        </sys_choice_set>
+    </sys_choice>
+</record_update>
