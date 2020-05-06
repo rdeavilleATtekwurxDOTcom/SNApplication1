@@ -27,7 +27,19 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[function buildStatusDetails(statusDetails,statusMsg) {
+        <script><![CDATA[function stringsMatch(str1,str2) {
+	var rtn = false;
+	var str1a = str1.toString();
+	var str2a = str2.toString();
+	var str1b = str1a.trim();
+	var str2b = str2a.trim();
+	var str1c = str1b.toLowerCase();
+	var str2c = str2b.toLowerCase();	
+	rtn = str1c.equals(str2c);
+	return rtn;
+}
+
+function buildStatusDetails(statusDetails,statusMsg) {
 	if (statusMsg.length > 0) {
 		if (statusDetails.length < 1) {
 			statusDetails = statusMsg;
@@ -40,10 +52,11 @@
 }
 
 function getUserSysID(userName) {
+	var userName2 = userName.toString();
 	var rtnSysID = '';
-	if (userName.length > 0){
+	if (userName2.length > 0){
 		var gr1 = new GlideRecord('sys_user');
-		gr1.addQuery('user_name',userName);
+		gr1.addQuery('user_name',userName2);
 		gr1.query();
 		if (gr1.next()) {
 			// Found a matching user account
@@ -235,6 +248,14 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var recordUpdatedOn = current.record_updated_on;
 	var recordUpdatedBySysID = getUserSysID(recordUpdatedBy);
 	var recordOriginallyCreatedBySysID = getUserSysID(recordOriginallyCreatedBy);
+
+	var recordUpdatedByCreator = stringsMatch(recordOriginallyCreatedBy,recordUpdatedBy);
+	var recordCreatedByuControlIntegrationUser = false;
+	var recordUpdatedByuControlIntegrationUser = false;
+	if (gotConfigUsr == true) {
+		recordCreatedByuControlIntegrationUser = stringsMatch(recordOriginallyCreatedBy,configUsrName);
+		recordUpdatedByuControlIntegrationUser = stringsMatch(recordUpdatedBy,configUsrName);		
+	}
 	
 	// Only continue if this is a supported class (or cmdb_rel_ci)
 	// and x_tekso_twxapp01_setup.cmdb_tracking is 'Running'
@@ -267,7 +288,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		}
 						
 		// gets the user name
-		var userName = gs.getUserName();
+		//var userName = gs.getUserName();
 
 		//0 = Created by uControl Integration User & updated by another user
 		//1 = Updated by a user other than uControl Integration User
@@ -281,15 +302,19 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		if (criteria == 1) {
 			criteriaDescription = 'Updated by a user other than uControl Integration User';
 			//1 = Updated by a user other than uControl Integration User
-			if (gotConfigUsr == 1 & recordUpdatedBy != configUsrName) {
+			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
+				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
+				statusDetails = buildStatusDetails(statusDetails,statusMsg);
 				carryOn = true;
 			}
 		}
 		if (criteria == 0) {
 			criteriaDescription = 'Created by uControl Integration User & updated by another user';
 			//0 = Created by uControl Integration User & updated by another user	
-			if (gotConfigUsr == 1 & recordUpdatedBy != configUsrName) {
-				if (recordOriginallyCreatedBy == configUsrName ) {
+			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
+				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
+				statusDetails = buildStatusDetails(statusDetails,statusMsg);				
+				if (stringsMatch(recordOriginallyCreatedBy,configUsrName) == true) {
 					carryOn = true;
 				}
 			}			
@@ -336,11 +361,24 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 			if (baseTable == 'cmdb_rel_ci') {
 				include_arr = ['sys_id','sys_updated_on','sys_updated_by'];	
-				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','connection_strength','port','percent_outage'];  				
+				exclude_arr.push('sys_tags');
+				exclude_arr.push('sys_created_on');
+				exclude_arr.push('sys_created_by');
+				exclude_arr.push('sys_mod_count');
+				exclude_arr.push('connection_strength');
+				exclude_arr.push('port');
+				exclude_arr.push('percent_outage');
+				exclude_arr.sort(); 				
 			}
 			else {
 				include_arr = ['sys_id','sys_updated_on','sys_updated_by','sys_class_name'];
-				exclude_arr = ['sys_tags','sys_created_on','sys_created_by','sys_mod_count','sys_domain','sys_class_path'];				
+				exclude_arr.push('sys_tags');
+				exclude_arr.push('sys_created_on');
+				exclude_arr.push('sys_created_by');
+				exclude_arr.push('sys_mod_count');
+				exclude_arr.push('sys_domain');
+				exclude_arr.push('sys_class_path');
+				exclude_arr.sort(); 						
 			}
 			
 			var fld = '';
@@ -430,6 +468,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					// Work out why a field is not going to be processed
 					// Is it because it is in the excluded list?
 					// If not then add it to the droppped list
+					fieldsNotToProcessArr.sort();
 					for(var l = 0; l < fieldsNotToProcessArr.length; l++) {
 						fld = fieldsNotToProcessArr[l];
 						if (exclude_arr.indexOf(fld) > -1) {
@@ -457,6 +496,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					}
 
 					// Read back the fields that we need to process to get their values
+					fieldsToProcessArr.sort();
 					for(var m = 0; m < fieldsToProcessArr.length; m++) {
 						fld = fieldsToProcessArr[m];
 						var element = gr2.getElement(fld);
@@ -610,6 +650,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						gr3.setValue('record_originally_created_by',recordOriginallyCreatedBy);
 						gr3.setValue('record_originally_created_by_sys_id',recordOriginallyCreatedBySysID);
 						gr3.setValue('record_originally_created_on',recordOriginallyCreatedOn);
+						gr3.setValue('record_updated_by',recordUpdatedBy);
+						gr3.setValue('record_updated_on',recordUpdatedOn);
+						gr3.setValue('record_updated_by_sys_id',recordUpdatedBySysID);								 
+						
 						if (current.test_data == true) {
 							gr3.setValue('test_data',true);		
 							gr3.setValue('test_table_name',current.test_table_name);
@@ -639,8 +683,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 								gr4.setValue('record_updated_by_sys_id',recordUpdatedBySysID);
 								gr4.setValue('record_originally_created_by_sys_id',recordOriginallyCreatedBySysID);
 								gr4.setValue('update_criteria_code',criteria);
-								gr4.setValue('update_criteria_description',criteriaDescription);	
-								gr4.setValue('br_running_as_user',userName);									
+								gr4.setValue('update_criteria_description',criteriaDescription);		
+								gr4.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
+								gr4.setValue('updated_by_ucontrol_integration_user',recordUpdatedByuControlIntegrationUser);
+								gr4.setValue('updated_by_record_creator',recordUpdatedByCreator);								
 								gr4.setValue('updated_by_script','BR uControl Track Updates'); // Debug		
 								//Do not run Business Rules
 								gr4.setWorkflow(false);
@@ -684,8 +730,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			gr5.setValue('record_updated_by_sys_id',recordUpdatedBySysID);
 			gr5.setValue('record_originally_created_by_sys_id',recordOriginallyCreatedBySysID);	
 			gr5.setValue('update_criteria_code',criteria);
-			gr5.setValue('update_criteria_description',criteriaDescription);	
-			gr5.setValue('br_running_as_user',userName);	
+			gr5.setValue('update_criteria_description',criteriaDescription);
+			gr5.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
+			gr5.setValue('updated_by_ucontrol_integration_user',recordUpdatedByuControlIntegrationUser);
+			gr5.setValue('updated_by_record_creator',recordUpdatedByCreator);				
 			gr5.setValue('updated_by_script','BR uControl Track Updates'); // Debug		
 			//Do not run Business Rules
 			gr5.setWorkflow(false);		
@@ -696,7 +744,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
 	//Event x_tekso_twxapp01.configurationchecksetdt
 	var brevent = 'br_ucontrol_track_updates_last_run_at';
-	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),brevent);
+	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', current, gs.getUserID(),brevent);
 	//This event will trigger script action ConfigurationCheckSetDT
 	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
 	//               si2.setDTLastRunAt('br_ucontrol_track_updates_last_run_at'); // Fld
@@ -708,7 +756,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>55</sys_mod_count>
+        <sys_mod_count>62</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -716,7 +764,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-28 13:04:51</sys_updated_on>
+        <sys_updated_on>2020-05-06 09:51:23</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

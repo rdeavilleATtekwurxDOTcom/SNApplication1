@@ -27,7 +27,22 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[// Soft Delete
+        <script><![CDATA[function getUserSysID(userName) {
+	var userName2 = userName.toString();
+	var rtnSysID = '';
+	if (userName2.length > 0){
+		var gr1 = new GlideRecord('sys_user');
+		gr1.addQuery('user_name',userName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Found a matching user account
+			rtnSysID = gr1.getValue('sys_id') || '';
+		}
+	}	
+	return rtnSysID;	
+}
+
+// Soft Delete
 (function executeRule(current, previous /*null when async*/) {
 
 	// Cannot be Async as all info is lost for a delete
@@ -38,20 +53,22 @@
 	
 	var fieldCnt = 0;
 	var allFields = '';
+	var allFieldsArr = [];
+	
 	for (var x in current){
 		var y = x.substring(0,15); // original_value_
 		var z = x.substring(0,18); // alternative_value_
 		// Exclude real_table_name and soft_delete and got_alternative_values
 		var excludeArr = ['sys_meta','real_table_name','soft_delete','got_alternative_values','original_or_alternative'];
-		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {		
-			if (fieldCnt == 0) {
-				allFields = x;
-			}
-			else {
-				allFields = allFields + ',' + x;
-			}
+		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {	
+			allFieldsArr.push(x);
 			fieldCnt++;
 		}
+	}
+	
+	if (fieldCnt > 0) {
+		allFieldsArr.sort(); // Sort alphabetically
+		allFields = allFieldsArr.join(","); // Convert to a comma separated list		
 	}
 	
 	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
@@ -61,8 +78,14 @@
 	gr1.setValue('table_name',current.real_table_name); 	
 	gr1.setValue('record_originally_created_by',current.sys_created_by);
 	gr1.setValue('record_originally_created_on',current.sys_created_on);	
-	gr1.setValue('record_updated_by',current.sys_updated_by);
-	gr1.setValue('record_updated_on',current.sys_updated_on);		
+	gr1.setValue('record_last_updated_by',current.sys_updated_by);
+	gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+	var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+	gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+	gr1.setValue('record_deleted_by',gs.getUserName());
+	gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+	var gdt = new GlideDateTime();	
+	gr1.setValue('record_deleted_on',gdt);	
 	gr1.setValue('correlation_id1',current.correlation_id);
 	gr1.setValue('discovery_source1',current.discovery_source);
 	gr1.setValue('name',current.name);
@@ -86,7 +109,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4df0eecbdb7b801041d08f38139619da</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>Test uControl Track Del cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -94,7 +117,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_4df0eecbdb7b801041d08f38139619da</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-03 11:28:35</sys_updated_on>
+        <sys_updated_on>2020-05-06 09:28:45</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>
