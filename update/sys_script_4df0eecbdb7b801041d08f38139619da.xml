@@ -73,7 +73,7 @@
 	
 	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
 	gr1.initialize();
-	gr1.setValue('record_sys_id',current.sys_id);
+	gr1.setValue('source_record_sys_id',current.sys_id);
 	gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 	gr1.setValue('table_name',current.real_table_name); 	
 	gr1.setValue('record_originally_created_by',current.sys_created_by);
@@ -109,7 +109,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4df0eecbdb7b801041d08f38139619da</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Test uControl Track Del cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -117,7 +117,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_4df0eecbdb7b801041d08f38139619da</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 09:28:45</sys_updated_on>
+        <sys_updated_on>2020-05-06 13:27:36</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

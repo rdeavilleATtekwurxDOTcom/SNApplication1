@@ -11,9 +11,9 @@
 SetPrevNextRecordsForCMDBLinkToREST.prototype = {
     initialize: function() {
     },
-	orderRecords: function (record_sys_id,link_to_processing_record) {
+	orderRecords: function (source_record_sys_id,link_to_processing_record) {
 		//There could be multiple x_tekso_twxapp01_cmdb_link_to_rest_data records
-		//with the same record_sys_id and link_to_processing_record 
+		//with the same source_record_sys_id and link_to_processing_record 
 		//The records should link together in a chain from first to last
 		//The first record has a flag to show it is the first and should link to the next
 		//The last record has a flag to show it is the last and should link to the previous
@@ -26,12 +26,12 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 		//then the chain could be broken - so need to scan through all related
 		//records and ensure that they join together
 		
-		//record_sys_id = this is the sys_id of the cmdb record thst has been updated\deleted e.g. cmdb_ci_win_server
+		//source_record_sys_id = this is the sys_id of the cmdb record thst has been updated\deleted e.g. cmdb_ci_win_server
 		//link_to_processing_record = this is the sys_id of cmdb_changes
 	
 		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
 		gr1.addQuery('link_to_processing_record',link_to_processing_record);
-		gr1.addQuery('record_sys_id',record_sys_id);
+		gr1.addQuery('source_record_sys_id',source_record_sys_id);
 		gr1.orderBy('sys_created_on'); // Earliest first, latest last
 		gr1.query();
 		var cnt = gr1.getRowCount();
@@ -175,13 +175,13 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 15:49:39</sys_created_on>
         <sys_id>0b2e503edb13405041d08f3813961968</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>SetPrevNextRecordsForCMDBLinkToREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_0b2e503edb13405041d08f3813961968</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-24 17:25:29</sys_updated_on>
+        <sys_updated_on>2020-05-06 13:22:25</sys_updated_on>
     </sys_script_include>
 </record_update>

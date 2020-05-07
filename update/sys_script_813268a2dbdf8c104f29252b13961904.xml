@@ -31,12 +31,12 @@
 
 	// Async Insert
 	var sys_id = current.sys_id;
-	var record_sys_id = current.record_sys_id; // The sys id for the source record e.g. cmdb_ci_win_server
+	var source_record_sys_id = current.source_record_sys_id; // The sys id for the source record e.g. cmdb_ci_win_server
 	var link_to_processing_record = current.link_to_processing_record; // The sys_id for the cmdb_change record
 	
 	// Need to consider that records may be deleted and the chain may get broken and need to be repaired
 	var si = new x_tekso_twxapp01.SetPrevNextRecordsForCMDBLinkToREST();
-	si.orderRecords(record_sys_id,link_to_processing_record);
+	si.orderRecords(source_record_sys_id,link_to_processing_record);
 
 })(current, previous);
 ]]></script>
@@ -46,7 +46,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>813268a2dbdf8c104f29252b13961904</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>CMDB Link to REST Set Prev Next Records</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -54,7 +54,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_813268a2dbdf8c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-10 13:29:15</sys_updated_on>
+        <sys_updated_on>2020-05-06 13:26:56</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

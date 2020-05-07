@@ -12,6 +12,8 @@
         <element label="Fields To Process" max_length="4000" name="fields_to_process" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
+        <element label="Latest REST Data Record Sys ID" max_length="32" name="latest_rest_data_record_sys_id" type="string"/>
+        <element label="Latest REST Response Record Sys ID" max_length="32" name="latest_rest_response_record_sys_id" type="string"/>
         <element label="Link To Latest REST Data Record" max_length="32" name="link_to_latest_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
         <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
         <element label="Link To Originating Delete Record" max_length="32" name="link_to_originating_delete_record" reference="x_tekso_twxapp01_cmdb_deletes" type="reference"/>
@@ -32,7 +34,6 @@
         <element label="Record Originally Created By" max_length="40" name="record_originally_created_by" type="string"/>
         <element label="Record Originally Created By Sys ID" max_length="32" name="record_originally_created_by_sys_id" type="string"/>
         <element label="Record Originally Created On" max_length="40" name="record_originally_created_on" type="glide_date_time"/>
-        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
         <element label="Record Updated By" max_length="40" name="record_updated_by" type="string"/>
         <element label="Record Updated By Sys ID" max_length="32" name="record_updated_by_sys_id" type="string"/>
         <element label="Record Updated On" max_length="40" name="record_updated_on" type="glide_date_time"/>
@@ -46,6 +47,7 @@
         <element label="REST Data Record Created" max_length="40" name="rest_data_record_created" type="boolean"/>
         <element label="REST Response Record Created" max_length="40" name="rest_response_record_created" type="boolean"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
+        <element label="Source Record Sys ID" max_length="32" name="source_record_sys_id" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
         <element label="Table" max_length="80" name="table" type="string"/>
         <element label="Test Data" max_length="40" name="test_data" type="boolean"/>

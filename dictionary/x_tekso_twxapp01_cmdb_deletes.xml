@@ -28,13 +28,13 @@
         <element label="Record Originally Created By" max_length="40" name="record_originally_created_by" type="string"/>
         <element label="Record Originally Created By Sys ID" max_length="32" name="record_originally_created_by_sys_id" type="string"/>
         <element label="Record Originally Created On" max_length="40" name="record_originally_created_on" type="glide_date_time"/>
-        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
         <element label="Rel Child Name" max_length="255" name="rel_child_name" type="string"/>
         <element label="Rel Child Sys ID" max_length="32" name="rel_child_sys_id" type="string"/>
         <element label="Rel Parent Name" max_length="255" name="rel_parent_name" type="string"/>
         <element label="Rel Parent Sys ID" max_length="32" name="rel_parent_sys_id" type="string"/>
         <element label="Rel Type Name" max_length="100" name="rel_type_name" type="string"/>
         <element label="Rel Type Sys ID" max_length="32" name="rel_type_sys_id" type="string"/>
+        <element label="Source Record Sys ID" max_length="32" name="source_record_sys_id" type="string"/>
         <element label="Status" max_length="40" name="status" type="string"/>
         <element label="Status Details" max_length="200" name="status_details" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>

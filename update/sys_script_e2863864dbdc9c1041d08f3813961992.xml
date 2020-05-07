@@ -61,14 +61,14 @@
 	while(childNodes.hasNext()){
 		var n = childNodes.next();	
 		var nStr = n.toString();
-		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('block_id') > 0) {
+		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('data_sys_id') > 0) {
 			writeDebugLog('U ecc_queue n: ' + n);			
 			writeDebugLog('U ecc_queue n: ' + nStr);
 			var unescaped = nStr.replace(/&quot;/g,'');
-			var pos = unescaped.indexOf('block_id:');
-			pos = pos + 9; // length of 'block_id:'
-			var block = unescaped.substring(pos,pos+32);
-			writeDebugLog('U ecc_queue block: ' + block);
+			var pos = unescaped.indexOf('data_sys_id:');
+			pos = pos + 12; // length of 'data_sys_id:'
+			var data_sys_id = unescaped.substring(pos,pos+32);
+			writeDebugLog('U ecc_queue block: ' + data_sys_id);
 		}
 	}	
 
@@ -87,7 +87,7 @@ function writeDebugLog(msg) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e2863864dbdc9c1041d08f3813961992</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>ECC Queue - uControl Response U</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -95,7 +95,7 @@ function writeDebugLog(msg) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_e2863864dbdc9c1041d08f3813961992</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 13:34:36</sys_updated_on>
+        <sys_updated_on>2020-05-06 14:45:20</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

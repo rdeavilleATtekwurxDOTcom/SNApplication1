@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
+    <sys_ui_action action="INSERT_OR_UPDATE">
+        <action_name/>
+        <active>true</active>
+        <client>false</client>
+        <client_script_v2><![CDATA[function onClick(g_form) {
+
+}]]></client_script_v2>
+        <comments>//Need to check that the record exists</comments>
+        <condition/>
+        <form_action>true</form_action>
+        <form_button>true</form_button>
+        <form_button_v2>false</form_button_v2>
+        <form_context_menu>false</form_context_menu>
+        <form_link>false</form_link>
+        <form_menu_button_v2>false</form_menu_button_v2>
+        <form_style/>
+        <hint/>
+        <isolate_script>false</isolate_script>
+        <list_action>false</list_action>
+        <list_banner_button>false</list_banner_button>
+        <list_button>false</list_button>
+        <list_choice>false</list_choice>
+        <list_context_menu>false</list_context_menu>
+        <list_link>false</list_link>
+        <list_save_with_form_button>false</list_save_with_form_button>
+        <list_style/>
+        <name>Copy CMDB Update</name>
+        <onclick/>
+        <order>100</order>
+        <script><![CDATA[var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+gr1.initialize();
+gr1.setValue('source_record_sys_id',current.source_record_sys_id);
+gr1.setValue('table_name',current.table_name);
+gr1.setValue('record_originally_created_by',current.record_originally_created_by);
+gr1.setValue('record_originally_created_on',current.record_originally_created_on);
+gr1.setValue('record_updated_by',current.record_updated_by);
+gr1.setValue('record_updated_on',current.record_updated_on);	
+
+gr1.setValue('base_table',current.base_table);
+gr1.setValue('fields_changed',current.fields_changed);
+gr1.setValue('number_of_fields_changed',current.number_of_fields_changed);
+gr1.setValue('total_length_of_fields_changed_list',current.total_length_of_fields_changed_list);
+gr1.setValue('name',current.name);		
+gr1.setValue('all_fields',current.all_fields);
+
+gr1.setValue('no_of_fields',current.no_of_fields);
+gr1.setValue('total_length_of_all_fields_list',current.total_length_of_all_fields_list);
+gr1.setValue('actual_table_name',current.actual_table_name);
+gr1.setValue('test_data',current.test_data); 
+
+if (current.base_table == 'cmdb_rel_ci') {
+	gr1.setValue('rel_parent_sys_id',current.rel_parent_sys_id);
+	gr1.setValue('rel_type_sys_id',current.rel_type_sys_id);
+	gr1.setValue('rel_child_sys_id',current.rel_child_sys_id);	
+	gr1.setValue('rel_child_name',current.rel_child_name);
+	gr1.setValue('rel_parent_name',current.rel_parent_name);
+	gr1.setValue('rel_type_name',current.rel_type_name);	
+}
+
+gr1.setValue('inserted_by_script','UI Action Copy');			
+gr1.insert();
+]]></script>
+        <show_insert>false</show_insert>
+        <show_multiple_update>false</show_multiple_update>
+        <show_query>false</show_query>
+        <show_update>true</show_update>
+        <sys_class_name>sys_ui_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-06 17:00:32</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6fe0ccb2dbe4d0104f29252b139619ce</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Copy CMDB Update</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_action_6fe0ccb2dbe4d0104f29252b139619ce</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-06 17:11:55</sys_updated_on>
+        <table>x_tekso_twxapp01_cmdb_updates</table>
+        <ui11_compatible>true</ui11_compatible>
+        <ui16_compatible>false</ui16_compatible>
+    </sys_ui_action>
+</record_update>

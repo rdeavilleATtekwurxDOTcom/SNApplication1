@@ -417,19 +417,34 @@ function getNumberOfPendingRecords(trackingTable) {
 
 
 // Called by mainBit()
-function createLinkRecord(linkTable,operation,table,baseTable,recordSysID,data_sys_id,trackingSysID,logSysID) {
+function createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,data_sys_id,trackingSysID,logSysID) {
 				
 	var gr1 = new GlideRecord(linkTable);
 	gr1.initialize();
 	gr1.setValue('operation',operation); // insert / delete
 	gr1.setValue('table',table); // Blank for Delete
 	gr1.setValue('base_table',baseTable);
-	gr1.setValue('record_sys_id',recordSysID); // Sys_id for the cmdb_ci / cmdb_rel_ci record to be processed
+	gr1.setValue('source_record_sys_id',sourceRecordSysID); // Sys_id for the cmdb_ci / cmdb_rel_ci record to be processed
 	gr1.setValue('link_to_rest_data_record',data_sys_id);
 	gr1.setValue('link_to_processing_record',trackingSysID);
 	gr1.setValue('link_to_processing_log_record',logSysID);
+	gr1.setValue('rest_data_record_sys_id',data_sys_id);
+	gr1.setValue('processing_record_sys_id',trackingSysID);
+	gr1.setValue('processing_log_record_sys_id',logSysID);
 	gr1.setValue('inserted_by_script','SJ createLinkRecord'); // Debug	
 	gr1.insert();
+}
+
+
+function getDataRecordNo(dataTable,data_sys_id) {
+	var recordNo = '';
+	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	gr1.addQuery('sys_id',data_sys_id);
+	gr1.query();
+	if (gr1.next()) {
+		recordNo = gr1.getValue('number') || '';
+	}
+	return recordNo;
 }
 
 
@@ -446,6 +461,7 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
 	gr1.setValue('total_length_of_json_request_body',JSONRequestBody.length);
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
 	gr1.setValue('link_to_processing_log_record',logSysID);
+	gr1.setValue('processing_log_record_sys_id',logSysID);	
 	gr1.setValue('inserted_by_script','SJ createDataRecordWithJSON'); // Debug	
 	var rtn_sys_id = gr1.insert();
 	
@@ -467,6 +483,7 @@ function createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerNa
 	gr1.setValue('total_length_of_json_request_body',0);	
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',0);
 	gr1.setValue('link_to_processing_log_record',logSysID);	
+	gr1.setValue('processing_log_record_sys_id',logSysID);		
 	gr1.setValue('inserted_by_script','SJ createDataRecordWithEmptyJSON'); // Debug	
 	var rtn_sys_id = gr1.insert();
 	
@@ -731,7 +748,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 	var midServerSysID = '';
 	var user = '';
 	var url ='';
-	var recordSysID = '';
+	var sourceRecordSysID = '';
 	var dt = new GlideDateTime();
 	var jsonRequestBody = '';
 	var prevOperation = '';
@@ -768,6 +785,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 	var insertJsonRequestBody = '';
 	
 	var data_sys_id = '';	
+	var dataRecordNo = '';
 	var metaData = '';
 
 	var logRecordCreated = false;
@@ -792,7 +810,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 	while(gr2.next()) {	
 		recCnt++;
 		trackingSysID = gr2.getValue('sys_id');
-		recordSysID = gr2.getValue('record_sys_id') || '';	
+		sourceRecordSysID = gr2.getValue('source_record_sys_id') || '';	
 		operation = gr2.getValue('operation') ||'';
 		baseTable = gr2.getValue('base_table') || '';
 		table = gr2.getValue('table') || '';	
@@ -973,9 +991,12 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 			data_sys_id = createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,insertJsonRequestBody,1,logSysID);
 			*/
 			data_sys_id = createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID);
-
+			dataRecordNo = getDataRecordNo(dataTable,data_sys_id);			
+			
 			insertData = '\"insertedData\": ' + jsonRequestBody;
-			metaData = metaData + ',\"block_id\":\"' + data_sys_id + '\"';
+			metaData = metaData + ',\"data_sys_id\":\"' + data_sys_id + '\"';
+			metaData = metaData + ',\"data_record_no\":\"' + dataRecordNo + '\"';	
+			
 			//Flag if test data
 			if (testData == true) {
 				metaData = metaData + ',\"test_data\":\"true\"';	
@@ -983,7 +1004,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 			insertJsonRequestBody = '{' + metaData + ',' + insertData + '}';
 
 			addJSONToDataRecord(dataTable,data_sys_id,insertJsonRequestBody,1);			
-			createLinkRecord(linkTable,operation,table,baseTable,recordSysID,data_sys_id,trackingSysID,logSysID);
+			createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,data_sys_id,trackingSysID,logSysID);
 			
 			//var si = new x_tekso_twxapp01.OutboundREST();		
 			//si.process(data_sys_id);
@@ -1020,11 +1041,13 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 				}	
 				
 				delete_data_sys_id = createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID);
+				dataRecordNo = getDataRecordNo(dataTable,delete_data_sys_id);
 				
-				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,delete_data_sys_id,trackingSysID,logSysID);		
-
+				createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,delete_data_sys_id,trackingSysID,logSysID);		
 				deleteDataList = '';
-				deleteMetaData = metaData + ',\"block_id\":\"' + delete_data_sys_id + '\"';
+				deleteMetaData = metaData + ',\"data_sys_id\":\"' + delete_data_sys_id + '\"';
+				deleteMetaData = deleteMetaData + ',\"data_record_no\":\"' + dataRecordNo + '\"';
+				
 				//Flag if test data
 				if (testData == true) {
 					deleteMetaData = deleteMetaData + ',\"test_data\":\"true\"';	
@@ -1045,7 +1068,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}					
-				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,delete_data_sys_id,trackingSysID,logSysID);			
+				createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,delete_data_sys_id,trackingSysID,logSysID);			
 			}		
 			deleteDataList = deleteDataList + jsonRequestBody;
 			
@@ -1084,11 +1107,13 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 					//logSysID is the sys_id for the log record
 				}					
 				update_data_sys_id = createDataRecordWithEmptyJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,logSysID);
-
-				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,update_data_sys_id,trackingSysID,logSysID);		
-
+				dataRecordNo = getDataRecordNo(dataTable,update_data_sys_id);
+				
+				createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,update_data_sys_id,trackingSysID,logSysID);		
 				updateDataList = '';
-				updateMetaData = metaData + ',\"block_id\":\"' + update_data_sys_id + '\"';
+				updateMetaData = metaData + ',\"data_sys_id\":\"' + update_data_sys_id + '\"';
+				updateMetaData = updateMetaData + ',\"data_record_no\":\"' + dataRecordNo + '\"';	
+				
 				//Flag if test data
 				if (testData == true) {
 					updateMetaData  = updateMetaData  + ',\"test_data\":\"true\"';	
@@ -1109,7 +1134,7 @@ function mainBit(setupSysID,processingID,sysIDsInBlockAreUnique) { //,pollingInt
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}							
-				createLinkRecord(linkTable,operation,table,baseTable,recordSysID,update_data_sys_id,trackingSysID,logSysID);			
+				createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,update_data_sys_id,trackingSysID,logSysID);			
 			}		
 			updateDataList = updateDataList + jsonRequestBody;
 			
@@ -1185,14 +1210,14 @@ function writeDebugLog(msg) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-30 15:00:07</sys_created_on>
         <sys_id>45dfbb5bdbe6001041d08f381396193a</sys_id>
-        <sys_mod_count>239</sys_mod_count>
+        <sys_mod_count>244</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_45dfbb5bdbe6001041d08f381396193a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 21:12:56</sys_updated_on>
+        <sys_updated_on>2020-05-06 16:10:07</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

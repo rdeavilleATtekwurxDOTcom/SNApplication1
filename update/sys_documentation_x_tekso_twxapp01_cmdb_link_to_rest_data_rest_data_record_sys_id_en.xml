@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="record_sys_id" label="Record Sys ID" language="en" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
+    <sys_documentation element="rest_data_record_sys_id" label="REST Data Record Sys ID" language="en" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>record_sys_id</element>
+            <element>rest_data_record_sys_id</element>
             <help/>
             <hint/>
-            <label>Record Sys ID</label>
+            <label>REST Data Record Sys ID</label>
             <language>en</language>
             <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
-            <plural>Record Sys IDs</plural>
+            <plural>REST Data Record Sys IDs</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-04 11:20:47</sys_created_on>
-            <sys_id>bac91e1adbd78c104f29252b139619a4</sys_id>
+            <sys_created_on>2020-05-06 13:47:07</sys_created_on>
+            <sys_id>38779f2edb24d0104f29252b139619fd</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>Record Sys ID</sys_name>
+            <sys_name>REST Data Record Sys ID</sys_name>
             <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
             <sys_policy/>
             <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_link_to_rest_data_record_sys_id_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_link_to_rest_data_rest_data_record_sys_id_en</sys_update_name>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-04 11:20:47</sys_updated_on>
+            <sys_updated_on>2020-05-06 13:47:07</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

@@ -59,13 +59,13 @@
 	while(childNodes.hasNext()){
 		var n = childNodes.next();
 		var nStr = n.toString();
-		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('block_id') > 0) {
+		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('data_sys_id') > 0) {
 			/*
-<parameter name="content" value="{&quot;operation&quot;:&quot;delete&quot;,&quot;base_table&quot;:&quot;cmdb_ci&quot;,&quot;source&quot;:&quot;ServiceNow&quot;,&quot;source_name&quot;:&quot;ven03409&quot;,&quot;source_url&quot;:&quot;https://ven03409.service-now.com/&quot;,&quot;block_id&quot;:&quot;cf99416cdb5c5c104f29252b13961912&quot;,&quot;deletedData&quot;: [{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961940&quot;},{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961946&quot;}]}"/>
+<parameter name="content" value="{&quot;operation&quot;:&quot;delete&quot;,&quot;base_table&quot;:&quot;cmdb_ci&quot;,&quot;source&quot;:&quot;ServiceNow&quot;,&quot;source_name&quot;:&quot;ven03409&quot;,&quot;source_url&quot;:&quot;https://ven03409.service-now.com/&quot;,&quot;data_sys_id&quot;:&quot;cf99416cdb5c5c104f29252b13961912&quot;,&quot;deletedData&quot;: [{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961940&quot;},{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961946&quot;}]}"/>
 			*/
 			var unescaped = nStr.replace(/&quot;/g,'');
-			var pos = unescaped.indexOf('block_id:');
-			pos = pos + 9; // length of 'block_id:'
+			var pos = unescaped.indexOf('data_sys_id:');
+			pos = pos + 12; // length of 'data_sys_id:'
 			var dataSysID = unescaped.substring(pos,pos+32);
 					
 			var si = new x_tekso_twxapp01.HandleRESTResponse();
@@ -89,7 +89,7 @@ function writeDebugLog(msg) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6e097ca4dbdc9c1041d08f38139619b5</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>ECC Queue - uControl Response I</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -97,7 +97,7 @@ function writeDebugLog(msg) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 14:04:56</sys_updated_on>
+        <sys_updated_on>2020-05-06 14:42:21</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

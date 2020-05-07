@@ -66,26 +66,99 @@ function getUserSysID(userName) {
 	return rtnSysID;	
 }
 
-function getName(sys_id,tbl,testData) {
-	//Gets the value in the name field for a given table and sys id
-	//e.g. core_company, sys_id = company_name
-	var nm = '';	
+function isValueAName(val,tbl,testData) {
+	// Returns true if the val is a name
+	var rtn = false;
+	var val2 = val.toString();
+	var tbl2 = tbl.toString();	
+
 	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
 	if (testData == true) {
 		reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];	
 	}
-	if (sys_id.length == 32 && reference_tbl_arr.indexOf(tbl) >= 0) {
-		var gr = new GlideRecord(tbl);
-		gr.addQuery('sys_id',sys_id);
+	
+	// Name should be > 0 and table is in list of allowed tables
+	if (val2.length > 0 && reference_tbl_arr.indexOf(tbl2) >= 0) {
+		var gr = new GlideRecord(tbl2);
+		gr.addQuery('name',val2);
 		gr.query();
 		if (gr.next()) {
-			nm = gr.getValue('name') || '';
+			rtn = true;
 		}
 	}
-	return nm;
+	return rtn;	
 }
 
+function isValueASysID(val,tbl,testData) {
+	// Returns true if the val is a sys_id
+	var rtn = false;
+	var val2 = val.toString();
+	var tbl2 = tbl.toString();	
 
+	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (testData == true) {
+		reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];	
+	}
+	// Sys ID should be 32 and table is in list of allowed tables
+	if (val2.length == 32 && reference_tbl_arr.indexOf(tbl2) >= 0) {
+		var gr = new GlideRecord(tbl2);
+		gr.addQuery('sys_id',val2);
+		gr.query();
+		if (gr.next()) {
+			rtn = true;
+		}
+	}
+	return rtn;	
+}
+
+function getSysIDForName(name,tbl,testData) {
+	//Returns sys_id for name
+	var rtn_sysID = '';		
+	var name2 = name.toString();
+	var tbl2 = tbl.toString();
+	
+	//Gets the value in the name field for a given table and sys id
+	//e.g. core_company, sys_id = company_name
+
+	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (testData == true) {
+		reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];	
+	}
+	// A name must be > 0 and table is in list of allowed tables
+	if (name2.length > 0 && reference_tbl_arr.indexOf(tbl2) >= 0) {
+		var gr = new GlideRecord(tbl2);
+		gr.addQuery('name',name2);
+		gr.query();
+		if (gr.next()) {
+			rtn_sysID = gr.getValue('sys_id') || '';
+		}
+	}
+	return rtn_sysID;
+}
+
+function getNameForSysID(sys_id,tbl,testData) {
+	//Returns name for a sys_id
+	var rtn_nm = '';
+	var sys_id2 = sys_id.toString();
+	var tbl2 = tbl.toString();
+	
+	//Gets the value in the name field for a given table and sys id
+	//e.g. core_company, sys_id = company_name	
+	var reference_tbl_arr = ['cmdb_ci','cmdb_rel_type','core_company','cmdb_model'];
+	if (testData == true) {
+		reference_tbl_arr = ['x_tekso_twxapp01_test_configuration_item','x_tekso_twxapp01_test_ci_relationship_type','x_tekso_twxapp01_test_company','x_tekso_twxapp01_test_product_model'];	
+	}
+	// Sys ID should be 32 and table is in list of allowed tables
+	if (sys_id2.length == 32 && reference_tbl_arr.indexOf(tbl2) >= 0) {
+		var gr = new GlideRecord(tbl2);
+		gr.addQuery('sys_id',sys_id2);
+		gr.query();
+		if (gr.next()) {
+			rtn_nm = gr.getValue('name') || '';
+		}
+	}
+	return rtn_nm;
+}
 
 // Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
 function isCMDBTrackingRunning(setupTable) {
@@ -324,8 +397,19 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			// Test data always qualifies
 			carryOn = true;
 		}
+
+		// Check we have got a sys_id
+		var gotRecordSysID = false;
+		var sourceRecordSysID = current.source_record_sys_id.toString();	
+		if (sourceRecordSysID.length >= 32) {
+			gotRecordSysID = true;
+		}
+		else {
+			statusMsg = 'No Record Sys ID';
+			statusDetails = buildStatusDetails(statusDetails,statusMsg);			
+		}
 		
-		if (carryOn == true) {
+		if (carryOn == true && gotRecordSysID == true) {
 			// e.g. dev91664
 			var snInstance = gs.getProperty("instance_name");	
 			// e.g. https://dev91664.service-now.com/
@@ -341,7 +425,6 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			var source = 'ServiceNow';
 			var status = 'Pending';
 			
-			var recordSysID = current.record_sys_id;
 			var parentSysID = '';
 			var childSysID = '';
 			var correlationID1 = '';
@@ -415,7 +498,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 				// For real will be cmdb_ci_appl etc
 				// For test will be x_tekso_twxapp01_test_application etc				
 				var gr2 = new GlideRecord(dataTable);
-				gr2.addQuery('sys_id',recordSysID);
+				gr2.addQuery('sys_id',sourceRecordSysID);
 				gr2.query();
 				if (gr2.next()) {
 					// Got the record
@@ -507,6 +590,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						var ref_table = '';
 						lookup = 0;
 						var val = gr2.getValue(fld) || '';
+						var val_lookup = '';
+						var val_sysID = '';
 						if (tp == 'reference') {
 							ref_table = descriptor.getReference();
 							// Is this a reference we are interested in?
@@ -517,9 +602,27 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							else {
 								//Gets the value in the name field for a given table and sys id
 								//e.g. core_company, sys_id = company_name
-								var val_lookup = getName(val,ref_table,current.test_data); // sys_id, table_name	
-								// Include the reference
-								lookup = 1;
+								
+								// The val should contain a sys_id e.g. for manufacturer and then we need to get back the name
+								// It is possible that the val contains a name e.g. "Oracle" - in which case we need to reverse
+								// it and then get back the sys_id
+								// First check to see if val is a sys_id - if so then we can get the name
+								if (isValueASysID(val,ref_table,current.test_data) == true) {
+									val_lookup = getNameForSysID(val,ref_table,current.test_data); // sys_id, table_name	
+									// Include the reference
+									lookup = 1;									
+								}
+								else {
+									// Value was not a sys_id - check to see if val is a name
+									if (isValueAName(val,ref_table,current.test_data) == true) {	
+										// Value is a name so get back the sys_id
+										val_sysID = getSysIDForName(val,ref_table,current.test_data); // sys_id, table_name
+										// Now we need to switch them around
+										val_lookup = val;
+										val = val_sysID;
+										lookup = 1;
+									}
+								}
 							}						
 						}
 
@@ -614,7 +717,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						}
 						gr3.setValue('table',tableName);
 						gr3.setValue('base_table',baseTable);
-						gr3.setValue('record_sys_id',recordSysID);
+						gr3.setValue('source_record_sys_id',sourceRecordSysID);
 						gr3.setValue('status',status);
 						gr3.setValue('no_of_fields',noOfFields);
 						gr3.setValue('all_fields',allFields);
@@ -756,7 +859,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>62</sys_mod_count>
+        <sys_mod_count>70</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -764,7 +867,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 09:51:23</sys_updated_on>
+        <sys_updated_on>2020-05-07 10:30:35</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

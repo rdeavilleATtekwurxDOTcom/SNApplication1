@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition>new x_tekso_twxapp01.CheckRecordExists().tableAndSysID(current.actual_table_name,current.record_sys_id);</condition>
+        <condition>new x_tekso_twxapp01.CheckRecordExists().tableAndSysID(current.actual_table_name,current.source_record_sys_id);</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,7 +28,7 @@
         <name>Open Source Record</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var sys_id = current.record_sys_id;
+        <script><![CDATA[var sys_id = current.source_record_sys_id;
 var table = current.actual_table_name;
 var url = table + '.do?sys_id=' + sys_id;
 action.setRedirectURL(url);
@@ -44,7 +44,7 @@ action.setReturnURL(current);]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>bf080037dbfb04104f29252b139619c8</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Open Source Record</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -52,7 +52,7 @@ action.setReturnURL(current);]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_bf080037dbfb04104f29252b139619c8</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-02 13:35:16</sys_updated_on>
+        <sys_updated_on>2020-05-06 13:23:01</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_updates</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

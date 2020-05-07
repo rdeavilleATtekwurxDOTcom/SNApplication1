@@ -238,7 +238,7 @@ function isCMDBTrackingRunning(setupTable) {
 	var recordOriginallyCreatedBySysID = getUserSysID(recordOriginallyCreatedBy);
 	var recordDeletedBy = current.record_deleted_by.toString();
 	var recordDeletedBySysID = current.record_deleted_by_sys_id.toString();
-	var recordDeletedOn = current.record_deleted_by_sys_id;
+	var recordDeletedOn = current.record_deleted_on;
 	
 	var recordDeletedByCreator = stringsMatch(recordOriginallyCreatedBy,recordDeletedBy);
 	var recordCreatedByuControlIntegrationUser = false;
@@ -322,7 +322,18 @@ function isCMDBTrackingRunning(setupTable) {
 			carryOn = true;
 		}
 		
-		if (carryOn == true) {
+		// Check we have got a sys_id
+		var gotRecordSysID = false;
+		var sourceRecordSysID = current.source_record_sys_id.toString();	
+		if (sourceRecordSysID.length >= 32) {
+			gotRecordSysID = true;
+		}
+		else {
+			statusMsg = 'No Record Sys ID';
+			statusDetails = buildStatusDetails(statusDetails,statusMsg);			
+		}
+		
+		if (carryOn == true && gotRecordSysID == true) {
 			
 			// e.g. dev91664
 			var snInstance = gs.getProperty("instance_name");	
@@ -336,7 +347,7 @@ function isCMDBTrackingRunning(setupTable) {
 				}
 			}		
 			
-			var recordSysID = current.record_sys_id;			
+					
 			
 			var source = 'ServiceNow';
 			var status = 'Pending';
@@ -365,7 +376,7 @@ function isCMDBTrackingRunning(setupTable) {
 				noOfFieldsToProcess = 3;
 				fieldsToProcess = 'sys_id,sys_updated_by,sys_updated_on';
 				
-				data = data + '\"sys_id\":\"' + recordSysID + '\"';	
+				data = data + '\"sys_id\":\"' + sourceRecordSysID + '\"';	
 				data = data + ',';
 				data = data + '\"sys_updated_by\":\"' + recordDeletedBy + '\"';	
 				data = data + ',';
@@ -385,7 +396,7 @@ function isCMDBTrackingRunning(setupTable) {
 				noOfFieldsToProcess = 4;
 				fieldsToProcess = 'sys_id,sys_class_name,sys_updated_by,sys_updated_on';
 
-				data = data + '\"sys_id\":\"' + recordSysID + '\"';	
+				data = data + '\"sys_id\":\"' + sourceRecordSysID + '\"';	
 				data = data + ',';
 				data = data + '\"sys_class_name\":\"' + tableName + '\"';				
 				data = data + ',';				
@@ -421,7 +432,7 @@ function isCMDBTrackingRunning(setupTable) {
 			}			
 			gr2.setValue('table',tableName);
 			gr2.setValue('base_table',baseTable);
-			gr2.setValue('record_sys_id',recordSysID);
+			gr2.setValue('source_record_sys_id',sourceRecordSysID);
 			gr2.setValue('status',status);
 			gr2.setValue('no_of_fields',noOfFields); // 0 for Delete
 			gr2.setValue('all_fields',allFields); // '' for Delete
@@ -547,7 +558,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>52</sys_mod_count>
+        <sys_mod_count>56</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -555,7 +566,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 09:43:21</sys_updated_on>
+        <sys_updated_on>2020-05-06 17:52:45</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

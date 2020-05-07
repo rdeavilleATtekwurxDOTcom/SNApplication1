@@ -793,8 +793,10 @@ OutboundREST.prototype = {
 					no_of_times_sent_to_ucontrol++;
 					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
 					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+					gr3.setValue('latest_rest_data_record_sys_id',data_sys_id);					
 					gr3.setValue('rest_data_record_created',true);
 					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.setValue('latest_rest_response_record_sys_id',link_sys_id);					
 					gr3.update();
 				} //while(gr3.next())	
 			} //while(gr2.next())
@@ -938,8 +940,11 @@ OutboundREST.prototype = {
 					no_of_times_sent_to_ucontrol++;
 					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
 					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+					gr3.setValue('latest_rest_data_record_sys_id',data_sys_id);						
 					gr3.setValue('rest_data_record_created',true);
 					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
+					gr3.setValue('latest_rest_response_record_sys_id',link_sys_id);					
 					gr3.update();
 				} //while(gr3.next())	
 			} //while(gr2.next())
@@ -970,13 +975,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>215</sys_mod_count>
+        <sys_mod_count>216</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 20:37:47</sys_updated_on>
+        <sys_updated_on>2020-05-06 14:17:32</sys_updated_on>
     </sys_script_include>
 </record_update>
