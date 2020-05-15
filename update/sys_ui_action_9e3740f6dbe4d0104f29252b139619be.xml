@@ -28,7 +28,9 @@
         <name>Copy CMDB Delete</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+        <script><![CDATA[var hasBeenCopied = false;
+
+var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
 gr1.initialize();
 gr1.setValue('source_record_sys_id',current.source_record_sys_id);	
 gr1.setValue('table_name',current.table_name);
@@ -60,8 +62,26 @@ if (current.base_table == 'cmdb_rel_ci') {
 	gr1.setValue('rel_type_name',current.rel_type_name);
 }
 
+gr1.setValue('is_a_copy_of_another_record',true);
+if (current.is_a_copy_of_another_record == true) {
+	// If this is a copy of a copy then refer back to the original
+	gr1.setValue('copied_from',current.copied_from);
+	gr1.setValue('copied_from_record_sys_id',current.copied_from_record_sys_id);	
+}
+else {
+	gr1.setValue('copied_from',current.sys_id);
+	gr1.setValue('copied_from_record_sys_id',current.sys_id.toString());
+	hasBeenCopied = true;
+}
+
 gr1.setValue('inserted_by_script','UI Action Copy');
-gr1.insert();]]></script>
+gr1.insert();
+
+if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) {
+	current.has_been_copied_by_another_record = true;
+	current.updated_by_script = 'UI Action Copy';		
+	current.update();
+}]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -72,7 +92,7 @@ gr1.insert();]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9e3740f6dbe4d0104f29252b139619be</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Copy CMDB Delete</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -80,7 +100,7 @@ gr1.insert();]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_9e3740f6dbe4d0104f29252b139619be</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 17:23:14</sys_updated_on>
+        <sys_updated_on>2020-05-12 14:49:25</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_deletes</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

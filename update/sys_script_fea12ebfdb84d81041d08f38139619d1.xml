@@ -34,6 +34,8 @@
 	var delete_relations_qty = current.delete_relations_qty;
 	var update_relations_qty = current.update_relations_qty;
 	var update_cmdb_ci_qty = current.update_cmdb_ci_qty;
+	var sys_id = current.sys_id;
+	var genTable = 'x_tekso_twxapp01_generate_test_data';
 	
 	// Restore any deleted items
 	new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
@@ -43,34 +45,41 @@
 
 	new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently();
 	
+	// Delete CI's
 	if (delete_cmdb_ci_qty > 0) {
 		// Cap at 100
 		if (delete_cmdb_ci_qty > 100) {
 			delete_cmdb_ci_qty = 100;
 		}
-		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(delete_cmdb_ci_qty);
+		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(delete_cmdb_ci_qty,current.sys_id);
 	}
 	
+	// Delete Rels
 	if (delete_relations_qty > 0) {
 		// Cap at 100
 		if (delete_relations_qty > 100) {
 			delete_relations_qty = 100;
 		}		
-		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(delete_relations_qty);		
+		new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(delete_relations_qty,current.sys_id);		
 	}
 	
+	//Update Rels
 	if (update_relations_qty > 0) {
 		// Cap at 100
 		if (update_relations_qty > 100) {
 			update_relations_qty = 100;
 		}
-		new x_tekso_twxapp01.UpdateOfTestRels().updateCMDBRelationRecords(update_relations_qty);		
+		new x_tekso_twxapp01.UpdateOfTestRels().updateCMDBRelationRecords(update_relations_qty,current.sys_id);		
 	}
 	
+	// Update CI's - do a mix of servers and apps
 	if (update_cmdb_ci_qty > 0) {
+		var serverQty = 0;
+		var applicationQty = 0;
 		if (update_cmdb_ci_qty == 1) {
 			// Just 1 record
-			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(1);				
+			serverQty = 1;
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(serverQty,current.sys_id);				
 		}
 		else {
 			// Cap at 100
@@ -81,11 +90,21 @@
 			// Divide the qty by 2 = split the updates between servers and applications
 			var qty = update_cmdb_ci_qty;
 			var qty2 = qty / 2;  // e.g. 1.5
-			var qty3 = parseInt(qty2); // convert to int e.g. 1
-			var qty4 = qty - qty3;	// e.g. 3 - 1 = 2		
-			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBAppplicationRecords(qty4);
-			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(qty3);
+			serverQty = parseInt(qty2); // convert to int e.g. 1
+			applicationQty = qty - serverQty;	// e.g. 3 - 1 = 2		
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBAppplicationRecords(applicationQty,current.sys_id);
+			new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(serverQty,current.sys_id);
 		}	
+		
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('update_server_ci_qty',serverQty);
+			gr1.setValue('update_application_ci_qty',applicationQty);
+			gr1.setWorkflow(false);
+			gr1.update();
+		}
 	}
 
 })(current, previous);]]></script>
@@ -95,7 +114,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>fea12ebfdb84d81041d08f38139619d1</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Generate Test Data - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -103,7 +122,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_fea12ebfdb84d81041d08f38139619d1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 17:39:58</sys_updated_on>
+        <sys_updated_on>2020-05-14 10:10:01</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

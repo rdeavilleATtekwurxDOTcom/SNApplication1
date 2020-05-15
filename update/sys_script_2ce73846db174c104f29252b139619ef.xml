@@ -211,6 +211,16 @@ function isCMDBTrackingRunning(setupTable) {
 		statusDetails = buildStatusDetails(statusDetails,statusMsg);
 	}
 	
+	if (criteria == 2) {
+		criteriaDescription = 'Any Delete';
+	}
+	if (criteria == 1) {
+		criteriaDescription = 'Deleted by a user other than uControl Integration User';
+	}
+	if (criteria == 0) {
+		criteriaDescription = 'Created by uControl Integration User & deleted by another user';
+	}
+	
 	if (cmdbTrackingRunning == 'Running') {
 		if (gotConfigUsr == false) {
 			cmdbTrackingRunning = 'Error';
@@ -292,12 +302,10 @@ function isCMDBTrackingRunning(setupTable) {
 		//2 = Any Delete
 		carryOn = false;	
 		if (criteria == 2) {
-			criteriaDescription = 'Any Delete';
 			//2 = Any Delete
 			carryOn = true;
 		}
 		if (criteria == 1) {
-			criteriaDescription = 'Deleted by a user other than uControl Integration User';
 			//1 = Deleted by a user other than uControl Integration User
 			if (gotConfigUsr == true & stringsMatch(recordDeletedBy,configUsrName) == false) {
 				statusMsg = 'Deleted By: ' + recordDeletedBy + ' != uControl Integration User: ' + configUsrName;
@@ -306,7 +314,6 @@ function isCMDBTrackingRunning(setupTable) {
 			}
 		}
 		if (criteria == 0) {
-			criteriaDescription = 'Created by uControl Integration User & deleted by another user';
 			//0 = Created by uControl Integration User & deleted by another user	
 			if (gotConfigUsr == true & stringsMatch(recordDeletedBy,configUsrName) == false) {
 				statusMsg = 'Deleted By: ' + recordDeletedBy + ' != uControl Integration User: ' + configUsrName;
@@ -546,7 +553,10 @@ function isCMDBTrackingRunning(setupTable) {
 	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
 	//Event x_tekso_twxapp01.configurationchecksetdt
 	var brevent = 'br_ucontrol_track_deletes_last_run_at';
-	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', current, gs.getUserID(),brevent);
+	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr1, gs.getUserID(),brevent);
+	//                     1                                  2      3                 4
+	// 1 = event name, 2 = glide record object - not used, 3 = parm1 - not used, 4 = parm2
+	
 	//This event will trigger script action ConfigurationCheckSetDT
 	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
 	//               si2.setDTLastRunAt('br_ucontrol_track_deletes_last_run_at'); // Fld
@@ -558,7 +568,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>56</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -566,7 +576,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 17:52:45</sys_updated_on>
+        <sys_updated_on>2020-05-14 20:15:41</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

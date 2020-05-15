@@ -9,9 +9,9 @@
         <name>SoftDeleteOfTestCIsAndRels</name>
         <script><![CDATA[// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
 
-// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1);
-
-// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1);
+// Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
+// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1.sys_id);
+// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1,sys_id);
 
 var SoftDeleteOfTestCIsAndRels = Class.create();
 SoftDeleteOfTestCIsAndRels.prototype = {
@@ -23,34 +23,163 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 		this.restoreSoftDeletedCIRelationshipsSilently();
 	},
 	
-	softDeleteCIs: function(qty) {
+	softDeleteCIs: function(qty,gen_sys_id) {
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
-		var gr1 = new GlideRecord(ciTable);
-		if (qty > 0) {
-			gr1.setLimit(qty);	
-		}
-		gr1.addQuery('soft_delete',false);
+
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
-		while (gr1.next()) {		
+		if (gr1.next()) {
+			gr1.setValue('build_delete_cmdb_ci_test_data_started',true);
+			var gdt = new GlideDateTime();
+			gr1.setValue('build_delete_cmdb_ci_test_data_started_at',gdt);		
+			var alreadyStarted = gr1.getValue('build_test_data_started') || false;
+			if (alreadyStarted == false) {
+				gr1.setValue('build_test_data_started',true);
+				gr1.setValue('build_test_data_started_at',gdt);				
+			}			
+			gr1.setWorkflow(false);
+			gr1.update();
+		}
+		
+		var gr2 = new GlideRecord(ciTable);
+		if (qty > 0) {
+			gr2.setLimit(qty);	
+		}
+		gr2.addQuery('soft_delete',false);
+		gr2.query();
+		while (gr2.next()) {		
 			//BR's are triggered
 			//BR Test Configuration Item - Delete Rels will update soft_delete flag on the rels
-			gr1.setValue('soft_delete',true);
-			gr1.update();
+			gr2.setValue('soft_delete',true);
+			gr2.update();
 		}
+
+		var gdt2 = new GlideDateTime();		
+		var gr3 = new GlideRecord(genTable);
+		gr3.addQuery('sys_id',gen_sys_id);
+		gr3.query();
+		if (gr3.next()) {			
+			gr3.setValue('build_delete_cmdb_ci_test_data_completed',true);
+			gr3.setValue('build_delete_cmdb_ci_test_data_completed_at',gdt2);	
+			gr3.setWorkflow(false);
+			gr3.update();
+		}
+		
+		// Check if we have totally finished - i.e. was this the last thing that was needed to complete
+		// or is there other stuff that is still outstanding
+		var gr4 = new GlideRecord(genTable);
+		gr4.addQuery('sys_id',gen_sys_id);
+		gr4.query();
+		if (gr4.next()) {
+			var delCIQty = gr4.getValue('delete_cmdb_ci_qty') || 0; 
+			var delRelQty = gr4.getValue('delete_relations_qty') || 0;
+			var updRelQty = gr4.getValue('update_relations_qty') || 0;
+			var updServQty = gr4.getValue('update_server_ci_qty') || 0;	
+			var updApplQty = gr4.getValue('update_application_ci_qty') || 0; 					
+			var delCICmp = gr4.getValue('build_delete_cmdb_ci_test_data_completed') || false;
+			var delRelCmp = gr4.getValue('build_delete_relations_test_data_completed') || false;
+			var updRelCmp = gr4.getValue('build_update_relations_test_data_completed') || false;
+			var updServCmp = gr4.getValue('build_update_server_ci_test_data_completed') || false;
+			var updApplCmp = gr4.getValue('build_update_application_ci_test_data_complete') || false;
+
+			if (delCIQty < 1 || (delCIQty > 0 && delCICmp == true)) {
+				if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
+					if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
+						if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
+							if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
+								// All done
+								gr4.setValue('build_test_data_completed',true);
+								gr4.setValue('build_test_data_completed_at',gdt2);
+								gr4.setValue('status','Test Data Built');								
+								gr4.setWorkflow(false);
+								gr4.update();
+							}
+						}
+					}
+				}
+			}			
+		} //if (gr4.next()) {
 	},
 
-	softDeleteCIRelationships: function(qty) {
+	softDeleteCIRelationships: function(qty,gen_sys_id) {
+
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
-		var gr1 = new GlideRecord(relTable);
-		if (qty > 0) {
-			gr1.setLimit(qty);	
-		}
-		gr1.addQuery('soft_delete',false);
+		
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
-		while (gr1.next()) {			
-			gr1.setValue('soft_delete',true);
+		if (gr1.next()) {
+			gr1.setValue('build_delete_relations_test_data_started',true);
+			var gdt = new GlideDateTime();
+			gr1.setValue('build_delete_relations_test_data_started_at',gdt);	
+			var alreadyStarted = gr1.getValue('build_test_data_started') || false;
+			if (alreadyStarted == false) {
+				gr1.setValue('build_test_data_started',true);
+				gr1.setValue('build_test_data_started_at',gdt);				
+			}			
+			gr1.setWorkflow(false);
 			gr1.update();
 		}
+		
+		var gr2 = new GlideRecord(relTable);
+		if (qty > 0) {
+			gr2.setLimit(qty);	
+		}
+		gr2.addQuery('soft_delete',false);
+		gr2.query();
+		while (gr2.next()) {			
+			gr2.setValue('soft_delete',true);
+			gr2.update();
+		}
+
+		var gdt2 = new GlideDateTime();
+		var gr3 = new GlideRecord(genTable);
+		gr3.addQuery('sys_id',gen_sys_id);
+		gr3.query();
+		if (gr3.next()) {
+			gr3.setValue('build_delete_relations_test_data_completed',true);
+			gr3.setValue('build_delete_relations_test_data_completed_at',gdt2);		
+			gr3.setWorkflow(false);
+			gr3.update();
+		}
+
+		// Check if we have totally finished - i.e. was this the last thing that was needed to complete
+		// or is there other stuff that is still outstanding
+		var gr4 = new GlideRecord(genTable);
+		gr4.addQuery('sys_id',gen_sys_id);
+		gr4.query();
+		if (gr4.next()) {
+			var delCIQty = gr4.getValue('delete_cmdb_ci_qty') || 0; 
+			var delRelQty = gr4.getValue('delete_relations_qty') || 0;
+			var updRelQty = gr4.getValue('update_relations_qty') || 0;
+			var updServQty = gr4.getValue('update_server_ci_qty') || 0;	
+			var updApplQty = gr4.getValue('update_application_ci_qty') || 0; 					
+			var delCICmp = gr4.getValue('build_delete_cmdb_ci_test_data_completed') || false;
+			var delRelCmp = gr4.getValue('build_delete_relations_test_data_completed') || false;
+			var updRelCmp = gr4.getValue('build_update_relations_test_data_completed') || false;
+			var updServCmp = gr4.getValue('build_update_server_ci_test_data_completed') || false;
+			var updApplCmp = gr4.getValue('build_update_application_ci_test_data_complete') || false;
+
+			if (delCIQty < 1 || (delCIQty > 0 && delCICmp == true)) {
+				if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
+					if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
+						if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
+							if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
+								// All done
+								gr4.setValue('build_test_data_completed',true);
+								gr4.setValue('build_test_data_completed_at',gdt2);
+								gr4.setValue('status','Test Data Built');								
+								gr4.setWorkflow(false);
+								gr4.update();
+							}
+						}
+					}
+				}
+			}			
+		} //if (gr4.next()) {		
 	},
 
 	restoreSoftDeletedCIsSilently: function() {
@@ -85,8 +214,9 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 /* Example Calling
 
 new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
-new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1);
-new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1);
+// Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1,sys_id);
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1,sys_id);
 
 or
 
@@ -99,13 +229,13 @@ si.restoreSoftDeletesSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 10:18:54</sys_created_on>
         <sys_id>b0ec1a7bdb84d81041d08f38139619cf</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>SoftDeleteOfTestCIsAndRels</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_b0ec1a7bdb84d81041d08f38139619cf</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 10:18:54</sys_updated_on>
+        <sys_updated_on>2020-05-14 10:54:24</sys_updated_on>
     </sys_script_include>
 </record_update>

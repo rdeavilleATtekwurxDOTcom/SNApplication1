@@ -283,7 +283,6 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
 		configMaxRetries = gr1.getValue('max_retries') || 0;	
 		criteria = gr1.getValue('update_criteria') || 0;
-		
 		if (configUsrName.length > 0) {
 			gotConfigUsr = true;
 		}
@@ -294,6 +293,16 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		statusDetails = buildStatusDetails(statusDetails,statusMsg);
 	}
 
+	if (criteria == 2) {
+		criteriaDescription = 'Any Update';
+	}
+	if (criteria == 1) {			
+		criteriaDescription = 'Updated by a user other than uControl Integration User';
+	}
+	if (criteria == 0) {		
+		criteriaDescription = 'Created by uControl Integration User & updated by another user';
+	}
+	
 	if (cmdbTrackingRunning == 'Running') {
 		if (gotConfigUsr == false) {
 			statusMsg = 'No uControl Integration User';
@@ -368,12 +377,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		//2 = Any Update
 		carryOn = false;	
 		if (criteria == 2) {
-			criteriaDescription = 'Any Update';
 			//2 = Any Update
 			carryOn = true;
 		}
-		if (criteria == 1) {
-			criteriaDescription = 'Updated by a user other than uControl Integration User';
+		if (criteria == 1) {			
 			//1 = Updated by a user other than uControl Integration User
 			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
 				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
@@ -381,8 +388,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 				carryOn = true;
 			}
 		}
-		if (criteria == 0) {
-			criteriaDescription = 'Created by uControl Integration User & updated by another user';
+		if (criteria == 0) {		
 			//0 = Created by uControl Integration User & updated by another user	
 			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
 				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
@@ -847,7 +853,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
 	//Event x_tekso_twxapp01.configurationchecksetdt
 	var brevent = 'br_ucontrol_track_updates_last_run_at';
-	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', current, gs.getUserID(),brevent);
+	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr1, gs.getUserID(),brevent);
+	//                     1                                  2      3                 4
+	// 1 = event name, 2 = glide record object - not used, 3 = parm1 - not used, 4 = parm2
+	
 	//This event will trigger script action ConfigurationCheckSetDT
 	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
 	//               si2.setDTLastRunAt('br_ucontrol_track_updates_last_run_at'); // Fld
@@ -859,7 +868,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>73</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -867,7 +876,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-07 10:30:35</sys_updated_on>
+        <sys_updated_on>2020-05-14 20:17:26</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="build_update_application_ci_test_data_completed" label="Build Update Application CI Test Data Completed" language="en" table="x_tekso_twxapp01_generate_test_data">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>build_update_application_ci_test_data_completed</element>
+            <help/>
+            <hint/>
+            <label>Build Update Application CI Test Data Completed</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_generate_test_data</name>
+            <plural>Build Update Application CI Test Data Completed</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-14 09:01:24</sys_created_on>
+            <sys_id>15c2a78ddbb8d81041d08f38139619c6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Build Update Application CI Test Data Completed</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_generate_test_data_build_update_application_ci_test_data_completed_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-14 09:01:24</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

@@ -27,11 +27,28 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[// Before Insert
+        <script><![CDATA[// Before Insert - to validate data and to abort if necessary
 (function executeRule(current, previous /*null when async*/) {
 	// Only continue if one of the qty fields is > 0
 	if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_cmdb_ci_qty > 0 || current.update_cmdb_ci_qty > 0) {
-		current.status = 'Submitted';		
+		current.status = 'Building Test Data';		
+		if (current.update_cmdb_ci_qty > 0) {
+			var serverQty = 0;
+			var applicationQty = 0;		
+			if (current.update_cmdb_ci_qty == 1) {
+				serverQty = 1;
+			}
+			else {
+				var qty = current.update_cmdb_ci_qty;
+				var qty2 = qty / 2;  // e.g. 1.5	
+				serverQty = parseInt(qty2); // convert to int e.g. 1
+				applicationQty = qty - serverQty;	// e.g. 3 - 1 = 2				
+			}
+			current.update_server_ci_qty = serverQty;
+			current.update_application_ci_qty = applicationQty;
+		}
+
+		// ACL will stop deletion if status is 'Building Test Data'
 	}
 	else {
 		gs.addErrorMessage("At least one of the qty fields must be > 0 for submission to be performed");
@@ -45,7 +62,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>153fd591db48901041d08f3813961998</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Generate Test Data - Submit</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -53,7 +70,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_153fd591db48901041d08f3813961998</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 10:26:56</sys_updated_on>
+        <sys_updated_on>2020-05-14 12:42:47</sys_updated_on>
         <template/>
         <when>before</when>
     </sys_script>
