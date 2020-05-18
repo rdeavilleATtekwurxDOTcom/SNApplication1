@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl">
+    <sys_security_acl action="DELETE">
+        <active>true</active>
+        <admin_overrides>true</admin_overrides>
+        <advanced>true</advanced>
+        <condition/>
+        <description/>
+        <name>x_tekso_twxapp01_generate_test_data.delete_relations_qty</name>
+        <operation display_value="read">read</operation>
+        <script><![CDATA[var answer= false;
+
+if (gs.hasRole('x_tekso_twxapp01.admin')) {
+	answer = true;
+}
+
+answer;]]></script>
+        <sys_class_name>sys_security_acl</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-15 13:01:05</sys_created_on>
+        <sys_id>fb03e56ddb305c1041d08f38139619f9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_generate_test_data.delete_relations_qty</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_security_acl_fb03e56ddb305c1041d08f38139619f9</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:01:05</sys_updated_on>
+        <type display_value="record">record</type>
+    </sys_security_acl>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_security_acl_fb03e56ddb305c1041d08f38139619f9</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_security_acl"&gt;&lt;sys_security_acl action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;admin_overrides&gt;true&lt;/admin_overrides&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;condition/&gt;&lt;description/&gt;&lt;name&gt;x_tekso_twxapp01_generate_test_data.delete_relations_qty&lt;/name&gt;&lt;operation display_value="read"&gt;read&lt;/operation&gt;&lt;script&gt;&lt;![CDATA[var answer= false;
+
+if (gs.hasRole('x_tekso_twxapp01.admin')) {
+	answer = true;
+}
+
+answer;]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_security_acl&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-15 13:01:05&lt;/sys_created_on&gt;&lt;sys_id&gt;fb03e56ddb305c1041d08f38139619f9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;x_tekso_twxapp01_generate_test_data.delete_relations_qty&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_security_acl_fb03e56ddb305c1041d08f38139619f9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-15 13:01:05&lt;/sys_updated_on&gt;&lt;type display_value="record"&gt;record&lt;/type&gt;&lt;/sys_security_acl&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>449322711</payload_hash>
+        <record_name>x_tekso_twxapp01_generate_test_data.delete_relations_qty</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-15 13:01:05</sys_created_on>
+        <sys_id>8233adaddb305c1041d08f3813961969</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172186c88930000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:01:05</sys_updated_on>
+        <type>Access Control</type>
+        <update_guid>ca33adadff305c101035d84d4de79468</update_guid>
+        <update_guid_history>ca33adadff305c101035d84d4de79468:449322711</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-15 13:22:29</sys_created_on>
+        <sys_db_object display_value="" name="sys_security_acl">sys_security_acl</sys_db_object>
+        <sys_id>4a24e96824ef4e81a8a7eed676b6c7c9</sys_id>
+        <sys_metadata>fb03e56ddb305c1041d08f38139619f9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_generate_test_data.delete_relations_qty</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Delete Relations Qty">7e1e5551db48901041d08f3813961964</sys_parent>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_security_acl_fb03e56ddb305c1041d08f38139619f9</sys_update_name>
+        <sys_update_version display_value="sys_security_acl_fb03e56ddb305c1041d08f38139619f9">8233adaddb305c1041d08f3813961969</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 13:22:29</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

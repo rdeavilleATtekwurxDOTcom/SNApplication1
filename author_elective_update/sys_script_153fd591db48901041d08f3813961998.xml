@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_generate_test_data</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Generate Test Data - Submit</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[// Before Insert - to validate data and to abort if necessary
+(function executeRule(current, previous /*null when async*/) {
+	if (current.status == 'Submit') {
+		// Only continue if one of the qty fields is > 0
+		if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_cmdb_ci_qty > 0 || current.update_cmdb_ci_qty > 0) {
+			current.status = 'Building Test Data';		
+			if (current.update_cmdb_ci_qty > 0) {
+				var serverQty = 0;
+				var applicationQty = 0;		
+				if (current.update_cmdb_ci_qty == 1) {
+					serverQty = 1;
+				}
+				else {
+					var qty = current.update_cmdb_ci_qty;
+					var qty2 = qty / 2;  // e.g. 1.5	
+					serverQty = parseInt(qty2); // convert to int e.g. 1
+					applicationQty = qty - serverQty;	// e.g. 3 - 1 = 2				
+				}
+				current.update_server_ci_qty = serverQty;
+				current.update_application_ci_qty = applicationQty;
+			}
+
+			// ACL will stop deletion if status is 'Building Test Data'
+		}
+		else {
+			gs.addErrorMessage("At least one of the qty fields must be > 0 for submission to be performed");
+			current.setAbortAction(true);
+		}
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-07 11:18:41</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>153fd591db48901041d08f3813961998</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Generate Test Data - Submit</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_153fd591db48901041d08f3813961998</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 11:07:27</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=153fd591db48901041d08f3813961998"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_153fd591db48901041d08f3813961998</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;x_tekso_twxapp01_generate_test_data&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Generate Test Data - Submit&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[// Before Insert - to validate data and to abort if necessary
+(function executeRule(current, previous /*null when async*/) {
+	if (current.status == 'Submit') {
+		// Only continue if one of the qty fields is &gt; 0
+		if (current.delete_relations_qty &gt; 0 || current.update_relations_qty &gt; 0 || current.delete_cmdb_ci_qty &gt; 0 || current.update_cmdb_ci_qty &gt; 0) {
+			current.status = 'Building Test Data';		
+			if (current.update_cmdb_ci_qty &gt; 0) {
+				var serverQty = 0;
+				var applicationQty = 0;		
+				if (current.update_cmdb_ci_qty == 1) {
+					serverQty = 1;
+				}
+				else {
+					var qty = current.update_cmdb_ci_qty;
+					var qty2 = qty / 2;  // e.g. 1.5	
+					serverQty = parseInt(qty2); // convert to int e.g. 1
+					applicationQty = qty - serverQty;	// e.g. 3 - 1 = 2				
+				}
+				current.update_server_ci_qty = serverQty;
+				current.update_application_ci_qty = applicationQty;
+			}
+
+			// ACL will stop deletion if status is 'Building Test Data'
+		}
+		else {
+			gs.addErrorMessage("At least one of the qty fields must be &gt; 0 for submission to be performed");
+			current.setAbortAction(true);
+		}
+	}
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-07 11:18:41&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;153fd591db48901041d08f3813961998&lt;/sys_id&gt;&lt;sys_mod_count&gt;10&lt;/sys_mod_count&gt;&lt;sys_name&gt;Generate Test Data - Submit&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_153fd591db48901041d08f3813961998&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-15 11:07:27&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;before&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=153fd591db48901041d08f3813961998"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>501019759</payload_hash>
+        <record_name>Generate Test Data - Submit</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-15 11:07:27</sys_created_on>
+        <sys_id>e1398565dbfc1c1041d08f3813961915</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172180480cc0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 11:07:27</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>a939856566fc1c1075a7de616e61c214</update_guid>
+        <update_guid_history>a939856566fc1c1075a7de616e61c214:501019759,a6c685259dfc1c103d2d9aadfe9d138e:1178579300,d47510dda97cd810d37aa170eb263e48:-1149297941,2d3d7b45403cd810a7b4bcdcad0d3b8f:-1741454963,dc91f224a7b0981060bc123596ebfe97:-1792404578,eb30a67fda84d8106d764d938e3c71c8:-866231012,0c10e27f8284d810301050cb898759ed:867643692,99c73159b38890106bea0bfcff416ce9:-733475947,d8f47595bd889010d5b2078ef507cf7e:-137646611,d213bd155588901048dd67984c4e94e1:-598190799,935f5951a6489010843ea5dde30bf9c7:-1196817059</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-15 14:22:23</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>05b94ccacf5e443b82cdaa4c06fcd749</sys_id>
+        <sys_metadata>153fd591db48901041d08f3813961998</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Generate Test Data - Submit</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Generate Test Data">87dd9511db48901041d08f3813961934</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_153fd591db48901041d08f3813961998</sys_update_name>
+        <sys_update_version display_value="sys_script_153fd591db48901041d08f3813961998">e1398565dbfc1c1041d08f3813961915</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-15 14:22:23</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

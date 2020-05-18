@@ -29,7 +29,8 @@
         <element default="0" label="Delete CMDB CI Qty" max_length="40" name="delete_cmdb_ci_qty" type="integer"/>
         <element default="0" label="Delete Relations Qty" max_length="40" name="delete_relations_qty" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
-        <element default="New" label="Status" max_length="20" name="status" type="string"/>
+        <element default="New" label="Status" max_length="40" name="status" type="string"/>
+        <element label="Time Taken To Build Test Data" max_length="40" name="time_taken_to_build_test_data" type="glide_duration"/>
         <element default="0" label="Update Application CI Qty" max_length="40" name="update_application_ci_qty" type="integer"/>
         <element default="0" label="Update CMDB CI Qty" max_length="40" name="update_cmdb_ci_qty" type="integer"/>
         <element default="0" label="Update Relations Qty" max_length="40" name="update_relations_qty" type="integer"/>

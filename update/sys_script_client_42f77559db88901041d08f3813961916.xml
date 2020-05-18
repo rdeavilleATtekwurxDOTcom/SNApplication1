@@ -12,6 +12,7 @@
         <order/>
         <script><![CDATA[function onLoad() {
 
+	// We use different views for New + unSubmitted to hide a lot of the fields
 	var stat = g_form.getValue('status');
 	var delCI = g_form.getValue('delete_cmdb_ci_qty');
 	var updCI = g_form.getValue('update_cmdb_ci_qty');
@@ -19,6 +20,14 @@
 	var updRel = g_form.getValue('update_relations_qty');
 	var updSrv = g_form.getValue('update_server_ci_qty');
 	var updApp = g_form.getValue('update_application_ci_qty');
+
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		// Hide all fields by default
+		g_form.setDisplay(fields[x], false);
+		// Set all the fields to readonly by default
+		g_form.setReadOnly(fields[x], true);		
+	}
 	
 	var writeFldsForNewArr = ['delete_cmdb_ci_qty','update_cmdb_ci_qty','delete_relations_qty','update_relations_qty'];	
 	
@@ -35,6 +44,7 @@
 	visibleFldsForAfterNewArr.push('build_test_data_started_at');
 	visibleFldsForAfterNewArr.push('build_test_data_completed');
 	visibleFldsForAfterNewArr.push('build_test_data_completed_at');	
+	visibleFldsForAfterNewArr.push('time_taken_to_build_test_data');
 	if (delCI > 0) {
 		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_started');
 		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_completed');
@@ -72,28 +82,20 @@
 		visibleFldsForAfterNewArr.push('update_application_ci_qty');	
 	}
 
-	var fields = g_form.getEditableFields();
-	for (var x = 0; x < fields.length; x++) {
-		if (stat == 'New') {
-			// Set the fields readonly if not in this list		
-			if (writeFldsForNewArr.indexOf(fields[x]) < 0) {
-				g_form.setReadOnly(fields[x], true);
+	for (var x2 = 0; x2 < fields.length; x2++) {
+		if (stat == 'New' || stat == 'Unsubmitted') {
+			if (visibleFldsForNewArr.indexOf(fields[x2])> -1) {
+				g_form.setDisplay(fields[x2], true);
 			}
-
-			// Hide fields that are not in this list
-			if (visibleFldsForNewArr.indexOf(fields[x]) < 0) {
-				g_form.setDisplay(fields[x], false);
-			}			
-		}
-		else {
-			// All fields are readonly
-			g_form.setReadOnly(fields[x], true);
 			
-			if (visibleFldsForAfterNewArr.indexOf(fields[x]) > -1) {
-				g_form.setDisplay(fields[x], true);
+			// Set the fields readonly = false, i.e writeable if in this list		
+			if (writeFldsForNewArr.indexOf(fields[x2]) > -1) {
+				g_form.setReadOnly(fields[x2], false);
 			}
-			else {
-				g_form.setDisplay(fields[x], false);				
+		}
+		else {			
+			if (visibleFldsForAfterNewArr.indexOf(fields[x2]) > -1) {
+				g_form.setDisplay(fields[x2], true);
 			}
 		}
 	}
@@ -106,7 +108,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>42f77559db88901041d08f3813961916</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>33</sys_mod_count>
         <sys_name>Generate Test Data - onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -114,7 +116,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_42f77559db88901041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-14 12:44:02</sys_updated_on>
+        <sys_updated_on>2020-05-18 13:04:27</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>
