@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_section action="DELETE" caption="" section_id="73feed72db3c505041d08f3813961929" sys_domain="global" table="x_tekso_twxapp01_scheduled_job_log" version="3" view="">
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ucontrol_url</element>
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-19 16:46:20</sys_created_on>
+            <sys_id>282d3232db70905041d08f38139619b9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">73feed72db3c505041d08f3813961929</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-19 16:46:20</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_section action="DELETE">
+            <caption/>
+            <header>false</header>
+            <name>x_tekso_twxapp01_scheduled_job_log</name>
+            <roles/>
+            <sys_class_name>sys_ui_section</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-19 11:04:56</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>73feed72db3c505041d08f3813961929</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_scheduled_job_log</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_section_73feed72db3c505041d08f3813961929</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-19 11:04:56</sys_updated_on>
+            <sys_user/>
+            <title>true</title>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_section>
+    </sys_ui_section>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_section_73feed72db3c505041d08f3813961929</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_section caption="" section_id="73feed72db3c505041d08f3813961929" sys_domain="global" table="x_tekso_twxapp01_scheduled_job_log" version="3" view=""><sys_ui_element action="INSERT_OR_UPDATE"><element>ucontrol_url</element><position>0</position><sys_created_by>robin</sys_created_by><sys_created_on>2020-05-19 16:46:20</sys_created_on><sys_id>282d3232db70905041d08f38139619b9</sys_id><sys_mod_count>0</sys_mod_count><sys_ui_formatter/><sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">73feed72db3c505041d08f3813961929</sys_ui_section><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-05-19 16:46:20</sys_updated_on><sys_user/><type/></sys_ui_element><sys_ui_section action="INSERT_OR_UPDATE"><caption/><header>false</header><name>x_tekso_twxapp01_scheduled_job_log</name><roles/><sys_class_name>sys_ui_section</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-05-19 11:04:56</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>73feed72db3c505041d08f3813961929</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_scheduled_job_log</sys_name><sys_overrides/><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_section_73feed72db3c505041d08f3813961929</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-05-19 11:04:56</sys_updated_on><sys_user/><title>true</title><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_section></sys_ui_section></record_update>]]></payload>
+        <payload_hash>337356866</payload_hash>
+        <record_name>Scheduled Job Log</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 16:46:20</sys_created_on>
+        <sys_id>ec2d3232db70905041d08f38139619ba</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1722dd4313a0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 16:46:20</sys_updated_on>
+        <type>Form Layout</type>
+        <update_guid>e42d32326f709050159003dd275986ba</update_guid>
+        <update_guid_history>e42d32326f709050159003dd275986ba:337356866,b41dfefed630905007c0fae0f49b89bc:188754069,e2fc7efe613090501d809ea052efe1fd:337356866,55dcfafe843090502db7e849a51069ae:188754069,f939da7ab5bc50509efd2f519b3c3138:996190138,29191a7a74bc505072f376d25fb3b7c6:1091587970,c5f8967a23bc5050525511f663d6914b:2116514538,8df5ca76d67c5050705b1eb181d60b43:459553905,4d320a36877c5050bb95c77871975e40:1694105278,94daf97e8a3c50507725019cf0c84d8e:-31356914,dc7231b6b43c5050ab375df339d81c70:123794391,7452bd76fc3c50508344bfa3dbf8ca4f:795990941,77027976ef3c5050cb0ed677b5ca4c46:-816552233,e5f1f576633c50505f18067dc4605db0:-1377011794,254fa1b2b93c5050b8ee94d2bdc91b0b:-1185328416,f7fe21b2dc3c505073e7b743ebfbdb13:-14861655,3ffeed72693c50508d5d336665666f2b:2035252501</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 16:46:32</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_section">sys_ui_section</sys_db_object>
+        <sys_id>0195a27286544f878012b78376c0bd99</sys_id>
+        <sys_metadata>73feed72db3c505041d08f3813961929</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_scheduled_job_log</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Scheduled Job Log">d217697adbf8505041d08f3813961917</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_section_73feed72db3c505041d08f3813961929</sys_update_name>
+        <sys_update_version display_value="sys_ui_section_73feed72db3c505041d08f3813961929">ec2d3232db70905041d08f38139619ba</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 16:46:32</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

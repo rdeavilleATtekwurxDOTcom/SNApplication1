@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter">
+    <sys_ui_formatter action="DELETE">
+        <active>true</active>
+        <angular_module/>
+        <formatter>ui_macro_tekwurx_logo1.xml</formatter>
+        <name>Scheduled Job ui_formatter_tekwurx_logo</name>
+        <sys_class_name>sys_ui_formatter</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 16:44:14</sys_created_on>
+        <sys_id>276c76fedb30905041d08f38139619cd</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Scheduled Job ui_formatter_tekwurx_logo</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_formatter_276c76fedb30905041d08f38139619cd</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 16:56:18</sys_updated_on>
+        <table>x_tekso_twxapp01_scheduled_job_log</table>
+        <type>formatter</type>
+    </sys_ui_formatter>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_formatter_276c76fedb30905041d08f38139619cd</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter"><sys_ui_formatter action="INSERT_OR_UPDATE"><active>true</active><angular_module/><formatter>ui_macro_tekwurx_logo1.xml</formatter><name>Scheduled Job ui_formatter_tekwurx_logo</name><sys_class_name>sys_ui_formatter</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-05-19 16:44:14</sys_created_on><sys_id>276c76fedb30905041d08f38139619cd</sys_id><sys_mod_count>5</sys_mod_count><sys_name>Scheduled Job ui_formatter_tekwurx_logo</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_formatter_276c76fedb30905041d08f38139619cd</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-05-19 16:56:18</sys_updated_on><table>x_tekso_twxapp01_scheduled_job_log</table><type>formatter</type></sys_ui_formatter></record_update>]]></payload>
+        <payload_hash>1283084539</payload_hash>
+        <record_name>Scheduled Job ui_formatter_tekwurx_logo</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 16:56:18</sys_created_on>
+        <sys_id>b66f7ab2db70905041d08f3813961992</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1722ddd52dc0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 16:56:18</sys_updated_on>
+        <type>UI Formatter</type>
+        <update_guid>fa6fb6b20c70905029f7415ad4bc91a7</update_guid>
+        <update_guid_history>fa6fb6b20c70905029f7415ad4bc91a7:1283084539,ed7efafed1309050fc1a38d9edbba9cc:-1397264585,846e7a32f8709050a12152592c12dc8c:1573952123,985eb2728870905066f4bb680a01119d:-1540582061,cb0efafe4c309050ce5b71df58032d05:-1266644653,39ac3afe66309050322397641b20d68d:1446623215</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 16:58:58</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_formatter">sys_ui_formatter</sys_db_object>
+        <sys_id>31b47a5565174788a6d45a24b4674840</sys_id>
+        <sys_metadata>276c76fedb30905041d08f38139619cd</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Scheduled Job ui_formatter_tekwurx_logo</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Scheduled Job Log">d217697adbf8505041d08f3813961917</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_formatter_276c76fedb30905041d08f38139619cd</sys_update_name>
+        <sys_update_version display_value="sys_ui_formatter_276c76fedb30905041d08f38139619cd">b66f7ab2db70905041d08f3813961992</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 16:58:58</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

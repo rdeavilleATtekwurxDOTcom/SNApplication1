@@ -1,27 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Processing Log" max_length="40" name="x_tekso_twxapp01_processing_log" type="collection">
-        <element default="0" label="Current Max Retries" max_length="40" name="current_max_retries" type="integer"/>
-        <element label="Current uControl Integration User Name" max_length="40" name="current_ucontrol_integration_user_name" type="string"/>
-        <element label="Current uControl Integration User Sys ID" max_length="32" name="current_ucontrol_integration_user_sys_id" type="string"/>
-        <element label="Current uControl MID Server Name" max_length="40" name="current_ucontrol_mid_server_name" type="string"/>
-        <element label="Current uControl MID Server Sys ID" max_length="32" name="current_ucontrol_mid_server_sys_id" type="string"/>
-        <element label="Current uControl URL" max_length="200" name="current_ucontrol_url" type="string"/>
         <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
         <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
+        <element label="First REST Data Record Sys ID" max_length="32" name="first_rest_data_record_sys_id" type="string"/>
+        <element label="First REST Response Record Sys ID" max_length="32" name="first_rest_response_record_sys_id" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Last REST Data Record Sys ID" max_length="32" name="last_rest_data_record_sys_id" type="string"/>
+        <element label="Last REST Response Record Sys ID" max_length="32" name="last_rest_response_record_sys_id" type="string"/>
+        <element label="Link To First REST Data Record " max_length="32" name="link_to_first_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element label="Link To First REST Response Record" max_length="32" name="link_to_first_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element label="Link To Last REST Data Record " max_length="32" name="link_to_last_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element label="Link To Last REST Response Record" max_length="32" name="link_to_last_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
+        <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
         <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
+        <element default="0" label="Number Of REST Data Records" max_length="40" name="number_of_rest_data_records" type="integer"/>
+        <element default="0" label="Number Of REST Resonse Records" max_length="40" name="number_of_rest_resonse_records" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
+        <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
+        <element default="0" label="Process No" max_length="40" name="process_no" type="integer"/>
+        <element label="Reason For Split" max_length="1000" name="reason_for_split" type="string"/>
+        <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
+        <element label="Scheduled Job Started At" max_length="40" name="scheduled_job_started_at" type="glide_date_time"/>
         <element label="Sending Completed At" max_length="40" name="sending_completed_at" type="glide_date_time"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
         <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
+        <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
+        <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>
+        <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
+        <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element default="0" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
+        <element label="uControl URL" max_length="200" name="ucontrol_url" type="string"/>
         <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <index name="index">
+            <element name="link_to_first_rest_data_record"/>
+        </index>
+        <index name="index2">
+            <element name="link_to_last_rest_data_record"/>
+        </index>
     </element>
 </database>

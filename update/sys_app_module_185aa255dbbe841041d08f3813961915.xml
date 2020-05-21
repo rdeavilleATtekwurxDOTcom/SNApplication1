@@ -15,7 +15,7 @@
         <mobile_title>Supported Classes</mobile_title>
         <mobile_view_name>Mobile</mobile_view_name>
         <name>x_tekso_twxapp01_cmdb_supported_classes</name>
-        <order>5</order>
+        <order>6</order>
         <override_menu_roles>false</override_menu_roles>
         <query>sysparm_view_forced=true&amp;sysparm_userpref_module=false&amp;sysparm_order=class&amp;sysparm_order_direction=asc</query>
         <report/>
@@ -26,7 +26,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>185aa255dbbe841041d08f3813961915</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Supported Classes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -34,7 +34,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_app_module_185aa255dbbe841041d08f3813961915</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-12 21:32:11</sys_updated_on>
+        <sys_updated_on>2020-05-19 08:46:01</sys_updated_on>
         <timeline_page/>
         <title>Supported Classes</title>
         <uncancelable>false</uncancelable>

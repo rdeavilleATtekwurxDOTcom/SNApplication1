@@ -9,8 +9,10 @@
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Link To REST Data Record" max_length="32" name="link_to_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Operation" max_length="10" name="operation" type="string"/>
+        <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
         <element label="Processing Record Sys ID" max_length="32" name="processing_record_sys_id" type="string"/>
         <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
@@ -19,6 +21,7 @@
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
         <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
         <element label="REST Data Record Sys ID" max_length="32" name="rest_data_record_sys_id" type="string"/>
+        <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
         <element default="0" label="Send to uControl Attempt No" max_length="40" name="send_to_ucontrol_attempt_no" type="integer"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element label="Source Record Sys ID" max_length="32" name="source_record_sys_id" type="string"/>

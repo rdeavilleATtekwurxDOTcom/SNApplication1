@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
-        <active>true</active>
-        <api_name>x_tekso_twxapp01.UpdateProcessLogResults</api_name>
+        <active>false</active>
+        <api_name>x_tekso_twxapp01.UpdateProcessLogResultsObsolete</api_name>
         <caller_access/>
         <client_callable>false</client_callable>
-        <description>Obsolete</description>
-        <name>UpdateProcessLogResults</name>
-        <script><![CDATA[var UpdateProcessLogResults = Class.create();
-UpdateProcessLogResults.prototype = {
+        <description>Obsolete Inactive</description>
+        <name>UpdateProcessLogResultsObsolete</name>
+        <script><![CDATA[var UpdateProcessLogResultsObsolete = Class.create();
+UpdateProcessLogResultsObsolete.prototype = {
     initialize: function() {
     },
 	
@@ -96,7 +96,7 @@ UpdateProcessLogResults.prototype = {
 				gr3.setValue('number_of_updates_processed',updCnt);
 				gr3.setValue('number_of_deletes_processed',delCnt);		
 				gr3.setValue('processing_summary',summary);
-				gr3.setValue('updated_by_script','SI UpdateProcessLogResults'); // Debug					
+				gr3.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
 				gr3.update();
 			} //if (gr3.next()) 
 			
@@ -112,25 +112,25 @@ UpdateProcessLogResults.prototype = {
 				gr4.setValue('last_processing_at',dt);
 				gr4.setValue('last_scan_performed_at',dt);
 				gr4.setValue('last_processing_results_summary',summary);
-				gr4.setValue('updated_by_script','SI UpdateProcessLogResults'); // Debug					
+				gr4.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
 				gr4.update();
 			}
 
 		} //if (gotAllResults == true)
 	},
-    type: 'UpdateProcessLogResults'
+    type: 'UpdateProcessLogResultsObsolete'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-10 16:02:42</sys_created_on>
         <sys_id>3a315e10db6f801041d08f38139619aa</sys_id>
-        <sys_mod_count>16</sys_mod_count>
-        <sys_name>UpdateProcessLogResults</sys_name>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>UpdateProcessLogResultsObsolete</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_3a315e10db6f801041d08f38139619aa</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-16 15:33:20</sys_updated_on>
+        <sys_updated_on>2020-05-19 13:41:22</sys_updated_on>
     </sys_script_include>
 </record_update>

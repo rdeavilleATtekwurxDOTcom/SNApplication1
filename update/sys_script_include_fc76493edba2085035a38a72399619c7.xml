@@ -378,6 +378,7 @@ OutboundREST.prototype = {
 			// Unknown host
 		}	
 	},	
+	// Called by updateCI(), deleteCI(), createCI()
 	sendRESTRequestWithBody: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
@@ -474,6 +475,7 @@ OutboundREST.prototype = {
 		}	
 	},
 	
+	// Called by updateCINoWait(), deleteCINoWait(), createCINoWait()
 	sendRESTRequestWithBodyNoWait: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
 		// Same as sendRESTRequestWithBody but does not wait for a response
 		// does sm.executeAsync(); 
@@ -502,6 +504,7 @@ OutboundREST.prototype = {
 		}	
 	},
 	
+	// Called by process()
 	updateCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
@@ -534,6 +537,7 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},
+	// Called by processNoWait()
 	updateCINoWait: function(midServerName,url,requestBody) {
 		// Same as updateCI but does not wait for a response or return a result
 		if (midServerName.length > 0) {
@@ -546,6 +550,7 @@ OutboundREST.prototype = {
 			}
 		}
 	},	
+	// Called by process()	
 	deleteCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
@@ -578,6 +583,7 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},	
+	// Called by processNoWait()
 	deleteCINoWait: function(midServerName,url,requestBody) {
 		// Same as deleteCI but does not wait for a response or return a result		
 		if (midServerName.length > 0) {
@@ -590,6 +596,7 @@ OutboundREST.prototype = {
 			}
 		}		
 	},		
+	// Called by process()	
 	createCI: function(midServerName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
@@ -622,6 +629,7 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},		
+	// Called by processNoWait()
 	createCINoWait: function(midServerName,url,requestBody) {
 		// Same as createCI but does not wait for a response or return a result	
 		if (midServerName.length > 0) {
@@ -963,11 +971,12 @@ OutboundREST.prototype = {
 		}	
 	},	
 	writeDebugLog: function(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecord(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.insert();
+		var debugTable = 'x_tekso_twxapp01_debug_log';
+		var gr1 = new GlideRecord(debugTable);
+		gr1.initialize();
+		gr1.setValue('message',msg);
+		gr1.setValue('updated_by_script','SI OutboundREST');				
+		gr1.insert();
 	},
     type: 'OutboundREST'
 };]]></script>
@@ -975,13 +984,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>216</sys_mod_count>
+        <sys_mod_count>218</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 14:17:32</sys_updated_on>
+        <sys_updated_on>2020-05-20 10:25:48</sys_updated_on>
     </sys_script_include>
 </record_update>

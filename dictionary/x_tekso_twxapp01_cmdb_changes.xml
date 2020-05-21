@@ -18,6 +18,7 @@
         <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
         <element label="Link To Originating Delete Record" max_length="32" name="link_to_originating_delete_record" reference="x_tekso_twxapp01_cmdb_deletes" type="reference"/>
         <element label="Link To Originating Update Record" max_length="32" name="link_to_originating_update_record" reference="x_tekso_twxapp01_cmdb_updates" type="reference"/>
+        <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
         <element label="MetaData" max_length="4000" name="metadata" type="string"/>
         <element label="No Of Dropped Fields" max_length="40" name="no_of_dropped_fields" type="integer"/>
@@ -28,6 +29,7 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Operation" max_length="10" name="operation" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
+        <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
         <element label="Record Deleted By" max_length="40" name="record_deleted_by" type="string"/>
         <element label="Record Deleted By Sys ID" max_length="32" name="record_deleted_by_sys_id" type="string"/>
         <element label="Record Deleted On" max_length="40" name="record_deleted_on" type="glide_date_time"/>
@@ -67,5 +69,8 @@
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
         <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <index name="index">
+            <element name="link_to_processing_log_record"/>
+        </index>
     </element>
 </database>

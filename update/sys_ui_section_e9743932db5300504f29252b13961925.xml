@@ -588,6 +588,48 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>link_to_scheduled_job_log_record</element>
+            <position>42</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-21 16:13:53</sys_created_on>
+            <sys_id>74e80de7dbb4145041d08f38139619f7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_link_to_rest_data" sys_domain="global" view="Default view">e9743932db5300504f29252b13961925</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-21 16:13:53</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>scheduled_job_log_record_sys_id</element>
+            <position>43</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-21 16:14:20</sys_created_on>
+            <sys_id>9ff8c92bdbb4145041d08f381396193b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_link_to_rest_data" sys_domain="global" view="Default view">e9743932db5300504f29252b13961925</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-21 16:14:20</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>processing_id</element>
+            <position>44</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-21 16:14:56</sys_created_on>
+            <sys_id>cc29016bdbb4145041d08f381396197a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_link_to_rest_data" sys_domain="global" view="Default view">e9743932db5300504f29252b13961925</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-21 16:14:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

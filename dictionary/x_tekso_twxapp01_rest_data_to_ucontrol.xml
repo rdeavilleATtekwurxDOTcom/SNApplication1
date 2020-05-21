@@ -4,15 +4,18 @@
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Operation" max_length="10" name="operation" type="string"/>
+        <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
         <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
         <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
         <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element default="0" label="Time From Sending To Response (seconds)" max_length="40" name="time_from_sending_to_response_seconds" type="integer"/>
         <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
