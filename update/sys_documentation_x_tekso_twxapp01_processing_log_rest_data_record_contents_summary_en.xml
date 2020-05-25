@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_documentation element="sending_completed_at" label="Sending Completed At" language="en" table="x_tekso_twxapp01_processing_log">
+    <sys_documentation element="rest_data_record_contents_summary" label="REST Data Record Contents Summary" language="en" table="x_tekso_twxapp01_processing_log">
         <sys_documentation action="INSERT_OR_UPDATE">
-            <element>sending_completed_at</element>
+            <element>rest_data_record_contents_summary</element>
             <help/>
             <hint/>
-            <label>Sending Completed At</label>
+            <label>REST Data Record Contents Summary</label>
             <language>en</language>
             <name>x_tekso_twxapp01_processing_log</name>
-            <plural>Sending Completed Ats</plural>
+            <plural>REST Data Record Contents Summaries</plural>
             <sys_class_name>sys_documentation</sys_class_name>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-17 14:00:33</sys_created_on>
-            <sys_id>0054e1ecdb50dc1041d08f38139619e4</sys_id>
+            <sys_created_on>2020-05-25 21:30:52</sys_created_on>
+            <sys_id>43c73230db81585041d08f38139619e2</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_name>Sending Completed At</sys_name>
+            <sys_name>REST Data Record Contents Summary</sys_name>
             <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
             <sys_policy/>
             <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-            <sys_update_name>sys_documentation_x_tekso_twxapp01_processing_log_sending_completed_at_en</sys_update_name>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_processing_log_rest_data_record_contents_summary_en</sys_update_name>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-17 14:00:33</sys_updated_on>
+            <sys_updated_on>2020-05-25 21:30:52</sys_updated_on>
             <url/>
             <url_target/>
         </sys_documentation>

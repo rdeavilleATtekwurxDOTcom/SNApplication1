@@ -12,6 +12,8 @@
         <element default="0" label="Number Of Processing Log Records" max_length="40" name="number_of_processing_log_records" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element label="Pending Data Records To Process" max_length="40" name="pending_data_records_to_process" type="boolean"/>
+        <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
+        <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
         <element label="Setup Status" max_length="40" name="setup_status" type="string"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Selected For Processing" max_length="40" name="total_number_of_records_selected_for_processing" type="integer"/>

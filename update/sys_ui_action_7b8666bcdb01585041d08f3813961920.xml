@@ -6,7 +6,7 @@
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
-        <comments>On Processing Log Table</comments>
+        <comments>on CMDB Changes Table</comments>
         <condition>new x_tekso_twxapp01.CheckRecordExists().tableAndSysID('x_tekso_twxapp01_scheduled_job_log',current.link_to_scheduled_job_log_record);</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
@@ -39,20 +39,20 @@ action.setReturnURL(current);]]></script>
         <show_update>true</show_update>
         <sys_class_name>sys_ui_action</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-05-19 17:03:48</sys_created_on>
+        <sys_created_on>2020-05-25 20:16:33</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
-        <sys_id>04908bf2db70905041d08f38139619f6</sys_id>
+        <sys_id>7b8666bcdb01585041d08f3813961920</sys_id>
         <sys_mod_count>1</sys_mod_count>
         <sys_name>Open Scheduled Job Record</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_ui_action_04908bf2db70905041d08f38139619f6</sys_update_name>
+        <sys_update_name>sys_ui_action_7b8666bcdb01585041d08f3813961920</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-25 20:17:14</sys_updated_on>
-        <table>x_tekso_twxapp01_processing_log</table>
+        <sys_updated_on>2020-05-25 20:18:16</sys_updated_on>
+        <table>x_tekso_twxapp01_cmdb_changes</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>
     </sys_ui_action>

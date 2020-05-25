@@ -47,6 +47,10 @@ HandleRESTResponse.prototype = {
 
 			// sys_id for the corresponsing processing_log record
 			var logSysID = gr1.getValue('link_to_processing_log_record');
+
+			// sys_id for the corresponsing scheduled_job_log record
+			var jobSysID = gr1.getValue('link_to_scheduled_job_log_record');
+			
 			var operation = gr1.getValue('operation');
 			var dtSent = gr1.getValue('sent_to_ucontrol_at');
 
@@ -106,13 +110,20 @@ HandleRESTResponse.prototype = {
 					gr3.setValue('rest_response_record_created',true);
 					gr3.setValue('link_to_processing_log_record',logSysID);	
 					gr3.setValue('processing_log_record_sys_id',logSysID);
+					gr3.setValue('link_to_scheduled_job_log_record',jobSysID);
+					gr3.setValue('scheduled_job_log_record_sys_id',jobSysID);
 					gr3.setValue('updated_by_script','SI HandleRESTResponse'); // Debug	
 					gr3.update(); //x_tekso_twxapp01_cmdb_changes					
 				} // while(gr3.next())
 			} //while(gr2.next())
 			
+			var completedAt = GlideDateTime();
+			
 			// Update the processing log record
-			var summary = this.updateProcessingLog(logSysID,operation,noOfRecords2);
+			var summary = this.updateProcessingLog(logSysID,operation,noOfRecords2,completedAt);
+
+			// Update the scheduled job log record
+			this.updateScheduledJobLog(jobSysID,operation,noOfRecords2,completedAt);
 			
 			// Update Setup
 			var gr5 = new GlideRecord(setupTable);
@@ -126,17 +137,14 @@ HandleRESTResponse.prototype = {
 			} //if (gr5.next()) 
 		} //if (gr1.next()) 		
 	},
-	updateProcessingLog: function(logSysID,operation,noOfRecords2) {
+	updateProcessingLog: function(logSysID,operation,noOfRecords2,completedAt) {
 		var logTable = 'x_tekso_twxapp01_processing_log';
 		var summary = '';
 		
 		var gr1 = new GlideRecord(logTable);
 		gr1.addQuery('sys_id',logSysID);
 		gr1.query();
-		if (gr1.next()) {
-			// Sys ID for the overall scheduled job log
-			var jobSysID = gr1.getValue('link_to_scheduled_job_log_record');
-			
+		if (gr1.next()) {			
 			var recCnt = gr1.getValue('total_number_of_records_processed') || 0;
 			var delCnt = gr1.getValue('number_of_deletes_processed') || 0;
 			var updCnt = gr1.getValue('number_of_updates_processed') || 0;
@@ -157,50 +165,45 @@ HandleRESTResponse.prototype = {
 			gr1.setValue('number_of_deletes_processed',delCnt2);
 			gr1.setValue('total_number_of_records_processed',recCnt2);
 			gr1.setValue('processing_summary',summary);
-			var completedAt = GlideDateTime();
 			gr1.setValue('processing_completed_at',completedAt);
 			gr1.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
 			gr1.update();
-			this.updateScheduledJobLog(jobSysID);
 		} //if (gr1.next())		
 		return summary;
 	},
-	
-	updateScheduledJobLog: function(jobSysID) {
-		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
-		var logTable = 'x_tekso_twxapp01_processing_log';
+	updateScheduledJobLog: function(jobSysID,operation,noOfRecords2,completedAt) {
+		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';		
+		var summary = '';
 		
-		var totUpdCnt = 0;
-		var totDelCnt = 0;
-		var totRecCnt = 0;
-		var numberOfLogRecs = 0;
-		
-		var gr1 = new GlideRecord(logTable);
-		gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
+		var gr1 = new GlideRecord(jobTable);
+		gr1.addQuery('sys_id',jobSysID);
 		gr1.query();
-		while(gr1.next()) {
-			numberOfLogRecs = numberOfLogRecs + 1;
-			var updCnt = gr1.getValue('number_of_updates_processed') || 0;
+		if (gr1.next()) {			
+			var recCnt = gr1.getValue('total_number_of_records_processed') || 0;
 			var delCnt = gr1.getValue('number_of_deletes_processed') || 0;
-			var recCnt = gr1.getValue('total_number_of_records_processed') || 0;	
+			var updCnt = gr1.getValue('number_of_updates_processed') || 0;
 			var recCnt2 = parseInt(recCnt);
 			var delCnt2 = parseInt(delCnt);
-			var updCnt2 = parseInt(updCnt);			
-			totUpdCnt = totUpdCnt + updCnt2;
-			totDelCnt = totDelCnt + delCnt2;
-			totRecCnt = totRecCnt + recCnt2;
-		}
-		var gr2 = new GlideRecord(jobTable);
-		gr2.addQuery('sys_id',jobSysID);
-		gr2.query();
-		if (gr2.next()) {
-			gr2.setValue('number_of_updates_processed',totUpdCnt);
-			gr2.setValue('number_of_deletes_processed',totDelCnt);
-			gr2.setValue('total_number_of_records_processed',totRecCnt);		
-			gr2.setValue('number_of_processing_log_records',numberOfLogRecs);
-			gr2.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
-			gr2.update();	
-		}
+			var updCnt2 = parseInt(updCnt);
+
+			recCnt2 = recCnt2 + noOfRecords2;
+			if (operation == 'delete') {
+				delCnt2 = delCnt2 + noOfRecords2;
+			}
+			if (operation == 'update') {
+				updCnt2 = updCnt2 + noOfRecords2;
+			}
+
+			summary = this.processSummary(recCnt2,updCnt2,delCnt2);
+			gr1.setValue('number_of_updates_processed',updCnt2);
+			gr1.setValue('number_of_deletes_processed',delCnt2);
+			gr1.setValue('total_number_of_records_processed',recCnt2);
+			gr1.setValue('processing_summary',summary);
+			gr1.setValue('processing_completed_at',completedAt);
+			gr1.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
+			gr1.update();
+		} //if (gr1.next())		
+		//return summary;
 	},
 	processSummary: function(recCnt,updCnt,delCnt) {
 		// Builds a string like this: 3 records (3 updates , 0 deletes)
@@ -249,13 +252,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>17</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-19 17:43:42</sys_updated_on>
+        <sys_updated_on>2020-05-25 20:13:40</sys_updated_on>
     </sys_script_include>
 </record_update>

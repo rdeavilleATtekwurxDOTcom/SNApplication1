@@ -764,11 +764,14 @@ function createNewLogRecord(breakReason,jobSysID,processCnt,processingID) {
 	var integrationUserName2 = '';	
 	var maxRetries = 0;
 	var jobStartedAt = new GlideDateTime();
+	var noOfLogRecords = 0; 
+	var gotJobRecord = false;
 	
 	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
 	gr1.addQuery('sys_id',jobSysID);
 	gr1.query();
-	if (gr1.next()) {		
+	if (gr1.next()) {	
+		gotJobRecord = true;
 		timeout = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
 		integrationUserName = gr1.getValue('ucontrol_integration_user_name') || '';
 		integrationUserName2 = integrationUserName.toString();		
@@ -782,6 +785,7 @@ function createNewLogRecord(breakReason,jobSysID,processCnt,processingID) {
 		url = gr1.getValue('ucontrol_url') || '';
 		maxRetries = gr1.getValue('max_retries') || 0;
 		jobStartedAt = gr1.getValue('sys_created_on');
+		noOfLogRecords = gr1.getValue('number_of_processing_log_records') || 0;
 	}
 	
 	var rtnSysID = '';
@@ -811,6 +815,13 @@ function createNewLogRecord(breakReason,jobSysID,processCnt,processingID) {
 	gr2.setValue('inserted_by_script','SA SendDataTouControl'); // Debug
 	
 	rtnSysID = gr2.insert();
+	
+	if (gotJobRecord == true) {
+		var noOfLogRecords2 = parseInt(noOfLogRecords) + 1;
+		gr1.setValue('number_of_processing_log_records',noOfLogRecords2);
+		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug		
+		gr1.update();
+	}
 	
 	return rtnSysID;
 }
@@ -914,6 +925,7 @@ function updateProcessingLog(logSysID) {
 	var firstRestSysID = firstRestSysIDLinkedToLog(logSysID);
 	var lastRestSysID = lastRestSysIDLinkedToLog(logSysID);
 	var lastDT = lastDataDateLinkedToLog(logSysID);
+	var restDataRecordContentSummary = restDataRecordContentsSummaryLinkedToLog(logSysID);
 	
 	//Totals	
 	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
@@ -929,9 +941,8 @@ function updateProcessingLog(logSysID) {
 		gr1.setValue('data_sent_deletes_per_class',deletesPerClass);	
 		gr1.setValue('data_sent_summary',dataSentSummary);
 		
-		//sending completed at
 		var completedAt = GlideDateTime();
-		gr1.setValue('sending_completed_at',completedAt);
+		gr1.setValue('rest_data_build_finished_at',completedAt);
 			
 		gr1.setValue('link_to_first_rest_response_record',firstRestResponseSysID);
 		gr1.setValue('link_to_last_rest_response_record',lastRestResponseSysID);
@@ -944,6 +955,7 @@ function updateProcessingLog(logSysID) {
 		gr1.setValue('first_rest_data_record_sys_id',firstRestSysID);
 		gr1.setValue('last_rest_data_record_sys_id',lastRestSysID);
 		gr1.setValue('number_of_rest_data_records',noOfRestRecordsSent);		
+		gr1.setValue('rest_data_record_contents_summary',restDataRecordContentSummary);
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug			
 		gr1.update();	
 		
@@ -1025,7 +1037,7 @@ function numberOfDeletesLinkedToLog(logSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_processing_log_record',logSysID);
-	gr1.addQuery('operation','deletes');
+	gr1.addQuery('operation','delete');
 	gr1.query();
 	rtn = gr1.getRowCount();
 	return rtn;
@@ -1068,7 +1080,7 @@ function numberOfDeletesLinkedToJob(jobSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
-	gr1.addQuery('operation','deletes');
+	gr1.addQuery('operation','delete');
 	gr1.query();
 	rtn = gr1.getRowCount();
 	return rtn;
@@ -1409,7 +1421,37 @@ function lastDataDateLinkedToJob(jobSysID) {
 	}
 	return dt;
 }
-	
+
+function restDataRecordContentsSummaryLinkedToLog(logSysID) {
+
+	var summary = '';
+	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	gr1.addQuery('link_to_processing_log_record',logSysID);	
+	gr1.orderBy('number');
+	gr1.orderBy('sys_created_on');
+	gr1.query();	
+	var cnt = 0;
+	while (gr1.next()) {
+		var number = gr1.getValue('number') || '';
+		var operation = gr1.getValue('operation') || '';
+		var baseTable = gr1.getValue('base_table') || '';
+		var qty = gr1.getValue('no_of_cmdb_records_in_json_request_body') || 0;
+		var qty2 = qty.toString();
+		var record = 'No: ' + number + '. Operation: ' + operation + '. Base Table: ' + baseTable + '. Qty: ' + qty;
+		if (cnt == 0) {
+			summary = record;
+		}
+		else {
+			summary = summary + ', ' + record;
+		}
+		cnt = cnt + 1;
+	}
+	return summary;
+}	
+
+
+
 /* Not used - would be used for INSERT
 // Called by processBlock
 function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,JSONRequestBody,noOfRecsInJSON,logSysID) {
@@ -1438,7 +1480,7 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>23</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1446,6 +1488,6 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-21 20:46:35</sys_updated_on>
+        <sys_updated_on>2020-05-25 21:57:50</sys_updated_on>
     </sysevent_script_action>
 </record_update>
