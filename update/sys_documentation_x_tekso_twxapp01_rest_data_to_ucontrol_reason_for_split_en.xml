@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="reason_for_split" label="Reason For Split" language="en" table="x_tekso_twxapp01_rest_data_to_ucontrol">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>reason_for_split</element>
+            <help/>
+            <hint/>
+            <label>Reason For Split</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_rest_data_to_ucontrol</name>
+            <plural>Reason For Splits</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-26 12:43:05</sys_created_on>
+            <sys_id>79988a41db01d4104f29252b139619af</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Reason For Split</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_rest_data_to_ucontrol_reason_for_split_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-26 12:43:05</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

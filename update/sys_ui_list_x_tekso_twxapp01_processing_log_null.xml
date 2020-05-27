@@ -3,77 +3,107 @@
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>number</element>
-            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">30705045dbef04104f29252b13961959</list_id>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
-            <sys_id>78705045dbef04104f29252b13961959</sys_id>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>3547e205db81d4104f29252b1396197e</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>sys_created_on</element>
-            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">30705045dbef04104f29252b13961959</list_id>
+            <element>link_to_scheduled_job_log_record</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>1</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
-            <sys_id>f8705045dbef04104f29252b13961959</sys_id>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>7547e605db81d4104f29252b1396193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>processing_completed_at</element>
-            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">30705045dbef04104f29252b13961959</list_id>
+            <element>process_no</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>2</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
-            <sys_id>7c705045dbef04104f29252b13961959</sys_id>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>f547e605db81d4104f29252b1396193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>data_sent_summary</element>
-            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">30705045dbef04104f29252b13961959</list_id>
+            <element>sys_created_on</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>3</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
-            <sys_id>fc705045dbef04104f29252b13961959</sys_id>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>7947e605db81d4104f29252b1396193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>processing_summary</element>
-            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">30705045dbef04104f29252b13961959</list_id>
+            <element>processing_completed_at</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>4</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
-            <sys_id>70705045dbef04104f29252b1396195a</sys_id>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>f947e605db81d4104f29252b1396193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>data_sent_summary</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>7d47e605db81d4104f29252b1396193c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>processing_summary</element>
+            <list_id display_value="x_tekso_twxapp01_processing_log" element="NULL" name="x_tekso_twxapp01_processing_log" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd47e205db81d4104f29252b1396197c</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
+            <sys_id>fd47e605db81d4104f29252b1396193c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -87,10 +117,10 @@
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-12 14:24:00</sys_created_on>
+            <sys_created_on>2020-05-26 14:57:10</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>30705045dbef04104f29252b13961959</sys_id>
+            <sys_id>bd47e205db81d4104f29252b1396197c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_tekso_twxapp01_processing_log</sys_name>
             <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -98,7 +128,7 @@
             <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
             <sys_update_name>sys_ui_list_x_tekso_twxapp01_processing_log_null</sys_update_name>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-12 14:24:00</sys_updated_on>
+            <sys_updated_on>2020-05-26 14:57:10</sys_updated_on>
             <sys_user/>
             <view display_value="Default view" name="NULL">Default view</view>
             <view_name/>

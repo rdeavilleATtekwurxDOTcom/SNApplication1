@@ -9,7 +9,7 @@
         <name>UpdateOfTestCMDBCIs</name>
         <script><![CDATA[//new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently();
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-//new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBAppplicationRecords(1,sys_id);
+//new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBApplicationRecords(1,sys_id);
 //new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(1,sys_id);
 
 var UpdateOfTestCMDBCIs = Class.create();
@@ -189,7 +189,7 @@ UpdateOfTestCMDBCIs.prototype = {
 
 	findOrInsertTestRelType: function (parent,child,name) {
 		var rtnSysID = '';
-		relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
 		var gr1 = new GlideRecord(relTable);
 		gr1.addQuery('parent_descriptor','Runs on');
 		gr1.addQuery('child_descriptor','Runs');
@@ -209,7 +209,8 @@ UpdateOfTestCMDBCIs.prototype = {
 		return rtnSysID;
 	},
 
-	updateCMDBCIRecords: function (qty) {
+	updateCMDBCIRecords: function (qty,gen_sys_id) {
+		// Calls updateCMDBCI
 		var updateSilently = false;
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 
@@ -222,25 +223,49 @@ UpdateOfTestCMDBCIs.prototype = {
 		while(gr1.next()) {
 			var sysID = gr1.getValue('sys_id');
 			var noRestore = false;
-			this.updateCMDBCI(sysID,noRestore,updateSilently);	
+			var generate_test_data_in_progress = false;
+			this.updateCMDBCI(sysID,noRestore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
 		}
 	},
 
-	restoreAllCMDBCIRecordsSilently: function () {
+	restoreAllCMDBCIRecordsSilently: function (gen_sys_id) {
+		// Calls updateCMDBCI
 		var updateSilently = true;
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 
 		var gr1 = new GlideRecord(ciTable);
 		gr1.addQuery('original_or_alternative','alternative');
-		gr1.query();	
+		// To stop clashing with another job that may be running
+		gr1.addQuery('generate_test_data_in_progress',true);
+		gr1.addQuery('generate_test_data_record_sys_id',gen_sys_id);		
+		gr1.query();
 		while(gr1.next()) {
 			var sysID = gr1.getValue('sys_id');
 			var restore = true;
-			this.updateCMDBCI(sysID,restore,updateSilently);	
-		}	
+			var generate_test_data_in_progress = false;
+			this.updateCMDBCI(sysID,restore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
+		}
 	},
 
-	updateCMDBAppplicationRecords: function (qty,gen_sys_id) {
+	restoreAllCMDBCIRecordsSilentlyAll: function () {
+		// Calls updateCMDBCI
+		var updateSilently = true;
+		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+
+		var gr1 = new GlideRecord(ciTable);
+		gr1.addQuery('original_or_alternative','alternative');	
+		gr1.query();
+		while(gr1.next()) {
+			var sysID = gr1.getValue('sys_id');
+			var restore = true;
+			var generate_test_data_in_progress = false;
+			var gen_sys_id = '';
+			this.updateCMDBCI(sysID,restore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
+		}
+	},
+	
+	updateCMDBApplicationRecords: function (qty,gen_sys_id) {
+		// Calls updateCMDBApplication
 		var updateSilently = false;
 		var ciTable = 'x_tekso_twxapp01_test_application';
 		var genTable = 'x_tekso_twxapp01_generate_test_data';		
@@ -265,12 +290,16 @@ UpdateOfTestCMDBCIs.prototype = {
 		if (qty > 0) {
 			gr2.setLimit(qty);
 		}	
+		
+		// To stop clashing with another job that may be running
+		gr2.addQuery('generate_test_data_in_progress',false);	
 		gr2.addQuery('original_or_alternative','original');	
 		gr2.query();
 		while(gr2.next()) {
 			var sysID = gr2.getValue('sys_id');
-			var noRestore = false;		
-			this.updateCMDBApplication(sysID,noRestore,updateSilently);	
+			var noRestore = false;	
+			var generate_test_data_in_progress = true;
+			this.updateCMDBApplication(sysID,noRestore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
 		}
 
 		var gdt2 = new GlideDateTime();		
@@ -317,6 +346,7 @@ UpdateOfTestCMDBCIs.prototype = {
 								gr4.setValue('time_taken_to_build_test_data',dur);										
 								gr4.setWorkflow(false);
 								gr4.update();
+		
 							}
 						}
 					}
@@ -326,6 +356,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	restoreAllCMDBApplicationRecords: function () {
+		// Calls updateCMDBHardware
 		var updateSilently = true;
 		var ciTable = 'x_tekso_twxapp01_test_application';
 
@@ -340,6 +371,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	updateCMDBHardwareRecords: function(qty) {
+		// Calls updateCMDBHardware
 		var updateSilently = false;
 		var ciTable = 'x_tekso_twxapp01_test_hardware';
 
@@ -357,6 +389,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	restoreAllCMDBHardwareRecords: function () {
+		// Calls updateCMDBHardware
 		var updateSilently = true;
 		var ciTable = 'x_tekso_twxapp01_test_hardware';
 
@@ -371,6 +404,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	updateCMDBComputerRecords: function(qty) {
+		// Calls updateCMDBComputer
 		var updateSilently = false;
 		var ciTable = 'x_tekso_twxapp01_test_computer';
 
@@ -388,6 +422,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	restoreAllCMDBComputerRecords: function () {
+		// Calls updateCMDBComputer
 		var updateSilently = true;
 		var ciTable = 'x_tekso_twxapp01_test_computer';
 
@@ -402,6 +437,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	updateCMDBServerRecords: function (qty,gen_sys_id) {
+		// Calls updateCMDBServer
 		var updateSilently = false;
 		var ciTable = 'x_tekso_twxapp01_test_server';
 		var genTable = 'x_tekso_twxapp01_generate_test_data';		
@@ -427,11 +463,15 @@ UpdateOfTestCMDBCIs.prototype = {
 			gr2.setLimit(qty);
 		}	
 		gr2.addQuery('original_or_alternative','original');	
+		// To stop clashing with another job that may be running
+		gr2.addQuery('generate_test_data_in_progress',false);
+		
 		gr2.query();
 		while(gr2.next()) {
 			var sysID = gr2.getValue('sys_id');
-			var noRestore = false;		
-			this.updateCMDBServer(sysID,noRestore,updateSilently);	
+			var noRestore = false;	
+			var generate_test_data_in_progress = true;
+			this.updateCMDBServer(sysID,noRestore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
 		}
 
 		var gdt2 = new GlideDateTime();		
@@ -478,6 +518,7 @@ UpdateOfTestCMDBCIs.prototype = {
 								gr4.setValue('time_taken_to_build_test_data',dur);										
 								gr4.setWorkflow(false);
 								gr4.update();
+	
 							}
 						}
 					}
@@ -487,6 +528,7 @@ UpdateOfTestCMDBCIs.prototype = {
 	},
 
 	restoreAllCMDBServerRecords: function () {
+		// Calls updateCMDBServer
 		var updateSilently = true;
 		var ciTable = 'x_tekso_twxapp01_test_server';
 
@@ -496,11 +538,13 @@ UpdateOfTestCMDBCIs.prototype = {
 		while(gr1.next()) {
 			var sysID = gr1.getValue('sys_id');
 			var restore = true;
-			this.updateCMDBServer(sysID,restore,updateSilently);	
+			var gen_sys_id = '';
+			var generate_test_data_in_progress = false;
+			this.updateCMDBServer(sysID,restore,updateSilently,gen_sys_id,generate_test_data_in_progress);	
 		}	
 	},
 
-	updateCMDBCI: function (sys_id,restore,updateSilently) {
+	updateCMDBCI: function (sys_id,restore,updateSilently,gen_sys_id,generate_test_data_in_progress) {
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 
 		var gr1 = new GlideRecord(ciTable);
@@ -1404,6 +1448,10 @@ UpdateOfTestCMDBCIs.prototype = {
 
 				}
 			}
+
+			// To stop clashing with another job that may be running
+			gr1.setValue('generate_test_data_in_progress',generate_test_data_in_progress);
+			gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);			
 			if (updateSilently == true) {
 				// Do not trigger Business Rules	
 				gr1.setWorkflow(false);			
@@ -1412,7 +1460,7 @@ UpdateOfTestCMDBCIs.prototype = {
 		}
 	},
 
-	updateCMDBApplication: function(sys_id,restore,updateSilently) {
+	updateCMDBApplication: function(sys_id,restore,updateSilently,gen_sys_id,generate_test_data_in_progress) {
 		//updateCMDBCI + application
 		var ciTable = 'x_tekso_twxapp01_test_application';
 
@@ -2467,6 +2515,9 @@ UpdateOfTestCMDBCIs.prototype = {
 					// End Of Application
 				}
 			}
+			// To stop clashing with another job that may be running
+			gr1.setValue('generate_test_data_in_progress',generate_test_data_in_progress);
+			gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);	
 			if (updateSilently == true) {
 				// Do not trigger Business Rules	
 				gr1.setWorkflow(false);			
@@ -4615,7 +4666,7 @@ UpdateOfTestCMDBCIs.prototype = {
 		}	
 	},
 
-	updateCMDBServer: function(sys_id,restore,updateSilently) {
+	updateCMDBServer: function(sys_id,restore,updateSilently,gen_sys_id,generate_test_data_in_progress) {
 		//updateCMDBCI + updateCMDBHardware + updateCMDBComputer + Server
 		var ciTable = 'x_tekso_twxapp01_test_server';
 
@@ -5128,7 +5179,7 @@ UpdateOfTestCMDBCIs.prototype = {
 					//gr1.setValue('dr_backup',alternative_value_dr_backup);
 					gr1.setValue('firewall_status',alternative_value_firewall_status);
 					gr1.setValue('host_name',alternative_value_host_name);		
-					gr1.setValue('used_for',alternative_value2_used_for);
+					gr1.setValue('used_for',alternative_value_used_for);
 
 					//End Of Server
 
@@ -5863,6 +5914,9 @@ UpdateOfTestCMDBCIs.prototype = {
 					//End Of Server				
 				}
 			}
+			// To stop clashing with another job that may be running
+			gr1.setValue('generate_test_data_in_progress',generate_test_data_in_progress);
+			gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);				
 			if (updateSilently == true) {
 				// Do not trigger Business Rules	
 				gr1.setWorkflow(false);			
@@ -5896,7 +5950,7 @@ UpdateOfTestCMDBCIs.prototype = {
 
 new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently();
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBAppplicationRecords(1,sys_id);
+new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBApplicationRecords(1,sys_id);
 new x_tekso_twxapp01.UpdateOfTestCMDBCIs().updateCMDBServerRecords(1,sys_id);
 
 var si = x_tekso_twxapp01.UpdateOfTestCMDBCIs();
@@ -5911,13 +5965,13 @@ si.restoreAllCMDBCIRecordsSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 12:20:32</sys_created_on>
         <sys_id>493bea37dbc4d81041d08f38139619dd</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>UpdateOfTestCMDBCIs</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_493bea37dbc4d81041d08f38139619dd</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 13:32:24</sys_updated_on>
+        <sys_updated_on>2020-05-27 19:40:27</sys_updated_on>
     </sys_script_include>
 </record_update>

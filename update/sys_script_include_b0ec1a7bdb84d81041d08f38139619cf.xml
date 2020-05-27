@@ -18,12 +18,18 @@ SoftDeleteOfTestCIsAndRels.prototype = {
     initialize: function() {
     },
 
-	restoreSoftDeletesSilently: function() {
-		this.restoreSoftDeletedCIsSilently();
-		this.restoreSoftDeletedCIRelationshipsSilently();
+	restoreSoftDeletesSilently: function(gen_sys_id) {
+		this.restoreSoftDeletedCIsSilently(gen_sys_id);
+		this.restoreSoftDeletedCIRelationshipsSilently(gen_sys_id);
+	},
+	
+	restoreSoftDeletesSilentlyAll: function() {
+		this.restoreSoftDeletedCIsSilentlyAll();
+		this.restoreSoftDeletedCIRelationshipsSilentlyAll();
 	},
 	
 	softDeleteCIs: function(qty,gen_sys_id) {
+
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 
@@ -48,12 +54,17 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 			gr2.setLimit(qty);	
 		}
 		gr2.addQuery('soft_delete',false);
+		// To stop clashing with another job that may be running
+		gr2.addQuery('generate_test_data_in_progress',false);
 		gr2.query();
-		while (gr2.next()) {		
+		while (gr2.next()) {
 			//BR's are triggered
 			//BR Test Configuration Item - Delete Rels will update soft_delete flag on the rels
 			gr2.setValue('soft_delete',true);
-			gr2.update();
+			// To stop clashing with another job that may be running
+			gr2.setValue('generate_test_data_in_progress',true);
+			gr2.setValue('generate_test_data_record_sys_id',gen_sys_id);		
+			gr2.update();		
 		}
 
 		var gdt2 = new GlideDateTime();		
@@ -100,6 +111,7 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 								gr4.setValue('status','Test Data Build Complete');								
 								gr4.setWorkflow(false);
 								gr4.update();
+		
 							}
 						}
 					}
@@ -134,12 +146,20 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 			gr2.setLimit(qty);	
 		}
 		gr2.addQuery('soft_delete',false);
-		gr2.query();
+		// To stop clashing with another job that may be running
+		gr2.addQuery('generate_test_data_in_progress',false);		
+		gr2.query();		
+		gr2.setValue('soft_delete',true);
+		// To stop clashing with another job that may be running
+		gr2.setValue('generate_test_data_in_progress',true);
+		gr2.setValue('generate_test_data_record_sys_id',gen_sys_id);		
+		gr2.updateMultiple();
+		/*
 		while (gr2.next()) {			
 			gr2.setValue('soft_delete',true);
 			gr2.update();
 		}
-
+		*/
 		var gdt2 = new GlideDateTime();
 		var gr3 = new GlideRecord(genTable);
 		gr3.addQuery('sys_id',gen_sys_id);
@@ -184,6 +204,7 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 								gr4.setValue('time_taken_to_build_test_data',dur);										
 								gr4.setWorkflow(false);
 								gr4.update();
+
 							}
 						}
 					}
@@ -192,32 +213,98 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 		} //if (gr4.next()) {		
 	},
 
-	restoreSoftDeletedCIsSilently: function() {
+	restoreSoftDeletedCIsSilently: function(gen_sys_id) {
 		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 		var gr1 = new GlideRecord(ciTable);
 		gr1.addQuery('soft_delete',true);
+		// To stop clashing with another job that may be running
+		gr1.addQuery('generate_test_data_in_progress',true);
+		gr1.addQuery('generate_test_data_record_sys_id',gen_sys_id);			
 		gr1.query();
+		// Do not trigger Business Rules	
+		gr1.setWorkflow(false);		
+		gr1.setValue('soft_delete',false);
+		// To stop clashing with another job that may be running
+		gr1.setValue('generate_test_data_in_progress',false);
+		gr1.setValue('generate_test_data_record_sys_id','');			
+		gr1.updateMultiple();
+		
+		/*
 		while (gr1.next()) {
 			// Do not trigger Business Rules	
 			gr1.setWorkflow(false);				
 			gr1.setValue('soft_delete',false);
 			gr1.update();
 		}
+		*/
 	},
 
-	restoreSoftDeletedCIRelationshipsSilently: function () {
-		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
-		var gr1 = new GlideRecord(relTable);
+	restoreSoftDeletedCIsSilentlyAll: function() {
+		var ciTable = 'x_tekso_twxapp01_test_configuration_item';
+		var gr1 = new GlideRecord(ciTable);
 		gr1.addQuery('soft_delete',true);
 		gr1.query();
+		// Do not trigger Business Rules	
+		gr1.setWorkflow(false);		
+		gr1.setValue('soft_delete',false);
+		gr1.setValue('generate_test_data_in_progress',false);
+		gr1.setValue('generate_test_data_record_sys_id','');
+		gr1.updateMultiple();
+		
+		/*
 		while (gr1.next()) {
 			// Do not trigger Business Rules	
 			gr1.setWorkflow(false);				
 			gr1.setValue('soft_delete',false);
 			gr1.update();
-		}	
+		}
+		*/
 	},
 	
+	restoreSoftDeletedCIRelationshipsSilently: function (gen_sys_id) {
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+		var gr1 = new GlideRecord(relTable);
+		gr1.addQuery('soft_delete',true);
+		// To stop clashing with another job that may be running
+		gr1.addQuery('generate_test_data_in_progress',true);
+		gr1.addQuery('generate_test_data_record_sys_id',gen_sys_id);			
+		gr1.query();
+		// Do not trigger Business Rules
+		gr1.setWorkflow(false);	
+		gr1.setValue('soft_delete',false);
+		gr1.setValue('generate_test_data_in_progress',false);
+		gr1.setValue('generate_test_data_record_sys_id','');		
+		gr1.updateMultiple();
+		/*
+		while (gr1.next()) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);				
+			gr1.setValue('soft_delete',false);
+			gr1.update();
+		}
+		*/
+	},
+
+	restoreSoftDeletedCIRelationshipsSilentlyAll: function () {
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+		var gr1 = new GlideRecord(relTable);
+		gr1.addQuery('soft_delete',true);
+		gr1.query();
+		// Do not trigger Business Rules
+		gr1.setWorkflow(false);	
+		gr1.setValue('soft_delete',false);
+		gr1.setValue('generate_test_data_in_progress',false);
+		gr1.setValue('generate_test_data_record_sys_id','');
+		gr1.updateMultiple();
+		/*
+		while (gr1.next()) {
+			// Do not trigger Business Rules	
+			gr1.setWorkflow(false);				
+			gr1.setValue('soft_delete',false);
+			gr1.update();
+		}
+		*/
+	},	
     type: 'SoftDeleteOfTestCIsAndRels'
 };
 
@@ -239,13 +326,13 @@ si.restoreSoftDeletesSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 10:18:54</sys_created_on>
         <sys_id>b0ec1a7bdb84d81041d08f38139619cf</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>25</sys_mod_count>
         <sys_name>SoftDeleteOfTestCIsAndRels</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_b0ec1a7bdb84d81041d08f38139619cf</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 13:34:33</sys_updated_on>
+        <sys_updated_on>2020-05-27 21:14:08</sys_updated_on>
     </sys_script_include>
 </record_update>

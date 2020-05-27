@@ -12,8 +12,6 @@ UpdateSupportedClasses.prototype = {
     initialize: function() {
     },
 	updateSupportedClassesTable: function(setupSysID,classesArr) {	
-		var setupTable = 'x_tekso_twxapp01_setup';
-		var classTable = 'x_tekso_twxapp01_cmdb_supported_classes';	
 
 		var newClassesInternalNameArr = [];
 		var newClassesDisplayNameArr = [];
@@ -55,14 +53,14 @@ UpdateSupportedClasses.prototype = {
 	updateNumberOfSupportedClassesInSetupTable: function(setupSysID) {
 
 		var setupTable = 'x_tekso_twxapp01_setup';
-		var setupExistingNumberOfSuppportedClasses = 0;
+		var setupExistingNumberOfSupportedClasses = 0;
 		var gr1 = new GlideRecord(setupTable);
 		gr1.addQuery('sys_id',setupSysID);
 		gr1.query();
 		if (gr1.next()) {
-			setupExistingNumberOfSuppportedClasses = gr1.getValue('number_of_supported_classes') || 0;
+			setupExistingNumberOfSupportedClasses = gr1.getValue('number_of_supported_classes') || 0;
 			var numberOfSupportedClasses = this.getNumberOfSupportedClasses(setupSysID);
-			if (numberOfSupportedClasses != setupExistingNumberOfSuppportedClasses) {
+			if (numberOfSupportedClasses != setupExistingNumberOfSupportedClasses) {
 				gr1.setValue('number_of_supported_classes',numberOfSupportedClasses);
 				gr1.setValue('updated_by_script','SI insertOrUpdateClass'); // Debug	
 				gr1.update();				
@@ -250,13 +248,13 @@ UpdateSupportedClasses.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-26 13:26:45</sys_created_on>
         <sys_id>49ed6bd5dbff445041d08f381396190d</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>23</sys_mod_count>
         <sys_name>UpdateSupportedClasses</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_49ed6bd5dbff445041d08f381396190d</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 08:50:41</sys_updated_on>
+        <sys_updated_on>2020-05-27 16:55:37</sys_updated_on>
     </sys_script_include>
 </record_update>

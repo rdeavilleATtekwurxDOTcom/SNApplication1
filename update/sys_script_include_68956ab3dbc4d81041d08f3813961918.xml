@@ -18,6 +18,7 @@ UpdateOfTestRels.prototype = {
     },
 	
 	updateCMDBRelationRecords: function(qty,gen_sys_id) {
+		// Calls updateCMDBRelation
 		var updateSilently = false;	
 		var genTable = 'x_tekso_twxapp01_generate_test_data';		
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
@@ -40,13 +41,18 @@ UpdateOfTestRels.prototype = {
 		
 		var gr2 = new GlideRecord(relTable);
 		gr2.addQuery('original_or_alternative','original');
+
+		// To stop clashing with another job that may be running
+		gr2.addQuery('generate_test_data_in_progress',false);	
+		
 		if (qty > 0) {
 			gr2.setLimit(qty);
 		}
 		gr2.query();
 		while (gr2.next()) {
 			var sysID = gr2.getValue('sys_id').toString();
-			this.updateCMDBRelation(sysID,updateSilently);
+			var generate_test_data_in_progress = true;
+			this.updateCMDBRelation(sysID,updateSilently,gen_sys_id,generate_test_data_in_progress);
 		}
 		
 		var gdt2 = new GlideDateTime();		
@@ -103,7 +109,25 @@ UpdateOfTestRels.prototype = {
 		} //if (gr4.next()) {		
 	},
 
-	restoreAllCMDBRelationRecordsSilently: function() {
+	restoreAllCMDBRelationRecordsSilently: function(gen_sys_id) {
+		// Calls updateCMDBRelation
+		var updateSilently = true;
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
+		var gr1 = new GlideRecord(relTable);
+		gr1.addQuery('original_or_alternative','alternative');
+		// To stop clashing with another job that may be running
+		gr1.addQuery('generate_test_data_in_progress',true);
+		gr1.addQuery('generate_test_data_record_sys_id',gen_sys_id);			
+		gr1.query();
+		while (gr1.next()) {
+			var sysID = gr1.getValue('sys_id').toString();
+			var generate_test_data_in_progress = false;
+			this.updateCMDBRelation(sysID,updateSilently,gen_sys_id,generate_test_data_in_progress);			
+		}
+	},
+
+	restoreAllCMDBRelationRecordsSilentlyAll: function() {
+		// Calls updateCMDBRelation
 		var updateSilently = true;
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
 		var gr1 = new GlideRecord(relTable);
@@ -111,11 +135,17 @@ UpdateOfTestRels.prototype = {
 		gr1.query();
 		while (gr1.next()) {
 			var sysID = gr1.getValue('sys_id').toString();
-			this.updateCMDBRelation(sysID,updateSilently);
+			var generate_test_data_in_progress = false;
+			var gen_sys_id = '';
+			this.updateCMDBRelation(sysID,updateSilently,gen_sys_id,generate_test_data_in_progress);			
 		}
 	},
-
-	updateCMDBRelation: function(sys_id,updateSilently) {
+	
+	updateCMDBRelation: function(sys_id,updateSilently,gen_sys_id,generate_test_data_in_progress) {
+		// Called by restoreAllCMDBRelationRecordsSilentlyAll()
+		// Called by restoreAllCMDBRelationRecordsSilently(gen_sys_id)
+		// Called by updateCMDBRelationRecords(qty,gen_sys_id)
+		
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
 
 		var gr1 = new GlideRecord(relTable);
@@ -151,14 +181,20 @@ UpdateOfTestRels.prototype = {
 			} // if (originalOrAlternative == 'Alternative')
 			else {
 				// Original
+				var alternativeTypeSysID = '';
+				var alternativeParentSysID = '';
+				var alternativeChildSysID = '';
+				var alternativeConnectionStrength = '';
+				var alternativePort = 0;
+				var alternativePercentOutage = 0;
 				if (gotAlternativeValues == true) {
 
-					var alternativeTypeSysID = gr1.getValue('alternative_value_type').toString();
-					var alternativeParentSysID = gr1.getValue('alternative_value_parent').toString();
-					var alternativeChildSysID = gr1.getValue('alternative_value_child').toString();
-					var alternativeConnectionStrength = gr1.getValue('alternative_value_connection_strength');
-					var alternativePort = gr1.getValue('alternative_value_port') || 0;
-					var alternativePercentOutage = gr1.getValue('alternative_value_percent_outage') || 0;
+					alternativeTypeSysID = gr1.getValue('alternative_value_type').toString();
+					alternativeParentSysID = gr1.getValue('alternative_value_parent').toString();
+					alternativeChildSysID = gr1.getValue('alternative_value_child').toString();
+					alternativeConnectionStrength = gr1.getValue('alternative_value_connection_strength');
+					alternativePort = gr1.getValue('alternative_value_port') || 0;
+					alternativePercentOutage = gr1.getValue('alternative_value_percent_outage') || 0;
 
 					gr1.setValue('parent',alternativeParentSysID);
 					gr1.setValue('child',alternativeChildSysID);
@@ -212,6 +248,9 @@ UpdateOfTestRels.prototype = {
 				} // if (gotAlternativeValues == true)	
 			} // // if (originalOrAlternative == 'Alternative')
 
+			// To stop clashing with another job that may be running
+			gr1.setValue('generate_test_data_in_progress',generate_test_data_in_progress);
+			gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);				
 			if (updateSilently == true) {
 				// Do not trigger Business Rules	
 				gr1.setWorkflow(false);			
@@ -224,7 +263,7 @@ UpdateOfTestRels.prototype = {
 		//('Runs on','Runs','Runs on::Runs');
 		//('Depends on','Used by','Depends on::Used by');
 		var rtnSysID = '';
-		relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
 		var gr1 = new GlideRecord(relTable);
 		gr1.addQuery('parent_descriptor',parent); // Runs on
 		gr1.addQuery('child_descriptor',child); // Runs
@@ -233,10 +272,10 @@ UpdateOfTestRels.prototype = {
 		if (!gr1.next()) {		
 			// Does not exist
 			var gr2 = new GlideRecord(relTable);
-			gr1.initialize();
-			gr1.setValue('parent_descriptor',parent); // Runs on
-			gr1.setValue('child_descriptor',child); // Runs
-			rtnSysID = gr1.insert();	
+			gr2.initialize();
+			gr2.setValue('parent_descriptor',parent); // Runs on
+			gr2.setValue('child_descriptor',child); // Runs
+			rtnSysID = gr2.insert();	
 		}
 		else {
 			rtnSysID = gr1.getValue('sys_id').toString();
@@ -264,13 +303,13 @@ si.restoreAllCMDBRelationRecordsSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 10:55:06</sys_created_on>
         <sys_id>68956ab3dbc4d81041d08f3813961918</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>UpdateOfTestRels</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_68956ab3dbc4d81041d08f3813961918</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 13:31:28</sys_updated_on>
+        <sys_updated_on>2020-05-27 19:39:47</sys_updated_on>
     </sys_script_include>
 </record_update>

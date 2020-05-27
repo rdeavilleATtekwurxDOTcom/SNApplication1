@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="DELETE">
+        <active>true</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.restoretestdata</event_name>
+        <name>RestoreTestData</name>
+        <order>100</order>
+        <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.restoretestdata',gr4, gs.getUserID(), gen_sys_id);
+
+// Restore any deleted items
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently(event.parm2);
+
+// Restore any updated items
+new x_tekso_twxapp01.UpdateOfTestRels().restoreAllCMDBRelationRecordsSilently(event.parm2);
+
+new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently(event.parm2);]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-26 13:31:46</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>4f639e8ddb01d4104f29252b139619ab</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>RestoreTestData</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_4f639e8ddb01d4104f29252b139619ab</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-27 17:04:47</sys_updated_on>
+    </sysevent_script_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_script_action_4f639e8ddb01d4104f29252b139619ab</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;x_tekso_twxapp01.restoretestdata&lt;/event_name&gt;&lt;name&gt;RestoreTestData&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[//gs.eventQueue('x_tekso_twxapp01.restoretestdata',gr4, gs.getUserID(), gen_sys_id);
+
+// Restore any deleted items
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently(event.parm2);
+
+// Restore any updated items
+new x_tekso_twxapp01.UpdateOfTestRels().restoreAllCMDBRelationRecordsSilently(event.parm2);
+
+new x_tekso_twxapp01.UpdateOfTestCMDBCIs().restoreAllCMDBCIRecordsSilently(event.parm2);]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-05-26 13:31:46&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;4f639e8ddb01d4104f29252b139619ab&lt;/sys_id&gt;&lt;sys_mod_count&gt;1&lt;/sys_mod_count&gt;&lt;sys_name&gt;RestoreTestData&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_4f639e8ddb01d4104f29252b139619ab&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-27 17:04:47&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-481037771</payload_hash>
+        <record_name>RestoreTestData</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-27 17:04:47</sys_created_on>
+        <sys_id>701ecce9db45d85041d08f38139619e5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1725717f4700000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-27 17:04:47</sys_updated_on>
+        <type>Script Action</type>
+        <update_guid>b81ecce9c245d8502939c58fc88cece4</update_guid>
+        <update_guid_history>b81ecce9c245d8502939c58fc88cece4:-481037771,c7b3524d6d01d4106010f00eb218d05a:-1386128636</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-27 19:44:56</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_script_action">sysevent_script_action</sys_db_object>
+        <sys_id>45e6009a489b4028874e9cc4dabc3191</sys_id>
+        <sys_metadata>4f639e8ddb01d4104f29252b139619ab</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>RestoreTestData</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_script_action_4f639e8ddb01d4104f29252b139619ab</sys_update_name>
+        <sys_update_version display_value="sysevent_script_action_4f639e8ddb01d4104f29252b139619ab">701ecce9db45d85041d08f38139619e5</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-27 19:44:56</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -41,12 +41,21 @@
 	var fieldCnt = 0;
 	var fieldsChangedArr = [];
 	var allFieldsArr = [];
+
+	// Exclude real_table_name and soft_delete and got_alternative_values
+	// generate_test_data_in_progress and generate_test_data_record_sys_id	
+	var excludeArr = [];
+	excludeArr.push('sys_meta');
+	excludeArr.push('real_table_name');
+	excludeArr.push('soft_delete');
+	excludeArr.push('got_alternative_values');
+	excludeArr.push('original_or_alternative');					
+	excludeArr.push('generate_test_data_in_progress');
+	excludeArr.push('generate_test_data_record_sys_id');
 	
 	for (var x in current){
 		var y = x.substring(0,15); // original_value_
 		var z = x.substring(0,18); // alternative_value_
-		// Exclude real_table_name and soft_delete and got_alternative_values for list of all fields
-		var excludeArr = ['sys_meta','real_table_name','soft_delete','got_alternative_values','original_or_alternative'];
 		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {	
 			allFieldsArr.push(x);
 			fieldCnt++;
@@ -62,6 +71,8 @@
 		excludeArr2.push('sys_updated_by');
 		excludeArr2.push('sys_mod_count');
 		excludeArr2.push('sys_meta');
+		excludeArr2.push('generate_test_data_in_progress');
+		excludeArr2.push('generate_test_data_record_sys_id');		
 		if (excludeArr2.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {		
 			if (current[x] != previous[x]) {
 				fieldsChangedArr.push(x);
@@ -114,7 +125,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ff0a1eb2dbfb401041d08f3813961935</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>21</sys_mod_count>
         <sys_name>Test uControl Track Upd cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -122,7 +133,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_ff0a1eb2dbfb401041d08f3813961935</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-12 16:05:13</sys_updated_on>
+        <sys_updated_on>2020-05-27 17:12:48</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

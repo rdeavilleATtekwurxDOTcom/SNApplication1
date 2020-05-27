@@ -4,7 +4,11 @@
         <element label="Background Job Started At" max_length="40" name="background_job_started_at" type="glide_date_time"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
         <element label="Finished At" max_length="40" name="finished_at" type="glide_date_time"/>
+        <element label="First Processing Log Record Sys ID" max_length="32" name="first_processing_log_record_sys_id" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Last Processing Log Record Sys ID" max_length="32" name="last_processing_log_record_sys_id" type="string"/>
+        <element label="Link To First Processing Log Record" max_length="32" name="link_to_first_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
         <element label="Next Run At" max_length="40" name="next_run_at" type="glide_date_time"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
@@ -13,6 +17,7 @@
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element label="Pending Data Records To Process" max_length="40" name="pending_data_records_to_process" type="boolean"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
+        <element label="Processing Log Contents Summary" max_length="4000" name="processing_log_contents_summary" type="string"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
         <element label="Setup Status" max_length="40" name="setup_status" type="string"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>

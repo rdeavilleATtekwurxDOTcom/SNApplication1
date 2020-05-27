@@ -109,6 +109,8 @@
         <element default="0" label="Fault Count" max_length="40" name="fault_count" type="integer"/>
         <element label="First Discovered" max_length="40" name="first_discovered" type="glide_date_time"/>
         <element label="FQDN" max_length="255" name="fqdn" type="string"/>
+        <element label="Generate Test Data In Progress" max_length="40" name="generate_test_data_in_progress" type="boolean"/>
+        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="GL Account" max_length="40" name="gl_account" type="string"/>
         <element label="Got Alternative Values" max_length="40" name="got_alternative_values" type="boolean"/>
         <element label="Install Date" max_length="40" name="install_date" type="glide_date_time"/>

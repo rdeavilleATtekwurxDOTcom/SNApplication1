@@ -14,6 +14,8 @@
                 <element inactive_on_update="false" label="Occassional" value="occassional"/>
             </choice>
         </element>
+        <element label="Generate Test Data In Progress" max_length="40" name="generate_test_data_in_progress" type="boolean"/>
+        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="Got Alternative Values" max_length="40" name="got_alternative_values" type="boolean"/>
         <element default="Original" label="Original Or Alternative" max_length="20" name="original_or_alternative" type="string"/>
         <element label="Original Value Child" max_length="32" name="original_value_child" type="string"/>

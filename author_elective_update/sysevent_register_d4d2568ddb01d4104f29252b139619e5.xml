@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="DELETE">
+        <caller_access/>
+        <description/>
+        <event_name>x_tekso_twxapp01.restoretestdata</event_name>
+        <fired_by/>
+        <queue/>
+        <suffix>restoretestdata</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-26 13:28:25</sys_created_on>
+        <sys_id>d4d2568ddb01d4104f29252b139619e5</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.restoretestdata</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_register_d4d2568ddb01d4104f29252b139619e5</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-26 13:28:25</sys_updated_on>
+        <table/>
+    </sysevent_register>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_register_d4d2568ddb01d4104f29252b139619e5</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description/><event_name>x_tekso_twxapp01.restoretestdata</event_name><fired_by/><queue/><suffix>restoretestdata</suffix><sys_class_name>sysevent_register</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-05-26 13:28:25</sys_created_on><sys_id>d4d2568ddb01d4104f29252b139619e5</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01.restoretestdata</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sysevent_register_d4d2568ddb01d4104f29252b139619e5</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-05-26 13:28:25</sys_updated_on><table/></sysevent_register></record_update>]]></payload>
+        <payload_hash>-116839562</payload_hash>
+        <record_name>x_tekso_twxapp01.restoretestdata</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-26 13:28:25</sys_created_on>
+        <sys_id>f1f212c9db01d4104f29252b13961957</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172512b814e0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-26 13:28:25</sys_updated_on>
+        <type>Event Registration</type>
+        <update_guid>3df212c96701d410c05b349468865a56</update_guid>
+        <update_guid_history>3df212c96701d410c05b349468865a56:-116839562</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-27 19:45:52</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_register">sysevent_register</sys_db_object>
+        <sys_id>31a9c8a185ac4910a7ba5b326a5cba40</sys_id>
+        <sys_metadata>d4d2568ddb01d4104f29252b139619e5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.restoretestdata</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_register_d4d2568ddb01d4104f29252b139619e5</sys_update_name>
+        <sys_update_version display_value="sysevent_register_d4d2568ddb01d4104f29252b139619e5">f1f212c9db01d4104f29252b13961957</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-27 19:45:52</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

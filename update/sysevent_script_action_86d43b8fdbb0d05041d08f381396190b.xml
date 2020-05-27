@@ -88,12 +88,59 @@ function SendDataToUControl() {
 				process(jobStartTime,nextRunAt,jobSysID);
 			}
 		} // if (noOfPendingRecs > 0) {
+		updateScheduledJobLog(jobSysID);
+		
 		var scriptEndTime = new GlideDateTime();	
 		gr1.setValue('background_job_finished_at',scriptEndTime);
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug
 		gr1.update();
 	} // if (gr1.next()) {
 }	
+
+function updateScheduledJobLog(jobSysID) {
+
+	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
+	var logTable = 'x_tekso_twxapp01_processing_log';
+	
+	var gr1 = new GlideRecord(jobTable);
+	gr1.addQuery('sys_id',jobSysID);
+	gr1.query();
+	if (gr1.next()) {
+
+		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug
+		
+		var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+		gr2.addQuery('link_to_scheduled_job_log_record',jobSysID);
+		gr2.orderBy('number');
+		gr2.query();
+		var summary = '';
+		var cnt = 0;
+		var first = '';
+		var last = '';
+		while(gr2.next()) {
+			var number = gr2.getValue('number');
+			var qty = gr2.getValue('total_number_of_records_sent') || 0;
+			var qty2 = qty.toString();
+			var record = number + ' Qty: ' + qty2;
+			if (cnt == 0) {
+				summary = record;
+				first = gr2.getValue('sys_id');
+			}
+			else {
+				summary = summary + '; ' + record;
+			}
+			last = gr2.getValue('sys_id');
+			cnt = cnt + 1;
+		}
+		gr1.setValue('link_to_first_processing_log_record',first);
+		gr1.setValue('first_processing_log_record_sys_id',first);
+		gr1.setValue('link_to_last_processing_log_record',last);
+		gr1.setValue('last_processing_log_record_sys_id',last);
+		gr1.setValue('number_of_processing_log_records',cnt);
+		gr1.setValue('processing_log_contents_summary',summary);
+		gr1.update();
+	}
+}
 
 function getNumberOfPendingRecords(jobStartTime) {
 	// Get the number of pending records
@@ -406,14 +453,14 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					breakReason = 'testData NOT prevTestData. testData: ' + testData + ' prevTestData: ' + prevTestData;
 				}
 
-				if (deleteDataToFlushOut == false && deletesToProcess > 1000) {
+				if (deleteDataToFlushOut == false && deletesToProcess >= 1000) {
 					// Delete data to be flushed out
 					deleteDataToFlushOut = true;		
-					breakReason = 'deletesToProcess > 1000';
+					breakReason = 'deletesToProcess >= 1000';
 				}
 							
 				//5,000,000 is max size of json field
-				if (deleteDataToFlushOut == false && operation == 'delete' && testSize > 5000000) {
+				if (deleteDataToFlushOut == false && operation == 'delete' && testSize >= 5000000) {
 					// Need to check if there is enough room to add in another delete
 					// Or do we need to flush this out and then start a new one?
 					deleteDataToFlushOut = true;
@@ -483,14 +530,14 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					breakReason = 'testData NOT prevTestData. testData: ' + testData + ' prevTestData: ' + prevTestData;
 				}
 
-				if (updateDataToFlushOut == false && updatesToProcess > 1000) {
+				if (updateDataToFlushOut == false && updatesToProcess >= 1000) {
 					// Update data to be flushed out
 					updateDataToFlushOut = true;	
-					breakReason = 'updatesToProcess > 1000';
+					breakReason = 'updatesToProcess >= 1000';
 				}
 							
 				//5,000,000 is max size of json field
-				if (updateDataToFlushOut == false && operation == 'update' && testSize > 5000000) {
+				if (updateDataToFlushOut == false && operation == 'update' && testSize >= 5000000) {
 					// Need to check if there is enough room to add in another update
 					// Or do we need to flush this out and then start a new one?
 					updateDataToFlushOut = true;
@@ -538,8 +585,7 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			if (logRecordCreated == false) {
 				// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get back the sys_id
 				//x_tekso_twxapp01_processing_log
-				logSysID = createNewLogRecord(breakReason,jobSysID,processCnt,processingID); 
-				breakReason = '';
+				logSysID = createNewLogRecord(jobSysID,processCnt,processingID); 
 
 				logRecordCreated = true;
 				//logSysID is the sys_id for the log record
@@ -549,7 +595,7 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			/* use createDataRecordWithEmptyJSON so we can get back the sys_id to include in the json
 			data_sys_id = createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,midServerSysID,url,insertJsonRequestBody,1,logSysID);
 			*/
-			data_sys_id = createDataRecordWithEmptyJSON(operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
+			data_sys_id = createDataRecordWithEmptyJSON(breakReason,operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
 			dataRecordNo = getDataRecordNo(data_sys_id);			
 			
 			insertData = '\"insertedData\": ' + jsonRequestBody;
@@ -588,14 +634,13 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get back the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(breakReason,jobSysID,processCnt,processingID); 
-					breakReason = '';					
+					logSysID = createNewLogRecord(jobSysID,processCnt,processingID); 
 
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}	
 				
-				delete_data_sys_id = createDataRecordWithEmptyJSON(operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
+				delete_data_sys_id = createDataRecordWithEmptyJSON(breakReason,operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
 				dataRecordNo = getDataRecordNo(delete_data_sys_id);
 				
 				createLinkRecord(operation,table,baseTable,sourceRecordSysID,delete_data_sys_id,trackingSysID,logSysID,jobSysID,processingID);		
@@ -615,13 +660,12 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get back the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(breakReason,jobSysID,processCnt,processingID); 
-					breakReason = '';					
+					logSysID = createNewLogRecord(jobSysID,processCnt,processingID); 					
 
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}					
-				createLinkRecord(linkTable,operation,table,baseTable,sourceRecordSysID,delete_data_sys_id,trackingSysID,logSysID,jobSysID,processingID);			
+				createLinkRecord(operation,table,baseTable,sourceRecordSysID,delete_data_sys_id,trackingSysID,logSysID,jobSysID,processingID);			
 			}		
 			deleteDataList = deleteDataList + jsonRequestBody;
 			
@@ -651,13 +695,12 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get back the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(breakReason,jobSysID,processCnt,processingID); 
-					breakReason = '';					
+					logSysID = createNewLogRecord(jobSysID,processCnt,processingID); 				
 
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}					
-				update_data_sys_id = createDataRecordWithEmptyJSON(operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
+				update_data_sys_id = createDataRecordWithEmptyJSON(breakReason,operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID);
 				dataRecordNo = getDataRecordNo(update_data_sys_id);
 				
 				createLinkRecord(operation,table,baseTable,sourceRecordSysID,update_data_sys_id,trackingSysID,logSysID,jobSysID,processingID);		
@@ -677,8 +720,7 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (logRecordCreated == false) {
 					// If not already done so - Create a new log record - x_tekso_twxapp01_processing_log and get back the sys_id
 					//x_tekso_twxapp01_processing_log
-					logSysID = createNewLogRecord(breakReason,jobSysID,processCnt,processingID); 
-					breakReason = '';					
+					logSysID = createNewLogRecord(jobSysID,processCnt,processingID); 
 
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
@@ -746,7 +788,7 @@ function writeDebugLog(msg) {
 }
 
 // Called by processBlock
-function createNewLogRecord(breakReason,jobSysID,processCnt,processingID) {
+function createNewLogRecord(jobSysID,processCnt,processingID) {
 	// Create a new log record - x_tekso_twxapp01_processing_log and returns the sys_id
 	var logTable = 'x_tekso_twxapp01_processing_log';
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
@@ -792,7 +834,6 @@ function createNewLogRecord(breakReason,jobSysID,processCnt,processingID) {
 	var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
 	gr2.initialize();
 	gr2.setValue('total_number_of_records_sent',0);
-	gr2.setValue('reason_for_split',breakReason);
 	
 	gr2.setValue('scheduled_job_started_at',jobStartedAt);	
 	gr2.setValue('link_to_scheduled_job_log_record',jobSysID.toString());
@@ -853,7 +894,7 @@ function createLinkRecord(operation,table,baseTable,sourceRecordSysID,data_sys_i
 
 
 // Called by processBlock
-function createDataRecordWithEmptyJSON(operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID) {
+function createDataRecordWithEmptyJSON(breakReason,operation,baseTable,midServerName,midServerSysID,url,logSysID,jobSysID,processingID) {
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.initialize();
@@ -863,11 +904,13 @@ function createDataRecordWithEmptyJSON(operation,baseTable,midServerName,midServ
 	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
 	gr1.setValue('ucontrol_url',url);
 	gr1.setValue('json_request_body','');
+	gr1.setValue('json_request_body_first_1000_chars','');
 	gr1.setValue('total_length_of_json_request_body',0);	
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',0);
 	gr1.setValue('link_to_processing_log_record',logSysID);	
 	gr1.setValue('processing_log_record_sys_id',logSysID);		
 	gr1.setValue('processing_id',processingID);
+	gr1.setValue('reason_for_split',breakReason);
 	gr1.setValue('link_to_scheduled_job_log_record',jobSysID);
 	gr1.setValue('scheduled_job_log_record_sys_id',jobSysID);	
 	gr1.setValue('inserted_by_script','SA SendDataTouControl'); // Debug
@@ -885,6 +928,12 @@ function addJSONToDataRecord(data_sys_id,jsonRequestBody,noOfRecsInJSON) {
 	gr1.query();
 	if (gr1.next()) {
 		gr1.setValue('json_request_body',jsonRequestBody);
+		if (jsonRequestBody.length > 1000) {
+			gr1.setValue('json_request_body_first_1000_chars',jsonRequestBody.substring(0,1000));		
+		}
+		else {
+			gr1.setValue('json_request_body_first_1000_chars',jsonRequestBody);			
+		}
 		gr1.setValue('total_length_of_json_request_body',jsonRequestBody.length);		
 		gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug			
@@ -1438,12 +1487,12 @@ function restDataRecordContentsSummaryLinkedToLog(logSysID) {
 		var baseTable = gr1.getValue('base_table') || '';
 		var qty = gr1.getValue('no_of_cmdb_records_in_json_request_body') || 0;
 		var qty2 = qty.toString();
-		var record = 'No: ' + number + '. Operation: ' + operation + '. Base Table: ' + baseTable + '. Qty: ' + qty;
+		var record = number + ' Operation: ' + operation + ', Base Table: ' + baseTable + ', Qty: ' + qty;
 		if (cnt == 0) {
 			summary = record;
 		}
 		else {
-			summary = summary + ', ' + record;
+			summary = summary + '; ' + record;
 		}
 		cnt = cnt + 1;
 	}
@@ -1463,6 +1512,12 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
 	gr1.setValue('ucontrol_mid_server_sys_id',midServerSysID);		
 	gr1.setValue('ucontrol_url',url);						
 	gr1.setValue('json_request_body',JSONRequestBody);
+	if (jsonRequestBody.length > 1000) {
+		gr1.setValue('json_request_body_first_1000_chars',jsonRequestBody.substring(0,1000));		
+	}
+	else {
+		gr1.setValue('json_request_body_first_1000_chars',jsonRequestBody);			
+	}	
 	gr1.setValue('total_length_of_json_request_body',JSONRequestBody.length);
 	gr1.setValue('no_of_cmdb_records_in_json_request_body',noOfRecsInJSON);
 	gr1.setValue('link_to_processing_log_record',logSysID);
@@ -1480,7 +1535,7 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1488,6 +1543,6 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-25 21:57:50</sys_updated_on>
+        <sys_updated_on>2020-05-27 13:24:01</sys_updated_on>
     </sysevent_script_action>
 </record_update>

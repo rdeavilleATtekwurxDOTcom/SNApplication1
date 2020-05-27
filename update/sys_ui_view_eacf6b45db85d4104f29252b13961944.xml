@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_view">
+    <sys_ui_view action="INSERT_OR_UPDATE">
+        <group/>
+        <hidden>false</hidden>
+        <name>json</name>
+        <roles/>
+        <sys_class_name>sys_ui_view</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-26 20:13:59</sys_created_on>
+        <sys_id>eacf6b45db85d4104f29252b13961944</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Json</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_view_eacf6b45db85d4104f29252b13961944</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-26 20:13:59</sys_updated_on>
+        <title>Json</title>
+        <user/>
+    </sys_ui_view>
+</record_update>

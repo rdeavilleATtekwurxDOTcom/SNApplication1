@@ -3,6 +3,7 @@
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
+        <element label="JSON Request Body First 1000 Chars" max_length="1000" name="json_request_body_first_1000_chars" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
@@ -10,6 +11,7 @@
         <element label="Operation" max_length="10" name="operation" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
+        <element label="Reason For Split" max_length="1000" name="reason_for_split" type="string"/>
         <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
         <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
