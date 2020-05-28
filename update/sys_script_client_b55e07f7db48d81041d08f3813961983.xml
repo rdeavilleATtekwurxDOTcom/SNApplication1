@@ -4,11 +4,11 @@
         <applies_extended>false</applies_extended>
         <condition/>
         <description>Value cannot be negative</description>
-        <field>delete_cmdb_ci_qty</field>
+        <field>delete_application_qty</field>
         <global>true</global>
         <isolate_script>true</isolate_script>
         <messages/>
-        <name>Generate Test Data - Delete CMDB CI Qty</name>
+        <name>Generate Test Data - Delete Appl Qty</name>
         <order/>
         <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
    if (isLoading) {
@@ -16,22 +16,7 @@
    }
 
 	if (newValue < 0) {
-		g_form.showFieldMsg('delete_cmdb_ci_qty','Value cannot be negative');	
-	}
-	else{
-		var avail = g_form.getValue('available_qty_of_test_cmdb_cis');
-		var other = g_form.getValue('update_cmdb_ci_qty');
-		// Remove commas
-		avail = avail.replace(/,/g, "");
-		other = other.replace(/,/g, "");
-		newValue = newValue.replace(/,/g, "");
-		var total = parseInt(other) + parseInt(newValue);
-		if (parseInt(total) > parseInt(avail)) {
-			g_form.showFieldMsg('delete_cmdb_ci_qty','Delete CMDB CI Qty and Update CMDB CI Qty combined cannot be more than ' + avail.toString());	
-		}
-		else {
-			g_form.hideFieldMsg('delete_cmdb_ci_qty');					
-		}
+		g_form.showFieldMsg('delete_application_qty','Value cannot be negative');	
 	}
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
@@ -40,15 +25,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b55e07f7db48d81041d08f3813961983</sys_id>
-        <sys_mod_count>6</sys_mod_count>
-        <sys_name>Generate Test Data - Delete CMDB CI Qty</sys_name>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Generate Test Data - Delete Appl Qty</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_b55e07f7db48d81041d08f3813961983</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 14:52:59</sys_updated_on>
+        <sys_updated_on>2020-05-28 17:33:15</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onChange</type>
         <ui_type>10</ui_type>

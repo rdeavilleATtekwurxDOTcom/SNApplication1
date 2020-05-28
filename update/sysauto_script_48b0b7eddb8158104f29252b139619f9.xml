@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Testing - Build Test cmdb_rel_ci Update</name>
+        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-05-28 09:34:52</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[main(10);
+
+function main(qty) {
+	if (qty < 1) {
+		qty = 1;
+	}
+	
+	var cnt = 0;
+	while (cnt < qty) {
+		cnt = cnt + 1;
+		generate(cnt);
+	}
+}
+
+function generate(num) {
+
+	// Exclude sys_updated_on, sys_updated_by and sys_mod_count
+	
+	var zeroPaddedNumStr = zeroPad(num,6); // e.g. '000001'
+
+	var gdt = new GlideDateTime();	
+
+	var testTableName = 'x_tekso_twxapp01_test_ci_relationship';
+	var actualTableName = 'x_tekso_twxapp01_test_ci_relationship';
+	var tableName = 'cmdb_rel_ci';
+	
+	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+	gr1.initialize();
+
+	var sourceRecordSysID = '';
+	var createdBy = gs.getUserName();
+	var createdOn = new GlideDateTime();
+	var updatedBy = gs.getUserName();
+	var updatedOn = new GlideDateTime();	
+	var parentSysID = '';
+	var childSysID = '';
+	var typeSysID = '';
+	var typeName = '';	
+	var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_ci_relationship
+	gr2.setLimit(1);
+	gr2.query();
+	if (gr2.next()) {
+		var sysID = gr2.getValue('sys_id') || '';
+		sourceRecordSysID = sysID.toString();
+		sourceRecordSysID = sysID.toString();
+		createdBy = gr2.getValue('sys_created_by');
+		updatedBy = gr2.getValue('sys_updated_by');	
+		createdOn = gr2.getValue('sys_created_on');
+		updatedOn = gr2.getValue('sys_updated_on');	
+		typeName = gr2.type.getRefRecord().getValue('name');
+		var pSysID = gr2.getValue('parent');
+		parentSysID = pSysID.toString(); 
+		var cSysID = gr2.getValue('child');
+		childSysID = cSysID.toString(); 	
+		var tSysID = gr2.getValue('type');
+		typeSysID = tSysID.toString(); 			
+	}
+	else {
+		sourceRecordSysID = gs.generateGUID();
+		parentSysID = gs.generateGUID();
+		childSysID = gs.generateGUID();
+		typeSysID = gs.generateGUID();
+		typeName = 'Runs on::Runs';		
+	}
+	
+	//gr1.setValue('source_record_sys_id',current.sys_id);
+	gr1.setValue('source_record_sys_id',sourceRecordSysID);
+	
+	gr1.setValue('table_name',tableName); // real table name cmdb_rel_ci
+	
+	//gr1.setValue('record_originally_created_by',current.sys_created_by);
+	gr1.setValue('record_originally_created_by',createdBy);
+
+	//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+	gr1.setValue('record_originally_created_on',createdOn); 	
+	
+	//gr1.setValue('record_updated_by',current.sys_updated_by);
+	gr1.setValue('record_updated_by',updatedBy);
+
+	var updatedBySysID = gs.getUserID(updatedBy);	
+	gr1.setValue('record_updated_by_sys_id',updatedBySysID);
+	
+	//gr1.setValue('record_updated_on',current.sys_updated_on);	
+	gr1.setValue('record_updated_on',gdt);	
+	
+	gr1.setValue('base_table','cmdb_rel_ci');	
+
+	var fieldsChangedArr = [];
+	fieldsChangedArr.push('child');
+	fieldsChangedArr.push('connection_strength');
+	fieldsChangedArr.push('parent');
+	fieldsChangedArr.push('percent_outage');
+	fieldsChangedArr.push('port');
+	fieldsChangedArr.push('type');
+
+    var fieldsChanged = fieldsChangedArr.join(',');	
+	gr1.setValue('fields_changed',fieldsChanged);
+	gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
+	gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+	
+	//gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+	gr1.setValue('rel_parent_sys_id',parentSysID);
+
+	//gr1.setValue('rel_type_sys_id',current.type.sys_id);
+	gr1.setValue('rel_type_sys_id',typeSysID);
+
+	//gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+	gr1.setValue('rel_child_sys_id',childSysID);	
+	
+	var childName = 'child [' + zeroPaddedNumStr + ']';
+	childName = padOutString(childName,255,'!!'); // 255	
+	//gr1.setValue('rel_child_name',current.child.name);
+	gr1.setValue('rel_child_name',childName);
+
+	var parentName = 'parent [' + zeroPaddedNumStr + ']';
+	parentName = padOutString(parentName,255,'!!'); // 255		
+	//gr1.setValue('rel_parent_name',current.parent.name);
+	gr1.setValue('rel_parent_name',parentName);
+	
+	//gr1.setValue('rel_type_name',current.type.name);
+	gr1.setValue('rel_type_name',typeName);
+	
+	var allFieldsArr = [];
+	allFieldsArr.push('child');
+	allFieldsArr.push('connection_strength');
+	allFieldsArr.push('parent');
+	allFieldsArr.push('percent_outage');
+	allFieldsArr.push('port');
+	allFieldsArr.push('sys_created_by');
+	allFieldsArr.push('sys_created_on');
+	allFieldsArr.push('sys_id');
+	allFieldsArr.push('sys_mod_count');
+	allFieldsArr.push('sys_tags');
+	allFieldsArr.push('sys_updated_by');
+	allFieldsArr.push('sys_updated_on');
+	allFieldsArr.push('type');
+    var allFields = allFieldsArr.join(',');
+	gr1.setValue('all_fields',allFields);
+
+	gr1.setValue('no_of_fields',allFieldsArr.length);	
+	
+	gr1.setValue('total_length_of_all_fields_list',allFields.length);	
+	
+	gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_ci_relationship
+	
+	gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
+	
+	gr1.setValue('test_data',true); // TESTING	
+	
+	gr1.setValue('inserted_by_script','Testing - Build Test cmdb_rel_ci Update');		
+	gr1.insert();
+}
+
+
+function padOutString(existingText,maxSize,tail) {
+	var rtnStr = '';
+	var str = '';
+	var ln = 0;
+	var ln2 = 0;
+
+	str = existingText + ' ' + tail;		
+
+	ln = str.length;
+	if (ln >= maxSize) {
+		// String + tail is biiger than max size 
+		// so do a left() to get back the maxsize
+		rtnStr = str.substring(0,maxSize);
+	}		
+	else {
+		ln2 = maxSize - ln;
+		str = this.generateString(ln2);
+		rtnStr = existingText + ' ' + str + tail;			
+	}
+	return rtnStr;
+}
+
+function generateString(size) {
+	var rtnStr = '';
+
+	var template = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789';
+
+	var str = '';
+	var ln = 0;
+	str = template;
+	ln = str.length;
+	while (ln < size) {
+		str = str + template;
+		ln = str.length;
+	}
+
+	rtnStr = str.substring(0, size);
+
+	return rtnStr;
+}
+		
+function zeroPad(number,maxSize) {
+	var rtnStr = '';
+	var maxSize2 = maxSize * -1;
+	var template = '000000000000000';
+	var numStr = number.toString();
+	var str = template + numStr;
+	rtnStr = str.substr(maxSize2);
+	return rtnStr;
+}
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-28 09:44:29</sys_created_on>
+        <sys_id>48b0b7eddb8158104f29252b139619f9</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>Testing - Build Test cmdb_rel_ci Update</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_48b0b7eddb8158104f29252b139619f9</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-28 15:10:11</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

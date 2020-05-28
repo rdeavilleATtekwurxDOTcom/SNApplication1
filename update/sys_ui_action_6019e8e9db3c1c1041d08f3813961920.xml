@@ -34,10 +34,12 @@ function runBuildTestDataClientCode(){
 	g_form.clearMessages();
 	var del_rel_qty = g_form.getValue('delete_relations_qty');
 	var upd_rel_qty = g_form.getValue('update_relations_qty');
-	var del_ci_qty = g_form.getValue('delete_cmdb_ci_qty');
-	var upd_ci_qty = g_form.getValue('update_cmdb_ci_qty');
+	var del_srv_qty = g_form.getValue('delete_server_qty');
+	var upd_srv_qty = g_form.getValue('update_server_qty');
+	var del_appl_qty = g_form.getValue('delete_application_qty');
+	var upd_appl_qty = g_form.getValue('update_application_qty');
 	
-	if (del_rel_qty < 1 && upd_rel_qty < 1 && del_ci_qty < 1 && upd_ci_qty < 1 ) {
+	if (del_rel_qty < 1 && upd_rel_qty < 1 && del_srv_qty < 1 && upd_srv_qty < 1 && del_appl_qty < 1 && upd_appl_qty < 1) {
 		g_form.addInfoMessage("At least one of the qty fields must be > 0 for submission to be performed");
 		return false; //Abort submission
 	}
@@ -56,26 +58,11 @@ if(typeof window == 'undefined')
 //Server-side function
 function runBuildTestDataBusRuleCode(){
 
-	if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_cmdb_ci_qty > 0 || current.update_cmdb_ci_qty > 0) {
+	if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_server_qty > 0 || current.update_server_qty > 0 || current.delete_application_qty > 0 || current.update_application_qty > 0) {
 		current.status = 'Test Data Build In Progress';		
-		if (current.update_cmdb_ci_qty > 0) {
-			var serverQty = 0;
-			var applicationQty = 0;		
-			if (current.update_cmdb_ci_qty == 1) {
-				serverQty = 1;
-			}
-			else {
-				var qty = current.update_cmdb_ci_qty;
-				var qty2 = qty / 2;  // e.g. 1.5	
-				serverQty = parseInt(qty2); // convert to int e.g. 1
-				applicationQty = qty - serverQty;	// e.g. 3 - 1 = 2				
-			}
-			current.update_server_ci_qty = serverQty;
-			current.update_application_ci_qty = applicationQty;
-		}	
+		current.update();
+		action.setRedirectURL(current);		
 	}
-	current.update();
-	action.setRedirectURL(current);		
 }]]></script>
         <show_insert>true</show_insert>
         <show_multiple_update>false</show_multiple_update>
@@ -87,7 +74,7 @@ function runBuildTestDataBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6019e8e9db3c1c1041d08f3813961920</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>Save &amp; Build Test Data</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -95,7 +82,7 @@ function runBuildTestDataBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_6019e8e9db3c1c1041d08f3813961920</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 13:19:41</sys_updated_on>
+        <sys_updated_on>2020-05-28 17:37:36</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

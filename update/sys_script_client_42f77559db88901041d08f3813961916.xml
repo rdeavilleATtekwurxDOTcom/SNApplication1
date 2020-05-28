@@ -15,12 +15,12 @@
 	// We use different views for New + unSubmitted to hide a lot of the fields
 	var stat = g_form.getValue('status');
 	
-	var delCI = g_form.getValue('delete_cmdb_ci_qty');
+	var delSrv = g_form.getValue('delete_server_qty');
 	//Use the string's .replace method with a regex of \D, which is a shorthand character class that matches all non-digits
-	var delCI2 = parseInt(delCI.replace(/\D/g,''));
+	var delSrv2 = parseInt(delSrv.replace(/\D/g,''));
 	
-	var updCI = g_form.getValue('update_cmdb_ci_qty');
-	var updCI2 = parseInt(updCI.replace(/\D/g,''));	
+	var delApp = g_form.getValue('delete_application_qty');
+	var delApp2 = parseInt(delApp.replace(/\D/g,''));	
 
 	var delRel = g_form.getValue('delete_relations_qty');
 	var delRel2 = parseInt(delRel.replace(/\D/g,''));	
@@ -28,10 +28,10 @@
 	var updRel = g_form.getValue('update_relations_qty');
 	var updRel2 = parseInt(updRel.replace(/\D/g,''));	
 	
-	var updSrv = g_form.getValue('update_server_ci_qty');
+	var updSrv = g_form.getValue('update_server_qty');
 	var updSrv2 = parseInt(updSrv.replace(/\D/g,''));	
 	
-	var updApp = g_form.getValue('update_application_ci_qty');
+	var updApp = g_form.getValue('update_application_qty');
 	var updApp2 = parseInt(updApp.replace(/\D/g,''));		
 
 	var fields = g_form.getEditableFields();
@@ -42,29 +42,44 @@
 		g_form.setReadOnly(fields[x], true);		
 	}
 	
-	var writeFldsForNewArr = ['delete_cmdb_ci_qty','update_cmdb_ci_qty','delete_relations_qty','update_relations_qty'];	
+	var writeFldsForNewArr = ['delete_application_qty','update_application_qty'];
+	writeFldsForNewArr.push('delete_relations_qty');
+	writeFldsForNewArr.push('update_relations_qty');	
+	writeFldsForNewArr.push('delete_server_qty');
+	writeFldsForNewArr.push('update_server_qty');
 	
-	var visibleFldsForNewArr = ['delete_cmdb_ci_qty','update_cmdb_ci_qty','delete_relations_qty','update_relations_qty'];	
+	var visibleFldsForNewArr = ['delete_application_qty','update_application_qty'];
+	visibleFldsForNewArr.push('delete_relations_qty');
+	visibleFldsForNewArr.push('update_relations_qty');
+	visibleFldsForNewArr.push('delete_server_qty');
+	visibleFldsForNewArr.push('update_server_qty');
 	visibleFldsForNewArr.push('status');
-	visibleFldsForNewArr.push('available_qty_of_test_cmdb_cis');
-	visibleFldsForNewArr.push('available_qty_of_test_relations');
 
-	var visibleFldsForAfterNewArr = ['delete_cmdb_ci_qty','update_cmdb_ci_qty','delete_relations_qty','update_relations_qty'];
+	var visibleFldsForAfterNewArr = ['delete_application_qty','update_application_qty'];
+	visibleFldsForAfterNewArr.push('delete_relations_qty');
+	visibleFldsForAfterNewArr.push('update_relations_qty');
+	visibleFldsForAfterNewArr.push('delete_server_qty');
+	visibleFldsForAfterNewArr.push('update_server_qty');	
 	visibleFldsForAfterNewArr.push('status');
-	visibleFldsForAfterNewArr.push('available_qty_of_test_cmdb_cis');
-	visibleFldsForAfterNewArr.push('available_qty_of_test_relations');	
 	visibleFldsForAfterNewArr.push('build_test_data_started');
 	visibleFldsForAfterNewArr.push('build_test_data_started_at');
 	visibleFldsForAfterNewArr.push('build_test_data_completed');
 	visibleFldsForAfterNewArr.push('build_test_data_completed_at');	
 	visibleFldsForAfterNewArr.push('time_taken_to_build_test_data');
-	if (delCI2 > 0) {
-		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_started');
-		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_completed');
-		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_started_at');
-		visibleFldsForAfterNewArr.push('build_delete_cmdb_ci_test_data_completed_at');		
+	if (delSrv2 > 0) {
+		visibleFldsForAfterNewArr.push('build_delete_server_test_data_started');
+		visibleFldsForAfterNewArr.push('build_delete_server_test_data_completed');
+		visibleFldsForAfterNewArr.push('build_delete_server_test_data_started_at');
+		visibleFldsForAfterNewArr.push('build_delete_server_test_data_completed_at');		
 	}
 
+	if (delApp2 > 0) {
+		visibleFldsForAfterNewArr.push('build_delete_application_test_data_started');
+		visibleFldsForAfterNewArr.push('build_delete_application_test_data_completed');
+		visibleFldsForAfterNewArr.push('build_delete_application_test_data_started_at');
+		visibleFldsForAfterNewArr.push('build_delete_application_test_data_completed_at');		
+	}
+	
 	if (delRel2 > 0) {
 		visibleFldsForAfterNewArr.push('build_delete_relations_test_data_started');
 		visibleFldsForAfterNewArr.push('build_delete_relations_test_data_completed');
@@ -79,20 +94,20 @@
 		visibleFldsForAfterNewArr.push('build_update_relations_test_data_completed_at');		
 	}
 	
-	if (updCI2 > 0 || updSrv2 > 0) {
-		visibleFldsForAfterNewArr.push('build_update_server_ci_test_data_started');
-		visibleFldsForAfterNewArr.push('build_update_server_ci_test_data_completed');
-		visibleFldsForAfterNewArr.push('build_update_server_ci_test_data_started_at');
-		visibleFldsForAfterNewArr.push('build_update_server_ci_test_data_completed_at');		
-		visibleFldsForAfterNewArr.push('update_server_ci_qty');
+	if (updSrv2 > 0) {
+		visibleFldsForAfterNewArr.push('build_update_server_test_data_started');
+		visibleFldsForAfterNewArr.push('build_update_server_test_data_completed');
+		visibleFldsForAfterNewArr.push('build_update_server_test_data_started_at');
+		visibleFldsForAfterNewArr.push('build_update_server_test_data_completed_at');		
+		visibleFldsForAfterNewArr.push('update_server_qty');
 	}
 	
-	if (updCI2> 1 || updApp2 > 0) {
-		visibleFldsForAfterNewArr.push('build_update_application_ci_test_data_started');
-		visibleFldsForAfterNewArr.push('build_update_application_ci_test_data_completed');
-		visibleFldsForAfterNewArr.push('build_update_application_ci_test_data_started_at');
-		visibleFldsForAfterNewArr.push('build_update_application_ci_test_data_completed_at');		
-		visibleFldsForAfterNewArr.push('update_application_ci_qty');	
+	if (updApp2 > 0) {
+		visibleFldsForAfterNewArr.push('build_update_application_test_data_started');
+		visibleFldsForAfterNewArr.push('build_update_application_test_data_completed');
+		visibleFldsForAfterNewArr.push('build_update_application_test_data_started_at');
+		visibleFldsForAfterNewArr.push('build_update_application_test_data_completed_at');		
+		visibleFldsForAfterNewArr.push('update_application_qty');	
 	}
 
 	for (var x2 = 0; x2 < fields.length; x2++) {
@@ -121,7 +136,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>42f77559db88901041d08f3813961916</sys_id>
-        <sys_mod_count>44</sys_mod_count>
+        <sys_mod_count>45</sys_mod_count>
         <sys_name>Generate Test Data - onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -129,7 +144,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_42f77559db88901041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-20 09:54:27</sys_updated_on>
+        <sys_updated_on>2020-05-28 17:27:06</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

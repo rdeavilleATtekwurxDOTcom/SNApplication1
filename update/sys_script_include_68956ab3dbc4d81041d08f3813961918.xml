@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
-        <active>true</active>
-        <api_name>x_tekso_twxapp01.UpdateOfTestRels</api_name>
+        <active>false</active>
+        <api_name>x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE</api_name>
         <caller_access/>
         <client_callable>false</client_callable>
         <description/>
-        <name>UpdateOfTestRels</name>
-        <script><![CDATA[// new x_tekso_twxapp01.UpdateOfTestRels().restoreAllCMDBRelationRecordsSilently();
+        <name>UpdateOfTestRelsOBSOLETE</name>
+        <script><![CDATA[// new x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE().restoreAllCMDBRelationRecordsSilently();
 
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-// new x_tekso_twxapp01.UpdateOfTestRels().updateCMDBRelationRecords(1,sys_id);
+// new x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE().updateCMDBRelationRecords(1,sys_id);
 
-var UpdateOfTestRels = Class.create();
-UpdateOfTestRels.prototype = {
+var UpdateOfTestRelsOBSOLETE = Class.create();
+UpdateOfTestRelsOBSOLETE.prototype = {
     initialize: function() {
     },
 	
@@ -283,19 +283,19 @@ UpdateOfTestRels.prototype = {
 		return rtnSysID;
 	},
 
-    type: 'UpdateOfTestRels'
+    type: 'UpdateOfTestRelsOBSOLETE'
 };
 
 /* Example calling
 
-new x_tekso_twxapp01.UpdateOfTestRels().restoreAllCMDBRelationRecordsSilently();
+new x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE().restoreAllCMDBRelationRecordsSilently();
 
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-new x_tekso_twxapp01.UpdateOfTestRels().updateCMDBRelationRecords(1,sys_id);
+new x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE().updateCMDBRelationRecords(1,sys_id);
 
 or
 
-var si = new x_tekso_twxapp01.UpdateOfTestRels();
+var si = new x_tekso_twxapp01.UpdateOfTestRelsOBSOLETE();
 si.restoreAllCMDBRelationRecordsSilently();
 */
 ]]></script>
@@ -303,13 +303,13 @@ si.restoreAllCMDBRelationRecordsSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 10:55:06</sys_created_on>
         <sys_id>68956ab3dbc4d81041d08f3813961918</sys_id>
-        <sys_mod_count>17</sys_mod_count>
-        <sys_name>UpdateOfTestRels</sys_name>
+        <sys_mod_count>18</sys_mod_count>
+        <sys_name>UpdateOfTestRelsOBSOLETE</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_68956ab3dbc4d81041d08f3813961918</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-27 19:39:47</sys_updated_on>
+        <sys_updated_on>2020-05-28 17:31:27</sys_updated_on>
     </sys_script_include>
 </record_update>

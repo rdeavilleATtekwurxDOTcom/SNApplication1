@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>false</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -27,7 +27,22 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[function stringsMatch(str1,str2) {
+        <script><![CDATA[function checkIfRecordExists(tbl,sysID) {
+	var sysID2 = sysID.toString();
+	var tbl2 = tbl.toString();
+	var rtn = false;
+	if (tbl2.length > 0 && sysID2.length > 0) {
+		var gr1 = new GlideRecord(tbl2);
+		gr1.addQuery('sys_id',sysID2);
+		gr1.query();
+		if (gr1.next()) {
+			rtn = true;
+		}
+	}
+	return rtn;
+}
+
+function stringsMatch(str1,str2) {
 	var rtn = false;
 	var str1a = str1.toString();
 	var str2a = str2.toString();
@@ -221,7 +236,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var thisRecordStatus = current.status.toString();
 	
 	// This BR should only be on cmdb_ci and cmdb_rel_ci
-	var br = 'BR uControl Track Upd cmdb_ci';
+	//var br = 'BR uControl Track Upd cmdb_ci';
 	
 	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
 	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
@@ -375,14 +390,14 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		//0 = Created by uControl Integration User & updated by another user
 		//1 = Updated by a user other than uControl Integration User
 		//2 = Any Update
-		carryOn = false;	
+		var carryOn = false;	
 		if (criteria == 2) {
 			//2 = Any Update
 			carryOn = true;
 		}
 		if (criteria == 1) {			
 			//1 = Updated by a user other than uControl Integration User
-			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
+			if (gotConfigUsr == true && stringsMatch(recordUpdatedBy,configUsrName) == false) {
 				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
 				statusDetails = buildStatusDetails(statusDetails,statusMsg);
 				carryOn = true;
@@ -390,7 +405,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		}
 		if (criteria == 0) {		
 			//0 = Created by uControl Integration User & updated by another user	
-			if (gotConfigUsr == true & stringsMatch(recordUpdatedBy,configUsrName) == false) {
+			if (gotConfigUsr == true && stringsMatch(recordUpdatedBy,configUsrName) == false) {
 				statusMsg = 'Updated By: ' + recordUpdatedBy + ' != uControl Integration User: ' + configUsrName;
 				statusDetails = buildStatusDetails(statusDetails,statusMsg);				
 				if (stringsMatch(recordOriginallyCreatedBy,configUsrName) == true) {
@@ -504,7 +519,25 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 				// For real will be cmdb_ci_appl etc
 				// For test will be x_tekso_twxapp01_test_application etc				
 				var gr2 = new GlideRecord(dataTable);
-				gr2.addQuery('sys_id',sourceRecordSysID);
+				if (current.test_data == true) {
+					//For test data check if the sys id we have got is genuine or made up
+					var exsts = checkIfRecordExists(dataTable,sourceRecordSysID);		
+					if (exsts == true) {
+						//If it is valid then use it
+						gr2.addQuery('sys_id',sourceRecordSysID);
+					}
+					// Otherwise do not use it and the system will just get the first record
+					// anyway as there is a getLimit(1)
+				}
+				else {
+					// For real data we need to get back the correct record
+					// For test data we don't care we just need to grab any record
+					gr2.addQuery('sys_id',sourceRecordSysID);
+				}
+				// There should only be 1 record
+				// If this is real data we have a sys_id so should always return 1 record 
+				// If this is test data then we just want 1 record
+				gr2.setLimit(1);
 				gr2.query();
 				if (gr2.next()) {
 					// Got the record
@@ -702,7 +735,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
 						dbInfo = dbInfo + '\"source_url\":\"' + snURL + '\"'; // ServiceNow URL e.g. https://dev91664.service-now.com/
 
-						var tag = 'changedData';
+						//var tag = 'changedData';
 
 						// If this is test data add in test_data:true
 						if (current.test_data == true) {							
@@ -868,7 +901,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>73</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -876,7 +909,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-14 20:17:26</sys_updated_on>
+        <sys_updated_on>2020-05-28 21:08:36</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

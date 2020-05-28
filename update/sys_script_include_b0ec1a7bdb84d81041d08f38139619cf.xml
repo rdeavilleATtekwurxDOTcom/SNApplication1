@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
     <sys_script_include action="INSERT_OR_UPDATE">
         <access>package_private</access>
-        <active>true</active>
-        <api_name>x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels</api_name>
+        <active>false</active>
+        <api_name>x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE</api_name>
         <caller_access/>
         <client_callable>false</client_callable>
         <description/>
-        <name>SoftDeleteOfTestCIsAndRels</name>
-        <script><![CDATA[// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
+        <name>SoftDeleteOfTestCIsAndRelsOBSOLETE</name>
+        <script><![CDATA[// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().restoreSoftDeletesSilently();
 
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1.sys_id);
-// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1,sys_id);
+// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().softDeleteCIs(1.sys_id);
+// new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().softDeleteCIRelationships(1,sys_id);
 
-var SoftDeleteOfTestCIsAndRels = Class.create();
-SoftDeleteOfTestCIsAndRels.prototype = {
+var SoftDeleteOfTestCIsAndRelsOBSOLETE = Class.create();
+SoftDeleteOfTestCIsAndRelsOBSOLETE.prototype = {
     initialize: function() {
     },
 
@@ -305,19 +305,19 @@ SoftDeleteOfTestCIsAndRels.prototype = {
 		}
 		*/
 	},	
-    type: 'SoftDeleteOfTestCIsAndRels'
+    type: 'SoftDeleteOfTestCIsAndRelsOBSOLETE'
 };
 
 /* Example Calling
 
-new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().restoreSoftDeletesSilently();
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().restoreSoftDeletesSilently();
 // Where sys_id is the sys_id from the x_tekso_twxapp01_generate_test_data record
-new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIs(1,sys_id);
-new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels().softDeleteCIRelationships(1,sys_id);
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().softDeleteCIs(1,sys_id);
+new x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE().softDeleteCIRelationships(1,sys_id);
 
 or
 
-var si = new  x_tekso_twxapp01.SoftDeleteOfTestCIsAndRels();
+var si = new  x_tekso_twxapp01.SoftDeleteOfTestCIsAndRelsOBSOLETE();
 si.restoreSoftDeletesSilently();
 
 */
@@ -326,13 +326,13 @@ si.restoreSoftDeletesSilently();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-15 10:18:54</sys_created_on>
         <sys_id>b0ec1a7bdb84d81041d08f38139619cf</sys_id>
-        <sys_mod_count>25</sys_mod_count>
-        <sys_name>SoftDeleteOfTestCIsAndRels</sys_name>
+        <sys_mod_count>26</sys_mod_count>
+        <sys_name>SoftDeleteOfTestCIsAndRelsOBSOLETE</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_b0ec1a7bdb84d81041d08f38139619cf</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-27 21:14:08</sys_updated_on>
+        <sys_updated_on>2020-05-28 17:28:40</sys_updated_on>
     </sys_script_include>
 </record_update>

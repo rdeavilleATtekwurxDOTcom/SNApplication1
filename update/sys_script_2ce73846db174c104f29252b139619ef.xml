@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>false</action_update>
-        <active>true</active>
+        <active>false</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -138,7 +138,7 @@ function isCMDBTrackingRunning(setupTable) {
 	var thisRecordSysID = current.sys_id.toString();
 	var thisRecordStatus = current.status.toString();
 	
-	var br = 'BR uControl Track Deletes';
+	//var br = 'BR uControl Track Deletes';
 	
 	// For cmdb_rel_ci this will be cmdb_rel_ci for cmdb_ci this could be cmdb_ci_win_server etc
 	var tableName = current.table_name.toString(); // Need to to a toString() to ensure that this is a string
@@ -243,7 +243,6 @@ function isCMDBTrackingRunning(setupTable) {
 	var recordOriginallyCreatedBy = current.record_originally_created_by.toString();		
 	var recordOriginallyCreatedOn = current.record_originally_created_on;
 	var recordLastUpdatedBy = current.record_last_updated_by.toString();		
-	var recordLastUpdatedOn = current.record_last_updated_on;
 	var recordLastUpdatedBySysID = getUserSysID(recordLastUpdatedBy);
 	var recordOriginallyCreatedBySysID = getUserSysID(recordOriginallyCreatedBy);
 	var recordDeletedBy = current.record_deleted_by.toString();
@@ -424,7 +423,7 @@ function isCMDBTrackingRunning(setupTable) {
 			dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
 			dbInfo = dbInfo + '\"source_url\":\"' + snURL + '\"'; // ServiceNow URL e.g. https://dev91664.service-now.com/
 
-			tag = 'deletedData';
+			//tag = 'deletedData';
 
 			var jsonRequestBody = '{' + data + '}';	
 			
@@ -568,7 +567,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>60</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -576,7 +575,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-14 20:15:41</sys_updated_on>
+        <sys_updated_on>2020-05-28 21:08:24</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

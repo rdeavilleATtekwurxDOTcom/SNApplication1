@@ -1,0 +1,1473 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.GenerateTestData</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>GenerateTestData</name>
+        <script><![CDATA[var GenerateTestData = Class.create();
+GenerateTestData.prototype = {
+    initialize: function() {
+    },
+
+	generate_started: function(gen_sys_id,data) {
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
+		var gdt = new GlideDateTime();
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setWorkflow(false);
+			if (data == 'delete_cmdb_ci_appl') {
+				gr1.setValue('build_delete_application_test_data_started',true);
+				gr1.setValue('build_delete_application_test_data_started_at',gdt);		
+			}
+			if (data == 'delete_cmdb_ci_server') {
+				gr1.setValue('build_delete_server_test_data_started',true);
+				gr1.setValue('build_delete_server_test_data_started_at',gdt);		
+			}			
+			if (data == 'delete_cmdb_rel_ci') {
+				gr1.setValue('build_delete_relations_test_data_started',true);
+				gr1.setValue('build_delete_relations_test_data_started_at',gdt);		
+			}			
+
+			if (data == 'update_cmdb_ci_appl') {
+				gr1.setValue('build_update_application_test_data_started',true);
+				gr1.setValue('build_update_application_test_data_started_at',gdt);		
+			}
+			if (data == 'update_cmdb_ci_server') {
+				gr1.setValue('build_update_server_test_data_started',true);
+				gr1.setValue('build_update_server_test_data_started_at',gdt);		
+			}			
+			if (data == 'update_cmdb_rel_ci') {
+				gr1.setValue('build_update_relations_test_data_started',true);
+				gr1.setValue('build_update_relations_test_data_started_at',gdt);		
+			}	
+			
+			var alreadyStarted = gr1.getValue('build_test_data_started') || false;
+			if (alreadyStarted == false) {
+				gr1.setValue('build_test_data_started',true);
+				gr1.setValue('build_test_data_started_at',gdt);				
+			}			
+			gr1.update();
+		}		
+	},
+	
+	generate_completed: function(gen_sys_id,data) {	
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
+		var gdt = new GlideDateTime();
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
+		gr1.query();
+		if (gr1.next()) {	
+			gr1.setWorkflow(false);
+			if (data == 'delete_cmdb_ci_appl') {
+				gr1.setValue('build_delete_application_test_data_completed',true);
+				gr1.setValue('build_delete_application_test_data_completed_at',gdt);		
+			}
+			if (data == 'delete_cmdb_ci_server') {
+				gr1.setValue('build_delete_server_test_data_completed',true);
+				gr1.setValue('build_delete_server_test_data_completed_at',gdt);		
+			}			
+			if (data == 'delete_cmdb_rel_ci') {
+				gr1.setValue('build_delete_relations_test_data_completed',true);
+				gr1.setValue('build_delete_relations_test_data_completed_at',gdt);		
+			}			
+
+			if (data == 'update_cmdb_ci_appl') {
+				gr1.setValue('build_update_application_test_data_completed',true);
+				gr1.setValue('build_update_application_test_data_completed_at',gdt);		
+			}
+			if (data == 'update_cmdb_ci_server') {
+				gr1.setValue('build_update_server_test_data_completed',true);
+				gr1.setValue('build_update_server_test_data_completed_at',gdt);		
+			}			
+			if (data == 'update_cmdb_rel_ci') {
+				gr1.setValue('build_update_relations_test_data_completed',true);
+				gr1.setValue('build_update_relations_test_data_completed_at',gdt);		
+			}	
+						
+			gr1.update();
+		}
+		this.generate_totally_completed(gen_sys_id);
+	},
+	
+	generate_totally_completed: function(gen_sys_id) {
+		// Check if we have totally finished - i.e. was this the last thing that was needed to complete
+		// or is there other stuff that is still outstanding
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
+		var gdt = new GlideDateTime();
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setWorkflow(false);
+			var delRelQty = gr1.getValue('delete_relations_qty') || 0;				
+			var delServQty = gr1.getValue('delete_server_qty') || 0;				
+			var delApplQty = gr1.getValue('delete_application_qty') || 0;				
+			var updRelQty = gr1.getValue('update_relations_qty') || 0;			
+			var updServQty = gr1.getValue('update_server_qty') || 0;				
+			var updApplQty = gr1.getValue('update_application_qty') || 0;
+			
+			var delApplCmp = gr1.getValue('build_delete_application_test_data_completed') || false;
+			var delSrvCmp = gr1.getValue('build_delete_server_test_data_completed') || false;
+			var delRelCmp = gr1.getValue('build_delete_relations_test_data_completed') || false;			
+			var updRelCmp = gr1.getValue('build_update_relations_test_data_completed') || false;
+			var updServCmp = gr1.getValue('build_update_server_test_data_completed') || false;
+			var updApplCmp = gr1.getValue('build_update_application_test_data_completed') || false;
+
+			if (delServQty < 1 || (delServQty > 0 && delSrvCmp == true)) {
+				if (delApplQty < 1 || (delApplQty > 0 && delApplCmp == true)) {
+					if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
+						if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
+							if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
+								if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
+									// All done
+									gr1.setValue('build_test_data_completed',true);
+									gr1.setValue('build_test_data_completed_at',gdt);
+									//Need to put this through GlideDateTime()
+									var strt = new GlideDateTime(gr1.getValue('build_test_data_started_at'));
+									var dur = new GlideDuration();
+									dur = GlideDateTime.subtract(strt,gdt);														
+									gr1.setValue('time_taken_to_build_test_data',dur);										
+									gr1.setValue('status','Test Data Build Complete');								
+									gr1.update();		
+								}
+							}
+						}
+					}
+				}
+			}			
+		} //if (gr1.next()) {		
+	},
+	
+	generate_data: function(qty,gen_sys_id,data) {
+		
+		gs.info('generate_data qty: ' + qty.toString());
+		// Set the start time
+		this.generate_started(gen_sys_id,data);
+		if (qty < 1) {
+			qty = 1;
+		}
+
+		var cnt = 0;
+		while (cnt < qty) {
+			cnt = cnt + 1;
+			if (data == 'delete_cmdb_ci_appl') {
+				this.delete_cmdb_ci_appl(cnt);
+			}
+			if (data == 'delete_cmdb_ci_server') {
+				this.delete_cmdb_ci_server(cnt);
+			}			
+			if (data == 'delete_cmdb_rel_ci') {
+				this.delete_cmdb_rel_ci(cnt);
+			}	
+
+			if (data == 'update_cmdb_ci_appl') {
+				this.update_cmdb_ci_appl(cnt);
+			}
+			if (data == 'update_cmdb_ci_server') {
+				this.update_cmdb_ci_server(cnt);
+			}			
+			if (data == 'update_cmdb_rel_ci') {
+				this.update_cmdb_rel_ci(cnt);
+			}				
+		}
+		// Set the end time
+		this.generate_completed(gen_sys_id,data);
+	},
+
+	delete_cmdb_ci_appl: function(num) {
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var testTableName = 'x_tekso_twxapp01_test_application';
+		var actualTableName = 'x_tekso_twxapp01_test_application';
+		var tableName = 'cmdb_ci_appl';
+
+		var gdt = new GlideDateTime();	
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();
+		var gr2 = new GlideRecord(testTableName); //x_tekso_twxapp01_test_application
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();		
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);	
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);		
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_ci_appl
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_last_updated_by',current.sys_updated_by);
+		gr1.setValue('record_last_updated_by',updatedBy);
+
+		//gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_last_updated_on',updatedOn);	
+
+		//var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+		var lastUpdatedBySysID = gs.getUserID(updatedBy);	
+		gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+
+		gr1.setValue('record_deleted_by',gs.getUserName());
+		gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+
+		gr1.setValue('record_deleted_on',gdt);	
+
+		var correlationID1 = 'correlationID1 [' + zeroPaddedNumStr + ']'; // 512
+		correlationID1 = this.padOutString(correlationID1,512,'!!'); // 512
+		//gr1.setValue('correlation_id1',current.correlation_id);
+		gr1.setValue('correlation_id1',correlationID1);	
+
+		var discoverySource = 'TekWurx uControl';
+		//gr1.setValue('discovery_source1',current.discovery_source);
+		gr1.setValue('discovery_source1',discoverySource);
+
+		var name = 'name [' + zeroPaddedNumStr + ']';
+		name = this.padOutString(name,255,'!!'); // 255
+
+		//gr1.setValue('name',current.name);
+		gr1.setValue('name',name);
+
+		gr1.setValue('base_table','cmdb_ci');
+
+		var allFieldsArr = [];
+
+		allFieldsArr.push('asset');
+		allFieldsArr.push('asset_tag');
+		allFieldsArr.push('assigned');
+		allFieldsArr.push('assigned_to');
+		allFieldsArr.push('assignment_group');
+		allFieldsArr.push('attributes');
+		allFieldsArr.push('can_print');
+		allFieldsArr.push('category');
+		allFieldsArr.push('change_control');
+		allFieldsArr.push('checked_in');
+		allFieldsArr.push('checked_out');
+		allFieldsArr.push('cl_port');
+		allFieldsArr.push('comments');
+		allFieldsArr.push('company');
+		allFieldsArr.push('config_directory');
+		allFieldsArr.push('config_file');
+		allFieldsArr.push('correlation_id');
+		allFieldsArr.push('cost');
+		allFieldsArr.push('cost_cc');
+		allFieldsArr.push('cost_center');
+		allFieldsArr.push('delivery_date');
+		allFieldsArr.push('department');
+		allFieldsArr.push('discovery_source');
+		allFieldsArr.push('dns_domain');
+		allFieldsArr.push('due');
+		allFieldsArr.push('due_in');
+		allFieldsArr.push('duplicate_of');
+		allFieldsArr.push('edition');
+		allFieldsArr.push('fault_count');
+		allFieldsArr.push('first_discovered');
+		allFieldsArr.push('fqdn');
+		allFieldsArr.push('gl_account');
+		allFieldsArr.push('install_date');
+		allFieldsArr.push('install_directory');
+		allFieldsArr.push('install_status');
+		allFieldsArr.push('invoice_number');
+		allFieldsArr.push('ip_address');
+		allFieldsArr.push('is_clustered');
+		allFieldsArr.push('justification');
+		allFieldsArr.push('last_discovered');
+		allFieldsArr.push('lease_id');
+		allFieldsArr.push('location');
+		allFieldsArr.push('mac_address');
+		allFieldsArr.push('maintenance_schedule');
+		allFieldsArr.push('managed_by');
+		allFieldsArr.push('manufacturer');
+		allFieldsArr.push('model_id');
+		allFieldsArr.push('model_number');
+		allFieldsArr.push('monitor');
+		allFieldsArr.push('name');
+		allFieldsArr.push('operational_status');
+		allFieldsArr.push('order_date');
+		allFieldsArr.push('orginal_value_sys_domain');
+		allFieldsArr.push('owned_by');
+		allFieldsArr.push('pid');
+		allFieldsArr.push('po_number');
+		allFieldsArr.push('purchase_date');
+		allFieldsArr.push('rp_command_hash');
+		allFieldsArr.push('rp_key_parameters_hash');
+		allFieldsArr.push('running_process_command');
+		allFieldsArr.push('running_process_key_parameters');
+		allFieldsArr.push('schedule');
+		allFieldsArr.push('serial_number');
+		allFieldsArr.push('short_description');
+		allFieldsArr.push('skip_sync');
+		allFieldsArr.push('start_date');
+		allFieldsArr.push('subcategory');
+		allFieldsArr.push('support_group');
+		allFieldsArr.push('supported_by');
+		allFieldsArr.push('sys_class_name');
+		allFieldsArr.push('sys_class_path');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_domain');
+		allFieldsArr.push('sys_domain_path');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('tcp_port');
+		allFieldsArr.push('unverified');
+		allFieldsArr.push('used_for');
+		allFieldsArr.push('vendor');
+		allFieldsArr.push('version');
+		allFieldsArr.push('warranty_expiration');
+
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+		gr1.setValue('test_data',true); // TESTING
+
+		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('test_table_name',testTableName); // x_tekso_twxapp01_test_application
+
+		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('actual_table_name',actualTableName); // x_tekso_twxapp01_test_application
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci_appl Deletion');
+		gr1.insert();
+	},
+
+	delete_cmdb_ci_server:function(num) {
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var testTableName = 'x_tekso_twxapp01_test_server';
+		var actualTableName = 'x_tekso_twxapp01_test_server';	
+		var tableName = 'cmdb_ci_server';
+
+		var gdt = new GlideDateTime();	
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();	
+		var gr2 = new GlideRecord(testTableName); //x_tekso_twxapp01_test_server
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');		
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();		
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);	
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);		
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_ci_server
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_last_updated_by',current.sys_updated_by);
+		gr1.setValue('record_last_updated_by',updatedBy);
+
+		//gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_last_updated_on',updatedOn);	
+
+		//var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+		var lastUpdatedBySysID = gs.getUserID(updatedBy);	
+		gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+
+		gr1.setValue('record_deleted_by',gs.getUserName());
+		gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+
+		gr1.setValue('record_deleted_on',gdt);	
+
+		var correlationID1 = 'correlationID1 [' + zeroPaddedNumStr + ']'; // 512
+		correlationID1 = this.padOutString(correlationID1,512,'!!'); // 512
+		//gr1.setValue('correlation_id1',current.correlation_id);
+		gr1.setValue('correlation_id1',correlationID1);	
+
+		var discoverySource = 'TekWurx uControl';
+		//gr1.setValue('discovery_source1',current.discovery_source);
+		gr1.setValue('discovery_source1',discoverySource);
+
+		var name = 'name [' + zeroPaddedNumStr + ']';
+		name = this.padOutString(name,255,'!!'); // 255
+
+		//gr1.setValue('name',current.name);
+		gr1.setValue('name',name);
+
+		gr1.setValue('base_table','cmdb_ci');
+
+		var allFieldsArr = [];
+
+		allFieldsArr.push('asset');
+		allFieldsArr.push('asset_tag');
+		allFieldsArr.push('assigned');
+		allFieldsArr.push('assigned_to');
+		allFieldsArr.push('assignment_group');
+		allFieldsArr.push('attributes');
+		allFieldsArr.push('can_print');
+		allFieldsArr.push('category');
+		allFieldsArr.push('cd_rom');
+		allFieldsArr.push('cd_speed');
+		allFieldsArr.push('change_control');
+		allFieldsArr.push('chassis_type');
+		allFieldsArr.push('checked_in');
+		allFieldsArr.push('checked_out');
+		allFieldsArr.push('classification');
+		allFieldsArr.push('comments');
+		allFieldsArr.push('company');
+		allFieldsArr.push('correlation_id');
+		allFieldsArr.push('cost');
+		allFieldsArr.push('cost_cc');
+		allFieldsArr.push('cost_center');
+		allFieldsArr.push('cpu_core_count');
+		allFieldsArr.push('cpu_core_thread');
+		allFieldsArr.push('cpu_count');
+		allFieldsArr.push('cpu_manufacturer');
+		allFieldsArr.push('cpu_name');
+		allFieldsArr.push('cpu_speed');
+		allFieldsArr.push('cpu_type');
+		allFieldsArr.push('default_gateway');
+		allFieldsArr.push('delivery_date');
+		allFieldsArr.push('department');
+		allFieldsArr.push('discovery_source');
+		allFieldsArr.push('disk_space');
+		allFieldsArr.push('dns_domain');
+		allFieldsArr.push('dr_backup');
+		allFieldsArr.push('due');
+		allFieldsArr.push('due_in');
+		allFieldsArr.push('duplicate_of');
+		allFieldsArr.push('fault_count');
+		allFieldsArr.push('firewall_status');
+		allFieldsArr.push('first_discovered');
+		allFieldsArr.push('floppy');
+		allFieldsArr.push('form_factor');
+		allFieldsArr.push('fqdn');
+		allFieldsArr.push('gl_account');
+		allFieldsArr.push('hardware_status');
+		allFieldsArr.push('hardware_substatus');
+		allFieldsArr.push('host_name');
+		allFieldsArr.push('install_date');
+		allFieldsArr.push('install_status');
+		allFieldsArr.push('invoice_number');
+		allFieldsArr.push('ip_address');
+		allFieldsArr.push('justification');
+		allFieldsArr.push('last_discovered');
+		allFieldsArr.push('lease_id');
+		allFieldsArr.push('location');
+		allFieldsArr.push('mac_address');
+		allFieldsArr.push('maintenance_schedule');
+		allFieldsArr.push('managed_by');
+		allFieldsArr.push('manufacturer');
+		allFieldsArr.push('model_id');
+		allFieldsArr.push('model_number');
+		allFieldsArr.push('monitor');
+		allFieldsArr.push('name');
+		allFieldsArr.push('object_id');
+		allFieldsArr.push('operational_status');
+		allFieldsArr.push('order_date');
+		allFieldsArr.push('orginal_value_sys_domain');
+		allFieldsArr.push('os');
+		allFieldsArr.push('os_address_width');
+		allFieldsArr.push('os_domain');
+		allFieldsArr.push('os_service_pack');
+		allFieldsArr.push('os_version');
+		allFieldsArr.push('owned_by');
+		allFieldsArr.push('po_number');
+		allFieldsArr.push('purchase_date');
+		allFieldsArr.push('ram');
+		allFieldsArr.push('schedule');
+		allFieldsArr.push('serial_number');
+		allFieldsArr.push('short_description');
+		allFieldsArr.push('skip_sync');
+		allFieldsArr.push('start_date');
+		allFieldsArr.push('subcategory');
+		allFieldsArr.push('support_group');
+		allFieldsArr.push('supported_by');
+		allFieldsArr.push('sys_class_name');
+		allFieldsArr.push('sys_class_path');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_domain');
+		allFieldsArr.push('sys_domain_path');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('unverified');
+		allFieldsArr.push('used_for');
+		allFieldsArr.push('vendor');
+		allFieldsArr.push('virtual');
+		allFieldsArr.push('warranty_expiration');
+
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+		gr1.setValue('test_data',true); // TESTING
+
+		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
+
+		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_server
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci_server Deletion');
+		gr1.insert();
+
+	},
+
+	delete_cmdb_rel_ci:function(num) {
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var testTableName = 'x_tekso_twxapp01_test_ci_relationship';
+		var actualTableName = 'x_tekso_twxapp01_test_ci_relationship';
+		var tableName = 'cmdb_rel_ci';
+
+		var gdt = new GlideDateTime();	
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();	
+		var parentSysID = '';
+		var childSysID = '';
+		var typeSysID = '';
+		var typeName = '';
+		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_ci_relationship
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');	
+			typeName = gr2.type.getRefRecord().getValue('name');
+			var pSysID = gr2.getValue('parent');
+			parentSysID = pSysID.toString(); 
+			var cSysID = gr2.getValue('child');
+			childSysID = cSysID.toString(); 	
+			var tSysID = gr2.getValue('type');
+			typeSysID = tSysID.toString(); 			
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();	
+			parentSysID = gs.generateGUID();
+			childSysID = gs.generateGUID();
+			typeSysID = gs.generateGUID();
+			typeName = 'Runs on::Runs';
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);	
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);	
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_rel_ci		
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_last_updated_by',current.sys_updated_by);
+		gr1.setValue('record_last_updated_by',updatedBy);
+
+		//gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_last_updated_on',updatedOn);	
+
+		//var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+		var lastUpdatedBySysID = gs.getUserID(updatedBy);
+		gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+
+		gr1.setValue('record_deleted_by',gs.getUserName());
+		gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+
+		gr1.setValue('record_deleted_on',gdt);	
+
+		var correlationID1 = 'correlationID1 [' + zeroPaddedNumStr + ']'; // 512
+		correlationID1 = this.padOutString(correlationID1,512,'!!'); // 512
+		//gr1.setValue('correlation_id1',current.parent.correlation_id);
+		gr1.setValue('correlation_id1',correlationID1);
+
+		var correlationID2 = 'correlationID2 [' + zeroPaddedNumStr + ']'; // 512
+		correlationID2 = this.padOutString(correlationID2,512,'!!'); // 512	
+		//gr1.setValue('correlation_id2',current.child.correlation_id);	
+		gr1.setValue('correlation_id2',correlationID2);	
+
+		var discoverySource = 'TekWurx uControl';
+		//gr1.setValue('discovery_source1',current.parent.discovery_source);
+		gr1.setValue('discovery_source1',discoverySource);
+
+		//gr1.setValue('discovery_source2',current.child.discovery_source);	
+		gr1.setValue('discovery_source2',discoverySource);	
+
+		gr1.setValue('base_table','cmdb_rel_ci');
+
+		//gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+		gr1.setValue('rel_parent_sys_id',parentSysID);
+
+		//gr1.setValue('rel_type_sys_id',current.type.sys_id);
+		gr1.setValue('rel_type_sys_id',typeSysID);
+
+		//gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+		gr1.setValue('rel_child_sys_id',childSysID);	
+
+		var childName = 'child [' + zeroPaddedNumStr + ']';
+		childName = this.padOutString(childName,255,'!!'); // 255	
+		//gr1.setValue('rel_child_name',current.child.name);
+		gr1.setValue('rel_child_name',childName);
+
+		var parentName = 'parent [' + zeroPaddedNumStr + ']';
+		parentName = this.padOutString(parentName,255,'!!'); // 255		
+		//gr1.setValue('rel_parent_name',current.parent.name);
+		gr1.setValue('rel_parent_name',parentName);
+
+		//gr1.setValue('rel_type_name',current.type.name);
+		gr1.setValue('rel_type_name',typeName);
+
+		var allFieldsArr = [];
+		allFieldsArr.push('child');
+		allFieldsArr.push('connection_strength');
+		allFieldsArr.push('parent');
+		allFieldsArr.push('percent_outage');
+		allFieldsArr.push('port');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('type');
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+		gr1.setValue('test_data',true); // TESTING	
+
+		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
+
+		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+		gr1.setValue('actual_table_name',actualTableName); // x_tekso_twxapp01_test_ci_relationship
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_rel_ci Deletion');
+		gr1.insert();
+	},
+
+	update_cmdb_rel_ci: function(num) {
+
+		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var gdt = new GlideDateTime();	
+
+		var testTableName = 'x_tekso_twxapp01_test_ci_relationship';
+		var actualTableName = 'x_tekso_twxapp01_test_ci_relationship';
+		var tableName = 'cmdb_rel_ci';
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();	
+		var parentSysID = '';
+		var childSysID = '';
+		var typeSysID = '';
+		var typeName = '';	
+		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_ci_relationship
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');	
+			typeName = gr2.type.getRefRecord().getValue('name');
+			var pSysID = gr2.getValue('parent');
+			parentSysID = pSysID.toString(); 
+			var cSysID = gr2.getValue('child');
+			childSysID = cSysID.toString(); 	
+			var tSysID = gr2.getValue('type');
+			typeSysID = tSysID.toString(); 			
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();
+			parentSysID = gs.generateGUID();
+			childSysID = gs.generateGUID();
+			typeSysID = gs.generateGUID();
+			typeName = 'Runs on::Runs';		
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_rel_ci
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_updated_by',current.sys_updated_by);
+		gr1.setValue('record_updated_by',updatedBy);
+
+		var updatedBySysID = gs.getUserID(updatedBy);	
+		gr1.setValue('record_updated_by_sys_id',updatedBySysID);
+
+		//gr1.setValue('record_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_updated_on',gdt);	
+
+		gr1.setValue('base_table','cmdb_rel_ci');	
+
+		var fieldsChangedArr = [];
+		fieldsChangedArr.push('child');
+		fieldsChangedArr.push('connection_strength');
+		fieldsChangedArr.push('parent');
+		fieldsChangedArr.push('percent_outage');
+		fieldsChangedArr.push('port');
+		fieldsChangedArr.push('type');
+
+		var fieldsChanged = fieldsChangedArr.join(',');	
+		gr1.setValue('fields_changed',fieldsChanged);
+		gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
+		gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+
+		//gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+		gr1.setValue('rel_parent_sys_id',parentSysID);
+
+		//gr1.setValue('rel_type_sys_id',current.type.sys_id);
+		gr1.setValue('rel_type_sys_id',typeSysID);
+
+		//gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+		gr1.setValue('rel_child_sys_id',childSysID);	
+
+		var childName = 'child [' + zeroPaddedNumStr + ']';
+		childName = this.padOutString(childName,255,'!!'); // 255	
+		//gr1.setValue('rel_child_name',current.child.name);
+		gr1.setValue('rel_child_name',childName);
+
+		var parentName = 'parent [' + zeroPaddedNumStr + ']';
+		parentName = this.padOutString(parentName,255,'!!'); // 255		
+		//gr1.setValue('rel_parent_name',current.parent.name);
+		gr1.setValue('rel_parent_name',parentName);
+
+		//gr1.setValue('rel_type_name',current.type.name);
+		gr1.setValue('rel_type_name',typeName);
+
+		var allFieldsArr = [];
+		allFieldsArr.push('child');
+		allFieldsArr.push('connection_strength');
+		allFieldsArr.push('parent');
+		allFieldsArr.push('percent_outage');
+		allFieldsArr.push('port');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('type');
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
+
+		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_ci_relationship
+
+		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
+
+		gr1.setValue('test_data',true); // TESTING	
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_rel_ci Update');		
+		gr1.insert();
+	},
+
+
+	padOutString: function(existingText,maxSize,tail) {
+		var rtnStr = '';
+		var str = '';
+		var ln = 0;
+		var ln2 = 0;
+
+		str = existingText + ' ' + tail;		
+
+		ln = str.length;
+		if (ln >= maxSize) {
+			// String + tail is biiger than max size 
+			// so do a left() to get back the maxsize
+			rtnStr = str.substring(0,maxSize);
+		}		
+		else {
+			ln2 = maxSize - ln;
+			str = this.generateString(ln2);
+			rtnStr = existingText + ' ' + str + tail;			
+		}
+		return rtnStr;
+	},
+
+	update_cmdb_ci_appl: function(num) {
+
+		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var gdt = new GlideDateTime();	
+
+		var tableName = 'cmdb_ci_appl';
+		var testTableName = 'x_tekso_twxapp01_test_application';
+		var actualTableName = 'x_tekso_twxapp01_test_application';
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();	
+		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_application
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');			
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();		
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_ci_appl
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_updated_by',current.sys_updated_by);
+		gr1.setValue('record_updated_by',updatedBy);
+
+		var updatedBySysID = gs.getUserID(updatedBy);	
+		gr1.setValue('record_updated_by_sys_id',updatedBySysID);
+
+		//gr1.setValue('record_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_updated_on',gdt);	
+
+		gr1.setValue('base_table','cmdb_ci');	
+
+		var fieldsChangedArr = [];
+
+		fieldsChangedArr.push('asset');
+		fieldsChangedArr.push('asset_tag');
+		fieldsChangedArr.push('assigned');
+		fieldsChangedArr.push('assigned_to');
+		fieldsChangedArr.push('assignment_group');
+		fieldsChangedArr.push('attributes');
+		fieldsChangedArr.push('can_print');
+		fieldsChangedArr.push('category');
+		fieldsChangedArr.push('change_control');
+		fieldsChangedArr.push('checked_in');
+		fieldsChangedArr.push('checked_out');
+		fieldsChangedArr.push('cl_port');
+		fieldsChangedArr.push('comments');
+		fieldsChangedArr.push('company');
+		fieldsChangedArr.push('config_directory');
+		fieldsChangedArr.push('config_file');
+		fieldsChangedArr.push('correlation_id');
+		fieldsChangedArr.push('cost');
+		fieldsChangedArr.push('cost_cc');
+		fieldsChangedArr.push('cost_center');
+		fieldsChangedArr.push('delivery_date');
+		fieldsChangedArr.push('department');
+		fieldsChangedArr.push('discovery_source');
+		fieldsChangedArr.push('dns_domain');
+		fieldsChangedArr.push('due');
+		fieldsChangedArr.push('due_in');
+		fieldsChangedArr.push('duplicate_of');
+		fieldsChangedArr.push('edition');
+		fieldsChangedArr.push('fault_count');
+		fieldsChangedArr.push('first_discovered');
+		fieldsChangedArr.push('fqdn');
+		fieldsChangedArr.push('gl_account');
+		fieldsChangedArr.push('install_date');
+		fieldsChangedArr.push('install_directory');
+		fieldsChangedArr.push('install_status');
+		fieldsChangedArr.push('invoice_number');
+		fieldsChangedArr.push('ip_address');
+		fieldsChangedArr.push('is_clustered');
+		fieldsChangedArr.push('justification');
+		fieldsChangedArr.push('last_discovered');
+		fieldsChangedArr.push('lease_id');
+		fieldsChangedArr.push('location');
+		fieldsChangedArr.push('mac_address');
+		fieldsChangedArr.push('maintenance_schedule');
+		fieldsChangedArr.push('managed_by');
+		fieldsChangedArr.push('manufacturer');
+		fieldsChangedArr.push('model_id');
+		fieldsChangedArr.push('model_number');
+		fieldsChangedArr.push('monitor');
+		fieldsChangedArr.push('name');
+		fieldsChangedArr.push('operational_status');
+		fieldsChangedArr.push('order_date');
+		fieldsChangedArr.push('orginal_value_sys_domain');
+		fieldsChangedArr.push('owned_by');
+		fieldsChangedArr.push('pid');
+		fieldsChangedArr.push('po_number');
+		fieldsChangedArr.push('purchase_date');
+		fieldsChangedArr.push('rp_command_hash');
+		fieldsChangedArr.push('rp_key_parameters_hash');
+		fieldsChangedArr.push('running_process_command');
+		fieldsChangedArr.push('running_process_key_parameters');
+		fieldsChangedArr.push('schedule');
+		fieldsChangedArr.push('serial_number');
+		fieldsChangedArr.push('short_description');
+		fieldsChangedArr.push('skip_sync');
+		fieldsChangedArr.push('start_date');
+		fieldsChangedArr.push('subcategory');
+		fieldsChangedArr.push('support_group');
+		fieldsChangedArr.push('supported_by');
+		//Exclude the sys_ fields
+		//fieldsChangedArr.push('sys_class_name');
+		//fieldsChangedArr.push('sys_class_path');
+		//fieldsChangedArr.push('sys_created_by');
+		//fieldsChangedArr.push('sys_created_on');
+		//fieldsChangedArr.push('sys_domain');
+		//fieldsChangedArr.push('sys_domain_path');
+		//fieldsChangedArr.push('sys_id');
+		//fieldsChangedArr.push('sys_mod_count');
+		//fieldsChangedArr.push('sys_tags');
+		//fieldsChangedArr.push('sys_updated_by');
+		//fieldsChangedArr.push('sys_updated_on');
+		fieldsChangedArr.push('tcp_port');
+		fieldsChangedArr.push('unverified');
+		fieldsChangedArr.push('used_for');
+		fieldsChangedArr.push('vendor');
+		fieldsChangedArr.push('version');
+		fieldsChangedArr.push('warranty_expiration');
+
+		var fieldsChanged = fieldsChangedArr.join(',');	
+		gr1.setValue('fields_changed',fieldsChanged);
+		gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
+		gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+
+		var name = 'name [' + zeroPaddedNumStr + ']';
+		name = this.padOutString(name,255,'!!'); // 255
+
+		//gr1.setValue('name',current.name);
+		gr1.setValue('name',name);
+
+		var allFieldsArr = [];
+
+		allFieldsArr.push('asset');
+		allFieldsArr.push('asset_tag');
+		allFieldsArr.push('assigned');
+		allFieldsArr.push('assigned_to');
+		allFieldsArr.push('assignment_group');
+		allFieldsArr.push('attributes');
+		allFieldsArr.push('can_print');
+		allFieldsArr.push('category');
+		allFieldsArr.push('change_control');
+		allFieldsArr.push('checked_in');
+		allFieldsArr.push('checked_out');
+		allFieldsArr.push('cl_port');
+		allFieldsArr.push('comments');
+		allFieldsArr.push('company');
+		allFieldsArr.push('config_directory');
+		allFieldsArr.push('config_file');
+		allFieldsArr.push('correlation_id');
+		allFieldsArr.push('cost');
+		allFieldsArr.push('cost_cc');
+		allFieldsArr.push('cost_center');
+		allFieldsArr.push('delivery_date');
+		allFieldsArr.push('department');
+		allFieldsArr.push('discovery_source');
+		allFieldsArr.push('dns_domain');
+		allFieldsArr.push('due');
+		allFieldsArr.push('due_in');
+		allFieldsArr.push('duplicate_of');
+		allFieldsArr.push('edition');
+		allFieldsArr.push('fault_count');
+		allFieldsArr.push('first_discovered');
+		allFieldsArr.push('fqdn');
+		allFieldsArr.push('gl_account');
+		allFieldsArr.push('install_date');
+		allFieldsArr.push('install_directory');
+		allFieldsArr.push('install_status');
+		allFieldsArr.push('invoice_number');
+		allFieldsArr.push('ip_address');
+		allFieldsArr.push('is_clustered');
+		allFieldsArr.push('justification');
+		allFieldsArr.push('last_discovered');
+		allFieldsArr.push('lease_id');
+		allFieldsArr.push('location');
+		allFieldsArr.push('mac_address');
+		allFieldsArr.push('maintenance_schedule');
+		allFieldsArr.push('managed_by');
+		allFieldsArr.push('manufacturer');
+		allFieldsArr.push('model_id');
+		allFieldsArr.push('model_number');
+		allFieldsArr.push('monitor');
+		allFieldsArr.push('name');
+		allFieldsArr.push('operational_status');
+		allFieldsArr.push('order_date');
+		allFieldsArr.push('orginal_value_sys_domain');
+		allFieldsArr.push('owned_by');
+		allFieldsArr.push('pid');
+		allFieldsArr.push('po_number');
+		allFieldsArr.push('purchase_date');
+		allFieldsArr.push('rp_command_hash');
+		allFieldsArr.push('rp_key_parameters_hash');
+		allFieldsArr.push('running_process_command');
+		allFieldsArr.push('running_process_key_parameters');
+		allFieldsArr.push('schedule');
+		allFieldsArr.push('serial_number');
+		allFieldsArr.push('short_description');
+		allFieldsArr.push('skip_sync');
+		allFieldsArr.push('start_date');
+		allFieldsArr.push('subcategory');
+		allFieldsArr.push('support_group');
+		allFieldsArr.push('supported_by');
+		allFieldsArr.push('sys_class_name');
+		allFieldsArr.push('sys_class_path');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_domain');
+		allFieldsArr.push('sys_domain_path');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('tcp_port');
+		allFieldsArr.push('unverified');
+		allFieldsArr.push('used_for');
+		allFieldsArr.push('vendor');
+		allFieldsArr.push('version');
+		allFieldsArr.push('warranty_expiration');
+
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
+
+		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_application
+
+		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_application
+
+		gr1.setValue('test_data',true); // TESTING	
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci Update cmdb_ci_appl');		
+		gr1.insert();
+	},
+	
+	update_cmdb_ci_server: function(num) {
+
+		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
+
+		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
+
+		var gdt = new GlideDateTime();	
+
+		var tableName = 'cmdb_ci_server';
+		var testTableName = 'x_tekso_twxapp01_test_server';
+		var actualTableName = 'x_tekso_twxapp01_test_server';
+
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		gr1.initialize();
+
+		var sourceRecordSysID = '';
+		var createdBy = gs.getUserName();
+		var createdOn = new GlideDateTime();
+		var updatedBy = gs.getUserName();
+		var updatedOn = new GlideDateTime();		
+		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_application
+		gr2.setLimit(1);
+		gr2.query();
+		if (gr2.next()) {
+			var sysID = gr2.getValue('sys_id') || '';
+			sourceRecordSysID = sysID.toString();
+			createdBy = gr2.getValue('sys_created_by');
+			updatedBy = gr2.getValue('sys_updated_by');	
+			createdOn = gr2.getValue('sys_created_on');
+			updatedOn = gr2.getValue('sys_updated_on');		
+		}
+		else {
+			sourceRecordSysID = gs.generateGUID();		
+		}
+
+		//gr1.setValue('source_record_sys_id',current.sys_id);
+		gr1.setValue('source_record_sys_id',sourceRecordSysID);
+
+		gr1.setValue('table_name',tableName); // real table name cmdb_ci_server
+
+		//gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_by',createdBy);
+
+		//gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_originally_created_on',createdOn); 	
+
+		//gr1.setValue('record_updated_by',current.sys_updated_by);
+		gr1.setValue('record_updated_by',updatedBy);
+
+		var updatedBySysID = gs.getUserID(updatedBy);	
+		gr1.setValue('record_updated_by_sys_id',updatedBySysID);
+
+		//gr1.setValue('record_updated_on',current.sys_updated_on);	
+		gr1.setValue('record_updated_on',gdt);	
+
+		gr1.setValue('base_table','cmdb_ci');	
+
+		var fieldsChangedArr = [];
+
+		fieldsChangedArr.push('asset');
+		fieldsChangedArr.push('asset_tag');
+		fieldsChangedArr.push('assigned');
+		fieldsChangedArr.push('assigned_to');
+		fieldsChangedArr.push('assignment_group');
+		fieldsChangedArr.push('attributes');
+		fieldsChangedArr.push('can_print');
+		fieldsChangedArr.push('category');
+		fieldsChangedArr.push('cd_rom');
+		fieldsChangedArr.push('cd_speed');
+		fieldsChangedArr.push('change_control');
+		fieldsChangedArr.push('chassis_type');
+		fieldsChangedArr.push('checked_in');
+		fieldsChangedArr.push('checked_out');
+		fieldsChangedArr.push('classification');
+		fieldsChangedArr.push('comments');
+		fieldsChangedArr.push('company');
+		fieldsChangedArr.push('correlation_id');
+		fieldsChangedArr.push('cost');
+		fieldsChangedArr.push('cost_cc');
+		fieldsChangedArr.push('cost_center');
+		fieldsChangedArr.push('cpu_core_count');
+		fieldsChangedArr.push('cpu_core_thread');
+		fieldsChangedArr.push('cpu_count');
+		fieldsChangedArr.push('cpu_manufacturer');
+		fieldsChangedArr.push('cpu_name');
+		fieldsChangedArr.push('cpu_speed');
+		fieldsChangedArr.push('cpu_type');
+		fieldsChangedArr.push('default_gateway');
+		fieldsChangedArr.push('delivery_date');
+		fieldsChangedArr.push('department');
+		fieldsChangedArr.push('discovery_source');
+		fieldsChangedArr.push('disk_space');
+		fieldsChangedArr.push('dns_domain');
+		fieldsChangedArr.push('dr_backup');
+		fieldsChangedArr.push('due');
+		fieldsChangedArr.push('due_in');
+		fieldsChangedArr.push('duplicate_of');
+		fieldsChangedArr.push('fault_count');
+		fieldsChangedArr.push('firewall_status');
+		fieldsChangedArr.push('first_discovered');
+		fieldsChangedArr.push('floppy');
+		fieldsChangedArr.push('form_factor');
+		fieldsChangedArr.push('fqdn');
+		fieldsChangedArr.push('gl_account');
+		fieldsChangedArr.push('hardware_status');
+		fieldsChangedArr.push('hardware_substatus');
+		fieldsChangedArr.push('host_name');
+		fieldsChangedArr.push('install_date');
+		fieldsChangedArr.push('install_status');
+		fieldsChangedArr.push('invoice_number');
+		fieldsChangedArr.push('ip_address');
+		fieldsChangedArr.push('justification');
+		fieldsChangedArr.push('last_discovered');
+		fieldsChangedArr.push('lease_id');
+		fieldsChangedArr.push('location');
+		fieldsChangedArr.push('mac_address');
+		fieldsChangedArr.push('maintenance_schedule');
+		fieldsChangedArr.push('managed_by');
+		fieldsChangedArr.push('manufacturer');
+		fieldsChangedArr.push('model_id');
+		fieldsChangedArr.push('model_number');
+		fieldsChangedArr.push('monitor');
+		fieldsChangedArr.push('name');
+		fieldsChangedArr.push('object_id');
+		fieldsChangedArr.push('operational_status');
+		fieldsChangedArr.push('order_date');
+		fieldsChangedArr.push('orginal_value_sys_domain');
+		fieldsChangedArr.push('os');
+		fieldsChangedArr.push('os_address_width');
+		fieldsChangedArr.push('os_domain');
+		fieldsChangedArr.push('os_service_pack');
+		fieldsChangedArr.push('os_version');
+		fieldsChangedArr.push('owned_by');
+		fieldsChangedArr.push('po_number');
+		fieldsChangedArr.push('purchase_date');
+		fieldsChangedArr.push('ram');
+		fieldsChangedArr.push('schedule');
+		fieldsChangedArr.push('serial_number');
+		fieldsChangedArr.push('short_description');
+		fieldsChangedArr.push('skip_sync');
+		fieldsChangedArr.push('start_date');
+		fieldsChangedArr.push('subcategory');
+		fieldsChangedArr.push('support_group');
+		fieldsChangedArr.push('supported_by');
+		//Exclude the sys_ fields
+		//fieldsChangedArr.push('sys_class_name');
+		//fieldsChangedArr.push('sys_class_path');
+		//fieldsChangedArr.push('sys_created_by');
+		//fieldsChangedArr.push('sys_created_on');
+		//fieldsChangedArr.push('sys_domain');
+		//fieldsChangedArr.push('sys_domain_path');
+		//fieldsChangedArr.push('sys_id');
+		//fieldsChangedArr.push('sys_mod_count');
+		//fieldsChangedArr.push('sys_tags');
+		//fieldsChangedArr.push('sys_updated_by');
+		//fieldsChangedArr.push('sys_updated_on');
+		fieldsChangedArr.push('unverified');
+		fieldsChangedArr.push('used_for');
+		fieldsChangedArr.push('vendor');
+		fieldsChangedArr.push('virtual');
+		fieldsChangedArr.push('warranty_expiration');	
+
+		var fieldsChanged = fieldsChangedArr.join(',');	
+		gr1.setValue('fields_changed',fieldsChanged);
+		gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
+		gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+
+		var name = 'name [' + zeroPaddedNumStr + ']';
+		name = this.padOutString(name,255,'!!'); // 255
+
+		//gr1.setValue('name',current.name);
+		gr1.setValue('name',name);
+
+		var allFieldsArr = [];
+
+		allFieldsArr.push('asset');
+		allFieldsArr.push('asset_tag');
+		allFieldsArr.push('assigned');
+		allFieldsArr.push('assigned_to');
+		allFieldsArr.push('assignment_group');
+		allFieldsArr.push('attributes');
+		allFieldsArr.push('can_print');
+		allFieldsArr.push('category');
+		allFieldsArr.push('cd_rom');
+		allFieldsArr.push('cd_speed');
+		allFieldsArr.push('change_control');
+		allFieldsArr.push('chassis_type');
+		allFieldsArr.push('checked_in');
+		allFieldsArr.push('checked_out');
+		allFieldsArr.push('classification');
+		allFieldsArr.push('comments');
+		allFieldsArr.push('company');
+		allFieldsArr.push('correlation_id');
+		allFieldsArr.push('cost');
+		allFieldsArr.push('cost_cc');
+		allFieldsArr.push('cost_center');
+		allFieldsArr.push('cpu_core_count');
+		allFieldsArr.push('cpu_core_thread');
+		allFieldsArr.push('cpu_count');
+		allFieldsArr.push('cpu_manufacturer');
+		allFieldsArr.push('cpu_name');
+		allFieldsArr.push('cpu_speed');
+		allFieldsArr.push('cpu_type');
+		allFieldsArr.push('default_gateway');
+		allFieldsArr.push('delivery_date');
+		allFieldsArr.push('department');
+		allFieldsArr.push('discovery_source');
+		allFieldsArr.push('disk_space');
+		allFieldsArr.push('dns_domain');
+		allFieldsArr.push('dr_backup');
+		allFieldsArr.push('due');
+		allFieldsArr.push('due_in');
+		allFieldsArr.push('duplicate_of');
+		allFieldsArr.push('fault_count');
+		allFieldsArr.push('firewall_status');
+		allFieldsArr.push('first_discovered');
+		allFieldsArr.push('floppy');
+		allFieldsArr.push('form_factor');
+		allFieldsArr.push('fqdn');
+		allFieldsArr.push('gl_account');
+		allFieldsArr.push('hardware_status');
+		allFieldsArr.push('hardware_substatus');
+		allFieldsArr.push('host_name');
+		allFieldsArr.push('install_date');
+		allFieldsArr.push('install_status');
+		allFieldsArr.push('invoice_number');
+		allFieldsArr.push('ip_address');
+		allFieldsArr.push('justification');
+		allFieldsArr.push('last_discovered');
+		allFieldsArr.push('lease_id');
+		allFieldsArr.push('location');
+		allFieldsArr.push('mac_address');
+		allFieldsArr.push('maintenance_schedule');
+		allFieldsArr.push('managed_by');
+		allFieldsArr.push('manufacturer');
+		allFieldsArr.push('model_id');
+		allFieldsArr.push('model_number');
+		allFieldsArr.push('monitor');
+		allFieldsArr.push('name');
+		allFieldsArr.push('object_id');
+		allFieldsArr.push('operational_status');
+		allFieldsArr.push('order_date');
+		allFieldsArr.push('orginal_value_sys_domain');
+		allFieldsArr.push('os');
+		allFieldsArr.push('os_address_width');
+		allFieldsArr.push('os_domain');
+		allFieldsArr.push('os_service_pack');
+		allFieldsArr.push('os_version');
+		allFieldsArr.push('owned_by');
+		allFieldsArr.push('po_number');
+		allFieldsArr.push('purchase_date');
+		allFieldsArr.push('ram');
+		allFieldsArr.push('schedule');
+		allFieldsArr.push('serial_number');
+		allFieldsArr.push('short_description');
+		allFieldsArr.push('skip_sync');
+		allFieldsArr.push('start_date');
+		allFieldsArr.push('subcategory');
+		allFieldsArr.push('support_group');
+		allFieldsArr.push('supported_by');
+		allFieldsArr.push('sys_class_name');
+		allFieldsArr.push('sys_class_path');
+		allFieldsArr.push('sys_created_by');
+		allFieldsArr.push('sys_created_on');
+		allFieldsArr.push('sys_domain');
+		allFieldsArr.push('sys_domain_path');
+		allFieldsArr.push('sys_id');
+		allFieldsArr.push('sys_mod_count');
+		allFieldsArr.push('sys_tags');
+		allFieldsArr.push('sys_updated_by');
+		allFieldsArr.push('sys_updated_on');
+		allFieldsArr.push('unverified');
+		allFieldsArr.push('used_for');
+		allFieldsArr.push('vendor');
+		allFieldsArr.push('virtual');
+		allFieldsArr.push('warranty_expiration');
+
+		var allFields = allFieldsArr.join(',');
+		gr1.setValue('all_fields',allFields);
+
+		gr1.setValue('no_of_fields',allFieldsArr.length);	
+
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
+
+		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_server
+
+		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
+
+		gr1.setValue('test_data',true); // TESTING	
+
+		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci Update cmdb_ci_server');		
+		gr1.insert();
+	},
+
+	generateString: function(size) {
+		var rtnStr = '';
+
+		var template = 'abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789';
+
+		var str = '';
+		var ln = 0;
+		str = template;
+		ln = str.length;
+		while (ln < size) {
+			str = str + template;
+			ln = str.length;
+		}
+
+		rtnStr = str.substring(0, size);
+
+		return rtnStr;
+	},
+		
+	zeroPad: function(number,maxSize) {
+		var rtnStr = '';
+		var maxSize2 = maxSize * -1;
+		var template = '000000000000000';
+		var numStr = number.toString();
+		var str = template + numStr;
+		rtnStr = str.substr(maxSize2);
+		return rtnStr;
+	},
+
+    type: 'GenerateTestData'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-28 16:36:38</sys_created_on>
+        <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>GenerateTestData</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-28 20:48:16</sys_updated_on>
+    </sys_script_include>
+</record_update>
