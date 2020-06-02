@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_generate_test_data</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Generate Test Data - Display</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	g_scratchpad.sys_id = current.sys_id;
+	
+	// Get the number of test data records
+	// that are already pending from other test runs
+	var num = new x_tekso_twxapp01.GenerateTestData().number_of_test_data_records_already_pending(current.sys_id);
+	g_scratchpad.number_of_test_data_records_already_pending = num;
+	
+	/*
+	var num2 = new x_tekso_twxapp01.GenerateTestData().number_of_generate_test_data_records_already_building(current.sys_id);
+	g_scratchpad.number_of_generate_test_data_records_already_building = num2;
+	*/
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-29 12:08:54</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ffeb914edb499c5041d08f38139619e9</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Generate Test Data - Display</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_ffeb914edb499c5041d08f38139619e9</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-01 20:18:21</sys_updated_on>
+        <template/>
+        <when>before_display</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=ffeb914edb499c5041d08f38139619e9"/>
+</record_update>

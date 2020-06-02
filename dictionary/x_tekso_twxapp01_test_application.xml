@@ -1,39 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element extends="x_tekso_twxapp01_test_configuration_item" label="Test Application" max_length="40" name="x_tekso_twxapp01_test_application" sizeclass="8000" type="collection">
-        <element label="Alternative Value CL Port" max_length="40" name="alternative_value_cl_port" type="integer"/>
-        <element label="Alternative Value Config Directory" max_length="255" name="alternative_value_config_directory" type="string"/>
-        <element label="Alternative Value Config File" max_length="255" name="alternative_value_config_file" type="string"/>
-        <element label="Alternative Value Edition" max_length="100" name="alternative_value_edition" type="string"/>
-        <element label="Alternative Value Install Directory" max_length="255" name="alternative_value_install_directory" type="string"/>
-        <element label="Alternative Value Is Clustered" max_length="40" name="alternative_value_is_clustered" type="boolean"/>
-        <element label="Alternative Value PID" max_length="40" name="alternative_value_pid" type="integer"/>
-        <element label="Alternative Value RP Command Hash" max_length="255" name="alternative_value_rp_command_hash" type="string"/>
-        <element label="Alternative Value RP Key Parameters Hash" max_length="255" name="alternative_value_rp_key_parameters_hash" type="string"/>
-        <element label="Alternative Value Running Process Command" max_length="65000" name="alternative_value_running_process_command" type="string"/>
-        <element label="Alternative Value Running Process Key Parameters" max_length="65000" name="alternative_value_running_process_key_parameters" type="string"/>
-        <element label="Alternative Value TCP Port" max_length="255" name="alternative_value_tcp_port" type="string"/>
-        <element label="Alternative Value Used For" max_length="40" name="alternative_value_used_for" type="string"/>
-        <element label="Alternative Value Version" max_length="255" name="alternative_value_version" type="string"/>
         <element label="CL Port" max_length="40" name="cl_port" type="integer"/>
         <element label="Config Directory" max_length="255" name="config_directory" type="string"/>
         <element label="Config File" max_length="255" name="config_file" type="string"/>
         <element label="Edition" max_length="100" name="edition" type="string"/>
         <element label="Install Directory" max_length="255" name="install_directory" type="string"/>
         <element label="Is Clustered" max_length="40" name="is_clustered" type="boolean"/>
-        <element label="Original Value CL Port" max_length="40" name="original_value_cl_port" type="integer"/>
-        <element label="Original Value Config Directory" max_length="255" name="original_value_config_directory" type="string"/>
-        <element label="Original Value Config File" max_length="255" name="original_value_config_file" type="string"/>
-        <element label="Original Value Edition" max_length="100" name="original_value_edition" type="string"/>
-        <element label="Original Value Install Directory" max_length="255" name="original_value_install_directory" type="string"/>
-        <element label="Original Value Is Clustered" max_length="40" name="original_value_is_clustered" type="boolean"/>
-        <element label="Original Value PID" max_length="40" name="original_value_pid" type="integer"/>
-        <element label="Original Value RP Command Hash" max_length="255" name="original_value_rp_command_hash" type="string"/>
-        <element label="Original Value RP Key Parameters Hash" max_length="255" name="original_value_rp_key_parameters_hash" type="string"/>
-        <element label="Original Value Running Process Command" max_length="65000" name="original_value_running_process_command" type="string"/>
-        <element label="Original Value Running Process Key Parameters" max_length="65000" name="original_value_running_process_key_parameters" type="string"/>
-        <element label="Original Value TCP Port" max_length="255" name="original_value_tcp_port" type="string"/>
-        <element label="Original Value Used For" max_length="40" name="original_value_used_for" type="string"/>
-        <element label="Original Value Version" max_length="255" name="original_value_version" type="string"/>
         <element label="PID" max_length="40" name="pid" type="integer"/>
         <element label="RP Command Hash" max_length="255" name="rp_command_hash" type="string"/>
         <element label="RP Key Parameters Hash" max_length="255" name="rp_key_parameters_hash" type="string"/>

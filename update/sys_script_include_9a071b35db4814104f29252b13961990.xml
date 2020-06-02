@@ -7,235 +7,65 @@
         <client_callable>false</client_callable>
         <description/>
         <name>BuildTestData</name>
-        <script><![CDATA[// new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently(); // Timing - aout 7 minutes to delete 100,000
+        <script><![CDATA[// new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently();
+// new x_tekso_twxapp01.BuildTestData().buildTestData();
 
-// new x_tekso_twxapp01.BuildTestData().buildTestData(); // Timing - about 30 minutes to build 100,000 records
-
-// new x_tekso_twxapp01.BuildTestData().createBatchOfTestData(1000);
-
-// new x_tekso_twxapp01.BuildTestData().recordCountTestCMDBCI();
-
-// new x_tekso_twxapp01.BuildTestData().recordCountTestRel();
-
-// new x_tekso_twxapp01.BuildTestData().createFiveThousandTestRecords();
 
 var BuildTestData = Class.create();
 BuildTestData.prototype = {
     initialize: function() {
     },
 	buildTestData: function() {
-		var cnt = this.recordCountTestCMDBCI();
-		// Cap at 100,000
-		while (cnt < 100000) {
-			// createBatchOfTestData(1000) Generates 1000 servers and 4 x 1000 appls = 5000 records
-			// loop 20 times to generate 100000
-			this.createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
-			cnt = this.recordCountTestCMDBCI();
-		}
-	},
 
-	createFiveThousandTestRecords: function() { // Generates 1000 servers and 4 x 1000 appls = 5000 records
-		var cnt = this.recordCountTestCMDBCI();
-		// Cap at 100,000
-		if (cnt < 100000) {
-			this.createBatchOfTestData(1000); // * 5 (1 server + 4 appls) i.e 1000 = 5000 records
-		}
-	},
-	
-	createBatchOfTestData: function(qty) {
-		// Cap at 100,000
-		var cnt = this.recordCountTestCMDBCI();
-		if (cnt < 100000) {
-			var typeSysID = this.findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
+		var num = 1;
+		var zeroPaddedNumStr1 = this.zeroPad(num,6); // e.g. '000001'
+		var ciName1 = '[' + zeroPaddedNumStr1 + '] srvr name';
+		// Will create if it does not exist
+		var ci1 = this.newCMDBServer(ciName1,true,zeroPaddedNumStr1);
 
-			// Create the 1st Server	
-			var ci1 = this.createOrCopyServerSysID();
+		num = num + 1;
+		
+		var zeroPaddedNumStr2 = this.zeroPad(num,6); // e.g. '000001'
+		var ciName2 = '[' + zeroPaddedNumStr2 + '] appl name';
+		// Will create if it does not exist
+		var ci2 = this.newCMDBApplication(ciName2,true,zeroPaddedNumStr2);	
 
-			var ci2 = this.createOrCopyApplicationSysID();
+		var typeSysID = this.findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
 
-			this.newRelation(ci1,ci2,typeSysID,false);
-
-			var num = this.getLastNumber();
-			num++;
-
-			// Copy the application 3 more times
-			var ciTable = 'x_tekso_twxapp01_test_application';
-			var appQty = 3;
-			var sysIDArr = this.createMultipleCopies(ciTable,ci2,appQty,num); 
-			num = num + appQty; //6
-
-			//sysIDArr should contain an array of 3 sys_id's
-			for (var i=0; i<sysIDArr.length; i++) {
-				var sysID = sysIDArr[i];
-				// Link the 3 sys_ids to the server
-				this.newRelation(ci1,sysID,typeSysID,false);
-			}
-
-			//Now we have got 1 
-			//Create qty -1 copies of the server and 4 x applications
-			qty = qty - 1;
-			if (qty > 0) {
-				this.createServerAndFourApplicationsMultiple(ci1,ci2,typeSysID,qty); // Creates 999 servers and 999 x 4 applications
-			}
-		}
-	},
-
-	recordCountTestCMDBCI: function() {
-		var table = 'x_tekso_twxapp01_test_configuration_item';
-		gr1 = new GlideRecord(table);
-		gr1.query();
-		var rowCnt = gr1.getRowCount();
-		return rowCnt;
-	},
-
-	recordCountTestRel: function() {
-		var table = 'x_tekso_twxapp01_test_ci_relationship';
-		gr1 = new GlideRecord(table);
-		gr1.query();
-		var rowCnt = gr1.getRowCount();
-		return rowCnt;
-	},
-	
-	createServerAndFourApplicationsMultiple: function(templateServerSysID,templateApplSysID,typeSysID,qty) {
-		// Creates QTY x servers and QTY x 4 x applications
-		// then links Server1 to app1,2,3,4
-		//            Server2 to app5,6,7,8
-
-		var num = this.getLastNumber();
-		num++;
-
-		var ciTable = 'x_tekso_twxapp01_test_server';
-		var serverSysIDArr = this.createMultipleCopies(ciTable,templateServerSysID,qty,num); 
-		num = num + qty;
-
-		ciTable = 'x_tekso_twxapp01_test_application';
-		var application1SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
-		num = num + qty;
-
-		var application2SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
-		num = num + qty;
-
-		var application3SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
-		num = num + qty;
-
-		var application4SysIDArr = this.createMultipleCopies(ciTable,templateApplSysID,qty,num); 
-		num = num + qty;
-
-		for (var j=0; j<serverSysIDArr.length; j++) {
-			var serverSysID = serverSysIDArr[j];
-			var app1SysID = application1SysIDArr[j];
-			var app2SysID = application2SysIDArr[j];
-			var app3SysID = application3SysIDArr[j];
-			var app4SysID = application4SysIDArr[j];
-
-			// Link the 4 sys_ids to the server
-			this.newRelation(serverSysID,app1SysID,typeSysID,false);
-			this.newRelation(serverSysID,app2SysID,typeSysID,false);
-			this.newRelation(serverSysID,app3SysID,typeSysID,false);
-			this.newRelation(serverSysID,app4SysID,typeSysID,false);	
-		}
-	},
-
-	createOrCopyServerSysID: function() {
-		var sysID = '';
-		var num = this.getLastNumber();
-		num++;	
-		var table = 'x_tekso_twxapp01_test_server';
-		sysID = this.getFirstRecord(table);
-		if (sysID.length > 0) {
-			// Create a copy
-			var sysIDArr = this.createMultipleCopies(table,sysID,1,num); 
-			rtnSysID = sysIDArr[0];		
-		}
-		else {
-			var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
-			var ciName = '[' + zeroPaddedNumStr + '] srvr name';
-			rtnSysID = this.newCMDBServer(ciName,true,zeroPaddedNumStr);		
-		}
-		return rtnSysID;
-	},
-
-	createOrCopyApplicationSysID: function() {
-		var sysID = '';
-		var num = this.getLastNumber();
-		num++;	
-		var table = 'x_tekso_twxapp01_test_application';
-		sysID = this.getFirstRecord(table);
-		if (sysID.length > 0) {
-			// Create a copy
-			var sysIDArr = this.createMultipleCopies(table,sysID,1,num); 
-			rtnSysID = sysIDArr[0];		
-		}
-		else {
-			var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
-			var ciName = '[' + zeroPaddedNumStr + '] appl name';
-			rtnSysID = this.newCMDBApplication(ciName,true,zeroPaddedNumStr);		
-		}
-		return rtnSysID;
-	},
-
-	getFirstRecord: function(table) {
-		rtnSysID = '';
-		gr1 = new GlideRecord(table);
-		gr1.orderBy('name'); //Ascending Order
-		gr1.setLimit(1);
-		gr1.query();
-		if (gr1.next()) {
-			rtnSysID = gr1.getValue('sys_id').toString();
-		}
-		return rtnSysID;
-	},
-
-	getLastNumber: function() {
-		var num = 0;
-		var table = 'x_tekso_twxapp01_test_configuration_item';
-		gr1 = new GlideRecord(table);
-		gr1.orderByDesc('name'); //Descending Order
-		gr1.setLimit(1);
-		gr1.query();
-		if (gr1.next()) {
-			var name = gr1.getValue('name');
-			var br1 = name.indexOf('[');
-			var br2 = name.indexOf(']');
-			var zeroPaddedNumStr = name.substring(br1 + 1,br2);		
-			num = parseInt(zeroPaddedNumStr);
-		}
-		return num;
+		var checkIfAlreadyExists = true;
+		// Will create if it does not exist
+		this.newRelation(ci1,ci2,typeSysID,checkIfAlreadyExists);
 	},
 
 	deleteAllTestDataSilently: function() {
+		this.deleteAllTestCIReferenceDataSilently();
 		this.deleteAllTestCIRelationshipsSilently();
 		this.deleteAllTestCIsSilently();
 	},
 	
 	deleteAllTestCIsSilently: function() {
-
 		var table = 'x_tekso_twxapp01_test_configuration_item';
 		this.deleteAllSilently(table);
-
-		/*
-		var gr1 = new GlideRecord(table);
-		// Do not trigger Business Rules
-		gr1.setWorkflow(false);
-
-		gr1.deleteMultiple();	
-		*/	
 	},
 	
 	deleteAllTestCIRelationshipsSilently: function() {
-
 		var table = 'x_tekso_twxapp01_test_ci_relationship';
-
 		this.deleteAllSilently(table);
-		/*
-		var gr1 = new GlideRecord(table);
-		// Do not trigger Business Rules	
-		gr1.setWorkflow(false);
-
-		gr1.deleteMultiple();	
-		*/
 	},
 
+	deleteAllTestCIReferenceDataSilently: function() {
+		this.deleteAllSilently('x_tekso_twxapp01_test_asset');
+		this.deleteAllSilently('x_tekso_twxapp01_test_ci_relationship_type');
+		this.deleteAllSilently('x_tekso_twxapp01_test_company');
+		this.deleteAllSilently('x_tekso_twxapp01_test_cost_center');
+		this.deleteAllSilently('x_tekso_twxapp01_test_department');
+		this.deleteAllSilently('x_tekso_twxapp01_test_group');
+		this.deleteAllSilently('x_tekso_twxapp01_test_location');
+		this.deleteAllSilently('x_tekso_twxapp01_test_product_model');
+		this.deleteAllSilently('x_tekso_twxapp01_test_schedule');
+		this.deleteAllSilently('x_tekso_twxapp01_test_user');
+	},
+	
 	deleteAllSilently: function(table) {
 
 		var gr1 = new GlideRecord(table);
@@ -257,7 +87,6 @@ BuildTestData.prototype = {
 		gr1.setLimit(limit);
 		gr1.deleteMultiple();	
 	},
-
 
 	findOrInsertTestCompany: function(name) {
 		var rtnSysID = '';
@@ -436,7 +265,7 @@ BuildTestData.prototype = {
 	findOrInsertTestRelType: function(parent,child,name) {
 		//('Runs on','Runs','Runs on::Runs');
 		var rtnSysID = '';
-		relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
 		var gr1 = new GlideRecord(relTable);
 		gr1.addQuery('parent_descriptor',parent); // Runs on
 		gr1.addQuery('child_descriptor',child); // Runs
@@ -457,8 +286,6 @@ BuildTestData.prototype = {
 	},
 
 	newCMDBCI: function(name,ciTable,realTableName,padOut,zeroPaddedNumStr) {
-		//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
-		//var ciTable = 'x_tekso_twxapp01_test_application';
 
 		var sysID = '';
 		var gr1 = new GlideRecord(ciTable);
@@ -624,96 +451,6 @@ BuildTestData.prototype = {
 			gr2.setValue('justification','Testing'); //Replacement, Testing, Upgrade
 			gr2.setValue('due_in','1 Week'); //1 Hour, 1 Day, 1 Week
 			gr2.setValue('cost_cc','USD'); // USD, EUR, GBP
-
-
-			// Original Values
-			gr2.setValue('original_value_name',name); // 255
-			gr2.setValue('original_value_discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
-			gr2.setValue('original_value_install_status',1); // Choice Installed: 1, Absent: 100
-			gr2.setValue('original_value_operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3
-
-			// String
-			gr2.setValue('original_value_asset_tag',strAssetTag); // 40
-			gr2.setValue('original_value_attributes',strAttributes); // 65000
-			gr2.setValue('original_value_category',strCategory); // 40
-			gr2.setValue('original_value_comments',strComments); // 4000
-			gr2.setValue('original_value_correlation_id',strCorrelationID); // 512		
-			gr2.setValue('original_value_dns_domain',strDNSDomain); // 255
-			gr2.setValue('original_value_fqdn',strFQDN); // 255
-			gr2.setValue('original_value_gl_account',strGLAccount); // 40
-			gr2.setValue('original_value_invoice_number',strInvoiceNumber); // 40
-			gr2.setValue('original_value_ip_address',strIPAddress); // 255
-			gr2.setValue('original_value_lease_id',strLeaseID); // 40
-			gr2.setValue('original_value_mac_address',strMACAddress); // 18
-			gr2.setValue('original_value_model_number',strModelNumber); // 255
-			gr2.setValue('original_value_po_number',strPONumber); // 40
-			gr2.setValue('original_value_serial_number',strSerialNumber); // 255
-			gr2.setValue('original_value_short_description',strShortDescription); // 1000		
-			gr2.setValue('original_value_subcategory',strSubcategory);
-
-			// References
-			gr2.setValue('original_value_asset',assetSysID); // Asset
-
-			gr2.setValue('original_value_assigned_to',usrSysID); //User
-			gr2.setValue('original_value_managed_by',usrSysID);
-			gr2.setValue('original_value_owned_by',usrSysID);
-			gr2.setValue('original_value_supported_by',usrSysID);
-
-			gr2.setValue('original_value_assignment_group',grpSysID); //Group
-			gr2.setValue('original_value_change_control',grpSysID);
-			gr2.setValue('original_value_support_group',grpSysID);
-
-			gr2.setValue('original_value_company',cmpSysID); //Company
-			gr2.setValue('original_value_manufacturer',cmpSysID);
-			gr2.setValue('original_value_vendor',cmpSysID);
-
-			gr2.setValue('original_value_model_id',productSysID); //Product Model
-
-			gr2.setValue('original_value_cost_center',costCenterSysID); //Cost Center
-
-			gr2.setValue('original_value_department',depSysID); //Department
-
-			//duplicate_of //cmdb_ci
-
-			gr2.setValue('original_value_location',locSysID); //location
-
-			gr2.setValue('original_value_maintenance_schedule',scheduleSysID); //schedule
-			gr2.setValue('original_value_schedule',scheduleSysID);  
-
-			// DateTime
-			gr2.setValue('original_value_assigned',gdt);
-			gr2.setValue('original_value_checked_in',gdt);
-			gr2.setValue('original_value_checked_out',gdt);
-			gr2.setValue('original_value_delivery_date',gdt);
-			gr2.setValue('original_value_due',gdt);
-			gr2.setValue('original_value_first_discovered',gdt);
-			gr2.setValue('original_value_install_date',gdt);
-			gr2.setValue('original_value_last_discovered',gdt);
-			gr2.setValue('original_value_order_date',gdt);
-			gr2.setValue('original_value_start_date',gdt);
-
-			// Date		
-			gr2.setValue('original_value_warranty_expiration',gd);
-			gr2.setValue('original_value_purchase_date',gd);
-
-			// True/False
-			gr2.setValue('original_value_can_print',true);
-			gr2.setValue('original_value_monitor',true);
-			gr2.setValue('original_value_skip_sync',true);			
-			gr2.setValue('original_value_unverified',true);
-
-			//Integer
-			gr2.setValue('original_value_fault_count',1);
-
-			//Float
-			gr2.setValue('original_value_cost',12.45);
-
-			//Choice
-			gr2.setValue('original_value_justification','Testing'); //Replacement, Testing, Upgrade
-			gr2.setValue('original_value_due_in','1 Week'); //1 Hour, 1 Day, 1 Week
-			gr2.setValue('original_value_cost_cc','USD'); // USD, EUR, GBP
-
-			gr2.setValue('original_or_alternative','Original');
 
 			// Do not trigger Business Rules
 			gr2.setWorkflow(false);
@@ -892,97 +629,6 @@ BuildTestData.prototype = {
 			gr1.setValue('due_in','1 Week'); //1 Hour, 1 Day, 1 Week
 			gr1.setValue('cost_cc','USD'); // USD, EUR, GBP
 
-			//Original Values
-			gr1.setValue('original_value_name',name); // 255
-			gr1.setValue('original_value_discovery_source','TekWurx uControl'); // Choice ImportSet, Manual Entry, ServiceNow, TekWurx uControl
-			gr1.setValue('original_value_install_status',1); // Choice Installed: 1, Absent: 100
-			gr1.setValue('original_value_operational_status',1); // Choice Operational: 1, Non-Operational: 2, Repair in Progress: 3
-
-			// String
-			gr1.setValue('original_value_asset_tag',strAssetTag); // 40
-			gr1.setValue('original_value_attributes',strAttributes); // 65000
-			gr1.setValue('original_value_category',strCategory); // 40
-			gr1.setValue('original_value_comments',strComments); // 4000
-			gr1.setValue('original_value_correlation_id',strCorrelationID); // 512		
-			gr1.setValue('original_value_dns_domain',strDNSDomain); // 255
-			gr1.setValue('original_value_fqdn',strFQDN); // 255
-			gr1.setValue('original_value_gl_account',strGLAccount); // 40
-			gr1.setValue('original_value_invoice_number',strInvoiceNumber); // 40
-			gr1.setValue('original_value_ip_address',strIPAddress); // 255
-			gr1.setValue('original_value_lease_id',strLeaseID); // 40
-			gr1.setValue('original_value_mac_address',strMACAddress); // 18
-			gr1.setValue('original_value_model_number',strModelNumber); // 255
-			gr1.setValue('original_value_po_number',strPONumber); // 40
-			gr1.setValue('original_value_serial_number',strSerialNumber); // 255
-			gr1.setValue('original_value_short_description',strShortDescription); // 1000		
-			gr1.setValue('original_value_subcategory',strSubcategory);
-
-			// References
-			gr1.setValue('original_value_asset',assetSysID); // Asset
-
-			gr1.setValue('original_value_assigned_to',usrSysID); //User
-			gr1.setValue('original_value_managed_by',usrSysID);
-			gr1.setValue('original_value_owned_by',usrSysID);
-			gr1.setValue('original_value_supported_by',usrSysID);
-
-			gr1.setValue('original_value_assignment_group',grpSysID); //Group
-			gr1.setValue('original_value_change_control',grpSysID);
-			gr1.setValue('original_value_support_group',grpSysID);
-
-			gr1.setValue('original_value_company',cmpSysID); //Company
-			gr1.setValue('original_value_manufacturer',cmpSysID);
-			gr1.setValue('original_value_vendor',cmpSysID);
-
-			gr1.setValue('original_value_model_id',productSysID); //Product Model
-
-			gr1.setValue('original_value_cost_center',costCenterSysID); //Cost Center
-
-			gr1.setValue('original_value_department',depSysID); //Department
-
-			//duplicate_of //cmdb_ci
-
-			gr1.setValue('original_value_location',locSysID); //location
-
-			gr1.setValue('original_value_maintenance_schedule',scheduleSysID); //schedule
-			gr1.setValue('original_value_schedule',scheduleSysID);  
-
-			// DateTime
-			gr1.setValue('original_value_assigned',gdt);
-			gr1.setValue('original_value_checked_in',gdt);
-			gr1.setValue('original_value_checked_out',gdt);
-			gr1.setValue('original_value_delivery_date',gdt);
-			gr1.setValue('original_value_due',gdt);
-			gr1.setValue('original_value_first_discovered',gdt);
-			gr1.setValue('original_value_install_date',gdt);
-			gr1.setValue('original_value_last_discovered',gdt);
-			gr1.setValue('original_value_order_date',gdt);
-			gr1.setValue('original_value_start_date',gdt);
-
-			// Date		
-			gr1.setValue('original_value_warranty_expiration',gd);
-			gr1.setValue('original_value_purchase_date',gd);
-
-			// True/False
-			gr1.setValue('original_value_can_print',true);
-			gr1.setValue('original_value_monitor',true);
-			gr1.setValue('original_value_skip_sync',true);			
-			gr1.setValue('original_value_unverified',true);
-
-			//Integer
-			gr1.setValue('original_value_fault_count',1);
-
-			//Float
-			gr1.setValue('original_value_cost',12.45);
-
-			//Choice
-			gr1.setValue('original_value_justification','Testing'); //Replacement, Testing, Upgrade
-			gr1.setValue('original_value_due_in','1 Week'); //1 Hour, 1 Day, 1 Week
-			gr1.setValue('original_value_cost_cc','USD'); // USD, EUR, GBP
-
-			gr1.setValue('original_or_alternative','Original');
-
-			rtnSysID = gr1.getValue('sys_id').toString();
-
 			// Do not trigger Business Rules
 			gr1.setWorkflow(false);
 
@@ -1046,21 +692,6 @@ BuildTestData.prototype = {
 			gr1.setValue('used_for','Production'); // Choice Production, Staging		
 			gr1.setValue('version',strVersion); // String 255
 
-			gr1.setValue('original_value_cl_port',1); // Integer		
-			gr1.setValue('original_value_config_directory',strConfigDirectory); // String 255
-			gr1.setValue('original_value_config_file',strConfigFile); // String 255		
-			gr1.setValue('original_value_edition',strEdition); // String 100		
-			gr1.setValue('original_value_install_directory',strInstallDirectory); // String 255		
-			gr1.setValue('original_value_is_clustered',true); // t/f		
-			gr1.setValue('original_value_pid',1); // Integer		
-			gr1.setValue('original_value_rp_command_hash',strRPCommandHash); // String 255		
-			gr1.setValue('original_value_rp_key_parameters_hash',strRPKeyParametersHash); // String 255		
-			gr1.setValue('original_value_running_process_command',strRunningProcessCommand); // String 65000	
-			gr1.setValue('original_value_running_process_key_parameters',strRunningProcessKeyParameters); // String 65000		
-			gr1.setValue('original_value_tcp_port',strTCPPort); // String 255		
-			gr1.setValue('original_value_used_for','Production'); // Choice Production, Staging		
-			gr1.setValue('original_value_version',strVersion); // String 255
-
 			// Do not trigger Business Rules		
 			gr1.setWorkflow(false);		
 
@@ -1087,12 +718,6 @@ BuildTestData.prototype = {
 			gr1.setValue('hardware_substatus','in use'); // String 40 Choice installed	In Use: in use		
 																			//defective	Disposable: disposable; Repairable: repairable					
 																			//retired	Lost: lost, Sold: sold
-
-
-			gr1.setValue('original_value_default_gateway',strDefaultGateway); // String 40
-
-			gr1.setValue('original_value_hardware_status','installed'); // String 40 Choice Installed: installed, Retired: retired, Defective: defective
-			gr1.setValue('original_value_hardware_substatus','in use');
 
 			// Do not trigger Business Rules		
 			gr1.setWorkflow(false);	
@@ -1155,28 +780,6 @@ BuildTestData.prototype = {
 			gr1.setValue('ram',32); // Integer
 			gr1.setValue('virtual',true); // True/False
 
-			gr1.setValue('original_value_cd_rom','true'); // True/False	
-			gr1.setValue('original_value_cd_speed',10); // Integer
-			gr1.setValue('original_value_chassis_type','Desktop');  // String 40 Choice Desktop, Laptop, Mini Tower, Main System Chassis
-			gr1.setValue('original_value_cpu_core_count',10); // Integer
-			gr1.setValue('original_value_cpu_core_thread',10); // Integer
-			gr1.setValue('original_value_cpu_count',10); // Integer	
-			gr1.setValue('original_value_cpu_manufacturer',manSysID); // Reference		
-			gr1.setValue('original_value_cpu_name',strCPUName); // String 100		
-			gr1.setValue('original_value_cpu_speed',33); // Decimal			
-			gr1.setValue('original_value_cpu_type',strCPUType); // String 100		
-			gr1.setValue('original_value_disk_space',33); // Decimal
-			gr1.setValue('original_value_floppy','3.5 inch');  // String 40 Choice 3.5 inch, 5.25 inch, None
-			gr1.setValue('original_value_form_factor','Blade');  // String 40 Choice Blade, Desktop, Rack Mount, Stand Alone		
-			gr1.setValue('original_value_object_id',strObjectID); // String 512			
-			gr1.setValue('original_value_os','Windows');  // String 40 Choice AIX, ESX, linux Red Hat, Solaris, Windows
-			gr1.setValue('original_value_os_address_width',64); // Integer Choice 32, 64		
-			gr1.setValue('original_value_os_domain',strOSDomain); // String 40		
-			gr1.setValue('original_value_os_service_pack',strOSServicePack); // String 40		
-			gr1.setValue('original_value_os_version',strOSVersion); // String 40		
-			gr1.setValue('original_value_ram',32); // Integer
-			gr1.setValue('original_value_virtual',true); // True/False
-
 			// Do not trigger Business Rules		
 			gr1.setWorkflow(false);	
 
@@ -1202,14 +805,7 @@ BuildTestData.prototype = {
 			//dr_backup	Reference	Server		32	
 			gr1.setValue('firewall_status','Intranet');	// String 40 Choice Internet, Intranet, DMZ	
 			gr1.setValue('host_name',strHostName); // String 255
-
-			gr1.setValue('original_value_used_for','Production');  // String 40 Choice Production, Staging
-			gr1.setValue('original_value_classification','Production'); // String 40 Choice Production, Development, UAT
-			//dr_backup	Reference	Server		32	
-			gr1.setValue('original_value_firewall_status','Intranet');	// String 40 Choice Internet, Intranet, DMZ		
-			gr1.setValue('original_value_host_name',strHostName); // String 255		
-			gr1.setValue('original_value_used_for','Production');  // String 40 Choice Production, Staging		
-
+	
 			// Do not trigger Business Rules		
 			gr1.setWorkflow(false);	
 
@@ -1219,21 +815,24 @@ BuildTestData.prototype = {
 
 	newCMDBApplication: function(name,padOut,zeroPaddedNumStr) {
 		var ciTable = 'x_tekso_twxapp01_test_application';
-		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_appl',padOut,zeroPaddedNumStr);
+		var realTableName = 'cmdb_ci_appl';
+		var ciSysID = this.newCMDBCI(name,ciTable,realTableName,padOut,zeroPaddedNumStr);
 		this.updateCMDBApplicationSpecificFields(ciSysID,padOut);
 		return ciSysID;
 	},
 
 	newCMDBHardware: function(name,padOut,zeroPaddedNumStr) {
 		var ciTable = 'x_tekso_twxapp01_test_hardware';
-		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_hardware',padOut,zeroPaddedNumStr);
+		var realTableName = 'cmdb_ci_hardware';
+		var ciSysID = this.newCMDBCI(name,ciTable,realTableName,padOut,zeroPaddedNumStr);
 		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
 		return ciSysID;
 	},
 
 	newCMDBComputer: function(name,padOut,zeroPaddedNumStr) {
 		var ciTable = 'x_tekso_twxapp01_test_computer';
-		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_computer',padOut,zeroPaddedNumStr);
+		var realTableName = 'cmdb_ci_computer';
+		var ciSysID = this.newCMDBCI(name,ciTable,realTableName,padOut,zeroPaddedNumStr);
 		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
 		this.updateCMDBComputerSpecificFields(ciSysID,padOut);	
 		return ciSysID;
@@ -1241,7 +840,8 @@ BuildTestData.prototype = {
 
 	newCMDBServer: function(name,padOut,zeroPaddedNumStr) {
 		var ciTable = 'x_tekso_twxapp01_test_server';
-		var ciSysID = this.newCMDBCI(name,ciTable,'cmdb_ci_server',padOut,zeroPaddedNumStr);
+		var realTableName = 'cmdb_ci_server';
+		var ciSysID = this.newCMDBCI(name,ciTable,realTableName,padOut,zeroPaddedNumStr);
 		this.updateCMDBHardwareSpecificFields(ciSysID,padOut);
 		this.updateCMDBComputerSpecificFields(ciSysID,padOut);	
 		this.updateCMDBServerSpecificFields(ciSysID,padOut);		
@@ -1266,14 +866,6 @@ BuildTestData.prototype = {
 				gr2.setValue('percent_outage',0); // Int
 				gr2.setValue('connection_strength','always'); // Choice always, cluster, infrequent, occassional
 
-				gr2.setValue('original_or_alternative','Original');
-				gr2.setValue('original_value_parent',parent); // Ref
-				gr2.setValue('original_value_child',child); // Ref
-				gr2.setValue('original_value_type',type); // Type
-				gr2.setValue('original_value_port',0); // Int
-				gr2.setValue('original_value_percent_outage',0); // Int
-				gr2.setValue('original_value_connection_strength','always'); // Choice always, cluster, infrequent, occassional
-
 				// Do not trigger Business Rules
 				gr2.setWorkflow(false);	
 
@@ -1291,15 +883,6 @@ BuildTestData.prototype = {
 			gr3.setValue('percent_outage',0); // Int
 			gr3.setValue('connection_strength','always'); // Choice always, cluster, infrequent, occassional
 
-			gr3.setValue('original_or_alternative','Original');		
-			gr3.setValue('original_value_parent',parent); // Ref
-			gr3.setValue('original_value_child',child); // Ref
-			gr3.setValue('original_value_type',type); // Type
-			gr3.setValue('original_value_port',0); // Int
-			gr3.setValue('original_value_percent_outage',0); // Int
-			gr3.setValue('original_value_connection_strength','always'); // Choice always, cluster, infrequent, occassional
-
-			// Do not trigger Business Rules
 			gr3.setWorkflow(false);	
 
 			gr3.insert();		
@@ -1348,83 +931,13 @@ BuildTestData.prototype = {
 	},
 	
 	zeroPad: function(number,maxSize) {
+		var rtnStr = '';
 		var maxSize2 = maxSize * -1;
 		var template = '000000000000000';
 		var numStr = number.toString();
 		var str = template + numStr;
 		rtnStr = str.substr(maxSize2);
 		return rtnStr;
-	},
-
-	createMultipleCopies: function(ciTable,sysID,numberOfCopies,startingNumber) {	
-		rtnSysIDArr = [];
-
-		//var ciTable = 'x_tekso_twxapp01_test_application';
-		var excludedArr = ['sys_id','sys_created_on','sys_created_by','sys_updated_on','sys_updated_by','sys_mod_count'];
-
-		var fldArr = [];
-		var valArr = [];
-
-		var gr1 = new GlideRecord(ciTable);
-		gr1.addQuery('sys_id',sysID);
-		gr1.query();
-		if (gr1.next()) {
-			var name = gr1.getValue('name'); // We need the name as this has the [00001] in it that we will need to replace
-			var br1 = name.indexOf('[');
-			var br2 = name.indexOf(']');
-			var zeroPaddedNumStr = name.substring(br1 + 1,br2);
-
-			//get all the fields for this record
-			/*	
-			GlideRecord also has a getElements method. This returns an array (if in scope) or an ArrayList (if in global) of all of the elements 
-			on the record. You can then loop through the array (in scope) or iterate through it (in global) to get things like the label, field name, 
-			and value.
-			*/	
-			var elements = gr1.getElements();
-			for (var i=0; i<elements.length; i++) {
-				var element = elements[i];
-				var elementName = element.getName();
-				var elementVal = gr1.getValue(elementName);
-				// Exclude certain fields e.g. sys_id
-				if (excludedArr.indexOf(elementName) == -1) {
-					// Copy the fields and values to arrays
-					fldArr.push(elementName);
-					valArr.push(elementVal);
-				}
-			}
-
-			//create a new record - multiple times
-			var fieldsToAdjustArr = ['name','serial_number','correlation_id'];
-			var valtoReplace = '[' + zeroPaddedNumStr + ']';
-			var numStrLn = zeroPaddedNumStr.length;
-
-			var cnt = 0;
-			var num = startingNumber;
-			while (cnt < numberOfCopies) {
-				var gr2 = new GlideRecord(ciTable);
-				gr2.initialize();
-
-				for (var j=0; j<fldArr.length; j++) {
-					var fld2 = fldArr[j];
-					var val2 = valArr[j];
-					if (fieldsToAdjustArr.indexOf(fld2) == -1) {
-						gr2[fld2] = val2;
-					}
-					else {
-						// field needs tweaking e.g. serial_number [000001] to be serial_number [000002]
-						var newZeroPaddedNumStr = this.zeroPad(num,numStrLn);
-						var newVal =  '[' + newZeroPaddedNumStr + ']';
-						var val3 = val2.replace(valtoReplace,newVal);
-						gr2[fld2] = val3;
-					}
-				}
-				var newSysID = gr2.insert();
-				rtnSysIDArr.push(newSysID);
-				num++;
-				cnt++;
-			}
-		}
-		return rtnSysIDArr; // An array of sys_id's
 	},
 
 	writeDebugLog: function(msg) {
@@ -1455,13 +968,13 @@ new x_tekso_twxapp01.BuildTestData().buildTestData();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-09 10:01:50</sys_created_on>
         <sys_id>9a071b35db4814104f29252b13961990</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>14</sys_mod_count>
         <sys_name>BuildTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_9a071b35db4814104f29252b13961990</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 14:02:42</sys_updated_on>
+        <sys_updated_on>2020-06-01 16:59:23</sys_updated_on>
     </sys_script_include>
 </record_update>

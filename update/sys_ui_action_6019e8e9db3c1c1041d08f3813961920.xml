@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_ui_action">
     <sys_ui_action action="INSERT_OR_UPDATE">
-        <action_name>build_test_data_action</action_name>
+        <action_name>save_and_build_test_data_action</action_name>
         <active>true</active>
         <client>true</client>
         <client_script_v2><![CDATA[function onClick(g_form) {
@@ -26,42 +26,124 @@
         <list_save_with_form_button>false</list_save_with_form_button>
         <list_style/>
         <name>Save &amp; Build Test Data</name>
-        <onclick>runBuildTestDataClientCode()</onclick>
+        <onclick>runSaveAndBuildTestDataClientCode()</onclick>
         <order>100</order>
         <script><![CDATA[//Client-side 'onclick' function
-function runBuildTestDataClientCode(){
-	
+function runSaveAndBuildTestDataClientCode() {
 	g_form.clearMessages();
-	var del_rel_qty = g_form.getValue('delete_relations_qty');
-	var upd_rel_qty = g_form.getValue('update_relations_qty');
-	var del_srv_qty = g_form.getValue('delete_server_qty');
-	var upd_srv_qty = g_form.getValue('update_server_qty');
-	var del_appl_qty = g_form.getValue('delete_application_qty');
-	var upd_appl_qty = g_form.getValue('update_application_qty');
+	var delRelQty = g_form.getValue('delete_relations_qty');
+	var updRelQty = g_form.getValue('update_relations_qty');
+	var delSrvQty = g_form.getValue('delete_server_qty');
+	var updSrvQty = g_form.getValue('update_server_qty');
+	var delApplQty = g_form.getValue('delete_application_qty');
+	var updApplQty = g_form.getValue('update_application_qty');
 	
-	if (del_rel_qty < 1 && upd_rel_qty < 1 && del_srv_qty < 1 && upd_srv_qty < 1 && del_appl_qty < 1 && upd_appl_qty < 1) {
+	var delRelQty2 = parseInt(delRelQty.replace(',',''));
+	var updRelQty2 = parseInt(updRelQty.replace(',',''));
+	var delSrvQty2 = parseInt(delSrvQty.replace(',',''));
+	var updSrvQty2 = parseInt(updSrvQty.replace(',',''));
+	var delApplQty2 = parseInt(delApplQty.replace(',',''));
+	var updApplQty2 = parseInt(updApplQty.replace(',',''));	
+
+	if (delRelQty2 < 0) {
+		g_form.addInfoMessage("Error in Delete Relations Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}
+	if (updRelQty2 < 0) {
+		g_form.addInfoMessage("Error in Update Relations Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}		
+	if (delSrvQty2 < 0) {
+		g_form.addInfoMessage("Error in Delete Server Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}			
+	if (updSrvQty2 < 0) {
+		g_form.addInfoMessage("Error in Update Server Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}			
+	if (delApplQty2 < 0) {
+		g_form.addInfoMessage("Error in Delete Application Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}			
+	if (updApplQty2 < 0) {
+		g_form.addInfoMessage("Error in Update Application Qty. The qty cannot be negative");
+		return false; //Abort submission
+	}	
+
+	if (delRelQty2 > 2000) {
+		g_form.addInfoMessage("Error in Delete Relations Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}
+	if (updRelQty2 > 2000) {
+		g_form.addInfoMessage("Error in Update Relations Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}		
+	if (delSrvQty2 > 2000) {
+		g_form.addInfoMessage("Error in Delete Server Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}			
+	if (updSrvQty2 > 2000) {
+		g_form.addInfoMessage("Error in Update Server Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}			
+	if (delApplQty2 > 2000) {
+		g_form.addInfoMessage("Error in Delete Application Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}			
+	if (updApplQty2 > 2000) {
+		g_form.addInfoMessage("Error in Update Application Qty. The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}
+	
+
+	if (delRelQty2 < 1 && updRelQty2 < 1 && delSrvQty2 < 1 && updSrvQty2 < 1 && delApplQty2 < 1 && updApplQty2 < 1) {
 		g_form.addInfoMessage("At least one of the qty fields must be > 0 for submission to be performed");
 		return false; //Abort submission
 	}
-
-   //Call the UI Action and skip the 'onclick' function
-	gsftSubmit(null, g_form.getFormElement(), 'build_test_data_action'); //MUST call the 'Action name' set in this UI Action		
+	
+	var sys_id = g_form.getUniqueValue();
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientTestDataPending');
+	ga.addParam('sysparm_name','numberOfTestDataRecordsAlreadyPending');
+	ga.addParam('sysparm_sys_id',sys_id);
+	ga.getXML(numberOfTestDataRecordsAlreadyPendingCallBackFunction);	
 }
 
+//Call back function for numberOfTestDataRecordsAlreadyPending
+function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	var answer2 = parseInt(answer);
+
+	if (answer2 > 2000) {
+		g_form.hideFieldMsg('status');
+		var msg = 'Number of test records already pending: ' + answer2.toString();
+		msg = msg + '. The threshold of 2000 records has been exceeded.'; 
+		msg = msg + ' No more test data can be generated at this time';	
+		g_form.showFieldMsg('status',msg,'error');			
+	}
+	else {
+		//Call the UI Action and skip the 'onclick' function
+		//MUST call the 'Action name' set in this UI Action		
+		gsftSubmit(null, g_form.getFormElement(), 'save_and_build_test_data_action');
+	}
+}
+	
 //Server Side Code..........
 
 //Code that runs without 'onclick'
 //Ensure call to server-side function with no browser errors
 if(typeof window == 'undefined')
-   runBuildTestDataBusRuleCode();
+   runSaveAndBuildTestDataBusRuleCode();
 
 //Server-side function
-function runBuildTestDataBusRuleCode(){
+function runSaveAndBuildTestDataBusRuleCode() {
 
 	if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_server_qty > 0 || current.update_server_qty > 0 || current.delete_application_qty > 0 || current.update_application_qty > 0) {
+		
 		current.status = 'Test Data Build In Progress';		
 		current.update();
-		action.setRedirectURL(current);		
+		action.setRedirectURL(current);			
 	}
 }]]></script>
         <show_insert>true</show_insert>
@@ -74,7 +156,7 @@ function runBuildTestDataBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6019e8e9db3c1c1041d08f3813961920</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>47</sys_mod_count>
         <sys_name>Save &amp; Build Test Data</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -82,7 +164,7 @@ function runBuildTestDataBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_6019e8e9db3c1c1041d08f3813961920</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 17:37:36</sys_updated_on>
+        <sys_updated_on>2020-06-02 11:16:18</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

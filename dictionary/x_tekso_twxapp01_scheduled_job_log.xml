@@ -3,6 +3,9 @@
         <element label="Background Job Finished At" max_length="40" name="background_job_finished_at" type="glide_date_time"/>
         <element label="Background Job Started At" max_length="40" name="background_job_started_at" type="glide_date_time"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
+        <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
+        <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
+        <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
         <element label="Finished At" max_length="40" name="finished_at" type="glide_date_time"/>
         <element label="First Processing Log Record Sys ID" max_length="32" name="first_processing_log_record_sys_id" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
@@ -13,15 +16,21 @@
         <element label="Next Run At" max_length="40" name="next_run_at" type="glide_date_time"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
+        <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
         <element default="0" label="Number Of Processing Log Records" max_length="40" name="number_of_processing_log_records" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
-        <element label="Pending Data Records To Process" max_length="40" name="pending_data_records_to_process" type="boolean"/>
+        <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
         <element label="Processing Log Contents Summary" max_length="4000" name="processing_log_contents_summary" type="string"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
+        <element label="Records Processed" max_length="40" name="records_processed" type="boolean"/>
+        <element label="Records Selected" max_length="40" name="records_selected" type="boolean"/>
+        <element label="Records Selected At" max_length="40" name="records_selected_at" type="glide_date_time"/>
+        <element label="Records Sent" max_length="40" name="records_sent" type="boolean"/>
         <element label="Setup Status" max_length="40" name="setup_status" type="string"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
-        <element default="0" label="Total Number Of Records Selected For Processing" max_length="40" name="total_number_of_records_selected_for_processing" type="integer"/>
+        <element default="0" label="Total Number Of Records Selected" max_length="40" name="total_number_of_records_selected" type="integer"/>
+        <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
         <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
         <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>

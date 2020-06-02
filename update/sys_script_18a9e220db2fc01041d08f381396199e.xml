@@ -18,7 +18,7 @@
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Setup - Add In Process Log Ref</name>
+        <name>Setup - Add In Process And Job Log Refs</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -31,26 +31,29 @@
 
 	// If a setup record is deleted and then created there may
 	// be existing process log records in the system - if so
-	// we need to re-attach the reference
+	// we need to re-attach the references
 	
 	// Async Insert
 	// Check if any existing processing log records exists
 	// If so - then update the link 
 	
-	var sysID = current.sys_id;
-	
 	var logTable = 'x_tekso_twxapp01_processing_log';
+	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
+	var setupTable = 'x_tekso_twxapp01_setup';
+	
 	var gr1 = new GlideRecord(logTable);
+	gr1.addQuery('records_sent',true);
+	gr1.addQuery('records_processed',true);
 	// Order by sys_created_on desc to get the most recent record first
-	gr1.orderByDesc('sys_created_on');
+	gr1.orderByDesc('sys_created_on');	
 	gr1.query();
+	gr1.setLimit(1);
 	if (gr1.next()) {
-		// Got a log record
+		// Got a processing log record
 		
 		var dataSentSummary = gr1.getValue('data_sent_summary') || '';
 		var dt = gr1.getValue('sys_created_on');
 		var processingSummary = getValue('processing_summary') || '';		
-		var setupTable = 'x_tekso_twxapp01_setup';
 		
 		var gr2 = new GlideRecord(setupTable);
 		gr2.query();
@@ -60,11 +63,35 @@
 			gr2.setValue('last_processing_at',dt);
 			gr2.setValue('last_scan_performed_at',dt);		
 			gr2.setValue('last_processing_results_summary',processingSummary);
-			gr2.setValue('updated_by_script','BR Setup Add In Process Log Ref'); // Debug			
+			gr2.setValue('updated_by_script','BR Setup - Add In Process And Job Log Refs'); // Debug			
 			gr2.update();
 		}
 	}
 
+	var gr3 = new GlideRecord(jobTable);
+	gr3.addQuery('records_sent',true);
+	gr3.addQuery('records_processed',true);
+	// Order by sys_created_on desc to get the most recent record first	
+	gr3.orderByDesc('sys_created_on');
+	gr3.query();
+	gr3.setLimit(1);
+	if (gr3.next()) {
+		// Got a scheduled log record
+
+		var dataSentSummary2 = gr1.getValue('data_sent_summary') || '';
+		var processingSummary2 = getValue('processing_summary') || '';	
+		
+		var gr4 = new GlideRecord(setupTable);
+		gr4.query();
+		if (gr4.next()) {
+			gr4.setValue('link_to_last_scheduled_job_log_record',gr3.sys_id);
+			gr4.setValue('last_scheduled_job_data_sent_summary',dataSentSummary2);
+			gr4.setValue('last_scheduled_job_results_summary',processingSummary2);
+			gr4.setValue('updated_by_script','BR Setup - Add In Process And Job Log Refs'); // Debug			
+			gr4.update();
+		}		
+	}
+	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -72,15 +99,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>18a9e220db2fc01041d08f381396199e</sys_id>
-        <sys_mod_count>5</sys_mod_count>
-        <sys_name>Setup - Add In Process Log Ref</sys_name>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Setup - Add In Process And Job Log Refs</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_18a9e220db2fc01041d08f381396199e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-16 12:12:06</sys_updated_on>
+        <sys_updated_on>2020-06-02 20:11:13</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

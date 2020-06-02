@@ -12,7 +12,7 @@
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
         <collection>x_tekso_twxapp01_generate_test_data</collection>
-        <condition>current.status != 'New' &amp;&amp; current.status != 'Unsubmitted' &amp;&amp; current.status != 'Test Data Build Complete'</condition>
+        <condition>current.status == 'Test Data Build In Progress' &amp;&amp; current.build_test_data_started != true &amp;&amp; current.number_of_build_test_data_options_started &lt; 1</condition>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
@@ -29,27 +29,37 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 	
-	gs.info('Generate Test Data - Async');
+	//Test Data Build In Progress = is set by UI Action - Save & Build Test Data
+	//build_test_data_started is set to true by SI Generate Data
+	//number_of_build_test_data_options_started is incremeneted by SI GenerateData
+	//
+	// current.build_test_data_started != true && current.number_of_build_test_data_options_started < 1
+	// is a safety check to stop the BR being triggered again
+	// current.build_test_data_started starts as false and
+	// current.number_of_build_test_data_options_started starts as 0
+	// they are both set by SI GenerateData - which is called by this BR
+	// Therefore if current.build_test_data_started is true or 
+	// current.number_of_build_test_data_options_started is > 0 then this means this must have already
+	// been triggered - so don't run again
 	
-	var del_srv_qty = current.delete_server_qty;		
-	gs.info('Generate Test Data - Async: ' + del_srv_qty.toString());
-	
-	var del_appl_qty = current.delete_application_qty;
-	gs.info('Generate Test Data - Async: ' + del_appl_qty.toString());
-	
-	var del_rel_qty = current.delete_relations_qty;
-	gs.info('Generate Test Data - Async: ' + del_rel_qty.toString());
-	
-	var upd_srv_qty = current.update_server_qty;	
-	gs.info('Generate Test Data - Async: ' + upd_srv_qty.toString());	
-	
-	var upd_appl_qty = current.update_application_qty;		
-	gs.info('Generate Test Data - Async: ' + upd_appl_qty.toString());		
-	var upd_rel_qty = current.update_relations_qty;
-	gs.info('Generate Test Data - Async: ' + upd_rel_qty.toString());
-		
 	var sys_id = current.sys_id;
 	var genTable = 'x_tekso_twxapp01_generate_test_data';
+	
+	var del_srv_qty = current.delete_server_qty;			
+	var del_appl_qty = current.delete_application_qty;	
+	var del_rel_qty = current.delete_relations_qty;	
+	var upd_srv_qty = current.update_server_qty;		
+	var upd_appl_qty = current.update_application_qty;			
+	var upd_rel_qty = current.update_relations_qty;		
+	var upd_srv_inc = current.update_server_include_all_fields;
+	var upd_srv_fill = current.update_server_completely_fill_string_fields;
+	var upd_appl_inc = current.update_application_include_all_fields;
+	var upd_appl_fill = current.update_application_completely_fill_string_fields;
+	
+	var includeAllFields = false;
+	var completelyFillStrings = false;
+	var data = '';
+	var qty = 0;
 	
 	if (del_srv_qty < 0) {
 		del_srv_qty = 0;
@@ -76,51 +86,51 @@
 	}
 	
 	if (del_srv_qty > 0) {
-		// Cap at 10,000
-		if (del_srv_qty > 10000) {
-			del_srv_qty = 10000;
+		// Cap at 2000
+		if (del_srv_qty > 2000) {
+			del_srv_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_srv_qty,sys_id,'delete_cmdb_ci_server');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_srv_qty,sys_id,'delete_cmdb_ci_server',true,true);	
 	}
 	
 	if (del_appl_qty > 0) {
-		// Cap at 10,000
-		if (del_appl_qty > 10000) {
-			del_appl_qty = 10000;
+		// Cap at 2000
+		if (del_appl_qty > 2000) {
+			del_appl_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'delete_cmdb_ci_appl');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'delete_cmdb_ci_appl',true,true);	
 	}
 	
 	if (del_rel_qty > 0) {
-		// Cap at 10,000
-		if (del_rel_qty > 10000) {
-			del_rel_qty = 10000;
+		// Cap at 2000
+		if (del_rel_qty > 2000) {
+			del_rel_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_rel_qty,sys_id,'delete_cmdb_rel_ci');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_rel_qty,sys_id,'delete_cmdb_rel_ci',true,true);	
 	}
 	
 	if (upd_srv_qty > 0) {
-		// Cap at 10,000
-		if (upd_srv_qty > 10000) {
-			upd_srv_qty = 10000;
+		// Cap at 2000
+		if (upd_srv_qty > 2000) {
+			upd_srv_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_srv_qty,sys_id,'update_cmdb_ci_server');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_srv_qty,sys_id,'update_cmdb_ci_server',upd_srv_inc,upd_srv_fill);	
 	}
 	
 	if (upd_appl_qty > 0) {
 		// Cap at 10,000
-		if (upd_appl_qty > 10000) {
-			upd_appl_qty = 10000;
+		if (upd_appl_qty > 2000) {
+			upd_appl_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'update_cmdb_ci_appl');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'update_cmdb_ci_appl',upd_appl_inc,upd_appl_fill);	
 	}
 	
 	if (upd_rel_qty > 0) {
 		// Cap at 10,000
-		if (upd_rel_qty > 10000) {
-			upd_rel_qty = 10000;
+		if (upd_rel_qty > 2000) {
+			upd_rel_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_rel_qty,sys_id,'update_cmdb_rel_ci');	
+		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_rel_qty,sys_id,'update_cmdb_rel_ci',true,true);	
 	}	
 	// Finished	
 })(current, previous);
@@ -133,7 +143,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>fea12ebfdb84d81041d08f38139619d1</sys_id>
-        <sys_mod_count>51</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>Generate Test Data - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -141,7 +151,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_fea12ebfdb84d81041d08f38139619d1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 20:47:45</sys_updated_on>
+        <sys_updated_on>2020-06-01 11:36:47</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

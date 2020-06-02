@@ -3,7 +3,7 @@
         <active>true</active>
         <applies_extended>false</applies_extended>
         <condition/>
-        <description>Value cannot be negative</description>
+        <description>Value cannot be -ve</description>
         <field>delete_application_qty</field>
         <global>true</global>
         <isolate_script>true</isolate_script>
@@ -15,9 +15,16 @@
       return;
    }
 
-	if (newValue < 0) {
+	//Need to remove all the comma's from the string first 
+	//value may be -ve
+	var newValue2 = parseInt(newValue.replace(',',''));
+	
+	if (newValue2 < 0) {
 		g_form.showFieldMsg('delete_application_qty','Value cannot be negative');	
 	}
+	if (newValue2 > 2000) {
+		g_form.showFieldMsg('delete_application_qty','Value cannot exceed 2000');	
+	}	
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -25,7 +32,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b55e07f7db48d81041d08f3813961983</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Generate Test Data - Delete Appl Qty</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -33,7 +40,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_b55e07f7db48d81041d08f3813961983</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 17:33:15</sys_updated_on>
+        <sys_updated_on>2020-06-01 17:50:40</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onChange</type>
         <ui_type>10</ui_type>

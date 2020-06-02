@@ -15,6 +15,7 @@
         <element label="Delete Criteria Description" max_length="100" name="delete_criteria_description" type="string"/>
         <element label="Discovery Source1" max_length="100" name="discovery_source1" type="string"/>
         <element label="Discovery Source2" max_length="100" name="discovery_source2" type="string"/>
+        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="Has Been Copied By Another Record" max_length="40" name="has_been_copied_by_another_record" type="boolean"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Is A Copy Of Another Record" max_length="40" name="is_a_copy_of_another_record" type="boolean"/>

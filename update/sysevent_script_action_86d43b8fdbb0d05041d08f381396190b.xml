@@ -35,11 +35,12 @@ function SendDataToUControl() {
 		gr1.setValue('updated_by_script','SA SendDataTouControl');
 		gr1.update();
 		
+		var setupStatus = '';
 		var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
 		gr2.query();
 		if (gr2.next()) {
 			// Got the x_tekso_twxapp01_setup record
-			var setupStatus = gr2.getValue('status') || ''; //Needed Now
+			setupStatus = gr2.getValue('status') || ''; //Needed Now
 
 			var setupPollingInterval = gr2.getValue('ucontrol_polling_interval_minutes') || 0; 
 			var setupConnTimeout = gr2.getValue('ucontrol_connection_timeout_minutes') || 0; 
@@ -78,7 +79,7 @@ function SendDataToUControl() {
 		
 		var noOfPendingRecs = getNumberOfPendingRecords(jobStartTime);		
 		if (noOfPendingRecs > 0) {
-			gr1.setValue('pending_data_records_to_process',true);
+			gr1.setValue('records_selected',true);
 			gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug
 			gr1.update();
 			
@@ -101,27 +102,35 @@ function updateScheduledJobLog(jobSysID) {
 
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var logTable = 'x_tekso_twxapp01_processing_log';
+	var setupTable = 'x_tekso_twxapp01_setup';
 	
 	var gr1 = new GlideRecord(jobTable);
 	gr1.addQuery('sys_id',jobSysID);
 	gr1.query();
 	if (gr1.next()) {
 
-		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug
+		var noOfRecordsSent = numberOfRecordsLinkedToJob(jobSysID);
+		var noOfUpdatesSent = numberOfUpdatesLinkedToJob(jobSysID);
+		var noOfDeletesSent = numberOfDeletesLinkedToJob(jobSysID);	
+		var dataSentSummary = sendSummary(noOfRecordsSent,noOfUpdatesSent,noOfDeletesSent);
+		var updatesPerClass = getUpdatesPerClassLinkedToJob(jobSysID);
+		var deletesPerClass = getDeletesPerClassLinkedToJob(jobSysID);
+		
+		// Builds a string like this: 3 records (3 updates , 0 deletes)
 		
 		var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
 		gr2.addQuery('link_to_scheduled_job_log_record',jobSysID);
 		gr2.orderBy('number');
 		gr2.query();
-		var summary = '';
-		var cnt = 0;
 		var first = '';
 		var last = '';
+		var cnt = 0;
+		var summary = '';
 		while(gr2.next()) {
 			var number = gr2.getValue('number');
-			var qty = gr2.getValue('total_number_of_records_sent') || 0;
-			var qty2 = qty.toString();
-			var record = number + ' Qty: ' + qty2;
+			var totalQty = gr2.getValue('total_number_of_records_sent') || 0;
+			var totalQty2 = totalQty.toString();
+			var record = number + ' Qty: ' + totalQty2;
 			if (cnt == 0) {
 				summary = record;
 				first = gr2.getValue('sys_id');
@@ -131,15 +140,35 @@ function updateScheduledJobLog(jobSysID) {
 			}
 			last = gr2.getValue('sys_id');
 			cnt = cnt + 1;
-		}
+		}			
 		gr1.setValue('link_to_first_processing_log_record',first);
 		gr1.setValue('first_processing_log_record_sys_id',first);
 		gr1.setValue('link_to_last_processing_log_record',last);
 		gr1.setValue('last_processing_log_record_sys_id',last);
 		gr1.setValue('number_of_processing_log_records',cnt);
 		gr1.setValue('processing_log_contents_summary',summary);
+		gr1.setValue('records_sent',true);
+		gr1.setValue('total_number_of_records_sent',noOfRecordsSent);
+		gr1.setValue('number_of_deletes_sent',noOfDeletesSent);
+		gr1.setValue('number_of_updates_sent',noOfUpdatesSent);
+		gr1.setValue('data_sent_summary',dataSentSummary);
+		gr1.setValue('data_sent_deletes_per_class',deletesPerClass);
+		gr1.setValue('data_sent_updates_per_class',updatesPerClass);		
+		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug		
 		gr1.update();
-	}
+		
+		// Only update setup if there was some data in this scheduled job log
+		if (noOfDeletesSent > 0 || noOfUpdatesSent > 0) {
+			var gr3 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('link_to_last_scheduled_job_log_record',jobSysID);		
+				gr3.setValue('last_scheduled_job_data_sent_summary',dataSentSummary);		
+				gr3.setValue('updated_by_script','SA SendDataTouControl'); // Debug		
+				gr3.update();
+			} //if (gr3.next()) {
+		} //if (noOfDeletesSent > 0 || noOfUpdatesSent > 0) {
+	} //if (gr1.next()) {
 }
 
 function getNumberOfPendingRecords(jobStartTime) {
@@ -260,8 +289,10 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 	var gr3 = new GlideRecord(jobTable);
 	gr3.addQuery('sys_id',jobSysID);
 	gr3.query();
-	if (gr3.next()) {
-		gr3.setValue('total_number_of_records_selected_for_processing',totRecCnt);
+	if (gr3.next()) {	
+		gr3.setValue('total_number_of_records_selected',totRecCnt);
+		var now = new GlideDateTime();
+		gr3.setValue('records_selected_at',now);
 		gr3.setValue('updated_by_script','SA SendDataTouControl'); // Debug		
 		gr3.update();
 	}
@@ -316,9 +347,6 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 	writeDebugLog('mainBit Start');
 	
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
-	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-
 	var recCnt = 0;
 	var trackingSysID = '';
 	var operation = '';
@@ -834,7 +862,7 @@ function createNewLogRecord(jobSysID,processCnt,processingID) {
 	var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
 	gr2.initialize();
 	gr2.setValue('total_number_of_records_sent',0);
-	
+	gr2.setValue('records_sent',true);
 	gr2.setValue('scheduled_job_started_at',jobStartedAt);	
 	gr2.setValue('link_to_scheduled_job_log_record',jobSysID.toString());
 	gr2.setValue('scheduled_job_log_record_sys_id',jobSysID.toString());
@@ -1021,6 +1049,7 @@ function updateProcessingLog(logSysID) {
 }
 
 // Called by updateProcessingLog() - which is called by mainBit()
+// and by updateScheduledJobLog()
 function sendSummary(recCnt,updCnt,delCnt) {
 	// Builds a string like this: 3 records (3 updates , 0 deletes)
 	var rtn = '';
@@ -1103,6 +1132,7 @@ function numberOfRecordsLinkedToJob(jobSysID) {
 	return rtn;
 }
 
+/*
 function numberOfRestRecordsLinkedToJob(jobSysID) {
 	var rtn = 0;
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -1112,6 +1142,8 @@ function numberOfRestRecordsLinkedToJob(jobSysID) {
 	rtn = gr1.getRowCount();
 	return rtn;	
 }
+*/
+
 
 function numberOfUpdatesLinkedToJob(jobSysID) {
 	var rtn = 0;
@@ -1134,6 +1166,7 @@ function numberOfDeletesLinkedToJob(jobSysID) {
 	rtn = gr1.getRowCount();
 	return rtn;
 }
+
 
 function getUpdatesPerClassLinkedToLog(logSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
@@ -1176,6 +1209,7 @@ function getUpdatesPerClassLinkedToLog(logSysID) {
 	}
 	return sentUpdPerCls;
 }
+
 
 function getDeletesPerClassLinkedToLog(logSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
@@ -1220,6 +1254,7 @@ function getDeletesPerClassLinkedToLog(logSysID) {
 }
 
 
+
 function getUpdatesPerClassLinkedToJob(jobSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 	
@@ -1261,6 +1296,8 @@ function getUpdatesPerClassLinkedToJob(jobSysID) {
 	}
 	return sentUpdPerCls;
 }
+
+
 
 function getDeletesPerClassLinkedToJob(jobSysID) {
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
@@ -1338,7 +1375,6 @@ function lastRestResponseSysIDLinkedToLog(logSysID) {
 }
 
 
-	
 function firstRestSysIDLinkedToLog(logSysID) {
 
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -1372,8 +1408,7 @@ function lastRestSysIDLinkedToLog(logSysID) {
 	return lastRestSysID;
 }
 
-
-
+/*
 function firstRestResponseSysIDLinkedToJob(jobSysID) {
 
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';	
@@ -1389,7 +1424,9 @@ function firstRestResponseSysIDLinkedToJob(jobSysID) {
 	}
 	return firstRestResponseSysID;
 }
+*/
 
+/*
 function lastRestResponseSysIDLinkedToJob(jobSysID) {
 
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';	
@@ -1405,9 +1442,9 @@ function lastRestResponseSysIDLinkedToJob(jobSysID) {
 	}
 	return lastRestResponseSysID;
 }
+*/
 
-
-	
+/*	
 function firstRestSysIDLinkedToJob(jobSysID) {
 
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -1423,8 +1460,9 @@ function firstRestSysIDLinkedToJob(jobSysID) {
 	}
 	return firstRestSysID;
 }
+*/
 
-
+/*
 function lastRestSysIDLinkedToJob(jobSysID) {
 
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -1440,6 +1478,7 @@ function lastRestSysIDLinkedToJob(jobSysID) {
 	}
 	return lastRestSysID;
 }
+*/
 
 function lastDataDateLinkedToLog(logSysID) {
 
@@ -1455,7 +1494,8 @@ function lastDataDateLinkedToLog(logSysID) {
 	}
 	return dt;
 }
-	
+
+/*
 function lastDataDateLinkedToJob(jobSysID) {
 
 	var dt = new GlideDateTime();
@@ -1470,6 +1510,7 @@ function lastDataDateLinkedToJob(jobSysID) {
 	}
 	return dt;
 }
+*/
 
 function restDataRecordContentsSummaryLinkedToLog(logSysID) {
 
@@ -1487,7 +1528,7 @@ function restDataRecordContentsSummaryLinkedToLog(logSysID) {
 		var baseTable = gr1.getValue('base_table') || '';
 		var qty = gr1.getValue('no_of_cmdb_records_in_json_request_body') || 0;
 		var qty2 = qty.toString();
-		var record = number + ' Operation: ' + operation + ', Base Table: ' + baseTable + ', Qty: ' + qty;
+		var record = number + ' Operation: ' + operation + ', Base Table: ' + baseTable + ', Qty: ' + qty2;
 		if (cnt == 0) {
 			summary = record;
 		}
@@ -1535,7 +1576,7 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>43</sys_mod_count>
+        <sys_mod_count>63</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1543,6 +1584,6 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-27 13:24:01</sys_updated_on>
+        <sys_updated_on>2020-06-02 20:03:46</sys_updated_on>
     </sysevent_script_action>
 </record_update>

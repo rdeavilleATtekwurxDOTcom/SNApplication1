@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>false</action_update>
-        <active>false</active>
+        <active>true</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -682,6 +682,15 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							}
 						}
 
+						// If this test data
+						if (current.test_data == true) {
+							if (current.test_data_completely_fill_string_fields_if_update == false) {
+								if (tp == 'string' && fld != 'sys_class_name') {
+									// Only include the first 20 chars
+									val = val.substring(0,20);
+								}
+							}
+						}
 						// If lookup = 0 then field is normal
 						// If lookup = 1 then field is a reference we want
 						// If lookup = -1 then exclude the reference field
@@ -799,10 +808,13 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						if (current.test_data == true) {
 							gr3.setValue('test_data',true);		
 							gr3.setValue('test_table_name',current.test_table_name);
+							var genSysID = current.generate_test_data_record_sys_id.toString();
+							gr3.setValue('generate_test_data_record_sys_id',genSysID);	
 						}
 						else {
 							gr3.setValue('test_data',false);		
-							gr3.setValue('test_table_name','');						
+							gr3.setValue('test_table_name','');		
+							gr3.setValue('generate_test_data_record_sys_id','');
 						}
 
 						gr3.setValue('inserted_by_script','BR uControl Track Updates'); // Debug					
@@ -901,7 +913,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>77</sys_mod_count>
+        <sys_mod_count>85</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -909,7 +921,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 21:08:36</sys_updated_on>
+        <sys_updated_on>2020-06-01 10:51:23</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

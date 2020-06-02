@@ -11,28 +11,49 @@
         <name>Generate Test Data - onLoad</name>
         <order/>
         <script><![CDATA[function onLoad() {
-
+		
 	// We use different views for New + unSubmitted to hide a lot of the fields
 	var stat = g_form.getValue('status');
+
+	if (stat == 'New' || stat == 'Unsubmitted') {
+		// Start a timer
+		startTimer();
+		var msg = '';
+		var num = parseInt(g_scratchpad.number_of_test_data_records_already_pending);
+		if (num > 0) {
+			msg = 'Number of test records already pending: ' + num.toString();
+			if (num > 2000)  {
+				msg = msg + '. The threshold of 2000 records has been exceeded.'; 
+				msg = msg + ' No more test data can be generated at this time';
+				g_form.showFieldMsg('status',msg,'error');	
+			}
+			else {
+				g_form.showFieldMsg('status',msg,'info');					
+			}
+		}
+		else {
+			g_form.hideFieldMsg('status');
+		}
+	}
 	
 	var delSrv = g_form.getValue('delete_server_qty');
-	//Use the string's .replace method with a regex of \D, which is a shorthand character class that matches all non-digits
-	var delSrv2 = parseInt(delSrv.replace(/\D/g,''));
+	//Need to remove all the comma's from the string first
+	var delSrv2 = parseInt(delSrv.replace(',',''));
 	
 	var delApp = g_form.getValue('delete_application_qty');
-	var delApp2 = parseInt(delApp.replace(/\D/g,''));	
+	var delApp2 = parseInt(delApp.replace(',',''));	
 
 	var delRel = g_form.getValue('delete_relations_qty');
-	var delRel2 = parseInt(delRel.replace(/\D/g,''));	
+	var delRel2 = parseInt(delRel.replace(',',''));	
 	
 	var updRel = g_form.getValue('update_relations_qty');
-	var updRel2 = parseInt(updRel.replace(/\D/g,''));	
+	var updRel2 = parseInt(updRel.replace(',',''));	
 	
 	var updSrv = g_form.getValue('update_server_qty');
-	var updSrv2 = parseInt(updSrv.replace(/\D/g,''));	
+	var updSrv2 = parseInt(updSrv.replace(',',''));	
 	
 	var updApp = g_form.getValue('update_application_qty');
-	var updApp2 = parseInt(updApp.replace(/\D/g,''));		
+	var updApp2 = parseInt(updApp.replace(',',''));		
 
 	var fields = g_form.getEditableFields();
 	for (var x = 0; x < fields.length; x++) {
@@ -47,14 +68,29 @@
 	writeFldsForNewArr.push('update_relations_qty');	
 	writeFldsForNewArr.push('delete_server_qty');
 	writeFldsForNewArr.push('update_server_qty');
-	
+	if (updApp2 > 0) {
+	writeFldsForNewArr.push('update_application_completely_fill_string_fields');
+	writeFldsForNewArr.push('update_application_include_all_fields');
+	}
+	if (updSrv2 > 0) {
+		writeFldsForNewArr.push('update_server_completely_fill_string_fields');
+		writeFldsForNewArr.push('update_server_include_all_fields');
+	}
 	var visibleFldsForNewArr = ['delete_application_qty','update_application_qty'];
 	visibleFldsForNewArr.push('delete_relations_qty');
 	visibleFldsForNewArr.push('update_relations_qty');
 	visibleFldsForNewArr.push('delete_server_qty');
 	visibleFldsForNewArr.push('update_server_qty');
 	visibleFldsForNewArr.push('status');
-
+	if (updApp2 > 0) {
+	visibleFldsForNewArr.push('update_application_completely_fill_string_fields');
+	visibleFldsForNewArr.push('update_application_include_all_fields');
+	}
+	if (updSrv2 > 0) {
+		visibleFldsForNewArr.push('update_server_completely_fill_string_fields');
+		visibleFldsForNewArr.push('update_server_include_all_fields');
+	}
+	
 	var visibleFldsForAfterNewArr = ['delete_application_qty','update_application_qty'];
 	visibleFldsForAfterNewArr.push('delete_relations_qty');
 	visibleFldsForAfterNewArr.push('update_relations_qty');
@@ -66,6 +102,10 @@
 	visibleFldsForAfterNewArr.push('build_test_data_completed');
 	visibleFldsForAfterNewArr.push('build_test_data_completed_at');	
 	visibleFldsForAfterNewArr.push('time_taken_to_build_test_data');
+	visibleFldsForAfterNewArr.push('number_of_build_test_data_options_selected');
+	visibleFldsForAfterNewArr.push('number_of_build_test_data_options_started');
+	visibleFldsForAfterNewArr.push('number_of_build_test_data_options_completed');
+	
 	if (delSrv2 > 0) {
 		visibleFldsForAfterNewArr.push('build_delete_server_test_data_started');
 		visibleFldsForAfterNewArr.push('build_delete_server_test_data_completed');
@@ -129,14 +169,50 @@
 	}
 }	
 
-]]></script>
+
+function startTimer() {
+	//Every 2 seconds
+	var myVar = setInterval(myTimer ,2000);
+}
+
+function myTimer() {
+	var sys_id = g_form.getUniqueValue();
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientTestDataPending');
+	ga.addParam('sysparm_name','numberOfTestDataRecordsAlreadyPending');
+	ga.addParam('sysparm_sys_id',sys_id);
+	ga.getXML(numberOfTestDataRecordsAlreadyPendingCallBackFunction);	
+}
+
+//Call back function for numberOfTestDataRecordsAlreadyPending
+function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	var answer2 = parseInt(answer);
+
+	if (answer2 > 0) {
+		g_form.hideFieldMsg('status');
+		var msg = 'Number of test records already pending: ' + answer2.toString();
+		if (answer2 > 2000)  {
+			msg = msg + '. The threshold of 2000 records has been exceeded.'; 
+			msg = msg + ' No more test data can be generated at this time';
+			g_form.showFieldMsg('status',msg,'error');	
+		}
+		else {
+			g_form.showFieldMsg('status',msg,'info');					
+		}
+	}
+	else {
+		g_form.hideFieldMsg('status');
+	}
+}	]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-07 13:06:53</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>42f77559db88901041d08f3813961916</sys_id>
-        <sys_mod_count>45</sys_mod_count>
+        <sys_mod_count>79</sys_mod_count>
         <sys_name>Generate Test Data - onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -144,7 +220,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_42f77559db88901041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 17:27:06</sys_updated_on>
+        <sys_updated_on>2020-06-02 11:42:37</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

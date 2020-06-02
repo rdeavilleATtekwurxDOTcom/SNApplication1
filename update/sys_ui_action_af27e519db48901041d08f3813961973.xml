@@ -2,7 +2,7 @@
     <sys_ui_action action="INSERT_OR_UPDATE">
         <action_name>save_without_building_action</action_name>
         <active>true</active>
-        <client>false</client>
+        <client>true</client>
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
@@ -26,10 +26,60 @@
         <list_save_with_form_button>false</list_save_with_form_button>
         <list_style/>
         <name>Save (without building test data)</name>
-        <onclick/>
+        <onclick>runSaveWithoutBuildingTestDataClientCode()</onclick>
         <order>100</order>
-        <script><![CDATA[current.status = 'Unsubmitted';
-current.update();
+        <script><![CDATA[//Client-side 'onclick' function
+function runSaveWithoutBuildingTestDataClientCode() {
+	
+	g_form.clearMessages();
+	var del_rel_qty = g_form.getValue('delete_relations_qty');
+	var upd_rel_qty = g_form.getValue('update_relations_qty');
+	var del_srv_qty = g_form.getValue('delete_server_qty');
+	var upd_srv_qty = g_form.getValue('update_server_qty');
+	var del_appl_qty = g_form.getValue('delete_application_qty');
+	var upd_appl_qty = g_form.getValue('update_application_qty');
+	
+	var del_rel_qty2 = parseInt(del_rel_qty.replace(',',''));
+	var upd_rel_qty2 = parseInt(upd_rel_qty.replace(',',''));
+	var del_srv_qty2 = parseInt(del_srv_qty.replace(',',''));
+	var upd_srv_qty2 = parseInt(upd_srv_qty.replace(',',''));
+	var del_appl_qty2 = parseInt(del_appl_qty.replace(',',''));
+	var upd_appl_qty2 = parseInt(upd_appl_qty.replace(',',''));	
+
+	if (del_rel_qty2 < 0 || upd_rel_qty2 < 0 || del_srv_qty2 < 0 || upd_srv_qty2 < 0 || del_appl_qty2 < 0 || upd_appl_qty2 < 0) {
+		g_form.addInfoMessage("The qty cannot be negative");
+		return false; //Abort submission
+	}
+	
+	if (del_rel_qty2 > 2000 || upd_rel_qty2 > 2000 || del_srv_qty2 > 2000 || upd_srv_qty2 > 2000 || del_appl_qty2 > 2000 || upd_appl_qty2 > 2000) {
+		g_form.addInfoMessage("The maximum allowed qty is 2000");
+		return false; //Abort submission
+	}
+	
+	if (del_rel_qty2 < 1 && upd_rel_qty2 < 1 && del_srv_qty2 < 1 && upd_srv_qty2 < 1 && del_appl_qty2 < 1 && upd_appl_qty2 < 1) {
+		g_form.addInfoMessage("At least one of the qty fields must be > 0 for submission to be performed");
+		return false; //Abort submission
+	}
+
+    //Call the UI Action and skip the 'onclick' function
+	//MUST call the 'Action name' set in this UI Action		
+	gsftSubmit(null, g_form.getFormElement(), 'save_without_building_action');
+}
+
+//Server Side Code..........
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runSaveWithoutBuildingTestDataBusRuleCode();
+
+//Server-side function
+function runSaveWithoutBuildingTestDataBusRuleCode(){
+	current.status = 'Unsubmitted';
+	current.update();
+}
+
+
 ]]></script>
         <show_insert>true</show_insert>
         <show_multiple_update>false</show_multiple_update>
@@ -41,7 +91,7 @@ current.update();
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>af27e519db48901041d08f3813961973</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>Save (without building test data)</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -49,7 +99,7 @@ current.update();
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_af27e519db48901041d08f3813961973</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-15 10:59:32</sys_updated_on>
+        <sys_updated_on>2020-06-01 18:08:53</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

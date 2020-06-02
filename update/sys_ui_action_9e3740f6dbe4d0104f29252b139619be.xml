@@ -50,7 +50,8 @@ gr1.setValue('no_of_fields',current.no_of_fields);
 gr1.setValue('total_length_of_all_fields_list',current.total_length_of_all_fields_list);	
 gr1.setValue('actual_table_name',current.actual_table_name);	
 gr1.setValue('test_data',current.test_data); 
-
+gr1.setValue('test_table_name',current.test_table_name);
+gr1.setValue('generate_test_data_record_sys_id',current.generate_test_data_record_sys_id);
 if (current.base_table == 'cmdb_rel_ci') {
 	gr1.setValue('correlation_id2',current.correlation_id2);
 	gr1.setValue('discovery_source2',current.discovery_source2);
@@ -92,7 +93,7 @@ if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) 
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9e3740f6dbe4d0104f29252b139619be</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Copy CMDB Delete</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -100,7 +101,7 @@ if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) 
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_9e3740f6dbe4d0104f29252b139619be</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-12 14:49:25</sys_updated_on>
+        <sys_updated_on>2020-05-29 11:02:27</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_deletes</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

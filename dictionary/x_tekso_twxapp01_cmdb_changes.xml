@@ -10,6 +10,7 @@
         <element label="Dropped Fields" max_length="4000" name="dropped_fields" type="string"/>
         <element label="Excluded Fields" max_length="4000" name="excluded_fields" type="string"/>
         <element label="Fields To Process" max_length="4000" name="fields_to_process" type="string"/>
+        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="Latest REST Data Record Sys ID" max_length="32" name="latest_rest_data_record_sys_id" type="string"/>

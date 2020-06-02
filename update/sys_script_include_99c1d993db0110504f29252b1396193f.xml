@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.ClientTestDataPending</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>ClientTestDataPending</name>
+        <script><![CDATA[var ClientTestDataPending = Class.create();
+ClientTestDataPending.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	numberOfTestDataRecordsAlreadyPending: function() {
+
+		// sysID from sysparm_sys_id
+		
+		// This is the sys id from x_tekso_twxapp01_generate_test_data
+		// for the record that we are currently on
+		// So we want to see how much test data has already been
+		// generated for other records
+		var sysID = this.getParameter('sysparm_sys_id');	
+		
+		//gs.info('numberOfTestDataRecordsAlreadyPending sysID: ' + sysID);
+		
+		// Get the number of test data records
+		// that are already pending from other test runs
+		var rtn = 0;
+		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
+
+		var gr1 = new GlideRecord(dataTable);
+		gr1.addQuery('status','Pending');
+		gr1.addQuery('test_data',true);
+		gr1.addQuery('generate_test_data_record_sys_id','!=',sysID);
+		gr1.query();
+		rtn = gr1.getRowCount();
+		//gs.info('numberOfTestDataRecordsAlreadyPending cnt: ' + rtn.toString());
+		
+		return rtn;
+	},
+	type: 'ClientTestDataPending'
+});
+
+
+/*
+    Example calling from client code....
+	
+	var sys_id = g_form.getUniqueValue();
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientTestDataPending');
+	ga.addParam('sysparm_name','numberOfTestDataRecordsAlreadyPending');
+	ga.addParam('sysparm_sys_id',sys_id);
+	// Calls numberOfTestDataRecordsAlreadyPendingCallBackFunction
+	ga.getXML(numberOfTestDataRecordsAlreadyPendingCallBackFunction);	
+}
+
+//Call back function for numberOfTestDataRecordsAlreadyPending
+function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	var answer2 = parseInt(answer);
+
+	if (answer2 > 2000) {
+		g_form.hideFieldMsg('status');
+		var msg = 'Number of test records already pending: ' + answer2.toString();
+		msg = msg + '. The threshold of 2000 records has been exceeded.'; 
+		msg = msg + ' No more test data can be generated at this time';	
+		g_form.showFieldMsg('status',msg,'error');			
+	}
+	else {
+		//Call the UI Action and skip the 'onclick' function
+		//MUST call the 'Action name' set in this UI Action		
+		gsftSubmit(null, g_form.getFormElement(), 'save_and_build_test_data_action');
+	}
+}
+*/
+]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-02 08:49:38</sys_created_on>
+        <sys_id>99c1d993db0110504f29252b1396193f</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>ClientTestDataPending</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_99c1d993db0110504f29252b1396193f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-02 11:16:32</sys_updated_on>
+    </sys_script_include>
+</record_update>

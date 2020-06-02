@@ -14,10 +14,28 @@
    if (isLoading) {
       return;
    }
+	
+	//Need to remove all the comma's from the string first 
+	//value may be -ve
+	var newValue2 = parseInt(newValue.replace(',',''));
 
-	if (newValue < 0) {
+	if (newValue2 < 0) {
 		g_form.showFieldMsg('update_application_qty','Value cannot be negative');	
 	}
+	if (newValue2 > 2000) {
+		g_form.showFieldMsg('update_application_qty','Value cannot exceed 2000');	
+	}	
+	
+	if (newValue2 > 0) {
+		g_form.setDisplay('update_application_completely_fill_string_fields',true);
+		g_form.setDisplay('update_application_include_all_fields',true);
+		g_form.setReadonly('update_application_completely_fill_string_fields',false);
+		g_form.setReadonly('update_application_include_all_fields',false);		
+	}
+	else {
+		g_form.setDisplay('update_application_completely_fill_string_fields',false);
+		g_form.setDisplay('update_application_include_all_fields',false);						  
+	}		
 }]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -25,7 +43,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>1390137bdb48d81041d08f3813961995</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Generate Test Data - Update Appl Qty</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -33,7 +51,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_1390137bdb48d81041d08f3813961995</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 17:41:47</sys_updated_on>
+        <sys_updated_on>2020-06-02 11:45:32</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onChange</type>
         <ui_type>10</ui_type>

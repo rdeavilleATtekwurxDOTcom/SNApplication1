@@ -8,6 +8,7 @@
         <element label="Copied From Record Sys ID" max_length="32" name="copied_from_record_sys_id" type="string"/>
         <element label="Created By uControl Integration User" max_length="40" name="created_by_ucontrol_integration_user" type="boolean"/>
         <element label="Fields Changed" max_length="4000" name="fields_changed" type="string"/>
+        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="Has Been Copied By Another Record" max_length="40" name="has_been_copied_by_another_record" type="boolean"/>
         <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
         <element label="Is A Copy Of Another Record" max_length="40" name="is_a_copy_of_another_record" type="boolean"/>
@@ -34,6 +35,8 @@
         <element label="Status Details" max_length="200" name="status_details" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
         <element label="Test Data" max_length="40" name="test_data" type="boolean"/>
+        <element label="Test Data Completely Fill String Fields If Update" max_length="40" name="test_data_completely_fill_string_fields_if_update" type="boolean"/>
+        <element label="Test Data Include All Fields If Update" max_length="40" name="test_data_include_all_fields_if_update" type="boolean"/>
         <element label="Test Table Name" max_length="80" name="test_table_name" type="string"/>
         <element default="0" label="Total Length Of All Fields List" max_length="40" name="total_length_of_all_fields_list" type="integer"/>
         <element default="0" label="Total Length Of Fields Changed List" max_length="40" name="total_length_of_fields_changed_list" type="integer"/>

@@ -36,7 +36,10 @@
         <element label="Last Processing Data Sent Summary" max_length="100" name="last_processing_data_sent_summary" type="string"/>
         <element label="Last Processing Results Summary" max_length="100" name="last_processing_results_summary" type="string"/>
         <element label="Last Scan Performed At" max_length="40" name="last_scan_performed_at" type="glide_date_time"/>
+        <element label="Last Scheduled Job Data Sent Summary" max_length="100" name="last_scheduled_job_data_sent_summary" type="string"/>
+        <element label="Last Scheduled Job Results Summary" max_length="100" name="last_scheduled_job_results_summary" type="string"/>
         <element label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Last Scheduled Job Log Record" max_length="32" name="link_to_last_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element choice="3" default="5" hint="If there is a problem sending data - this is the number of times the system will retry" label="Max Retries" max_length="40" name="max_retries" type="integer">
             <choice>
                 <element inactive_on_update="false" label="0" sequence="1" value="0"/>

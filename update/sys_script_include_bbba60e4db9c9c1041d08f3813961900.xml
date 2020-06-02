@@ -15,12 +15,11 @@ HandleRESTResponse.prototype = {
 		// resultRestResponse e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		// dataSysID = sys_id for x_tekso_twxapp01_rest_data_to_ucontrol
 		
-		writeDebugLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
+		this.writeDebugLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
 		
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-		var logTable = 'x_tekso_twxapp01_processing_log';
 		var setupTable = 'x_tekso_twxapp01_setup';
 		
 		var resultStatusCode = 0;
@@ -80,7 +79,6 @@ HandleRESTResponse.prototype = {
 			gr2.query();
 			while(gr2.next()) {
 				// For each one - loop through and get each change record
-				var link_sys_id = gr2.sys_id;
 				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
 				// Update the REST response on the link record
 				gr2.setValue('response_from_ucontrol',resultRestResponse); 
@@ -120,21 +118,33 @@ HandleRESTResponse.prototype = {
 			var completedAt = GlideDateTime();
 			
 			// Update the processing log record
-			var summary = this.updateProcessingLog(logSysID,operation,noOfRecords2,completedAt);
+			var processingSummary = this.updateProcessingLog(logSysID,operation,noOfRecords2,completedAt);
 
-			// Update the scheduled job log record
-			this.updateScheduledJobLog(jobSysID,operation,noOfRecords2,completedAt);
-			
 			// Update Setup
 			var gr5 = new GlideRecord(setupTable);
 			gr5.addQuery('link_to_last_processing_log_record',logSysID);
 			gr5.query();
 			if (gr5.next()) {
 				// This log record is the latest one and is attached to the setup table
-				gr5.setValue('last_processing_results_summary',summary);
+				gr5.setValue('last_processing_results_summary',processingSummary);
 				gr5.setValue('updated_by_script','SI handleRESTResponse'); // Debug					
 				gr5.update();
 			} //if (gr5.next()) 
+
+			// Update the scheduled job log record
+			var jobSummary = this.updateScheduledJobLog(jobSysID,operation,noOfRecords2,completedAt);
+
+			// Update Setup
+			var gr6 = new GlideRecord(setupTable);
+			gr6.addQuery('link_to_last_scheduled_job_log_record',jobSysID);
+			gr6.query();
+			if (gr6.next()) {
+				// This log record is the latest one and is attached to the setup table
+				gr6.setValue('last_scheduled_job_results_summary',jobSummary);				
+				gr6.setValue('updated_by_script','SI handleRESTResponse'); // Debug					
+				gr6.update();
+			} //if (gr6.next()) 			
+					
 		} //if (gr1.next()) 		
 	},
 	updateProcessingLog: function(logSysID,operation,noOfRecords2,completedAt) {
@@ -164,6 +174,7 @@ HandleRESTResponse.prototype = {
 			gr1.setValue('number_of_updates_processed',updCnt2);
 			gr1.setValue('number_of_deletes_processed',delCnt2);
 			gr1.setValue('total_number_of_records_processed',recCnt2);
+			gr1.setValue('records_processed',true);
 			gr1.setValue('processing_summary',summary);
 			gr1.setValue('processing_completed_at',completedAt);
 			gr1.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
@@ -197,13 +208,14 @@ HandleRESTResponse.prototype = {
 			summary = this.processSummary(recCnt2,updCnt2,delCnt2);
 			gr1.setValue('number_of_updates_processed',updCnt2);
 			gr1.setValue('number_of_deletes_processed',delCnt2);
+			gr1.setValue('records_processed',true);
 			gr1.setValue('total_number_of_records_processed',recCnt2);
 			gr1.setValue('processing_summary',summary);
 			gr1.setValue('processing_completed_at',completedAt);
 			gr1.setValue('updated_by_script','SI handleRESTResponse'); // Debug	
 			gr1.update();
 		} //if (gr1.next())		
-		//return summary;
+		return summary;
 	},
 	processSummary: function(recCnt,updCnt,delCnt) {
 		// Builds a string like this: 3 records (3 updates , 0 deletes)
@@ -252,13 +264,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>24</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-25 20:13:40</sys_updated_on>
+        <sys_updated_on>2020-06-02 20:06:25</sys_updated_on>
     </sys_script_include>
 </record_update>

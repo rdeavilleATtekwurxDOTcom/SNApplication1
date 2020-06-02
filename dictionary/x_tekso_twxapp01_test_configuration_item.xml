@@ -1,68 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Test Configuration Item" max_length="40" name="x_tekso_twxapp01_test_configuration_item" sizeclass="10000" type="collection">
-        <element label="Alternative Value Asset" max_length="32" name="alternative_value_asset" type="string"/>
-        <element label="Alternative Value Asset Tag" max_length="40" name="alternative_value_asset_tag" type="string"/>
-        <element label="Alternative Value Assigned To" max_length="32" name="alternative_value_assigned_to" type="string"/>
-        <element label="Alternative Value Assignment Group" max_length="32" name="alternative_value_assignment_group" type="string"/>
-        <element label="Alternative Value Attributes" max_length="65000" name="alternative_value_attributes" type="string"/>
-        <element label="Alternative Value Can Print" max_length="40" name="alternative_value_can_print" type="boolean"/>
-        <element label="Alternative Value Category" max_length="40" name="alternative_value_category" type="string"/>
-        <element label="Alternative Value Change Control" max_length="32" name="alternative_value_change_control" type="string"/>
-        <element label="Alternative Value Checked In" max_length="40" name="alternative_value_checked_in" type="glide_date_time"/>
-        <element label="Alternative Value Checked Out" max_length="40" name="alternative_value_checked_out" type="glide_date_time"/>
-        <element label="Alternative Value Comments" max_length="4000" name="alternative_value_comments" type="string"/>
-        <element label="Alternative Value Company" max_length="32" name="alternative_value_company" type="string"/>
-        <element label="Alternative Value Correlation ID" max_length="512" name="alternative_value_correlation_id" type="string"/>
-        <element label="Alternative Value Cost" max_length="40" name="alternative_value_cost" type="float"/>
-        <element label="Alternative Value Cost CC" max_length="3" name="alternative_value_cost_cc" type="string"/>
-        <element label="Alternative Value Cost Center" max_length="32" name="alternative_value_cost_center" type="string"/>
-        <element label="Alternative Value Delivery Date" max_length="40" name="alternative_value_delivery_date" type="glide_date_time"/>
-        <element label="Alternative Value Department" max_length="32" name="alternative_value_department" type="string"/>
-        <element label="Alternative Value Discovery Source" max_length="40" name="alternative_value_discovery_source" type="string"/>
-        <element label="Alternative Value DNS Domain" max_length="255" name="alternative_value_dns_domain" type="string"/>
-        <element label="Alternative Value Due" max_length="40" name="alternative_value_due" type="glide_date_time"/>
-        <element label="Alternative Value Due In" max_length="40" name="alternative_value_due_in" type="string"/>
-        <element label="Alternative Value Duplicate Of" max_length="32" name="alternative_value_duplicate_of" type="string"/>
-        <element label="Alternative Value Fault Count" max_length="40" name="alternative_value_fault_count" type="integer"/>
-        <element label="Alternative Value First Discovered" max_length="40" name="alternative_value_first_discovered" type="glide_date_time"/>
-        <element label="Alternative Value FQDN" max_length="255" name="alternative_value_fqdn" type="string"/>
-        <element label="Alternative Value GL Account" max_length="40" name="alternative_value_gl_account" type="string"/>
-        <element label="Alternative Value Install Date" max_length="40" name="alternative_value_install_date" type="glide_date_time"/>
-        <element label="Alternative Value Install Status" max_length="40" name="alternative_value_install_status" type="integer"/>
-        <element label="Alternative Value Invoice Number" max_length="40" name="alternative_value_invoice_number" type="string"/>
-        <element label="Alternative Value IP Address" max_length="255" name="alternative_value_ip_address" type="string"/>
-        <element label="Alternative Value Justification" max_length="80" name="alternative_value_justification" type="string"/>
-        <element label="Alternative Value Last Discovered" max_length="40" name="alternative_value_last_discovered" type="glide_date_time"/>
-        <element label="Alternative Value Lease ID" max_length="40" name="alternative_value_lease_id" type="string"/>
-        <element label="Alternative Value Location" max_length="32" name="alternative_value_location" type="string"/>
-        <element label="Alternative Value MAC Address" max_length="18" name="alternative_value_mac_address" type="string"/>
-        <element label="Alternative Value Maintenance Schedule" max_length="32" name="alternative_value_maintenance_schedule" type="string"/>
-        <element label="Alternative Value Managed By" max_length="32" name="alternative_value_managed_by" type="string"/>
-        <element label="Alternative Value Manufacturer" max_length="32" name="alternative_value_manufacturer" type="string"/>
-        <element label="Alternative Value Model ID" max_length="32" name="alternative_value_model_id" type="string"/>
-        <element label="Alternative Value Model Number" max_length="255" name="alternative_value_model_number" type="string"/>
-        <element label="Alternative Value Monitor" max_length="40" name="alternative_value_monitor" type="boolean"/>
-        <element label="Alternative Value Name" max_length="255" name="alternative_value_name" type="string"/>
-        <element label="Alternative Value Operational Status" max_length="40" name="alternative_value_operational_status" type="integer"/>
-        <element label="Alternative Value Order Date" max_length="40" name="alternative_value_order_date" type="glide_date_time"/>
-        <element label="Alternative Value Owned By" max_length="32" name="alternative_value_owned_by" type="string"/>
-        <element label="Alternative Value PO Number" max_length="40" name="alternative_value_po_number" type="string"/>
-        <element label="Alternative Value Purchase Date" max_length="40" name="alternative_value_purchase_date" type="glide_date"/>
-        <element label="Alternative Value Schedule" max_length="32" name="alternative_value_schedule" type="string"/>
-        <element label="Alternative Value Serial Number" max_length="255" name="alternative_value_serial_number" type="string"/>
-        <element label="Alternative Value Short Description" max_length="1000" name="alternative_value_short_description" type="string"/>
-        <element label="Alternative Value Skip Sync" max_length="40" name="alternative_value_skip_sync" type="boolean"/>
-        <element label="Alternative Value Start Date" max_length="40" name="alternative_value_start_date" type="glide_date_time"/>
-        <element label="Alternative Value Subcategory" max_length="40" name="alternative_value_subcategory" type="string"/>
-        <element label="Alternative Value Supported By" max_length="32" name="alternative_value_supported_by" type="string"/>
-        <element label="Alternative Value Support Group" max_length="32" name="alternative_value_support_group" type="string"/>
-        <element label="Alternative Value Sys Class Name" max_length="80" name="alternative_value_sys_class_name" type="string"/>
-        <element label="Alternative Value Sys Class Path" max_length="255" name="alternative_value_sys_class_path" type="string"/>
-        <element label="Alternative Value Sys Domain" max_length="32" name="alternative_value_sys_domain" type="string"/>
-        <element label="Alternative Value Sys Domain Path" max_length="255" name="alternative_value_sys_domain_path" type="string"/>
-        <element label="Alternative Value Unverified" max_length="40" name="alternative_value_unverified" type="boolean"/>
-        <element label="Alternative Value Vendor" max_length="32" name="alternative_value_vendor" type="string"/>
-        <element label="Alternative Value Warranty Expiration" max_length="40" name="alternative_value_warranty_expiration" type="glide_date"/>
         <element label="Asset" max_length="32" name="asset" reference="x_tekso_twxapp01_test_asset" type="reference"/>
         <element label="Asset Tag" max_length="40" name="asset_tag" type="string"/>
         <element label="Assigned" max_length="40" name="assigned" type="glide_date_time"/>
@@ -109,10 +46,7 @@
         <element default="0" label="Fault Count" max_length="40" name="fault_count" type="integer"/>
         <element label="First Discovered" max_length="40" name="first_discovered" type="glide_date_time"/>
         <element label="FQDN" max_length="255" name="fqdn" type="string"/>
-        <element label="Generate Test Data In Progress" max_length="40" name="generate_test_data_in_progress" type="boolean"/>
-        <element label="Generate Test Data Record Sys ID" max_length="32" name="generate_test_data_record_sys_id" type="string"/>
         <element label="GL Account" max_length="40" name="gl_account" type="string"/>
-        <element label="Got Alternative Values" max_length="40" name="got_alternative_values" type="boolean"/>
         <element label="Install Date" max_length="40" name="install_date" type="glide_date_time"/>
         <element choice="1" default="1" label="Install Status" max_length="40" name="install_status" type="integer">
             <choice>
@@ -148,70 +82,6 @@
             </choice>
         </element>
         <element label="Order Date" max_length="40" name="order_date" type="glide_date_time"/>
-        <element label="Orginal Value Sys Domain" max_length="32" name="orginal_value_sys_domain" type="string"/>
-        <element default="Original" label="Original Or Alternative" max_length="20" name="original_or_alternative" type="string"/>
-        <element label="Original Value Asset" max_length="32" name="original_value_asset" type="string"/>
-        <element label="Original Value Asset Tag" max_length="40" name="original_value_asset_tag" type="string"/>
-        <element label="Original Value Assigned To" max_length="32" name="original_value_assigned_to" type="string"/>
-        <element label="Original Value Assignment Group" max_length="32" name="original_value_assignment_group" type="string"/>
-        <element label="Original Value Attributes" max_length="65000" name="original_value_attributes" type="string"/>
-        <element label="Original Value Can Print" max_length="40" name="original_value_can_print" type="boolean"/>
-        <element label="Original Value Category" max_length="40" name="original_value_category" type="string"/>
-        <element label="Original Value Change Control" max_length="32" name="original_value_change_control" type="string"/>
-        <element label="Original Value Checked In" max_length="40" name="original_value_checked_in" type="glide_date_time"/>
-        <element label="Original Value Checked Out" max_length="40" name="original_value_checked_out" type="glide_date_time"/>
-        <element label="Original Value Comments" max_length="4000" name="original_value_comments" type="string"/>
-        <element label="Original Value Company" max_length="32" name="original_value_company" type="string"/>
-        <element label="Original Value Correlation ID" max_length="512" name="original_value_correlation_id" type="string"/>
-        <element label="Original Value Cost" max_length="40" name="original_value_cost" type="float"/>
-        <element label="Original Value Cost CC" max_length="3" name="original_value_cost_cc" type="string"/>
-        <element label="Original Value Cost Center" max_length="32" name="original_value_cost_center" type="string"/>
-        <element label="Original Value Delivery Date" max_length="40" name="original_value_delivery_date" type="glide_date_time"/>
-        <element label="Original Value Department" max_length="32" name="original_value_department" type="string"/>
-        <element label="Original Value Discovery Source" max_length="40" name="original_value_discovery_source" type="string"/>
-        <element label="Original Value DNS Domain" max_length="255" name="original_value_dns_domain" type="string"/>
-        <element label="Original Value Due" max_length="40" name="original_value_due" type="glide_date_time"/>
-        <element label="Original Value Due In" max_length="40" name="original_value_due_in" type="string"/>
-        <element label="Original Value Duplicate Of" max_length="32" name="original_value_duplicate_of" type="string"/>
-        <element label="Original Value Fault Count" max_length="40" name="original_value_fault_count" type="integer"/>
-        <element label="Original Value First Discovered" max_length="40" name="original_value_first_discovered" type="glide_date_time"/>
-        <element label="Original Value FQDN" max_length="255" name="original_value_fqdn" type="string"/>
-        <element label="Original Value GL Account" max_length="40" name="original_value_gl_account" type="string"/>
-        <element label="Original Value Install Date" max_length="40" name="original_value_install_date" type="glide_date_time"/>
-        <element label="Original Value Install Status" max_length="40" name="original_value_install_status" type="integer"/>
-        <element label="Original Value Invoice Number" max_length="40" name="original_value_invoice_number" type="string"/>
-        <element label="Original Value IP Address" max_length="255" name="original_value_ip_address" type="string"/>
-        <element label="Original Value Justification" max_length="80" name="original_value_justification" type="string"/>
-        <element label="Original Value Last Discovered" max_length="40" name="original_value_last_discovered" type="glide_date_time"/>
-        <element label="Original Value Lease ID" max_length="40" name="original_value_lease_id" type="string"/>
-        <element label="Original Value Location" max_length="32" name="original_value_location" type="string"/>
-        <element label="Original Value MAC Address" max_length="18" name="original_value_mac_address" type="string"/>
-        <element label="Original Value Maintenance Schedule" max_length="32" name="original_value_maintenance_schedule" type="string"/>
-        <element label="Original Value Managed By" max_length="32" name="original_value_managed_by" type="string"/>
-        <element label="Original Value Manufacturer" max_length="32" name="original_value_manufacturer" type="string"/>
-        <element label="Original Value Model ID" max_length="32" name="original_value_model_id" type="string"/>
-        <element label="Original Value Model Number" max_length="255" name="original_value_model_number" type="string"/>
-        <element label="Original Value Monitor" max_length="40" name="original_value_monitor" type="boolean"/>
-        <element label="Original Value Name" max_length="255" name="original_value_name" type="string"/>
-        <element label="Original Value Operation Status" max_length="40" name="original_value_operation_status" type="integer"/>
-        <element label="Original Value Order Date" max_length="40" name="original_value_order_date" type="glide_date_time"/>
-        <element label="Original Value Owned By" max_length="32" name="original_value_owned_by" type="string"/>
-        <element label="Original Value PO Number" max_length="40" name="original_value_po_number" type="string"/>
-        <element label="Original Value Purchase Date" max_length="40" name="original_value_purchase_date" type="glide_date"/>
-        <element label="Original Value Schedule" max_length="32" name="original_value_schedule" type="string"/>
-        <element label="Original Value Serial Number" max_length="255" name="original_value_serial_number" type="string"/>
-        <element label="Original Value Short Description" max_length="1000" name="original_value_short_description" type="string"/>
-        <element label="Original Value Skip Sync" max_length="40" name="original_value_skip_sync" type="boolean"/>
-        <element label="Original Value Start Date" max_length="40" name="original_value_start_date" type="glide_date_time"/>
-        <element label="Original Value Subcategory" max_length="40" name="original_value_subcategory" type="string"/>
-        <element label="Original Value Supported By" max_length="32" name="original_value_supported_by" type="string"/>
-        <element label="Original Value Support Group" max_length="32" name="original_value_support_group" type="string"/>
-        <element label="Original Value Sys Class Name" max_length="80" name="original_value_sys_class_name" type="string"/>
-        <element label="Original Value Sys Class Path" max_length="255" name="original_value_sys_class_path" type="string"/>
-        <element label="Original Value Sys Domain Path" max_length="255" name="original_value_sys_domain_path" type="string"/>
-        <element label="Original Value Unverified" max_length="40" name="original_value_unverified" type="boolean"/>
-        <element label="Original Value Vendor" max_length="32" name="original_value_vendor" type="string"/>
-        <element label="Original Value Warranty Expiration" max_length="40" name="original_value_warranty_expiration" type="glide_date"/>
         <element label="Owned By" max_length="32" name="owned_by" reference="x_tekso_twxapp01_test_user" type="reference"/>
         <element label="PO Number" max_length="40" name="po_number" type="string"/>
         <element label="Purchase Date" max_length="40" name="purchase_date" type="glide_date"/>

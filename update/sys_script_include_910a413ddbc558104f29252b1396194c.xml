@@ -11,51 +11,171 @@
 GenerateTestData.prototype = {
     initialize: function() {
     },
+		
+	build_test_data_if_it_does_not_exist: function() {
+		var srvTable = 'x_tekso_twxapp01_test_server';
+		var relTable = 'x_tekso_twxapp01_test_ci_relationship';	
+		var applTable = 'x_tekso_twxapp01_test_application';	
+		
+		var gr1 = new GlideRecord(applTable);
+		gr1.query();
+		var rowCnt1 = gr1.getRowCount();
+		
+		var gr2 = new GlideRecord(srvTable);
+		gr2.query();
+		var rowCnt2 = gr2.getRowCount();
+		
+		var gr3 = new GlideRecord(relTable);
+		gr3.query();
+		var rowCnt3 = gr3.getRowCount();	
+		
+		if (rowCnt1 < 1 || rowCnt2 < 2 || rowCnt3 < 3) {
+			new x_tekso_twxapp01.BuildTestData().buildTestData();
+		}
+	},
+/*
+	test_data_records_already_pending_is_below_threshold: function(threshold,gen_sys_id) {
+		// This is used in a ui action condition 'Save & Build Test Data; so can only return true or false
+		// Pass in the threshold level e.g. 1000 records
+		// Then we see if how many records are already pendiing
+		// If it is < than threshold then return true
+		// Otherwise return false
+		var rtn = false;
+		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
 
-	generate_started: function(gen_sys_id,data) {
+		var gr1 = new GlideRecord(dataTable);
+		gr1.addQuery('status','Pending');
+		gr1.addQuery('test_data',true);
+		gr1.addQuery('generate_test_data_record_sys_id','!=',gen_sys_id);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		if (rowCnt < threshold) {
+			rtn = true;
+		}
+		return rtn;
+	},
+	//Called like this:
+	//new x_tekso_twxapp01.GenerateTestData().test_data_records_already_pending_is_below_threshold(1000,current.sys_id)
+*/	
+	number_of_test_data_records_already_pending: function(gen_sys_id) {
+		// Get the number of test data records
+		// that are already pending from other test runs
+		var rtn = 0;
+		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
+
+		var gr1 = new GlideRecord(dataTable);
+		gr1.addQuery('status','Pending');
+		gr1.addQuery('test_data',true);
+		gr1.addQuery('generate_test_data_record_sys_id','!=',current.sys_id);
+		gr1.query();
+		rtn = gr1.getRowCount();
+		return rtn;
+	},
+	//Called like this:
+	//new x_tekso_twxapp01.GenerateTestData().number_of_test_data_records_already_pending(current.sys_id)
+/*
+	number_of_generate_test_data_records_already_building: function(gen_sys_id) {
+		var rtn = 0;
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gdt = new GlideDateTime();
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id','!=',gen_sys_id);
+		gr1.addQuery('status','Test Data Build In Progress');		
+		gr1.query();	
+		rtn = gr1.getRowCount();
+		return rtn;
+	},
+	//Called like this:
+	//new x_tekso_twxapp01.GenerateTestData().number_of_generate_test_data_records_already_building(current.sys_id)
+*/	
+	generate_already_started: function(gen_sys_id,data) {
+		// Checks to see if the flag build_delete_application_test_data_started etc
+		// has already been set to true
+		var rtn = false;
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gr1 = new GlideRecord(genTable);
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {
 			gr1.setWorkflow(false);
 			if (data == 'delete_cmdb_ci_appl') {
+				rtn = gr1.getValue('build_delete_application_test_data_started');	
+			}
+			if (data == 'delete_cmdb_ci_server') {
+				rtn = gr1.getValue('build_delete_server_test_data_started');		
+			}			
+			if (data == 'delete_cmdb_rel_ci') {
+				rtn = gr1.getValue('build_delete_relations_test_data_started');		
+			}			
+
+			if (data == 'update_cmdb_ci_appl') {
+				rtn = gr1.getValue('build_update_application_test_data_started');	
+			}
+			if (data == 'update_cmdb_ci_server') {
+				rtn = gr1.getValue('build_update_server_test_data_started');		
+			}			
+			if (data == 'update_cmdb_rel_ci') {
+				rtn = gr1.getValue('build_update_relations_test_data_started');		
+			}
+		}
+		return rtn;
+	},
+					
+	generate_started: function(gen_sys_id,data) {
+		// Set the start flag and start date/time
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
+		var gdt = new GlideDateTime();
+		var gr1 = new GlideRecord(genTable);
+		gr1.addQuery('sys_id',gen_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;
+			var numStarted2 = parseInt(numStarted);
+			
+			gr1.setWorkflow(false);
+			if (data == 'delete_cmdb_ci_appl') {
 				gr1.setValue('build_delete_application_test_data_started',true);
-				gr1.setValue('build_delete_application_test_data_started_at',gdt);		
+				gr1.setValue('build_delete_application_test_data_started_at',gdt);	
+				numStarted2 = numStarted2 + 1;
 			}
 			if (data == 'delete_cmdb_ci_server') {
 				gr1.setValue('build_delete_server_test_data_started',true);
-				gr1.setValue('build_delete_server_test_data_started_at',gdt);		
+				gr1.setValue('build_delete_server_test_data_started_at',gdt);
+				numStarted2 = numStarted2 + 1;
 			}			
 			if (data == 'delete_cmdb_rel_ci') {
 				gr1.setValue('build_delete_relations_test_data_started',true);
 				gr1.setValue('build_delete_relations_test_data_started_at',gdt);		
+				numStarted2 = numStarted2 + 1;
 			}			
 
 			if (data == 'update_cmdb_ci_appl') {
 				gr1.setValue('build_update_application_test_data_started',true);
-				gr1.setValue('build_update_application_test_data_started_at',gdt);		
+				gr1.setValue('build_update_application_test_data_started_at',gdt);	
+				numStarted2 = numStarted2 + 1;
 			}
 			if (data == 'update_cmdb_ci_server') {
 				gr1.setValue('build_update_server_test_data_started',true);
-				gr1.setValue('build_update_server_test_data_started_at',gdt);		
+				gr1.setValue('build_update_server_test_data_started_at',gdt);
+				numStarted2 = numStarted2 + 1;
 			}			
 			if (data == 'update_cmdb_rel_ci') {
 				gr1.setValue('build_update_relations_test_data_started',true);
-				gr1.setValue('build_update_relations_test_data_started_at',gdt);		
+				gr1.setValue('build_update_relations_test_data_started_at',gdt);
+				numStarted2 = numStarted2 + 1;
 			}	
 			
 			var alreadyStarted = gr1.getValue('build_test_data_started') || false;
 			if (alreadyStarted == false) {
 				gr1.setValue('build_test_data_started',true);
-				gr1.setValue('build_test_data_started_at',gdt);				
+				gr1.setValue('build_test_data_started_at',gdt);		
 			}			
+			gr1.setValue('number_of_build_test_data_options_started',numStarted2);
 			gr1.update();
 		}		
 	},
 	
 	generate_completed: function(gen_sys_id,data) {	
+		// Sets the completed flag and the completed date/time
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gdt = new GlideDateTime();
 		var gr1 = new GlideRecord(genTable);
@@ -63,32 +183,42 @@ GenerateTestData.prototype = {
 		gr1.query();
 		if (gr1.next()) {	
 			gr1.setWorkflow(false);
+			var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;
+			var numCompleted2 = parseInt(numCompleted);
+			
 			if (data == 'delete_cmdb_ci_appl') {
 				gr1.setValue('build_delete_application_test_data_completed',true);
-				gr1.setValue('build_delete_application_test_data_completed_at',gdt);		
+				gr1.setValue('build_delete_application_test_data_completed_at',gdt);	
+				numCompleted2 = numCompleted2 + 1;
 			}
 			if (data == 'delete_cmdb_ci_server') {
 				gr1.setValue('build_delete_server_test_data_completed',true);
 				gr1.setValue('build_delete_server_test_data_completed_at',gdt);		
+				numCompleted2 = numCompleted2 + 1;				
 			}			
 			if (data == 'delete_cmdb_rel_ci') {
 				gr1.setValue('build_delete_relations_test_data_completed',true);
-				gr1.setValue('build_delete_relations_test_data_completed_at',gdt);		
+				gr1.setValue('build_delete_relations_test_data_completed_at',gdt);	
+				numCompleted2 = numCompleted2 + 1;				
 			}			
 
 			if (data == 'update_cmdb_ci_appl') {
 				gr1.setValue('build_update_application_test_data_completed',true);
-				gr1.setValue('build_update_application_test_data_completed_at',gdt);		
+				gr1.setValue('build_update_application_test_data_completed_at',gdt);	
+				numCompleted2 = numCompleted2 + 1;				
 			}
 			if (data == 'update_cmdb_ci_server') {
 				gr1.setValue('build_update_server_test_data_completed',true);
-				gr1.setValue('build_update_server_test_data_completed_at',gdt);		
+				gr1.setValue('build_update_server_test_data_completed_at',gdt);	
+				numCompleted2 = numCompleted2 + 1;				
 			}			
 			if (data == 'update_cmdb_rel_ci') {
 				gr1.setValue('build_update_relations_test_data_completed',true);
 				gr1.setValue('build_update_relations_test_data_completed_at',gdt);		
+				numCompleted2 = numCompleted2 + 1;				
 			}	
-						
+			
+			gr1.setValue('number_of_build_test_data_options_completed',numCompleted2);						
 			gr1.update();
 		}
 		this.generate_totally_completed(gen_sys_id);
@@ -118,68 +248,86 @@ GenerateTestData.prototype = {
 			var updServCmp = gr1.getValue('build_update_server_test_data_completed') || false;
 			var updApplCmp = gr1.getValue('build_update_application_test_data_completed') || false;
 
-			if (delServQty < 1 || (delServQty > 0 && delSrvCmp == true)) {
-				if (delApplQty < 1 || (delApplQty > 0 && delApplCmp == true)) {
-					if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
-						if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
-							if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
-								if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
-									// All done
-									gr1.setValue('build_test_data_completed',true);
-									gr1.setValue('build_test_data_completed_at',gdt);
-									//Need to put this through GlideDateTime()
-									var strt = new GlideDateTime(gr1.getValue('build_test_data_started_at'));
-									var dur = new GlideDuration();
-									dur = GlideDateTime.subtract(strt,gdt);														
-									gr1.setValue('time_taken_to_build_test_data',dur);										
-									gr1.setValue('status','Test Data Build Complete');								
-									gr1.update();		
+			var numSelected = gr1.getValue('number_of_build_test_data_options_selected') || 0;
+			var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;		
+			var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;	
+			
+			if (numSelected == numStarted && numStarted == numCompleted) {
+				if (delServQty < 1 || (delServQty > 0 && delSrvCmp == true)) {
+					if (delApplQty < 1 || (delApplQty > 0 && delApplCmp == true)) {
+						if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
+							if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
+								if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
+									if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
+										// All done
+										gr1.setValue('build_test_data_completed',true);
+										gr1.setValue('build_test_data_completed_at',gdt);
+										//Need to put this through GlideDateTime()
+										var strt = new GlideDateTime(gr1.getValue('build_test_data_started_at'));
+										var dur = new GlideDuration();
+										dur = GlideDateTime.subtract(strt,gdt);														
+										gr1.setValue('time_taken_to_build_test_data',dur);										
+										gr1.setValue('status','Test Data Build Complete');								
+										gr1.update();		
+									}
 								}
 							}
 						}
 					}
-				}
-			}			
+				}	
+			}
 		} //if (gr1.next()) {		
 	},
 	
-	generate_data: function(qty,gen_sys_id,data) {
+	generate_data: function(qty,gen_sys_id,data,includeAllFields,completelyFillStrings) {
 		
-		gs.info('generate_data qty: ' + qty.toString());
-		// Set the start time
-		this.generate_started(gen_sys_id,data);
-		if (qty < 1) {
-			qty = 1;
-		}
-
-		var cnt = 0;
-		while (cnt < qty) {
-			cnt = cnt + 1;
-			if (data == 'delete_cmdb_ci_appl') {
-				this.delete_cmdb_ci_appl(cnt);
+		// includeAllFields only needed for update server/appl
+		// completelyFillStrings only needed for update server/appl
+		var alreadyStarted = this.generate_already_started(gen_sys_id,data);
+		// Checks to see if the flag build_delete_XXXXXX_test_data_started etc
+		// has already been set to true
+		// This is a safety check to see if the data has already been generated
+		// So if the BR triggers again then it won't start processing a second time
+		if (alreadyStarted == false) {	
+			// Not already started - safe to proceed
+			
+			this.build_test_data_if_it_does_not_exist();
+		
+			// Set the flag start time
+			this.generate_started(gen_sys_id,data);
+			if (qty < 1) {
+				qty = 1;
 			}
-			if (data == 'delete_cmdb_ci_server') {
-				this.delete_cmdb_ci_server(cnt);
-			}			
-			if (data == 'delete_cmdb_rel_ci') {
-				this.delete_cmdb_rel_ci(cnt);
-			}	
 
-			if (data == 'update_cmdb_ci_appl') {
-				this.update_cmdb_ci_appl(cnt);
+			var cnt = 0;
+			while (cnt < qty) {
+				cnt = cnt + 1;
+				if (data == 'delete_cmdb_ci_appl') {
+					this.delete_cmdb_ci_appl(cnt,gen_sys_id);
+				}
+				if (data == 'delete_cmdb_ci_server') {
+					this.delete_cmdb_ci_server(cnt,gen_sys_id);
+				}			
+				if (data == 'delete_cmdb_rel_ci') {
+					this.delete_cmdb_rel_ci(cnt,gen_sys_id);
+				}	
+
+				if (data == 'update_cmdb_ci_appl') {
+					this.update_cmdb_ci_appl(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
+				}
+				if (data == 'update_cmdb_ci_server') {
+					this.update_cmdb_ci_server(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
+				}			
+				if (data == 'update_cmdb_rel_ci') {
+					this.update_cmdb_rel_ci(cnt,gen_sys_id);
+				}				
 			}
-			if (data == 'update_cmdb_ci_server') {
-				this.update_cmdb_ci_server(cnt);
-			}			
-			if (data == 'update_cmdb_rel_ci') {
-				this.update_cmdb_rel_ci(cnt);
-			}				
+			// Set the completed flag and the end date\time
+			this.generate_completed(gen_sys_id,data);
 		}
-		// Set the end time
-		this.generate_completed(gen_sys_id,data);
 	},
 
-	delete_cmdb_ci_appl: function(num) {
+	delete_cmdb_ci_appl: function(num,gen_sys_id) {
 
 		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
 
@@ -309,7 +457,6 @@ GenerateTestData.prototype = {
 		allFieldsArr.push('name');
 		allFieldsArr.push('operational_status');
 		allFieldsArr.push('order_date');
-		allFieldsArr.push('orginal_value_sys_domain');
 		allFieldsArr.push('owned_by');
 		allFieldsArr.push('pid');
 		allFieldsArr.push('po_number');
@@ -350,7 +497,7 @@ GenerateTestData.prototype = {
 		gr1.setValue('no_of_fields',allFieldsArr.length);	
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
 		gr1.setValue('test_data',true); // TESTING
-
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); // x_tekso_twxapp01_test_application
 
@@ -361,7 +508,7 @@ GenerateTestData.prototype = {
 		gr1.insert();
 	},
 
-	delete_cmdb_ci_server:function(num) {
+	delete_cmdb_ci_server:function(num,gen_sys_id) {
 
 		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
 
@@ -506,7 +653,6 @@ GenerateTestData.prototype = {
 		allFieldsArr.push('object_id');
 		allFieldsArr.push('operational_status');
 		allFieldsArr.push('order_date');
-		allFieldsArr.push('orginal_value_sys_domain');
 		allFieldsArr.push('os');
 		allFieldsArr.push('os_address_width');
 		allFieldsArr.push('os_domain');
@@ -547,7 +693,7 @@ GenerateTestData.prototype = {
 		gr1.setValue('no_of_fields',allFieldsArr.length);	
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
 		gr1.setValue('test_data',true); // TESTING
-
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
 
@@ -559,7 +705,7 @@ GenerateTestData.prototype = {
 
 	},
 
-	delete_cmdb_rel_ci:function(num) {
+	delete_cmdb_rel_ci:function(num,gen_sys_id) {
 
 		var zeroPaddedNumStr = this.zeroPad(num,6); // e.g. '000001'
 
@@ -695,7 +841,7 @@ GenerateTestData.prototype = {
 
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);		
 		gr1.setValue('test_data',true); // TESTING	
-
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
 
@@ -706,7 +852,7 @@ GenerateTestData.prototype = {
 		gr1.insert();
 	},
 
-	update_cmdb_rel_ci: function(num) {
+	update_cmdb_rel_ci: function(num,gen_sys_id) {
 
 		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
 
@@ -840,35 +986,12 @@ GenerateTestData.prototype = {
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
 
 		gr1.setValue('test_data',true); // TESTING	
-
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_rel_ci Update');		
 		gr1.insert();
 	},
 
-
-	padOutString: function(existingText,maxSize,tail) {
-		var rtnStr = '';
-		var str = '';
-		var ln = 0;
-		var ln2 = 0;
-
-		str = existingText + ' ' + tail;		
-
-		ln = str.length;
-		if (ln >= maxSize) {
-			// String + tail is biiger than max size 
-			// so do a left() to get back the maxsize
-			rtnStr = str.substring(0,maxSize);
-		}		
-		else {
-			ln2 = maxSize - ln;
-			str = this.generateString(ln2);
-			rtnStr = existingText + ' ' + str + tail;			
-		}
-		return rtnStr;
-	},
-
-	update_cmdb_ci_appl: function(num) {
+	update_cmdb_ci_appl: function(num,gen_sys_id,includeAllFields,completelyFillStrings) {
 
 		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
 
@@ -927,94 +1050,105 @@ GenerateTestData.prototype = {
 
 		var fieldsChangedArr = [];
 
-		fieldsChangedArr.push('asset');
-		fieldsChangedArr.push('asset_tag');
-		fieldsChangedArr.push('assigned');
-		fieldsChangedArr.push('assigned_to');
-		fieldsChangedArr.push('assignment_group');
-		fieldsChangedArr.push('attributes');
-		fieldsChangedArr.push('can_print');
-		fieldsChangedArr.push('category');
-		fieldsChangedArr.push('change_control');
-		fieldsChangedArr.push('checked_in');
-		fieldsChangedArr.push('checked_out');
-		fieldsChangedArr.push('cl_port');
-		fieldsChangedArr.push('comments');
-		fieldsChangedArr.push('company');
-		fieldsChangedArr.push('config_directory');
-		fieldsChangedArr.push('config_file');
-		fieldsChangedArr.push('correlation_id');
-		fieldsChangedArr.push('cost');
-		fieldsChangedArr.push('cost_cc');
-		fieldsChangedArr.push('cost_center');
-		fieldsChangedArr.push('delivery_date');
-		fieldsChangedArr.push('department');
-		fieldsChangedArr.push('discovery_source');
-		fieldsChangedArr.push('dns_domain');
-		fieldsChangedArr.push('due');
-		fieldsChangedArr.push('due_in');
-		fieldsChangedArr.push('duplicate_of');
-		fieldsChangedArr.push('edition');
-		fieldsChangedArr.push('fault_count');
-		fieldsChangedArr.push('first_discovered');
-		fieldsChangedArr.push('fqdn');
-		fieldsChangedArr.push('gl_account');
-		fieldsChangedArr.push('install_date');
-		fieldsChangedArr.push('install_directory');
-		fieldsChangedArr.push('install_status');
-		fieldsChangedArr.push('invoice_number');
-		fieldsChangedArr.push('ip_address');
-		fieldsChangedArr.push('is_clustered');
-		fieldsChangedArr.push('justification');
-		fieldsChangedArr.push('last_discovered');
-		fieldsChangedArr.push('lease_id');
-		fieldsChangedArr.push('location');
-		fieldsChangedArr.push('mac_address');
-		fieldsChangedArr.push('maintenance_schedule');
-		fieldsChangedArr.push('managed_by');
-		fieldsChangedArr.push('manufacturer');
-		fieldsChangedArr.push('model_id');
-		fieldsChangedArr.push('model_number');
-		fieldsChangedArr.push('monitor');
-		fieldsChangedArr.push('name');
-		fieldsChangedArr.push('operational_status');
-		fieldsChangedArr.push('order_date');
-		fieldsChangedArr.push('orginal_value_sys_domain');
-		fieldsChangedArr.push('owned_by');
-		fieldsChangedArr.push('pid');
-		fieldsChangedArr.push('po_number');
-		fieldsChangedArr.push('purchase_date');
-		fieldsChangedArr.push('rp_command_hash');
-		fieldsChangedArr.push('rp_key_parameters_hash');
-		fieldsChangedArr.push('running_process_command');
-		fieldsChangedArr.push('running_process_key_parameters');
-		fieldsChangedArr.push('schedule');
-		fieldsChangedArr.push('serial_number');
-		fieldsChangedArr.push('short_description');
-		fieldsChangedArr.push('skip_sync');
-		fieldsChangedArr.push('start_date');
-		fieldsChangedArr.push('subcategory');
-		fieldsChangedArr.push('support_group');
-		fieldsChangedArr.push('supported_by');
-		//Exclude the sys_ fields
-		//fieldsChangedArr.push('sys_class_name');
-		//fieldsChangedArr.push('sys_class_path');
-		//fieldsChangedArr.push('sys_created_by');
-		//fieldsChangedArr.push('sys_created_on');
-		//fieldsChangedArr.push('sys_domain');
-		//fieldsChangedArr.push('sys_domain_path');
-		//fieldsChangedArr.push('sys_id');
-		//fieldsChangedArr.push('sys_mod_count');
-		//fieldsChangedArr.push('sys_tags');
-		//fieldsChangedArr.push('sys_updated_by');
-		//fieldsChangedArr.push('sys_updated_on');
-		fieldsChangedArr.push('tcp_port');
-		fieldsChangedArr.push('unverified');
-		fieldsChangedArr.push('used_for');
-		fieldsChangedArr.push('vendor');
-		fieldsChangedArr.push('version');
-		fieldsChangedArr.push('warranty_expiration');
-
+		if (includeAllFields == true){
+			fieldsChangedArr.push('asset');
+			fieldsChangedArr.push('asset_tag');
+			fieldsChangedArr.push('assigned');
+			fieldsChangedArr.push('assigned_to');
+			fieldsChangedArr.push('assignment_group');
+			fieldsChangedArr.push('attributes');
+			fieldsChangedArr.push('can_print');
+			fieldsChangedArr.push('category');
+			fieldsChangedArr.push('change_control');
+			fieldsChangedArr.push('checked_in');
+			fieldsChangedArr.push('checked_out');
+			fieldsChangedArr.push('cl_port');
+			fieldsChangedArr.push('comments');
+			fieldsChangedArr.push('company');
+			fieldsChangedArr.push('config_directory');
+			fieldsChangedArr.push('config_file');
+			fieldsChangedArr.push('correlation_id');
+			fieldsChangedArr.push('cost');
+			fieldsChangedArr.push('cost_cc');
+			fieldsChangedArr.push('cost_center');
+			fieldsChangedArr.push('delivery_date');
+			fieldsChangedArr.push('department');
+			fieldsChangedArr.push('discovery_source');
+			fieldsChangedArr.push('dns_domain');
+			fieldsChangedArr.push('due');
+			fieldsChangedArr.push('due_in');
+			fieldsChangedArr.push('duplicate_of');
+			fieldsChangedArr.push('edition');
+			fieldsChangedArr.push('fault_count');
+			fieldsChangedArr.push('first_discovered');
+			fieldsChangedArr.push('fqdn');
+			fieldsChangedArr.push('gl_account');
+			fieldsChangedArr.push('install_date');
+			fieldsChangedArr.push('install_directory');
+			fieldsChangedArr.push('install_status');
+			fieldsChangedArr.push('invoice_number');
+			fieldsChangedArr.push('ip_address');
+			fieldsChangedArr.push('is_clustered');
+			fieldsChangedArr.push('justification');
+			fieldsChangedArr.push('last_discovered');
+			fieldsChangedArr.push('lease_id');
+			fieldsChangedArr.push('location');
+			fieldsChangedArr.push('mac_address');
+			fieldsChangedArr.push('maintenance_schedule');
+			fieldsChangedArr.push('managed_by');
+			fieldsChangedArr.push('manufacturer');
+			fieldsChangedArr.push('model_id');
+			fieldsChangedArr.push('model_number');
+			fieldsChangedArr.push('monitor');
+			fieldsChangedArr.push('name');
+			fieldsChangedArr.push('operational_status');
+			fieldsChangedArr.push('order_date');
+			fieldsChangedArr.push('owned_by');
+			fieldsChangedArr.push('pid');
+			fieldsChangedArr.push('po_number');
+			fieldsChangedArr.push('purchase_date');
+			fieldsChangedArr.push('rp_command_hash');
+			fieldsChangedArr.push('rp_key_parameters_hash');
+			fieldsChangedArr.push('running_process_command');
+			fieldsChangedArr.push('running_process_key_parameters');
+			fieldsChangedArr.push('schedule');
+			fieldsChangedArr.push('serial_number');
+			fieldsChangedArr.push('short_description');
+			fieldsChangedArr.push('skip_sync');
+			fieldsChangedArr.push('start_date');
+			fieldsChangedArr.push('subcategory');
+			fieldsChangedArr.push('support_group');
+			fieldsChangedArr.push('supported_by');
+			//Exclude the sys_ fields
+			//fieldsChangedArr.push('sys_class_name');
+			//fieldsChangedArr.push('sys_class_path');
+			//fieldsChangedArr.push('sys_created_by');
+			//fieldsChangedArr.push('sys_created_on');
+			//fieldsChangedArr.push('sys_domain');
+			//fieldsChangedArr.push('sys_domain_path');
+			//fieldsChangedArr.push('sys_id');
+			//fieldsChangedArr.push('sys_mod_count');
+			//fieldsChangedArr.push('sys_tags');
+			//fieldsChangedArr.push('sys_updated_by');
+			//fieldsChangedArr.push('sys_updated_on');
+			fieldsChangedArr.push('tcp_port');
+			fieldsChangedArr.push('unverified');
+			fieldsChangedArr.push('used_for');
+			fieldsChangedArr.push('vendor');
+			fieldsChangedArr.push('version');
+			fieldsChangedArr.push('warranty_expiration');
+		}
+		else {
+			// Only a few fields
+			fieldsChangedArr.push('asset_tag');			
+			fieldsChangedArr.push('correlation_id');			
+			fieldsChangedArr.push('install_status');		
+			fieldsChangedArr.push('manufacturer');
+			fieldsChangedArr.push('model_id');		
+			fieldsChangedArr.push('name');
+			fieldsChangedArr.push('operational_status');		
+			fieldsChangedArr.push('serial_number');			
+		}
 		var fieldsChanged = fieldsChangedArr.join(',');	
 		gr1.setValue('fields_changed',fieldsChanged);
 		gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
@@ -1080,7 +1214,6 @@ GenerateTestData.prototype = {
 		allFieldsArr.push('name');
 		allFieldsArr.push('operational_status');
 		allFieldsArr.push('order_date');
-		allFieldsArr.push('orginal_value_sys_domain');
 		allFieldsArr.push('owned_by');
 		allFieldsArr.push('pid');
 		allFieldsArr.push('po_number');
@@ -1127,12 +1260,14 @@ GenerateTestData.prototype = {
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_application
 
 		gr1.setValue('test_data',true); // TESTING	
-
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
+		gr1.setValue('test_data_include_all_fields_if_update',includeAllFields);
+		gr1.setValue('test_data_completely_fill_string_fields_if_update',completelyFillStrings);
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci Update cmdb_ci_appl');		
 		gr1.insert();
 	},
 	
-	update_cmdb_ci_server: function(num) {
+	update_cmdb_ci_server: function(num,gen_sys_id,includeAllFields,completelyFillStrings) {
 
 		// Exclude sys_updated_on, sys_updated_by and sys_mod_count
 
@@ -1191,109 +1326,121 @@ GenerateTestData.prototype = {
 
 		var fieldsChangedArr = [];
 
-		fieldsChangedArr.push('asset');
-		fieldsChangedArr.push('asset_tag');
-		fieldsChangedArr.push('assigned');
-		fieldsChangedArr.push('assigned_to');
-		fieldsChangedArr.push('assignment_group');
-		fieldsChangedArr.push('attributes');
-		fieldsChangedArr.push('can_print');
-		fieldsChangedArr.push('category');
-		fieldsChangedArr.push('cd_rom');
-		fieldsChangedArr.push('cd_speed');
-		fieldsChangedArr.push('change_control');
-		fieldsChangedArr.push('chassis_type');
-		fieldsChangedArr.push('checked_in');
-		fieldsChangedArr.push('checked_out');
-		fieldsChangedArr.push('classification');
-		fieldsChangedArr.push('comments');
-		fieldsChangedArr.push('company');
-		fieldsChangedArr.push('correlation_id');
-		fieldsChangedArr.push('cost');
-		fieldsChangedArr.push('cost_cc');
-		fieldsChangedArr.push('cost_center');
-		fieldsChangedArr.push('cpu_core_count');
-		fieldsChangedArr.push('cpu_core_thread');
-		fieldsChangedArr.push('cpu_count');
-		fieldsChangedArr.push('cpu_manufacturer');
-		fieldsChangedArr.push('cpu_name');
-		fieldsChangedArr.push('cpu_speed');
-		fieldsChangedArr.push('cpu_type');
-		fieldsChangedArr.push('default_gateway');
-		fieldsChangedArr.push('delivery_date');
-		fieldsChangedArr.push('department');
-		fieldsChangedArr.push('discovery_source');
-		fieldsChangedArr.push('disk_space');
-		fieldsChangedArr.push('dns_domain');
-		fieldsChangedArr.push('dr_backup');
-		fieldsChangedArr.push('due');
-		fieldsChangedArr.push('due_in');
-		fieldsChangedArr.push('duplicate_of');
-		fieldsChangedArr.push('fault_count');
-		fieldsChangedArr.push('firewall_status');
-		fieldsChangedArr.push('first_discovered');
-		fieldsChangedArr.push('floppy');
-		fieldsChangedArr.push('form_factor');
-		fieldsChangedArr.push('fqdn');
-		fieldsChangedArr.push('gl_account');
-		fieldsChangedArr.push('hardware_status');
-		fieldsChangedArr.push('hardware_substatus');
-		fieldsChangedArr.push('host_name');
-		fieldsChangedArr.push('install_date');
-		fieldsChangedArr.push('install_status');
-		fieldsChangedArr.push('invoice_number');
-		fieldsChangedArr.push('ip_address');
-		fieldsChangedArr.push('justification');
-		fieldsChangedArr.push('last_discovered');
-		fieldsChangedArr.push('lease_id');
-		fieldsChangedArr.push('location');
-		fieldsChangedArr.push('mac_address');
-		fieldsChangedArr.push('maintenance_schedule');
-		fieldsChangedArr.push('managed_by');
-		fieldsChangedArr.push('manufacturer');
-		fieldsChangedArr.push('model_id');
-		fieldsChangedArr.push('model_number');
-		fieldsChangedArr.push('monitor');
-		fieldsChangedArr.push('name');
-		fieldsChangedArr.push('object_id');
-		fieldsChangedArr.push('operational_status');
-		fieldsChangedArr.push('order_date');
-		fieldsChangedArr.push('orginal_value_sys_domain');
-		fieldsChangedArr.push('os');
-		fieldsChangedArr.push('os_address_width');
-		fieldsChangedArr.push('os_domain');
-		fieldsChangedArr.push('os_service_pack');
-		fieldsChangedArr.push('os_version');
-		fieldsChangedArr.push('owned_by');
-		fieldsChangedArr.push('po_number');
-		fieldsChangedArr.push('purchase_date');
-		fieldsChangedArr.push('ram');
-		fieldsChangedArr.push('schedule');
-		fieldsChangedArr.push('serial_number');
-		fieldsChangedArr.push('short_description');
-		fieldsChangedArr.push('skip_sync');
-		fieldsChangedArr.push('start_date');
-		fieldsChangedArr.push('subcategory');
-		fieldsChangedArr.push('support_group');
-		fieldsChangedArr.push('supported_by');
-		//Exclude the sys_ fields
-		//fieldsChangedArr.push('sys_class_name');
-		//fieldsChangedArr.push('sys_class_path');
-		//fieldsChangedArr.push('sys_created_by');
-		//fieldsChangedArr.push('sys_created_on');
-		//fieldsChangedArr.push('sys_domain');
-		//fieldsChangedArr.push('sys_domain_path');
-		//fieldsChangedArr.push('sys_id');
-		//fieldsChangedArr.push('sys_mod_count');
-		//fieldsChangedArr.push('sys_tags');
-		//fieldsChangedArr.push('sys_updated_by');
-		//fieldsChangedArr.push('sys_updated_on');
-		fieldsChangedArr.push('unverified');
-		fieldsChangedArr.push('used_for');
-		fieldsChangedArr.push('vendor');
-		fieldsChangedArr.push('virtual');
-		fieldsChangedArr.push('warranty_expiration');	
-
+		if (includeAllFields == true){
+			fieldsChangedArr.push('asset');
+			fieldsChangedArr.push('asset_tag');
+			fieldsChangedArr.push('assigned');
+			fieldsChangedArr.push('assigned_to');
+			fieldsChangedArr.push('assignment_group');
+			fieldsChangedArr.push('attributes');
+			fieldsChangedArr.push('can_print');
+			fieldsChangedArr.push('category');
+			fieldsChangedArr.push('cd_rom');
+			fieldsChangedArr.push('cd_speed');
+			fieldsChangedArr.push('change_control');
+			fieldsChangedArr.push('chassis_type');
+			fieldsChangedArr.push('checked_in');
+			fieldsChangedArr.push('checked_out');
+			fieldsChangedArr.push('classification');
+			fieldsChangedArr.push('comments');
+			fieldsChangedArr.push('company');
+			fieldsChangedArr.push('correlation_id');
+			fieldsChangedArr.push('cost');
+			fieldsChangedArr.push('cost_cc');
+			fieldsChangedArr.push('cost_center');
+			fieldsChangedArr.push('cpu_core_count');
+			fieldsChangedArr.push('cpu_core_thread');
+			fieldsChangedArr.push('cpu_count');
+			fieldsChangedArr.push('cpu_manufacturer');
+			fieldsChangedArr.push('cpu_name');
+			fieldsChangedArr.push('cpu_speed');
+			fieldsChangedArr.push('cpu_type');
+			fieldsChangedArr.push('default_gateway');
+			fieldsChangedArr.push('delivery_date');
+			fieldsChangedArr.push('department');
+			fieldsChangedArr.push('discovery_source');
+			fieldsChangedArr.push('disk_space');
+			fieldsChangedArr.push('dns_domain');
+			fieldsChangedArr.push('dr_backup');
+			fieldsChangedArr.push('due');
+			fieldsChangedArr.push('due_in');
+			fieldsChangedArr.push('duplicate_of');
+			fieldsChangedArr.push('fault_count');
+			fieldsChangedArr.push('firewall_status');
+			fieldsChangedArr.push('first_discovered');
+			fieldsChangedArr.push('floppy');
+			fieldsChangedArr.push('form_factor');
+			fieldsChangedArr.push('fqdn');
+			fieldsChangedArr.push('gl_account');
+			fieldsChangedArr.push('hardware_status');
+			fieldsChangedArr.push('hardware_substatus');
+			fieldsChangedArr.push('host_name');
+			fieldsChangedArr.push('install_date');
+			fieldsChangedArr.push('install_status');
+			fieldsChangedArr.push('invoice_number');
+			fieldsChangedArr.push('ip_address');
+			fieldsChangedArr.push('justification');
+			fieldsChangedArr.push('last_discovered');
+			fieldsChangedArr.push('lease_id');
+			fieldsChangedArr.push('location');
+			fieldsChangedArr.push('mac_address');
+			fieldsChangedArr.push('maintenance_schedule');
+			fieldsChangedArr.push('managed_by');
+			fieldsChangedArr.push('manufacturer');
+			fieldsChangedArr.push('model_id');
+			fieldsChangedArr.push('model_number');
+			fieldsChangedArr.push('monitor');
+			fieldsChangedArr.push('name');
+			fieldsChangedArr.push('object_id');
+			fieldsChangedArr.push('operational_status');
+			fieldsChangedArr.push('order_date');
+			fieldsChangedArr.push('os');
+			fieldsChangedArr.push('os_address_width');
+			fieldsChangedArr.push('os_domain');
+			fieldsChangedArr.push('os_service_pack');
+			fieldsChangedArr.push('os_version');
+			fieldsChangedArr.push('owned_by');
+			fieldsChangedArr.push('po_number');
+			fieldsChangedArr.push('purchase_date');
+			fieldsChangedArr.push('ram');
+			fieldsChangedArr.push('schedule');
+			fieldsChangedArr.push('serial_number');
+			fieldsChangedArr.push('short_description');
+			fieldsChangedArr.push('skip_sync');
+			fieldsChangedArr.push('start_date');
+			fieldsChangedArr.push('subcategory');
+			fieldsChangedArr.push('support_group');
+			fieldsChangedArr.push('supported_by');
+			//Exclude the sys_ fields
+			//fieldsChangedArr.push('sys_class_name');
+			//fieldsChangedArr.push('sys_class_path');
+			//fieldsChangedArr.push('sys_created_by');
+			//fieldsChangedArr.push('sys_created_on');
+			//fieldsChangedArr.push('sys_domain');
+			//fieldsChangedArr.push('sys_domain_path');
+			//fieldsChangedArr.push('sys_id');
+			//fieldsChangedArr.push('sys_mod_count');
+			//fieldsChangedArr.push('sys_tags');
+			//fieldsChangedArr.push('sys_updated_by');
+			//fieldsChangedArr.push('sys_updated_on');
+			fieldsChangedArr.push('unverified');
+			fieldsChangedArr.push('used_for');
+			fieldsChangedArr.push('vendor');
+			fieldsChangedArr.push('virtual');
+			fieldsChangedArr.push('warranty_expiration');	
+		}
+		else {
+			// Only a few fields
+			fieldsChangedArr.push('asset_tag');			
+			fieldsChangedArr.push('correlation_id');			
+			fieldsChangedArr.push('install_status');		
+			fieldsChangedArr.push('manufacturer');
+			fieldsChangedArr.push('model_id');		
+			fieldsChangedArr.push('name');
+			fieldsChangedArr.push('operational_status');		
+			fieldsChangedArr.push('serial_number');			
+		}
+			
 		var fieldsChanged = fieldsChangedArr.join(',');	
 		gr1.setValue('fields_changed',fieldsChanged);
 		gr1.setValue('number_of_fields_changed',fieldsChangedArr.length);	
@@ -1374,7 +1521,6 @@ GenerateTestData.prototype = {
 		allFieldsArr.push('object_id');
 		allFieldsArr.push('operational_status');
 		allFieldsArr.push('order_date');
-		allFieldsArr.push('orginal_value_sys_domain');
 		allFieldsArr.push('os');
 		allFieldsArr.push('os_address_width');
 		allFieldsArr.push('os_domain');
@@ -1421,11 +1567,35 @@ GenerateTestData.prototype = {
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
 
 		gr1.setValue('test_data',true); // TESTING	
-
+		gr1.setValue('test_data_include_all_fields_if_update',includeAllFields);
+		gr1.setValue('test_data_completely_fill_string_fields_if_update',completelyFillStrings);	
+		gr1.setValue('generate_test_data_record_sys_id',gen_sys_id);
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci Update cmdb_ci_server');		
 		gr1.insert();
 	},
 
+	padOutString: function(existingText,maxSize,tail) {
+		var rtnStr = '';
+		var str = '';
+		var ln = 0;
+		var ln2 = 0;
+
+		str = existingText + ' ' + tail;		
+
+		ln = str.length;
+		if (ln >= maxSize) {
+			// String + tail is biiger than max size 
+			// so do a left() to get back the maxsize
+			rtnStr = str.substring(0,maxSize);
+		}		
+		else {
+			ln2 = maxSize - ln;
+			str = this.generateString(ln2);
+			rtnStr = existingText + ' ' + str + tail;			
+		}
+		return rtnStr;
+	},
+	
 	generateString: function(size) {
 		var rtnStr = '';
 
@@ -1461,13 +1631,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>30</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 20:48:16</sys_updated_on>
+        <sys_updated_on>2020-06-02 09:25:44</sys_updated_on>
     </sys_script_include>
 </record_update>
