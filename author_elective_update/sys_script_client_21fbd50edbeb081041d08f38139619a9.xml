@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="DELETE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>br_ucontrol_track_del_cmdb_ci_last_ran_at</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Configuration Checks Set All Fields Read</name>
+        <order/>
+        <script><![CDATA[function onLoad() {
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x < fields.length; x++) {
+		g_form.setReadOnly(fields[x], true);
+	}
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-15 22:28:33</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>21fbd50edbeb081041d08f38139619a9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Configuration Checks Set All Fields Read</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_21fbd50edbeb081041d08f38139619a9</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-15 22:28:33</sys_updated_on>
+        <table>x_tekso_twxapp01_configuration_checks</table>
+        <type>onLoad</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_client_21fbd50edbeb081041d08f38139619a9</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description/&gt;&lt;field&gt;br_ucontrol_track_del_cmdb_ci_last_ran_at&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Configuration Checks Set All Fields Read&lt;/name&gt;&lt;order/&gt;&lt;script&gt;&lt;![CDATA[function onLoad() {
+	var fields = g_form.getEditableFields();
+	for (var x = 0; x &lt; fields.length; x++) {
+		g_form.setReadOnly(fields[x], true);
+	}
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-15 22:28:33&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;21fbd50edbeb081041d08f38139619a9&lt;/sys_id&gt;&lt;sys_mod_count&gt;0&lt;/sys_mod_count&gt;&lt;sys_name&gt;Configuration Checks Set All Fields Read&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_21fbd50edbeb081041d08f38139619a9&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-03-15 22:28:33&lt;/sys_updated_on&gt;&lt;table&gt;x_tekso_twxapp01_configuration_checks&lt;/table&gt;&lt;type&gt;onLoad&lt;/type&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1032103987</payload_hash>
+        <record_name>Configuration Checks Set All Fields Read</record_name>
+        <reverted_from/>
+        <source>113be4b2db62085035a38a72399619aa</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-15 22:28:33</sys_created_on>
+        <sys_id>271cd50edbeb081041d08f38139619af</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>170e05022b70000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-03-15 22:28:33</sys_updated_on>
+        <type>Client Script</type>
+        <update_guid>6f1cd50ed5eb0810b112c0852d1cb5ae</update_guid>
+        <update_guid_history>6f1cd50ed5eb0810b112c0852d1cb5ae:-1032103987</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 11:05:17</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_client">sys_script_client</sys_db_object>
+        <sys_id>100beb2c07d24c0086ba6c6b49510000</sys_id>
+        <sys_metadata>21fbd50edbeb081041d08f38139619a9</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Configuration Checks Set All Fields Read</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="">613e41cedbab081041d08f3813961972</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_client_21fbd50edbeb081041d08f38139619a9</sys_update_name>
+        <sys_update_version display_value="sys_script_client_21fbd50edbeb081041d08f38139619a9">271cd50edbeb081041d08f38139619af</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:05:17</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

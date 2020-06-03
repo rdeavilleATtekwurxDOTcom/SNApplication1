@@ -8,7 +8,7 @@
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
         <element label="Finished At" max_length="40" name="finished_at" type="glide_date_time"/>
         <element label="First Processing Log Record Sys ID" max_length="32" name="first_processing_log_record_sys_id" type="string"/>
-        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="Last Processing Log Record Sys ID" max_length="32" name="last_processing_log_record_sys_id" type="string"/>
         <element label="Link To First Processing Log Record" max_length="32" name="link_to_first_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
@@ -38,6 +38,6 @@
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
         <element label="uControl URL" max_length="200" name="ucontrol_url" type="string"/>
-        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
     </element>
 </database>

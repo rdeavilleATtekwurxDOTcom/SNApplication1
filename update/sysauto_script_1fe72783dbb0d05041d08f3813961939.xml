@@ -3,7 +3,7 @@
         <active>true</active>
         <condition/>
         <conditional>false</conditional>
-        <name>Send Data to uControl2</name>
+        <name>Send Data to uControl</name>
         <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
@@ -12,88 +12,100 @@
         <run_start>2020-05-20 14:31:47</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>periodically</run_type>
-        <script><![CDATA[gs.info('SJ Send Data to uControl2 - Start');
+        <script><![CDATA[main();
 
-// --Start ------------------------------------------------------------
-var jobStartTime = new GlideDateTime();
-var calculatedNextJobStartTime = new GlideDateTime();
-gs.info('jobStartTime: ' + jobStartTime);
+function main() {
+	// --Start ------------------------------------------------------------
+	writeDebugLog('SJ Send Data to uControl - Started');
+	
+	var jobStartTime = new GlideDateTime();
+	var calculatedNextJobStartTime = new GlideDateTime();
 
-var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
-var setupTable = 'x_tekso_twxapp01_setup';
+	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
+	var setupTable = 'x_tekso_twxapp01_setup';
 
-// --Work out when the scheduled job is going to run next -----------------
-// Number of seconds till the next run of the job
-var gdt1 = new GlideDateTime('1970-01-01 00:00:00');
-var gdt2 = new GlideDateTime(current.run_period); //Need to convert current.run_period into a GlideDateTime
-var jobIntervalDuration = GlideDateTime.subtract(gdt1, gdt2);
-var jobIntervalDurationMS = jobIntervalDuration.getNumericValue();
-var jobIntervalDurationSeconds = parseInt(jobIntervalDurationMS/1000);
+	// --Work out when the scheduled job is going to run next -----------------
+	// Number of seconds till the next run of the job
+	var gdt1 = new GlideDateTime('1970-01-01 00:00:00');
+	var gdt2 = new GlideDateTime(current.run_period); //Need to convert current.run_period into a GlideDateTime
+	var jobIntervalDuration = GlideDateTime.subtract(gdt1, gdt2);
+	var jobIntervalDurationMS = jobIntervalDuration.getNumericValue();
+	var jobIntervalDurationSeconds = parseInt(jobIntervalDurationMS/1000);
 
-// Two ways of calculating the next time
-// 1: Get the current time and add on the run_period
-// 2: Get the next_action from sys_trigger -- unfortunately this won't work because it is updated after the job ends
-//    The time retrieved is the time of the current run
-calculatedNextJobStartTime.addSeconds(jobIntervalDurationSeconds);
-gs.info('calculatedNextJobStartTime: ' + calculatedNextJobStartTime);
+	// Two ways of calculating the next time
+	// 1: Get the current time and add on the run_period
+	// 2: Get the next_action from sys_trigger -- unfortunately this won't work because it is updated after the job ends
+	//    The time retrieved is the time of the current run
+	calculatedNextJobStartTime.addSeconds(jobIntervalDurationSeconds);
 
-// --Create a new scheduled_job_log record -------------------------------
-var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
-gr1.initialize();
-gr1.setValue('inserted_by_script','SJ Send Data to uControl'); // Debug
-gr1.setValue('next_run_at',calculatedNextJobStartTime);	
-var jobSysID = gr1.insert();
+	// --Create a new scheduled_job_log record -------------------------------
+	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
+	gr1.initialize();
+	gr1.setValue('inserted_by_script','SJ Send Data to uControl'); // Debug
+	gr1.setValue('next_run_at',calculatedNextJobStartTime);	
+	gr1.insert();
 
-// --Get the setup record and update ------------------------------------
-var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
-gr2.query();
-if (gr2.next()) {
+	// --Get the setup record and update ------------------------------------
+	var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	gr2.query();
+	if (gr2.next()) {
 
-	// Get the sys_id for this script
-	var sysIDForThisScript = current.sys_id;
+		// Get the sys_id for this script
+		var sysIDForThisScript = current.sys_id;
 
-	// Ensure that the setup table has the sys_id for this script so that if someone
-	// changes the interval then this can be updated
-	var setupScheduledJobSysID = gr2.getValue('scheduled_job_sys_id') || '';
-	if (sysIDForThisScript != setupScheduledJobSysID) {
-		gr2.setValue('scheduled_job_sys_id',sysIDForThisScript);
+		// Ensure that the setup table has the sys_id for this script so that if someone
+		// changes the interval then this can be updated
+		var setupScheduledJobSysID = gr2.getValue('scheduled_job_sys_id') || '';
+		if (sysIDForThisScript != setupScheduledJobSysID) {
+			gr2.setValue('scheduled_job_sys_id',sysIDForThisScript);
 
+		}
+		gr2.setValue('last_scan_performed_at',jobStartTime);	
+		gr2.setValue('updated_by_script','SJ Send Data to uControl'); // Debug
+		gr2.update();	
 	}
-	gr2.setValue('last_scan_performed_at',jobStartTime);	
-	gr2.setValue('updated_by_script','SJ Send Data to uControl'); // Debug
-	gr2.update();	
-}
-else {
-	// Could not get gr2 record -- i.e. setup record could not be found
-	gr1.setValue('setup_status','No Setup Record');
+	else {
+		// Could not get gr2 record -- i.e. setup record could not be found
+		gr1.setValue('setup_status','No Setup Record');
+		gr1.setValue('updated_by_script','SJ Send Data to uControl');
+		gr1.update();
+	}
+
+	// --Main processing ----------------------------------------------------
+	// Trigger an event to do the background processing -- seems to be about a 10 sec delay
+	// this will trigger a script action
+	gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, gs.getUserID(),calculatedNextJobStartTime);
+
+	// --Finished ------------------------------------------------------------
+	var finishedAt = GlideDateTime();
+	gr1.setValue('finished_at',finishedAt);
 	gr1.setValue('updated_by_script','SJ Send Data to uControl');
 	gr1.update();
+
+	writeDebugLog('SJ Send Data to uControl - Finished');
 }
 
-// --Main processing ----------------------------------------------------
-// Trigger an event to do the background processing -- seems to be about a 10 sec delay
-// this will trigger a script action
-gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, gs.getUserID(),calculatedNextJobStartTime);
-
-// --Finished ------------------------------------------------------------
-var finishedAt = GlideDateTime();
-gr1.setValue('finished_at',finishedAt);
-gr1.setValue('updated_by_script','SJ Send Data to uControl');
-gr1.update();
-
-gs.info('SJ Send Data to uControl2 - End');]]></script>
+function writeDebugLog(msg) {
+	var debugTable = 'x_tekso_twxapp01_debug_log';
+	var gr1 = new GlideRecord(debugTable);
+	gr1.initialize();
+	gr1.setValue('message',msg);
+	gr1.setValue('inserted_by_script','SJ Send Data to uControl');			
+	gr1.insert();
+}
+]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>67</sys_mod_count>
-        <sys_name>Send Data to uControl2</sys_name>
+        <sys_mod_count>70</sys_mod_count>
+        <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-01 12:50:36</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:41:46</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

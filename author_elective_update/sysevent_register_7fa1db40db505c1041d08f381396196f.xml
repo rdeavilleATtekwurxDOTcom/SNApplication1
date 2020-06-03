@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="DELETE">
+        <caller_access/>
+        <description>Triggers script action ConfigurationCheckSetDT</description>
+        <event_name>x_tekso_twxapp01.configurationchecksetdt</event_name>
+        <fired_by/>
+        <queue/>
+        <suffix>configurationchecksetdtOBSOLETE</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-16 08:41:45</sys_created_on>
+        <sys_id>7fa1db40db505c1041d08f381396196f</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.configurationchecksetdt</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_register_7fa1db40db505c1041d08f381396196f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:03:30</sys_updated_on>
+        <table/>
+    </sysevent_register>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_register_7fa1db40db505c1041d08f381396196f</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description>Triggers script action ConfigurationCheckSetDT</description><event_name>x_tekso_twxapp01.configurationchecksetdt</event_name><fired_by/><queue/><suffix>configurationchecksetdtOBSOLETE</suffix><sys_class_name>sysevent_register</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-04-16 08:41:45</sys_created_on><sys_id>7fa1db40db505c1041d08f381396196f</sys_id><sys_mod_count>3</sys_mod_count><sys_name>x_tekso_twxapp01.configurationchecksetdt</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sysevent_register_7fa1db40db505c1041d08f381396196f</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-06-03 11:03:30</sys_updated_on><table/></sysevent_register></record_update>]]></payload>
+        <payload_hash>239196231</payload_hash>
+        <record_name>x_tekso_twxapp01.configurationchecksetdt</record_name>
+        <reverted_from/>
+        <source>be6a6082db859c5041d08f381396194f</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 11:03:30</sys_created_on>
+        <sys_id>498efeabdb85149041d08f381396197b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17279d9b68e0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:03:30</sys_updated_on>
+        <type>Event Registration</type>
+        <update_guid>818efeabb38514905cfca3e9980a217b</update_guid>
+        <update_guid_history>818efeabb38514905cfca3e9980a217b:239196231,85049bc4a0505c106634d8a10813bbe1:-1300033938,6f229bc497505c10391bf473ce3112ad:1400576352,58c19bc492505c1071204dd98af041dc:97963404</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 11:13:04</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_register">sysevent_register</sys_db_object>
+        <sys_id>2a66eefab454405092f4b7c4192e6b10</sys_id>
+        <sys_metadata>7fa1db40db505c1041d08f381396196f</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.configurationchecksetdt</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_register_7fa1db40db505c1041d08f381396196f</sys_update_name>
+        <sys_update_version display_value="sysevent_register_7fa1db40db505c1041d08f381396196f">498efeabdb85149041d08f381396197b</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:13:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

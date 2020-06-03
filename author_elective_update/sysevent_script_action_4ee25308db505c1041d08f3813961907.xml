@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="DELETE">
+        <active>false</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.configurationchecksetdt</event_name>
+        <name>XXConfigurationCheckSetDTOBSOLETE</name>
+        <order>100</order>
+        <script><![CDATA[//x_tekso_twxapp01.configurationchecksetdt
+//gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+ConfigurationCheckSetDT();
+
+function ConfigurationCheckSetDT() {
+	//gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+	//                     1                                      2      3                 4
+	// 1 = event name, 2 = glide record object - not used, 3 = parm1, 4 = parm2
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1);
+	//gs DOT info('event.parm2: ' + event.parm2); 
+
+	//Need to ensure that this is a string
+	var fld = event.parm2;
+	var fld2 = fld.toString();
+
+	// fld should be one of:
+	// br_ucontrol_track_deletes_last_run_at
+	// br_ucontrol_track_del_cmdb_ci_last_ran_at
+	// br_ucontrol_track_del_cmdb_rel_ci_last_ran_at
+	// br_ucontrol_track_updates_last_run_at
+	// br_ucontrol_track_upd_cmdb_ci_last_ran_at
+	// br_ucontrol_track_upd_cmdb_rel_ci_last_ran_at
+	// sj_send_data_to_ucontrol_last_ran_at
+	
+	// These are the date/time fields in table: x_tekso_twxapp01_configuration_checks
+	
+	//Comment Out
+	//var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si2.setDTLastRunAt(fld2); // 'sj_send_data_to_ucontrol_last_ran_at'
+}
+
+]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-16 08:51:19</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>4ee25308db505c1041d08f3813961907</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>XXConfigurationCheckSetDTOBSOLETE</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_4ee25308db505c1041d08f3813961907</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 10:46:26</sys_updated_on>
+    </sysevent_script_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_script_action_4ee25308db505c1041d08f3813961907</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;x_tekso_twxapp01.configurationchecksetdt&lt;/event_name&gt;&lt;name&gt;XXConfigurationCheckSetDTOBSOLETE&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[//x_tekso_twxapp01.configurationchecksetdt
+//gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+ConfigurationCheckSetDT();
+
+function ConfigurationCheckSetDT() {
+	//gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+	//                     1                                      2      3                 4
+	// 1 = event name, 2 = glide record object - not used, 3 = parm1, 4 = parm2
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1);
+	//gs DOT info('event.parm2: ' + event.parm2); 
+
+	//Need to ensure that this is a string
+	var fld = event.parm2;
+	var fld2 = fld.toString();
+
+	// fld should be one of:
+	// br_ucontrol_track_deletes_last_run_at
+	// br_ucontrol_track_del_cmdb_ci_last_ran_at
+	// br_ucontrol_track_del_cmdb_rel_ci_last_ran_at
+	// br_ucontrol_track_updates_last_run_at
+	// br_ucontrol_track_upd_cmdb_ci_last_ran_at
+	// br_ucontrol_track_upd_cmdb_rel_ci_last_ran_at
+	// sj_send_data_to_ucontrol_last_ran_at
+	
+	// These are the date/time fields in table: x_tekso_twxapp01_configuration_checks
+	
+	//Comment Out
+	//var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si2.setDTLastRunAt(fld2); // 'sj_send_data_to_ucontrol_last_ran_at'
+}
+
+]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-16 08:51:19&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;4ee25308db505c1041d08f3813961907&lt;/sys_id&gt;&lt;sys_mod_count&gt;7&lt;/sys_mod_count&gt;&lt;sys_name&gt;XXConfigurationCheckSetDTOBSOLETE&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_4ee25308db505c1041d08f3813961907&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-03 10:46:26&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1417138762</payload_hash>
+        <record_name>XXConfigurationCheckSetDTOBSOLETE</record_name>
+        <reverted_from/>
+        <source>be6a6082db859c5041d08f381396194f</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 10:46:26</sys_created_on>
+        <sys_id>be9abee7db85149041d08f381396192d</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17279ca14f60000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 10:46:26</sys_updated_on>
+        <type>Script Action</type>
+        <update_guid>f69abee75285149050c6b87c752c152d</update_guid>
+        <update_guid_history>f69abee75285149050c6b87c752c152d:1417138762,aacb6eeb43451490c66bd7267558e857:-1319315399,33fcd58df1899410d1e6ee88519e9bcf:195393049,097c3599e7f01c10f8aa74cbf3c626d1:607637541,2b89d38cb2505c103c52750890bfde11:-239587408,6068534c90505c10e20cde05343df7be:-1060499759,0fd4938845505c10920895585162a744:-182035357,e0f35bc459505c10034816e55a1b1597:148686090</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 11:13:15</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_script_action">sysevent_script_action</sys_db_object>
+        <sys_id>4879785d258b443ea607905886880c24</sys_id>
+        <sys_metadata>4ee25308db505c1041d08f3813961907</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>XXConfigurationCheckSetDTOBSOLETE</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_script_action_4ee25308db505c1041d08f3813961907</sys_update_name>
+        <sys_update_version display_value="sysevent_script_action_4ee25308db505c1041d08f3813961907">be9abee7db85149041d08f381396192d</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 11:13:15</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_test_configuration_item</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>XX Test uControl Track Upd cmdb_ci</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as we need the previous value to work out what has changed
+	// After BR - this writes to x_tekso_twxapp01_cmdb_updates
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_updates which is triggered on insert
+	// BR uControl Track Updates
+	var tblName = current.getTableName();
+	
+	var fieldsChanged = '';
+	var allFields = '';
+	var changeCnt = 0;
+	var fieldCnt = 0;
+	var fieldsChangedArr = [];
+	var allFieldsArr = [];
+
+	// Exclude real_table_name and soft_delete and got_alternative_values
+	// generate_test_data_in_progress and generate_test_data_record_sys_id	
+	var excludeArr = [];
+	excludeArr.push('sys_meta');
+	excludeArr.push('real_table_name');
+	excludeArr.push('soft_delete');
+	excludeArr.push('got_alternative_values');
+	excludeArr.push('original_or_alternative');					
+	excludeArr.push('generate_test_data_in_progress');
+	excludeArr.push('generate_test_data_record_sys_id');
+	
+	for (var x in current){
+		var y = x.substring(0,15); // original_value_
+		var z = x.substring(0,18); // alternative_value_
+		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {	
+			allFieldsArr.push(x);
+			fieldCnt++;
+		}
+		
+		// Exclude sys_updated_on, sys_updated_by and sys_mod_count and real_table_name and soft_delete from changes
+		var excludeArr2 = [];
+		excludeArr2.push('real_table_name');
+		excludeArr2.push('soft_delete');
+		excludeArr2.push('got_alternative_values');
+		excludeArr2.push('original_or_alternative');
+		excludeArr2.push('sys_updated_on');
+		excludeArr2.push('sys_updated_by');
+		excludeArr2.push('sys_mod_count');
+		excludeArr2.push('sys_meta');
+		excludeArr2.push('generate_test_data_in_progress');
+		excludeArr2.push('generate_test_data_record_sys_id');		
+		if (excludeArr2.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {		
+			if (current[x] != previous[x]) {
+				fieldsChangedArr.push(x);
+				changeCnt++;
+			}
+		}
+	}
+
+	if (fieldCnt > 0) {
+		allFieldsArr.sort(); // Sort alphabetically
+		allFields = allFieldsArr.join(","); // Convert to a comma separated list		
+	}
+	
+	if (changeCnt > 0) {
+		fieldsChangedArr.sort(); // Sort alphabetically
+		fieldsChanged = fieldsChangedArr.join(",");	// Convert to a comma separated list	
+		
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		gr1.initialize();
+		gr1.setValue('source_record_sys_id',current.sys_id);		
+		gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('table_name',current.real_table_name); 
+		gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_updated_by',current.sys_updated_by);
+		gr1.setValue('record_updated_on',current.sys_updated_on);			
+		gr1.setValue('base_table','cmdb_ci');	
+		gr1.setValue('fields_changed',fieldsChanged);
+		gr1.setValue('number_of_fields_changed',changeCnt);
+		gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+		gr1.setValue('name',current.name);		
+		gr1.setValue('all_fields',allFields);
+		gr1.setValue('no_of_fields',fieldCnt);
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);			
+		gr1.setValue('test_data',true); // TESTING
+		gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+		gr1.setValue('inserted_by_script','BR Test uControl Track Upd cmdb_ci');		
+		gr1.insert();
+	}
+		
+	// Record that the br has run
+	//var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si.setDTLastRunAt('br_ucontrol_track_upd_cmdb_ci_last_ran_at');
+	
+})(current, previous);
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-30 21:11:58</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ff0a1eb2dbfb401041d08f3813961935</sys_id>
+        <sys_mod_count>22</sys_mod_count>
+        <sys_name>XX Test uControl Track Upd cmdb_ci</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_ff0a1eb2dbfb401041d08f3813961935</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-30 21:54:29</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=ff0a1eb2dbfb401041d08f3813961935"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_ff0a1eb2dbfb401041d08f3813961935</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;x_tekso_twxapp01_test_configuration_item&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;XX Test uControl Track Upd cmdb_ci&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as we need the previous value to work out what has changed
+	// After BR - this writes to x_tekso_twxapp01_cmdb_updates
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_updates which is triggered on insert
+	// BR uControl Track Updates
+	var tblName = current.getTableName();
+	
+	var fieldsChanged = '';
+	var allFields = '';
+	var changeCnt = 0;
+	var fieldCnt = 0;
+	var fieldsChangedArr = [];
+	var allFieldsArr = [];
+
+	// Exclude real_table_name and soft_delete and got_alternative_values
+	// generate_test_data_in_progress and generate_test_data_record_sys_id	
+	var excludeArr = [];
+	excludeArr.push('sys_meta');
+	excludeArr.push('real_table_name');
+	excludeArr.push('soft_delete');
+	excludeArr.push('got_alternative_values');
+	excludeArr.push('original_or_alternative');					
+	excludeArr.push('generate_test_data_in_progress');
+	excludeArr.push('generate_test_data_record_sys_id');
+	
+	for (var x in current){
+		var y = x.substring(0,15); // original_value_
+		var z = x.substring(0,18); // alternative_value_
+		if (excludeArr.indexOf(x) == -1 &amp;&amp; y != 'original_value_' &amp;&amp; z != 'alternative_value_') {	
+			allFieldsArr.push(x);
+			fieldCnt++;
+		}
+		
+		// Exclude sys_updated_on, sys_updated_by and sys_mod_count and real_table_name and soft_delete from changes
+		var excludeArr2 = [];
+		excludeArr2.push('real_table_name');
+		excludeArr2.push('soft_delete');
+		excludeArr2.push('got_alternative_values');
+		excludeArr2.push('original_or_alternative');
+		excludeArr2.push('sys_updated_on');
+		excludeArr2.push('sys_updated_by');
+		excludeArr2.push('sys_mod_count');
+		excludeArr2.push('sys_meta');
+		excludeArr2.push('generate_test_data_in_progress');
+		excludeArr2.push('generate_test_data_record_sys_id');		
+		if (excludeArr2.indexOf(x) == -1 &amp;&amp; y != 'original_value_' &amp;&amp; z != 'alternative_value_') {		
+			if (current[x] != previous[x]) {
+				fieldsChangedArr.push(x);
+				changeCnt++;
+			}
+		}
+	}
+
+	if (fieldCnt &gt; 0) {
+		allFieldsArr.sort(); // Sort alphabetically
+		allFields = allFieldsArr.join(","); // Convert to a comma separated list		
+	}
+	
+	if (changeCnt &gt; 0) {
+		fieldsChangedArr.sort(); // Sort alphabetically
+		fieldsChanged = fieldsChangedArr.join(",");	// Convert to a comma separated list	
+		
+		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		gr1.initialize();
+		gr1.setValue('source_record_sys_id',current.sys_id);		
+		gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+		gr1.setValue('table_name',current.real_table_name); 
+		gr1.setValue('record_originally_created_by',current.sys_created_by);
+		gr1.setValue('record_originally_created_on',current.sys_created_on);	
+		gr1.setValue('record_updated_by',current.sys_updated_by);
+		gr1.setValue('record_updated_on',current.sys_updated_on);			
+		gr1.setValue('base_table','cmdb_ci');	
+		gr1.setValue('fields_changed',fieldsChanged);
+		gr1.setValue('number_of_fields_changed',changeCnt);
+		gr1.setValue('total_length_of_fields_changed_list',fieldsChanged.length);		
+		gr1.setValue('name',current.name);		
+		gr1.setValue('all_fields',allFields);
+		gr1.setValue('no_of_fields',fieldCnt);
+		gr1.setValue('total_length_of_all_fields_list',allFields.length);			
+		gr1.setValue('test_data',true); // TESTING
+		gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+		gr1.setValue('inserted_by_script','BR Test uControl Track Upd cmdb_ci');		
+		gr1.insert();
+	}
+		
+	// Record that the br has run
+	//var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si.setDTLastRunAt('br_ucontrol_track_upd_cmdb_ci_last_ran_at');
+	
+})(current, previous);
+]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-30 21:11:58&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;ff0a1eb2dbfb401041d08f3813961935&lt;/sys_id&gt;&lt;sys_mod_count&gt;22&lt;/sys_mod_count&gt;&lt;sys_name&gt;XX Test uControl Track Upd cmdb_ci&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_ff0a1eb2dbfb401041d08f3813961935&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-30 21:54:29&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=ff0a1eb2dbfb401041d08f3813961935"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1041753655</payload_hash>
+        <record_name>XX Test uControl Track Upd cmdb_ci</record_name>
+        <reverted_from/>
+        <source>be6a6082db859c5041d08f381396194f</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-30 21:54:29</sys_created_on>
+        <sys_id>f92de46adbc15c104f29252b139619ef</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172679443280000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-30 21:54:29</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>b12d642a42c15c103d47fdc99768dcb7</update_guid>
+        <update_guid_history>b12d642a42c15c103d47fdc99768dcb7:-1041753655,a2ef8021d885d8506014b235d9836618:1436521280,f5753b112e85181041aa7c84fc09a8ad:697017944,46907ae0c4b09810b91771658ec549e5:1736034482,3843972a4d24d010fc04c5ddb75c2b2c:-961011043,854cdea2a160d01072ffe0381ce9149b:498593701,1bf2cd84d74c54101b550995e683ff0b:-656103584,eb2bf0cc950c5410eccfaa331d947572:1458999068,d719f84c8b0c5410bfd546b11a371041:1554780355,e9e53c88710c54105c8ad6823a3eb9e4:-1629603374,e5b16d3ba7334410a002faa7cddbfd18:2055289019,ef8658f34a3f0410f0e33a5fb3b108a2:-1903410199,66ddccbb5afb0410faa73288e36a22c3:2086827310,563d04bb48fb0410ab51657b2b206756:794205758,290d487b9dfb0410f05d961dc2b7e6c3:1617730379,b24f4fa3cd3b041019a4dcd92d295811:1585296817,7ef2e2cf2b7b80106ab9ff1209589ede:-639703376,9452e2cf787b8010023f3ac3c12ae726:-2022863241,7d021203aa7b8010fd6b492d2d6b0ed6:-1206212267,321112cf543b8010a16fe1ca5a132f60:-1679580084,e57986c7e03b8010fad066f5c71d4b7a:-614056829,04184a83f23b80107bb8d8540d4ea032:52857450,1c7adab2b7fb40107f8043cfd6697ff2:958767918</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 08:40:45</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>30bdde127f4649748db035b559aab544</sys_id>
+        <sys_metadata>ff0a1eb2dbfb401041d08f3813961935</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>XX Test uControl Track Upd cmdb_ci</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Test Configuration Item">6fc1c8fedb73401041d08f3813961986</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_ff0a1eb2dbfb401041d08f3813961935</sys_update_name>
+        <sys_update_version display_value="sys_script_ff0a1eb2dbfb401041d08f3813961935">f92de46adbc15c104f29252b139619ef</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 08:40:45</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

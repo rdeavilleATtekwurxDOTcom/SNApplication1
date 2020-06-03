@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="DELETE">
+        <access>package_private</access>
+        <active>false</active>
+        <api_name>x_tekso_twxapp01.UpdateProcessLogResultsObsolete</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description>Obsolete Inactive</description>
+        <name>UpdateProcessLogResultsObsolete</name>
+        <script><![CDATA[var UpdateProcessLogResultsObsolete = Class.create();
+UpdateProcessLogResultsObsolete.prototype = {
+    initialize: function() {
+    },
+	
+	// Builds a string like this: 3 records (3 updates , 0 deletes)
+	processSummary: function(recCnt,updCnt,delCnt) {
+		var rtn = '';
+		if (recCnt == 1) {
+			rtn = '1 record';
+		}
+		else {
+			rtn = recCnt.toString() + ' records';
+		}	
+
+		if (updCnt == 1) {
+			rtn = rtn + ' (1 update';
+		}
+		else {
+			rtn = rtn + ' (' + updCnt.toString() + ' updates';
+		}
+
+		if (delCnt == 1) {
+			rtn = rtn + ' , 1 delete)';
+		}
+		else {
+			rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+		}
+
+		return rtn;
+	},	
+    process: function(logSysID) {
+
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var logTable = 'x_tekso_twxapp01_processing_log';
+		var setupTable = 'x_tekso_twxapp01_setup';
+		
+		var updCnt = 0;
+		var delCnt = 0;
+		var recCnt = 0;
+		var gotAllResults = false;
+		
+		var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+		gr1.addQuery('link_to_processing_log_record',logSysID);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		// This is the number of records
+		if (rowCnt > 0) {
+			// Find all the records which have got a response
+			var gr2 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data';
+			gr2.addQuery('link_to_processing_log_record',logSysID);
+			gr2.addQuery('response_received',true);
+			gr2.query();
+			var rowCnt2 = gr2.getRowCount();
+			// Only update the stats if got all the results back
+			if (rowCnt2 == rowCnt) {
+				// All the records have got a response
+				gotAllResults = true;
+				// Get all the results back and
+				// tally up the stats
+				while(gr2.next()) {
+					var op = gr2.getValue('operation') || '';
+					var sta = gr2.getValue('response_status_code') || 0;
+					if (sta == 200) {
+						recCnt++;
+						if (op == 'update') {
+							updCnt++;
+						}
+						if (op == 'delete') {
+							delCnt++;
+						}
+					}
+				} // while(gr2.next())
+			} //if (rowCnt2 == rowCnt) 
+		} //if (rowCnt > 0) 
+		
+		if (gotAllResults == true) {
+			// Got all the stats back
+			// Update the results
+			var summary = this.processSummary(recCnt,updCnt,delCnt);
+
+			var gr3 = new GlideRecord(logTable);
+			gr3.addQuery('sys_id',logSysID);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('total_number_of_records_processed',recCnt);
+				gr3.setValue('number_of_updates_processed',updCnt);
+				gr3.setValue('number_of_deletes_processed',delCnt);		
+				gr3.setValue('processing_summary',summary);
+				gr3.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
+				gr3.update();
+			} //if (gr3.next()) 
+			
+			
+			var gr4 = new GlideRecord(setupTable);
+			gr4.addQuery('link_to_last_processing_log_record',logSysID);
+			gr4.query();
+			if (gr4.next()) {
+				// This log record is the latest one and is attached to the setup table
+				var snt = gr3.getValue('data_sent_summary') || '';
+				var dt = gr3.getValue('sys_created_on');
+				gr4.setValue('last_processing_data_sent_summary',snt);
+				gr4.setValue('last_processing_at',dt);
+				gr4.setValue('last_scan_performed_at',dt);
+				gr4.setValue('last_processing_results_summary',summary);
+				gr4.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
+				gr4.update();
+			}
+
+		} //if (gotAllResults == true)
+	},
+    type: 'UpdateProcessLogResultsObsolete'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-10 16:02:42</sys_created_on>
+        <sys_id>3a315e10db6f801041d08f38139619aa</sys_id>
+        <sys_mod_count>17</sys_mod_count>
+        <sys_name>UpdateProcessLogResultsObsolete</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_3a315e10db6f801041d08f38139619aa</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 13:41:22</sys_updated_on>
+    </sys_script_include>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_include_3a315e10db6f801041d08f38139619aa</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update table="sys_script_include"&gt;&lt;sys_script_include action="INSERT_OR_UPDATE"&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;active&gt;false&lt;/active&gt;&lt;api_name&gt;x_tekso_twxapp01.UpdateProcessLogResultsObsolete&lt;/api_name&gt;&lt;caller_access/&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;description&gt;Obsolete Inactive&lt;/description&gt;&lt;name&gt;UpdateProcessLogResultsObsolete&lt;/name&gt;&lt;script&gt;&lt;![CDATA[var UpdateProcessLogResultsObsolete = Class.create();
+UpdateProcessLogResultsObsolete.prototype = {
+    initialize: function() {
+    },
+	
+	// Builds a string like this: 3 records (3 updates , 0 deletes)
+	processSummary: function(recCnt,updCnt,delCnt) {
+		var rtn = '';
+		if (recCnt == 1) {
+			rtn = '1 record';
+		}
+		else {
+			rtn = recCnt.toString() + ' records';
+		}	
+
+		if (updCnt == 1) {
+			rtn = rtn + ' (1 update';
+		}
+		else {
+			rtn = rtn + ' (' + updCnt.toString() + ' updates';
+		}
+
+		if (delCnt == 1) {
+			rtn = rtn + ' , 1 delete)';
+		}
+		else {
+			rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+		}
+
+		return rtn;
+	},	
+    process: function(logSysID) {
+
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var logTable = 'x_tekso_twxapp01_processing_log';
+		var setupTable = 'x_tekso_twxapp01_setup';
+		
+		var updCnt = 0;
+		var delCnt = 0;
+		var recCnt = 0;
+		var gotAllResults = false;
+		
+		var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+		gr1.addQuery('link_to_processing_log_record',logSysID);
+		gr1.query();
+		var rowCnt = gr1.getRowCount();
+		// This is the number of records
+		if (rowCnt &gt; 0) {
+			// Find all the records which have got a response
+			var gr2 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data';
+			gr2.addQuery('link_to_processing_log_record',logSysID);
+			gr2.addQuery('response_received',true);
+			gr2.query();
+			var rowCnt2 = gr2.getRowCount();
+			// Only update the stats if got all the results back
+			if (rowCnt2 == rowCnt) {
+				// All the records have got a response
+				gotAllResults = true;
+				// Get all the results back and
+				// tally up the stats
+				while(gr2.next()) {
+					var op = gr2.getValue('operation') || '';
+					var sta = gr2.getValue('response_status_code') || 0;
+					if (sta == 200) {
+						recCnt++;
+						if (op == 'update') {
+							updCnt++;
+						}
+						if (op == 'delete') {
+							delCnt++;
+						}
+					}
+				} // while(gr2.next())
+			} //if (rowCnt2 == rowCnt) 
+		} //if (rowCnt &gt; 0) 
+		
+		if (gotAllResults == true) {
+			// Got all the stats back
+			// Update the results
+			var summary = this.processSummary(recCnt,updCnt,delCnt);
+
+			var gr3 = new GlideRecord(logTable);
+			gr3.addQuery('sys_id',logSysID);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('total_number_of_records_processed',recCnt);
+				gr3.setValue('number_of_updates_processed',updCnt);
+				gr3.setValue('number_of_deletes_processed',delCnt);		
+				gr3.setValue('processing_summary',summary);
+				gr3.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
+				gr3.update();
+			} //if (gr3.next()) 
+			
+			
+			var gr4 = new GlideRecord(setupTable);
+			gr4.addQuery('link_to_last_processing_log_record',logSysID);
+			gr4.query();
+			if (gr4.next()) {
+				// This log record is the latest one and is attached to the setup table
+				var snt = gr3.getValue('data_sent_summary') || '';
+				var dt = gr3.getValue('sys_created_on');
+				gr4.setValue('last_processing_data_sent_summary',snt);
+				gr4.setValue('last_processing_at',dt);
+				gr4.setValue('last_scan_performed_at',dt);
+				gr4.setValue('last_processing_results_summary',summary);
+				gr4.setValue('updated_by_script','SI UpdateProcessLogResultsObsolete'); // Debug					
+				gr4.update();
+			}
+
+		} //if (gotAllResults == true)
+	},
+    type: 'UpdateProcessLogResultsObsolete'
+};]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_include&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-10 16:02:42&lt;/sys_created_on&gt;&lt;sys_id&gt;3a315e10db6f801041d08f38139619aa&lt;/sys_id&gt;&lt;sys_mod_count&gt;17&lt;/sys_mod_count&gt;&lt;sys_name&gt;UpdateProcessLogResultsObsolete&lt;/sys_name&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy&gt;protected&lt;/sys_policy&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_include_3a315e10db6f801041d08f38139619aa&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-19 13:41:22&lt;/sys_updated_on&gt;&lt;/sys_script_include&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1346339326</payload_hash>
+        <record_name>UpdateProcessLogResultsObsolete</record_name>
+        <reverted_from/>
+        <source>28d93fccdb34181041d08f38139619f8</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-19 13:41:22</sys_created_on>
+        <sys_id>c7c212b2dbbc505041d08f381396192c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1722d2ad90c0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-19 13:41:22</sys_updated_on>
+        <type>Script Include</type>
+        <update_guid>03c212b24bbc50501c724dbd53e3402c</update_guid>
+        <update_guid_history>03c212b24bbc50501c724dbd53e3402c:1346339326,29ffe4d4779c5c109c664897e9099472:-1636779650,7ee3f78062185c103cab707220c3cf5e:769979301,a77da2b8247b8050f12045eb7932870d:1920168958,01c1ac5ac02348107c09331641e52ee5:-828740961,361cab34106f0410d9ff62afe28c2adf:2040321446,4c3f1b38c72f0410d5ad75e3f6e3ef03:-1841163792,554d9bf42d2f04103cf7fae1f4200669:1111831153,de6a1774992f04109b48995eae44b2be:845741887,3754d730d22f041013100b69b3c1bd8e:1964907174,d4953070e027041038a056ddb33c2235:1751565344,f17334bcafe304103303cd1253c78155:-1279018945,8b04ebd48863c0104fc31825f104de8c:1382919289,38ff1714f363c0101fc328f141fc735d:-761682670,94c497d43623c01051ac17bacb443c95:1095657491,990ada58f36f801006bffc883e5dd412:977982873,78d8da54416f80106801afb1d90af99b:1637684764,cbd3da904b6f8010e45b147eecd96270:-1868905213</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 08:41:47</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_include">sys_script_include</sys_db_object>
+        <sys_id>cf530b4c065f4398b85c27abe49f8840</sys_id>
+        <sys_metadata>3a315e10db6f801041d08f38139619aa</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>UpdateProcessLogResultsObsolete</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_include_3a315e10db6f801041d08f38139619aa</sys_update_name>
+        <sys_update_version display_value="sys_script_include_3a315e10db6f801041d08f38139619aa">c7c212b2dbbc505041d08f381396192c</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 08:41:47</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

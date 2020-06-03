@@ -30,21 +30,18 @@ if (gr1.next()) {
 		xmlDoc.parseXML(payload.toString());
 		var resp = xmlDoc.getNodeText('//result/output');
 
-		gs.info(resp);
 		// 	{"result":{"statusCode":200,"statusMsg":"OK"}}
 
 		var node = xmlDoc.getNode("//parameters");
 		var childNodes = node.getChildNodeIterator();
 		while(childNodes.hasNext()){
 			var n = childNodes.next();
-			gs.info(n);
 			var nstr = n.toString();
 			var unescaped = nstr.replace(/&quot;/g,'');
 			if (unescaped.indexOf('parameter') >= 0 && unescaped.indexOf('content') > 0 && unescaped.indexOf('data_sys_id:') > 0) {
 				var pos = unescaped.indexOf('data_sys_id:');
 				pos = pos + 12; // length of 'data_sys_id:'
 				var block = unescaped.substring(pos,pos+32);
-				gs.info('block: ' + block);
 			}
 		}
 	}
@@ -54,14 +51,14 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-16 15:09:24</sys_created_on>
         <sys_id>8369a05cdb5c5c1041d08f3813961974</sys_id>
-        <sys_mod_count>37</sys_mod_count>
+        <sys_mod_count>38</sys_mod_count>
         <sys_name>Testing - Get MID Server Response</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_8369a05cdb5c5c1041d08f3813961974</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 14:40:57</sys_updated_on>
+        <sys_updated_on>2020-06-03 09:40:57</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

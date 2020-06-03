@@ -309,8 +309,6 @@ function generate(num) {
 	gr1.setValue('no_of_fields',allFieldsArr.length);	
 	
 	gr1.setValue('total_length_of_all_fields_list',allFields.length);	
-	
-	gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_server
 
 	gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
 	
@@ -375,14 +373,14 @@ function zeroPad(number,maxSize) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 10:00:33</sys_created_on>
         <sys_id>1d44fba1dbc158104f29252b139619b8</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>Testing - Build Test cmdb_ci Update cmdb_ci_server</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1d44fba1dbc158104f29252b139619b8</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-28 14:37:24</sys_updated_on>
+        <sys_updated_on>2020-06-03 12:33:36</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

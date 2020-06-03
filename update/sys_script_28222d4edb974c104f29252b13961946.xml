@@ -80,22 +80,10 @@
 		gr1.setValue('all_fields',allFields);
 		gr1.setValue('no_of_fields',fieldCnt);
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);
-		gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('inserted_by_script','BR uControl Track Upd cmdb_ci');			
 		gr1.insert();
 	}
-		
-	//Record that the business rule has run - update x_tekso_twxapp01_configuration_checks
-	//Event x_tekso_twxapp01.configurationchecksetdt
-	var brevent = 'br_ucontrol_track_upd_cmdb_ci_last_ran_at';
-	gs.eventQueue('x_tekso_twxapp01.configurationchecksetdt', gr1, gs.getUserID(),brevent);
-	//                     1                                  2      3                 4
-	// 1 = event name, 2 = glide record object - not used, 3 = parm1 - not used, 4 = parm2
-	
-	//This event will trigger script action ConfigurationCheckSetDT
-	//Which will run var si2 = new x_tekso_twxapp01.UpdateConfigurationChecks();
-	//               si2.setDTLastRunAt('br_ucontrol_track_upd_cmdb_ci_last_ran_at'); // Fld
-	
+			
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -103,7 +91,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>28222d4edb974c104f29252b13961946</sys_id>
-        <sys_mod_count>30</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>uControl Track Upd cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -111,7 +99,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_28222d4edb974c104f29252b13961946</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-14 20:16:17</sys_updated_on>
+        <sys_updated_on>2020-06-03 12:37:03</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -5,7 +5,7 @@
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
         <element label="First REST Data Record Sys ID" max_length="32" name="first_rest_data_record_sys_id" type="string"/>
         <element label="First REST Response Record Sys ID" max_length="32" name="first_rest_response_record_sys_id" type="string"/>
-        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="Last REST Data Record Sys ID" max_length="32" name="last_rest_data_record_sys_id" type="string"/>
         <element label="Last REST Response Record Sys ID" max_length="32" name="last_rest_response_record_sys_id" type="string"/>
         <element label="Link To First REST Data Record " max_length="32" name="link_to_first_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
@@ -40,7 +40,7 @@
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element default="0" label="uControl Polling Interval (minutes)" max_length="40" name="ucontrol_polling_interval_minutes" type="integer"/>
         <element label="uControl URL" max_length="200" name="ucontrol_url" type="string"/>
-        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="link_to_first_rest_data_record"/>
         </index>

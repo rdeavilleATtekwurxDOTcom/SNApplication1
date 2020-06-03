@@ -13,8 +13,8 @@ SendDataToUControl();
 
 function SendDataToUControl() {
 	//Note: parm not param
-	//gs.info('event.parm1: ' + event.parm1); // gs.getUserID()
-	//gs.info('event.parm2: ' + event.parm2); 
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 
 
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var setupTable = 'x_tekso_twxapp01_setup';
@@ -22,8 +22,6 @@ function SendDataToUControl() {
 	var scriptStartTime = new GlideDateTime();	
 	var jobSysID = current.sys_id;
 	var nextRunAt = event.parm2; // The date/time the scheduled job is going to run next
-	
-	gs.info('Script Action: SendDataToUControl - current.sys_id: ' + jobSysID + ' event.parm2: ' + event.parm2);
 
 	var gr1 = new GlideRecord(jobTable);
 	gr1.addQuery('sys_id',jobSysID);
@@ -85,7 +83,6 @@ function SendDataToUControl() {
 			
 			if (setupStatus == 'Sending') {
 				//There are records to process and the status is Sending
-				gs.info('Script Action: SendDataToUControl - There are records to process');
 				process(jobStartTime,nextRunAt,jobSysID);
 			}
 		} // if (noOfPendingRecs > 0) {
@@ -186,7 +183,6 @@ function getNumberOfPendingRecords(jobStartTime) {
 
 function process(jobStartTime,nextRunAt,jobSysID) {
 	
-	gs.info('script action - process jobStartTime: ' + jobStartTime + ' nextRunAt: ' + nextRunAt);
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var totRecCnt = 0;
@@ -258,22 +254,16 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 		arrUniqueData.push(sysIDsInBlockAreUnique); //T/F
 		arrTestData.push(testData); //T/F
 		
-		if (recCnt > 0 && dataToProcess == true) {
-			gs.info('script action - process loopCnt: ' + loopCnt.toString() + ' recCnt: ' + recCnt.toString() + ' processing_id: ' + processingID);
-			gs.info('script action - process loopCnt: ' + loopCnt.toString() + ' testData: ' + testData + ' sysIDsInBlockAreUnique: ' + sysIDsInBlockAreUnique);
 
-		}
 		
 		// Get another 2000?
 		var secsLeft = secondsRemainingBeforeNextRunOfScheduledJob(nextRunAt);
-		gs.info('script action - process loopCnt: ' + loopCnt.toString() + ' nextRunAt: ' + nextRunAt + ' secsLeft: ' + secsLeft.toString());
 		//Subtract 10 more seconds as a precaution
 		secsLeft = secsLeft - 10;
 		
 		//Are there any more pending records?
 		var noOfPendingRecs = getNumberOfPendingRecords(jobStartTime);
-		gs.info('script action - process loopCnt: ' + loopCnt.toString() + ' noOfPendingRecs: ' + noOfPendingRecs.toString());		
-		
+			
 		// If there are more records to process and the next scheduled job has not yet started
 		// and we got back some data in the last loop
 		if (noOfPendingRecs > 0 && secsLeft > 0 && dataToProcess == true) {
@@ -298,7 +288,6 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 	}
 	
 	if (totRecCnt > 0) {
-		gs.info('Script Action - process totRecCnt > 0');
 		var cnt = 1;
 		for (var i = 0; i < arrProcessingID.length; i++) {
 			var processingID2 = arrProcessingID[i];
@@ -344,7 +333,8 @@ function isFirstPendingRecordATestRecord(jobStartTime) {
 
 function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) { 
 	
-	writeDebugLog('mainBit Start');
+	//Remove the XX's to use	
+	//writeXXDebugXXLog('mainBit Start');
 	
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var recCnt = 0;
@@ -802,7 +792,8 @@ function processBlock(processingID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		updateProcessingLog(logSysID);
 	}
 	
-	writeDebugLog('mainBit End');
+	//Remove the XX's to use	
+	//writeXXDebugXXLog('mainBit End');
 }
 
 
@@ -811,7 +802,7 @@ function writeDebugLog(msg) {
 	var gr1 = new GlideRecord(debugTable);
 	gr1.initialize();
 	gr1.setValue('message',msg);
-	gr1.setValue('updated_by_script','SA SendDataTouControl');	
+	gr1.setValue('inserted_by_script','SA SendDataTouControl');	
 	gr1.insert();
 }
 
@@ -1576,7 +1567,7 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>63</sys_mod_count>
+        <sys_mod_count>66</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1584,6 +1575,6 @@ function createDataRecordWithJSON(dataTable,operation,baseTable,midServerName,mi
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 20:03:46</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:11:40</sys_updated_on>
     </sysevent_script_action>
 </record_update>

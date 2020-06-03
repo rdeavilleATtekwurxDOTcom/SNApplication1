@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>false</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_test_ci_relationship</collection>
+        <condition>current.soft_delete == true</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>XX Test uControl Track Del cmdb_rel_ci</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[function getUserSysID(userName) {
+	var userName2 = userName.toString();
+	var rtnSysID = '';
+	if (userName2.length > 0){
+		var gr1 = new GlideRecord('sys_user');
+		gr1.addQuery('user_name',userName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Found a matching user account
+			rtnSysID = gr1.getValue('sys_id') || '';
+		}
+	}	
+	return rtnSysID;	
+}
+
+//Soft Delete
+
+(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as all info is lost for a delete
+	// After BR - this writes to x_tekso_twxapp01_cmdb_deletes
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_deletes which is triggered on insert
+	// BR uControl Track Deletes	
+	var tblName = current.getTableName();
+	
+	var fieldCnt = 0;
+	var allFields = '';
+	var allFieldsArr = [];
+	
+	// Exclude real_table_name and soft_delete and got_alternative_values
+	// generate_test_data_in_progress and generate_test_data_record_sys_id	
+	var excludeArr = [];
+	excludeArr.push('sys_meta');
+	excludeArr.push('real_table_name');
+	excludeArr.push('soft_delete');
+	excludeArr.push('got_alternative_values');
+	excludeArr.push('original_or_alternative');					
+	excludeArr.push('generate_test_data_in_progress');
+	excludeArr.push('generate_test_data_record_sys_id');	
+	
+	for (var x in current){
+		var y = x.substring(0,15); // original_value_
+		var z = x.substring(0,18); // alternative_value_
+		if (excludeArr.indexOf(x) == -1 && y != 'original_value_' && z != 'alternative_value_') {			
+			allFieldsArr.push(x);
+			fieldCnt++;
+		}
+	}
+
+	if (fieldCnt > 0) {
+		allFieldsArr.sort(); // Sort alphabetically
+		allFields = allFieldsArr.join(","); // Convert to a comma separated list		
+	}
+	
+	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+	gr1.initialize();
+	gr1.setValue('source_record_sys_id',current.sys_id);	
+	gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+	gr1.setValue('table_name','cmdb_rel_ci'); 		
+	gr1.setValue('record_originally_created_by',current.sys_created_by);
+	gr1.setValue('record_originally_created_on',current.sys_created_on);		
+	gr1.setValue('record_last_updated_by',current.sys_updated_by);
+	gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+	var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+	gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+	gr1.setValue('record_deleted_by',gs.getUserName());
+	gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+	var gdt = new GlideDateTime();	
+	gr1.setValue('record_deleted_on',gdt);	
+	
+	gr1.setValue('correlation_id1',current.parent.correlation_id);
+	gr1.setValue('correlation_id2',current.child.correlation_id);	
+	gr1.setValue('discovery_source1',current.parent.discovery_source);
+	gr1.setValue('discovery_source2',current.child.discovery_source);	
+	gr1.setValue('base_table','cmdb_rel_ci');
+	gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+	gr1.setValue('rel_type_sys_id',current.type.sys_id);
+	gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+	gr1.setValue('rel_child_name',current.child.name);
+	gr1.setValue('rel_parent_name',current.parent.name);
+	gr1.setValue('rel_type_name',current.type.name);
+	gr1.setValue('all_fields',allFields);
+	gr1.setValue('no_of_fields',fieldCnt);	
+	gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+	gr1.setValue('test_data',true); // TESTING	
+	gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+	gr1.setValue('inserted_by_script','BR Test uControl Track Del cmdb_rel_ci');
+	gr1.insert();
+
+	// Record that the br has run
+	//var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si.setDTLastRunAt('br_ucontrol_track_del_cmdb_rel_ci_last_ran_at');
+		
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-31 19:32:34</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>389c8747db3f801041d08f3813961970</sys_id>
+        <sys_mod_count>16</sys_mod_count>
+        <sys_name>XX Test uControl Track Del cmdb_rel_ci</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_389c8747db3f801041d08f3813961970</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-30 21:54:10</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=389c8747db3f801041d08f3813961970"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_389c8747db3f801041d08f3813961970</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;false&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;true&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;x_tekso_twxapp01_test_ci_relationship&lt;/collection&gt;&lt;condition&gt;current.soft_delete == true&lt;/condition&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;XX Test uControl Track Del cmdb_rel_ci&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[function getUserSysID(userName) {
+	var userName2 = userName.toString();
+	var rtnSysID = '';
+	if (userName2.length &gt; 0){
+		var gr1 = new GlideRecord('sys_user');
+		gr1.addQuery('user_name',userName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Found a matching user account
+			rtnSysID = gr1.getValue('sys_id') || '';
+		}
+	}	
+	return rtnSysID;	
+}
+
+//Soft Delete
+
+(function executeRule(current, previous /*null when async*/) {
+
+	// Cannot be Async as all info is lost for a delete
+	// After BR - this writes to x_tekso_twxapp01_cmdb_deletes
+	// Then there is an Async BR on x_tekso_twxapp01_cmdb_deletes which is triggered on insert
+	// BR uControl Track Deletes	
+	var tblName = current.getTableName();
+	
+	var fieldCnt = 0;
+	var allFields = '';
+	var allFieldsArr = [];
+	
+	// Exclude real_table_name and soft_delete and got_alternative_values
+	// generate_test_data_in_progress and generate_test_data_record_sys_id	
+	var excludeArr = [];
+	excludeArr.push('sys_meta');
+	excludeArr.push('real_table_name');
+	excludeArr.push('soft_delete');
+	excludeArr.push('got_alternative_values');
+	excludeArr.push('original_or_alternative');					
+	excludeArr.push('generate_test_data_in_progress');
+	excludeArr.push('generate_test_data_record_sys_id');	
+	
+	for (var x in current){
+		var y = x.substring(0,15); // original_value_
+		var z = x.substring(0,18); // alternative_value_
+		if (excludeArr.indexOf(x) == -1 &amp;&amp; y != 'original_value_' &amp;&amp; z != 'alternative_value_') {			
+			allFieldsArr.push(x);
+			fieldCnt++;
+		}
+	}
+
+	if (fieldCnt &gt; 0) {
+		allFieldsArr.sort(); // Sort alphabetically
+		allFields = allFieldsArr.join(","); // Convert to a comma separated list		
+	}
+	
+	var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+	gr1.initialize();
+	gr1.setValue('source_record_sys_id',current.sys_id);	
+	gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
+	gr1.setValue('table_name','cmdb_rel_ci'); 		
+	gr1.setValue('record_originally_created_by',current.sys_created_by);
+	gr1.setValue('record_originally_created_on',current.sys_created_on);		
+	gr1.setValue('record_last_updated_by',current.sys_updated_by);
+	gr1.setValue('record_last_updated_on',current.sys_updated_on);	
+	var lastUpdatedBySysID = getUserSysID(current.sys_updated_by);
+	gr1.setValue('record_last_updated_by_sys_id',lastUpdatedBySysID);
+	gr1.setValue('record_deleted_by',gs.getUserName());
+	gr1.setValue('record_deleted_by_sys_id',gs.getUserID());
+	var gdt = new GlideDateTime();	
+	gr1.setValue('record_deleted_on',gdt);	
+	
+	gr1.setValue('correlation_id1',current.parent.correlation_id);
+	gr1.setValue('correlation_id2',current.child.correlation_id);	
+	gr1.setValue('discovery_source1',current.parent.discovery_source);
+	gr1.setValue('discovery_source2',current.child.discovery_source);	
+	gr1.setValue('base_table','cmdb_rel_ci');
+	gr1.setValue('rel_parent_sys_id',current.parent.sys_id);
+	gr1.setValue('rel_type_sys_id',current.type.sys_id);
+	gr1.setValue('rel_child_sys_id',current.child.sys_id);	
+	gr1.setValue('rel_child_name',current.child.name);
+	gr1.setValue('rel_parent_name',current.parent.name);
+	gr1.setValue('rel_type_name',current.type.name);
+	gr1.setValue('all_fields',allFields);
+	gr1.setValue('no_of_fields',fieldCnt);	
+	gr1.setValue('total_length_of_all_fields_list',allFields.length);		
+	gr1.setValue('test_data',true); // TESTING	
+	gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
+	gr1.setValue('inserted_by_script','BR Test uControl Track Del cmdb_rel_ci');
+	gr1.insert();
+
+	// Record that the br has run
+	//var si = new x_tekso_twxapp01.UpdateConfigurationChecks();
+	//si.setDTLastRunAt('br_ucontrol_track_del_cmdb_rel_ci_last_ran_at');
+		
+})(current, previous);]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-31 19:32:34&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;389c8747db3f801041d08f3813961970&lt;/sys_id&gt;&lt;sys_mod_count&gt;16&lt;/sys_mod_count&gt;&lt;sys_name&gt;XX Test uControl Track Del cmdb_rel_ci&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_389c8747db3f801041d08f3813961970&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-05-30 21:54:10&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=389c8747db3f801041d08f3813961970"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>1552126034</payload_hash>
+        <record_name>XX Test uControl Track Del cmdb_rel_ci</record_name>
+        <reverted_from/>
+        <source>be6a6082db859c5041d08f381396194f</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-30 21:54:10</sys_created_on>
+        <sys_id>591d246adbc15c104f29252b139619ce</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1726793fa8d0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-05-30 21:54:10</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>511d246abdc15c10da696b3f41d220ce</update_guid>
+        <update_guid_history>511d246abdc15c10da696b3f41d220ce:1552126034,5b95b391fc851810d33646f048b680bc:511778895,a613572a2924d01098bd969ba5d81761:-797281506,2e4cde26bf60d010cf7da7910e233032:544301785,3c73c142a220501086523a85ea8788bd:817364182,df82ce9175c8901054ba0f7ce3d6a84a:-1927960654,3f3bfccc780c5410e1afbabbd41d0649:1474108744,d629b08c170c541078d9cc70d6a87c06:-1675432411,84e570886f0c541045c165a279a0803e:905631330,6fcf59b71c3344106cf4db50afb245cc:-1474531132,b27658f3ea3f04102f80e7e31003a09d:-490580874,cacd00fb70fb04107fe2843398c16184:2018785253,bfec00bbe9fb04106bd3f91f1c351aac:-2023017259,905fc3e3c93b0410c36ecc8078fa7683:-1815616263,12f39bcbb33f80108f0e32ce99acdf90:693718383,eba3dbcb3f3f8010af05b41ab21f7e2c:-1634291780,8e4d0387453f8010f405a3e7668d6dfe:2023811037</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-03 08:40:34</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>92586220096340b09d63f4f5778a5900</sys_id>
+        <sys_metadata>389c8747db3f801041d08f3813961970</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>XX Test uControl Track Del cmdb_rel_ci</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Test CI Relationship">d1f55d36dbf7401041d08f3813961964</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_389c8747db3f801041d08f3813961970</sys_update_name>
+        <sys_update_version display_value="sys_script_389c8747db3f801041d08f3813961970">591d246adbc15c104f29252b139619ce</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-03 08:40:34</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="REST Data To uControl" max_length="40" name="x_tekso_twxapp01_rest_data_to_ucontrol" sizeclass="9426" type="collection">
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
-        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="JSON Request Body First 1000 Chars" max_length="1000" name="json_request_body_first_1000_chars" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
@@ -25,7 +25,7 @@
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
-        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="link_to_processing_log_record"/>
         </index>

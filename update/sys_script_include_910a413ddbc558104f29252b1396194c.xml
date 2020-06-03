@@ -501,9 +501,6 @@ GenerateTestData.prototype = {
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); // x_tekso_twxapp01_test_application
 
-		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
-		gr1.setValue('actual_table_name',actualTableName); // x_tekso_twxapp01_test_application
-
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci_appl Deletion');
 		gr1.insert();
 	},
@@ -697,9 +694,6 @@ GenerateTestData.prototype = {
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
 
-		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
-		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_server
-
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_ci_server Deletion');
 		gr1.insert();
 
@@ -845,9 +839,6 @@ GenerateTestData.prototype = {
 		//gr1.setValue('test_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
 
-		//gr1.setValue('actual_table_name',tblName.toString()); // getTableName() returns an object - need to convert to String	
-		gr1.setValue('actual_table_name',actualTableName); // x_tekso_twxapp01_test_ci_relationship
-
 		gr1.setValue('inserted_by_script','Testing - Build Test cmdb_rel_ci Deletion');
 		gr1.insert();
 	},
@@ -980,8 +971,6 @@ GenerateTestData.prototype = {
 		gr1.setValue('no_of_fields',allFieldsArr.length);	
 
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
-
-		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_ci_relationship
 
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_ci_relationship
 
@@ -1254,8 +1243,6 @@ GenerateTestData.prototype = {
 		gr1.setValue('no_of_fields',allFieldsArr.length);	
 
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
-
-		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_application
 
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_application
 
@@ -1562,8 +1549,6 @@ GenerateTestData.prototype = {
 
 		gr1.setValue('total_length_of_all_fields_list',allFields.length);	
 
-		gr1.setValue('actual_table_name',actualTableName); //x_tekso_twxapp01_test_server
-
 		gr1.setValue('test_table_name',testTableName); //x_tekso_twxapp01_test_server
 
 		gr1.setValue('test_data',true); // TESTING	
@@ -1631,13 +1616,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>30</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 09:25:44</sys_updated_on>
+        <sys_updated_on>2020-06-03 12:27:02</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -80,8 +80,8 @@ function writeDebugLog(msg) {
 	var debugTable = 'x_tekso_twxapp01_debug_log';
 	var gr1 = new GlideRecord(debugTable);
 	gr1.initialize();
-	gr1.setValue('debug_text',msg);
-	gr1.setValue('updated_by_script','BR ECC Queue - uControl Response I');	
+	gr1.setValue('message',msg);
+	gr1.setValue('inserted_by_script','BR ECC Queue - uControl Response I');	
 	gr1.insert();
 }]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -90,7 +90,7 @@ function writeDebugLog(msg) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6e097ca4dbdc9c1041d08f38139619b5</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>ECC Queue - uControl Response I</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -98,7 +98,7 @@ function writeDebugLog(msg) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 14:07:02</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:14:42</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

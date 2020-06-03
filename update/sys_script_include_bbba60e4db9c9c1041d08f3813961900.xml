@@ -15,7 +15,8 @@ HandleRESTResponse.prototype = {
 		// resultRestResponse e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		// dataSysID = sys_id for x_tekso_twxapp01_rest_data_to_ucontrol
 		
-		this.writeDebugLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
+		//Remove the XX's to use
+		//this.writeXXDebugXXLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
 		
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -247,8 +248,8 @@ HandleRESTResponse.prototype = {
 		var debugTable = 'x_tekso_twxapp01_debug_log';
 		var gr1 = new GlideRecord(debugTable);
 		gr1.initialize();
-		gr1.setValue('debug_text',msg);
-		gr1.setValue('updated_by_script','SI HandleRESTResponse');		
+		gr1.setValue('message',msg);
+		gr1.setValue('inserted_by_script','SI HandleRESTResponse');		
 		gr1.insert();
 	},	
     type: 'HandleRESTResponse'
@@ -264,13 +265,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>26</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 20:06:25</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:12:30</sys_updated_on>
     </sys_script_include>
 </record_update>

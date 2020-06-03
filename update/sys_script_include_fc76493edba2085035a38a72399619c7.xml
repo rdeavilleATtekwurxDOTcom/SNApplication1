@@ -975,7 +975,7 @@ OutboundREST.prototype = {
 		var gr1 = new GlideRecord(debugTable);
 		gr1.initialize();
 		gr1.setValue('message',msg);
-		gr1.setValue('updated_by_script','SI OutboundREST');				
+		gr1.setValue('inserted_by_script','SI OutboundREST');				
 		gr1.insert();
 	},
     type: 'OutboundREST'
@@ -984,13 +984,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>218</sys_mod_count>
+        <sys_mod_count>219</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-20 10:25:48</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:12:51</sys_updated_on>
     </sys_script_include>
 </record_update>

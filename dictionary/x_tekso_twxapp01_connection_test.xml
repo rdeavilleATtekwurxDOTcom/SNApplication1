@@ -2,7 +2,7 @@
     <element label="Connection Test" max_length="40" name="x_tekso_twxapp01_connection_test" type="collection">
         <element label="Aborted" max_length="40" name="aborted" type="boolean"/>
         <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
-        <element label="Inserted By Script" max_length="40" name="inserted_by_script" type="string"/>
+        <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Request Will Time Out At" max_length="40" name="request_will_time_out_at" type="glide_date_time"/>
@@ -34,7 +34,7 @@
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
-        <element label="Updated By Script" max_length="40" name="updated_by_script" type="string"/>
+        <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
         <index name="index">
             <element name="response_user_account_record"/>
         </index>

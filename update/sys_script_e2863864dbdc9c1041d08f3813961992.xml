@@ -44,7 +44,8 @@
 	var xmlDoc = new XMLDocument2();
 	xmlDoc.parseXML(payload.toString());
 	var response = xmlDoc.getNodeText('//result/output');
-	writeDebugLog('U ecc_queue response: ' + response);
+	//Remove the XX's to use
+	//writeXXDebugXXLog('U ecc_queue response: ' + response);
 
 	if (response.indexOf('result') >= 0 && 
 		response.indexOf('statusCode') >= 0) {				
@@ -52,8 +53,9 @@
 		var jsonBack = parser.decode(response);	
 		var resultStatusCode = parseInt(jsonBack.result.statusCode);
 		var resultStatusMsg = jsonBack.result.statusMsg;
-		writeDebugLog('U ecc_queue resultStatusCode: ' + resultStatusCode.toString());
-		writeDebugLog('U ecc_queue resultStatusMsg: ' + resultStatusMsg);		
+		//Remove the XX's to use
+		//writeXXDebugXXLog('U ecc_queue resultStatusCode: ' + resultStatusCode.toString());
+		//writeXXDebugXXLog('U ecc_queue resultStatusMsg: ' + resultStatusMsg);		
 	}
 	
 	var node = xmlDoc.getNode("//parameters");
@@ -62,13 +64,15 @@
 		var n = childNodes.next();	
 		var nStr = n.toString();
 		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('data_sys_id') > 0) {
-			writeDebugLog('U ecc_queue n: ' + n);			
-			writeDebugLog('U ecc_queue n: ' + nStr);
+			//Remove the XX's to use
+			//writeXXDebugXXLog('U ecc_queue n: ' + n);			
+			//writeXXDebugXXLog('U ecc_queue n: ' + nStr);
 			var unescaped = nStr.replace(/&quot;/g,'');
 			var pos = unescaped.indexOf('data_sys_id:');
 			pos = pos + 12; // length of 'data_sys_id:'
 			var data_sys_id = unescaped.substring(pos,pos+32);
-			writeDebugLog('U ecc_queue block: ' + data_sys_id);
+			//Remove the XX's to use
+			//writeXXDebugXXLog('U ecc_queue block: ' + data_sys_id);
 		}
 	}	
 
@@ -79,7 +83,7 @@ function writeDebugLog(msg) {
 	var gr1 = new GlideRecord(debugTable);
 	gr1.initialize();
 	gr1.setValue('message',msg);
-	gr1.setValue('updated_by_script','BR ECC Queue - uControl Response U');		
+	gr1.setValue('inserted_by_script','BR ECC Queue - uControl Response U');		
 	gr1.insert();
 }]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -88,7 +92,7 @@ function writeDebugLog(msg) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e2863864dbdc9c1041d08f3813961992</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>ECC Queue - uControl Response U</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -96,7 +100,7 @@ function writeDebugLog(msg) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_e2863864dbdc9c1041d08f3813961992</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-18 14:07:24</sys_updated_on>
+        <sys_updated_on>2020-06-03 10:15:14</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

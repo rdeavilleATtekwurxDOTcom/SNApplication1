@@ -20,8 +20,6 @@ ClientTestDataPending.prototype = Object.extendsObject(global.AbstractAjaxProces
 		// generated for other records
 		var sysID = this.getParameter('sysparm_sys_id');	
 		
-		//gs.info('numberOfTestDataRecordsAlreadyPending sysID: ' + sysID);
-		
 		// Get the number of test data records
 		// that are already pending from other test runs
 		var rtn = 0;
@@ -33,7 +31,6 @@ ClientTestDataPending.prototype = Object.extendsObject(global.AbstractAjaxProces
 		gr1.addQuery('generate_test_data_record_sys_id','!=',sysID);
 		gr1.query();
 		rtn = gr1.getRowCount();
-		//gs.info('numberOfTestDataRecordsAlreadyPending cnt: ' + rtn.toString());
 		
 		return rtn;
 	},
@@ -78,13 +75,13 @@ function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-02 08:49:38</sys_created_on>
         <sys_id>99c1d993db0110504f29252b1396193f</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>ClientTestDataPending</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_99c1d993db0110504f29252b1396193f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 11:16:32</sys_updated_on>
+        <sys_updated_on>2020-06-03 09:37:30</sys_updated_on>
     </sys_script_include>
 </record_update>

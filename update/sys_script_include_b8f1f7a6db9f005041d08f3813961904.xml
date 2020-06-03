@@ -28,6 +28,36 @@ CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
 		}
 		return rtn;
 	},
+
+	tableAndTestTableAndSysID: function(table,testTable,testData,sys_id){	
+		// Pass in 2 table names, the flag to say whether this is testData and the sys_id
+		// If testData = false use table
+		// If testData = true use testTable		
+		// Returns true if the sys_id exists in the table
+		// Used in a UI Action Oprn Source Record to determine whether a button should be displayed		
+		var rtn = false;
+		
+		var sys_id_str = sys_id.toString();
+		var table_str = '';
+		if (testData == true) {
+			table_str = testTable.toString();
+		}
+		else {
+			table_str = table.toString();
+		}
+		
+		if (sys_id_str.length == 32 && table_str.length > 0) {
+			var gr1 = new GlideRecord(table_str);
+			gr1.addQuery('sys_id',sys_id_str);
+			gr1.query();
+			if (gr1.next()) {
+				// Record exists
+				rtn = true;
+			}
+		}
+		return rtn;
+	},
+	
 	tableAndLowerNumber: function(table,number) {
 		// Returns true if the table contains at least one
 		// record where the number field is < number
@@ -80,13 +110,13 @@ CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 12:32:43</sys_created_on>
         <sys_id>b8f1f7a6db9f005041d08f3813961904</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>CheckRecordExists</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_b8f1f7a6db9f005041d08f3813961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-13 10:22:26</sys_updated_on>
+        <sys_updated_on>2020-06-03 12:25:27</sys_updated_on>
     </sys_script_include>
 </record_update>
