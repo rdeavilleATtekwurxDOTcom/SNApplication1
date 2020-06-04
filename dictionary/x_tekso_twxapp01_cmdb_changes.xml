@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="CMDB Changes" max_length="40" name="x_tekso_twxapp01_cmdb_changes" sizeclass="162907" type="collection">
+        <element label="Action" max_length="10" name="action" type="string"/>
         <element label="All Fields" max_length="4000" name="all_fields" type="string"/>
         <element label="Base Table" max_length="80" name="base_table" type="string"/>
         <element label="Correlation ID1" max_length="512" name="correlation_id1" type="string"/>
@@ -29,7 +30,6 @@
         <element label="No Of Fields To Process" max_length="40" name="no_of_fields_to_process" type="integer"/>
         <element label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
-        <element label="Operation" max_length="10" name="operation" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
         <element label="Record Deleted By" max_length="40" name="record_deleted_by" type="string"/>

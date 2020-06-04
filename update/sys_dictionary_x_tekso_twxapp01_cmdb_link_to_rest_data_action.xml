@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="column" table="x_tekso_twxapp01_debug_track_data_changes">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="action" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -14,7 +14,7 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>Column</column_label>
+        <column_label>Action</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
@@ -27,15 +27,15 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>column</element>
+        <element>action</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
         <function_field>false</function_field>
         <internal_type display_value="String">string</internal_type>
         <mandatory>false</mandatory>
-        <max_length>80</max_length>
-        <name>x_tekso_twxapp01_debug_track_data_changes</name>
+        <max_length>10</max_length>
+        <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -52,16 +52,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-06-03 13:34:06</sys_created_on>
-        <sys_id>e3e0e7ebdb09149041d08f3813961903</sys_id>
+        <sys_created_on>2020-06-04 14:21:16</sys_created_on>
+        <sys_id>4555b8c8db5d90504f29252b13961947</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>Column</sys_name>
+        <sys_name>Action</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_dictionary_x_tekso_twxapp01_debug_track_data_changes_column</sys_update_name>
+        <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_link_to_rest_data_action</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 13:34:06</sys_updated_on>
+        <sys_updated_on>2020-06-04 14:21:16</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

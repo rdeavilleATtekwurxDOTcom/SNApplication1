@@ -2,7 +2,6 @@
     <element label="Debug Track Data Changes" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes" type="collection">
         <element label="Action" max_length="20" name="action" type="string"/>
         <element label="Choice Field" max_length="40" name="choice_field" type="boolean"/>
-        <element label="Column" max_length="80" name="column" type="string"/>
         <element label="Column Label" max_length="80" name="column_label" type="string"/>
         <element label="Column Name" max_length="80" name="column_name" type="string"/>
         <element label="Data Type" max_length="40" name="data_type" type="string"/>
@@ -13,7 +12,6 @@
         <element label="Old Value" max_length="100" name="old_value" type="string"/>
         <element default="0" label="Old Value Length" max_length="40" name="old_value_length" type="integer"/>
         <element label="Reference To Table" max_length="80" name="reference_to_table" type="string"/>
-        <element label="Table" max_length="80" name="table" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
         <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
     </element>

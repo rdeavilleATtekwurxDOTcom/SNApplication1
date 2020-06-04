@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="operation" table="x_tekso_twxapp01_cmdb_changes">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="sh_action" table="x_tekso_twxapp01_setup_history">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -14,7 +14,7 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>Operation</column_label>
+        <column_label>SH Action</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
@@ -27,7 +27,7 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>operation</element>
+        <element>sh_action</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
@@ -35,7 +35,7 @@
         <internal_type display_value="String">string</internal_type>
         <mandatory>false</mandatory>
         <max_length>10</max_length>
-        <name>x_tekso_twxapp01_cmdb_changes</name>
+        <name>x_tekso_twxapp01_setup_history</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -52,16 +52,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-01-30 11:42:32</sys_created_on>
-        <sys_id>d69e4f5fdb26001041d08f38139619c0</sys_id>
+        <sys_created_on>2020-06-04 15:33:39</sys_created_on>
+        <sys_id>ecd50988db9d90504f29252b13961955</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>Operation</sys_name>
+        <sys_name>SH Action</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_changes_operation</sys_update_name>
+        <sys_update_name>sys_dictionary_x_tekso_twxapp01_setup_history_sh_action</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-01-30 11:42:32</sys_updated_on>
+        <sys_updated_on>2020-06-04 15:33:39</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

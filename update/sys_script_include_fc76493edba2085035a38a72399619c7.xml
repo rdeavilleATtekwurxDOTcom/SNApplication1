@@ -178,7 +178,7 @@ OutboundREST.prototype = {
 			setupStatusWasSendingWhenConnectionFailed = gr2.getValue('status_was_sending_when_connection_failed') || false;
 			if (connOKAndGotUser == true) {
 				// Update the classes - we should only do that if this is a success
-				var osi = new UpdateSupportedClasses();
+				var osi = new x_tekso_twxapp01.UpdateSupportedClasses();
 				osi.updateSupportedClassesTable(setupSysID2,classesArr);
 			} 
 
@@ -328,7 +328,7 @@ OutboundREST.prototype = {
 			sm.setHttpMethod(httpMethod); // e.g. get / post				
 			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
 	
-			response = sm.executeAsync(); 
+			var response = sm.executeAsync(); 
 	
 			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
 			// {"result":{"statusCode":200,"statusMsg":"OK","connection":true}}
@@ -338,7 +338,7 @@ OutboundREST.prototype = {
 			responseBody = ex.getMessage();
 			status = '500';
 		} finally {
-			requestBody = sm ? sm.getRequestBody():null;
+			var requestBody = sm ? sm.getRequestBody():null;
 		}
 		
 		if (parseInt(status) == 200) {
@@ -404,7 +404,7 @@ OutboundREST.prototype = {
 			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
 			//From there, if you need the response then you can set up a sensor business rule to listen to the ecc_queue 
 			//and listen for the response.
-			response = sm.executeAsync(); 			
+			var response = sm.executeAsync(); 			
 			//sm.executeAsync(); //RMD
 			
 			//response.getBody Get the content of the REST response body.
@@ -685,17 +685,9 @@ OutboundREST.prototype = {
 	processTestConnection: function (connection_sys_id) {
 		
 		var connection_sys_id2 = connection_sys_id.toString();
-		
-		var connectionOK = false;
-		var connectionOKAndGotUser = false;
 
 		// User who intiated the test connection
 		var testConnectionUser = '';	
-		
-		var setupConnectionStatus = '';
-		var setupConnectionStatusDetails = '';
-		var setupuControlIntegrationUser = '';
-		var setupuControlIntegrationUserIsValid = false;
 		
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var gr1 = new GlideRecord(connectionTestTable);
@@ -760,7 +752,7 @@ OutboundREST.prototype = {
 			var jsonRequestBody = gr1.getValue('json_request_body');
 			var midServerName = gr1.getValue('ucontrol_mid_server_name');
 			var url = gr1.getValue('ucontrol_url');
-			var operation = gr1.getValue('operation');
+			var action = gr1.getValue('action');
 			var dtSent = new GlideDateTime();
 			var rtnArr = [];
 			
@@ -809,15 +801,15 @@ OutboundREST.prototype = {
 				} //while(gr3.next())	
 			} //while(gr2.next())
 			
-			if (operation == 'update') {
+			if (action == 'update') {
 				rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
 			}
 			
-			if (operation == 'delete') {
+			if (action == 'delete') {
 				rtnArr = this.deleteCI(midServerName,url,jsonRequestBody);	
 			}		
 			
-			if (operation == 'insert') {
+			if (action == 'insert') {
 				rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
 			}	
 
@@ -907,9 +899,8 @@ OutboundREST.prototype = {
 			var jsonRequestBody = gr1.getValue('json_request_body');
 			var midServerName = gr1.getValue('ucontrol_mid_server_name');
 			var url = gr1.getValue('ucontrol_url');
-			var operation = gr1.getValue('operation');
+			var action = gr1.getValue('action');
 			var dtSent = new GlideDateTime();
-			var rtnArr = [];
 			
 			// Remove any leading or trailing spaces from the URL
 			url = url.replace(/^\s+|\s+$/g, '');
@@ -957,15 +948,15 @@ OutboundREST.prototype = {
 				} //while(gr3.next())	
 			} //while(gr2.next())
 			
-			if (operation == 'update') {
+			if (action == 'update') {
 				this.updateCINoWait(midServerName,url,jsonRequestBody);	
 			}
 			
-			if (operation == 'delete') {
+			if (action == 'delete') {
 				this.deleteCINoWait(midServerName,url,jsonRequestBody);	
 			}		
 			
-			if (operation == 'insert') {
+			if (action == 'insert') {
 				this.createCINoWait(midServerName,url,jsonRequestBody);	
 			}	
 		}	
@@ -984,13 +975,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>219</sys_mod_count>
+        <sys_mod_count>220</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:12:51</sys_updated_on>
+        <sys_updated_on>2020-06-04 14:37:48</sys_updated_on>
     </sys_script_include>
 </record_update>

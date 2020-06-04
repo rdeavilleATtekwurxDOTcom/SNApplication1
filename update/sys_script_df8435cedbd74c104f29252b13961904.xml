@@ -258,7 +258,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	// in that case the base table will be cmdb_ci
 	var baseTable = current.base_table;
 	
-	var operation = 'update';		
+	var action = 'update';		
 	
 	var supportedClass = false;
 	if (baseTable == 'cmdb_rel_ci') {
@@ -738,7 +738,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					// Read back the fields that we need to process to get their values
 
 					if (noOfFieldsToProcess > 0) {
-						var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
+						var dbInfo = '\"operation\":\"' + action + '\",'; // Insert,Update,Delete
 						dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
 						dbInfo = dbInfo + '\"source\":\"' + source + '\",';	// ServiceNow
 						dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
@@ -756,11 +756,11 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 						var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
 						gr3.initialize();
-						gr3.setValue('operation',operation);
-						if (operation == 'update') {
+						gr3.setValue('action',action);
+						if (action == 'update') {
 							gr3.setValue('link_to_originating_update_record',thisRecordSysID);
 						}
-						if (operation == 'delete') {
+						if (action == 'delete') {
 							gr3.setValue('link_to_originating_delete_record',thisRecordSysID);	
 						}
 						gr3.setValue('table',tableName);
@@ -902,7 +902,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>86</sys_mod_count>
+        <sys_mod_count>87</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -910,7 +910,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:48:30</sys_updated_on>
+        <sys_updated_on>2020-06-04 14:54:23</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

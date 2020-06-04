@@ -8,7 +8,7 @@
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
-        <run_period>1970-01-01 00:02:00</run_period>
+        <run_period>1970-01-01 00:05:00</run_period>
         <run_start>2020-05-20 14:31:47</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>periodically</run_type>
@@ -18,12 +18,12 @@ function main() {
 	// --Start ------------------------------------------------------------
 	writeDebugLog('SJ Send Data to uControl - Started');
 	
-	var jobStartTime = new GlideDateTime();
 	var calculatedNextJobStartTime = new GlideDateTime();
 
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var setupTable = 'x_tekso_twxapp01_setup';
-
+	var setupStatus = '';
+	
 	// --Work out when the scheduled job is going to run next -----------------
 	// Number of seconds till the next run of the job
 	var gdt1 = new GlideDateTime('1970-01-01 00:00:00');
@@ -60,9 +60,7 @@ function main() {
 			gr2.setValue('scheduled_job_sys_id',sysIDForThisScript);
 
 		}
-		gr2.setValue('last_scan_performed_at',jobStartTime);	
-		gr2.setValue('updated_by_script','SJ Send Data to uControl'); // Debug
-		gr2.update();	
+		setupStatus = gr2.getValue('status') || '';
 	}
 	else {
 		// Could not get gr2 record -- i.e. setup record could not be found
@@ -72,10 +70,17 @@ function main() {
 	}
 
 	// --Main processing ----------------------------------------------------
-	// Trigger an event to do the background processing -- seems to be about a 10 sec delay
-	// this will trigger a script action
-	gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, gs.getUserID(),calculatedNextJobStartTime);
-
+	if (setupStatus == 'Sending') {
+		// Trigger an event to do the background processing -- seems to be about a 10 sec delay
+		// this will trigger a script action
+		gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, gs.getUserID(),calculatedNextJobStartTime);
+	} // if (setupStatus == 'Sending')
+	else {
+		gr1.setValue('setup_status',setupStatus);
+		gr1.setValue('updated_by_script','SJ Send Data to uControl');
+		gr1.update();		
+	} // if (setupStatus == 'Sending')
+	
 	// --Finished ------------------------------------------------------------
 	var finishedAt = GlideDateTime();
 	gr1.setValue('finished_at',finishedAt);
@@ -98,14 +103,14 @@ function writeDebugLog(msg) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>73</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:41:46</sys_updated_on>
+        <sys_updated_on>2020-06-04 15:59:55</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

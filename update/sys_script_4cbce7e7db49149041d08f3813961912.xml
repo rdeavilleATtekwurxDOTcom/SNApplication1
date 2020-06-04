@@ -6,7 +6,7 @@
         <action_insert>true</action_insert>
         <action_query>false</action_query>
         <action_update>false</action_update>
-        <active>false</active>
+        <active>true</active>
         <add_message>false</add_message>
         <advanced>true</advanced>
         <change_fields>false</change_fields>
@@ -28,12 +28,13 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
-
+	
 	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
 	
-	var tblName = current.getTableName();
+	var tblName = current.getTableName();	
 	var tblName2 = tblName.toString();
-	var action = current.operation();
+	
+	var action = current.operation(); // insert or update or delete		
 	var action2 = action.toString();
 
 	var excludedArr = [];
@@ -43,153 +44,167 @@
 	excludedArr.push('sys_updated_on');
 	excludedArr.push('sys_updated_by');
 	excludedArr.push('sys_mod_count');
+	//excludedArr.push('sys_meta'); //causes getED() to crash
 	excludedArr.push('updated_by_script');
 	excludedArr.push('inserted_by_script');	
 	
+	//insert --------------------------------------------------------------
 	if (action2 == 'insert') {
-		// There will be no previous values
-		for (var y in current){
-			if (excludedArr.indexOf(y) == -1) {
-				var ielement = current.getElement(y);
-				var idescriptor = ielement.getED();
-				var isz = idescriptor.getLength();
-				var ilbl = idescriptor.getLabel();
-				var itp = idescriptor.getInternalType();
-				var iisChoice = idescriptor.isChoiceTable();	
-				
-				var inewval = current.getElement(y) || '';				
-				var inewvalstr = '';				
-				var inewln = 0;
+		
+		// There will be no previous values for an insert
+		for (var i in current){
+			if (excludedArr.indexOf(i) == -1) {
+				// put in a try / catch block as some fields e.g. sys_meta cause a problem
+				try {
+					var ielement = current.getElement(i);					
+					var idescriptor = ielement.getED();					
+					var isz = idescriptor.getLength();					
+					var ilbl = idescriptor.getLabel();					
+					var itp = idescriptor.getInternalType();					
+					var iisChoice = idescriptor.isChoiceTable();	
+					var inewval = current.getElement(i);			
+					var inewvalstr = '';				
+					var inewln = 0;
+					var iref = '';
 
-				var iref = '';
-				if (itp == 'reference') {
-					iref = idescriptor.getReference();			  
-				}
-
-				if (itp == 'string' || itp == 'reference' || itp == 'integer') {
-					inewvalstr = inewval.toString();
-					inewln = inewvalstr.length;
-				}
-
-				if (itp == 'boolean') {
-					if (inewval == true) {
-						inewvalstr = 'true';
+					if (itp == 'reference') {
+						iref = idescriptor.getReference();			  
 					}
-					else {
-						inewvalstr = 'false';
-					}
-				} //if (itp == 'boolean') {
-
-				var gr0 = new GlideRecord(debugTable);
-				gr0.initialize();
-				gr0.setValue('action',action2);
-				gr0.setValue('table_name',tblName2);
-				gr0.setValue('column_name',y);
-				gr0.setValue('column_label',ilbl);
-				gr0.setValue('data_type',itp);
-				gr0.setValue('field_size',isz);
-				gr0.setValue('choice',iisChoice);
-				gr0.setValue('inserted_by_script',current.inserted_by_script);					
-				if (itp == 'string' || itp == 'reference' || itp == 'integer') {
-					gr0.setValue('new_value_length',inewln);							
-					gr0.setValue('new_value',inewvalstr);							
-				}
-				if (itp == 'boolean') {
-					gr0.setValue('new_value',inewvalstr);					
-				}
-				if (itp == 'reference') {
-					gr0.setValue('reference_to_table',iref);
-				}
-				gr0.insert();
-				
-			} // if (excludedArr.indexOf(y) == -1) {
-		} // for (var y in current){					
-	} //if (action2 == 'insert') {
-	
-	if (action2 == 'update') {		
-		for (var x in current){
-			if (excludedArr.indexOf(x) == -1) {
-				if (current[x] != previous[x]) {	
-				
-					var uelement = current.getElement(x);
-					var udescriptor = uelement.getED();
-					var usz = udescriptor.getLength();
-					var ulbl = udescriptor.getLabel();
-					var utp = udescriptor.getInternalType();
-					var uisChoice = udescriptor.isChoiceTable();
-					var uoldval = previous.getElement(x) || '';
-					var uoldvalstr = '';
-					var uoldln = 0;
-					var unewval = current.getElement(x) || '';				
-					var unewvalstr = '';				
-					var unewln = 0;
-
-					var uref = '';
-					if (utp == 'reference') {
-						uref = udescriptor.getReference();			  
+					if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+						inewvalstr = inewval.toString();
+						inewln = inewvalstr.length;
 					}
 
-					if (utp == 'string' || utp == 'reference' || utp == 'integer') {
-						uoldvalstr = uoldval.toString();
-						unewvalstr = unewval.toString();
-						uoldln = uoldvalstr.length;
-						unewln = unewvalstr.length;
-					}
-					
-					if (utp == 'boolean') {
-						if (uoldval == true) {
-							uoldvalstr = 'true';
+					if (itp == 'boolean') {
+						if (inewval == true) {
+							inewvalstr = 'true';
 						}
 						else {
-							uoldvalstr = 'false';
+							inewvalstr = 'false';
 						}
-						
-						if (unewval == true) {
-							unewvalstr = 'true';
-						}
-						else {
-							unewvalstr = 'false';
-						}
-					} //if (utp == 'boolean') {
-				
+					} //if (itp == 'boolean') {
+
 					var gr1 = new GlideRecord(debugTable);
 					gr1.initialize();
 					gr1.setValue('action',action2);
 					gr1.setValue('table_name',tblName2);
-					gr1.setValue('column_name',x);
-					gr1.setValue('column_label',ulbl);
-					gr1.setValue('data_type',utp);
-					gr1.setValue('field_size',usz);
-					gr1.setValue('choice',uisChoice);
-					gr1.setValue('updated_by_script',current.updated_by_script);					
-					if (utp == 'string' || utp == 'reference' || utp == 'integer') {
-						gr1.setValue('old_value_length',uoldln);
-						gr1.setValue('new_value_length',unewln);							
-						gr1.setValue('old_value',uoldvalstr);
-						gr1.setValue('new_value',unewvalstr);							
+					gr1.setValue('column_name',i);
+					gr1.setValue('column_label',ilbl);
+					gr1.setValue('data_type',itp);
+					gr1.setValue('field_size',isz);
+					gr1.setValue('choice',iisChoice);
+					gr1.setValue('inserted_by_script',current.inserted_by_script);					
+					if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+						gr1.setValue('new_value_length',inewln);							
+						gr1.setValue('new_value',inewvalstr);							
 					}
-					if (utp == 'boolean') {
-						gr1.setValue('old_value',uoldvalstr);
-						gr1.setValue('new_value',unewvalstr);					
+					if (itp == 'boolean') {
+						gr1.setValue('new_value',inewvalstr);					
 					}
-					if (utp == 'reference') {
-						gr1.setValue('reference_to_table',uref);
+					if (itp == 'reference') {
+						gr1.setValue('reference_to_table',iref);
 					}
 					gr1.insert();
-				} // if (current[x] != previous[x]) {
-			} //if (excludedArr.indexOf(x) == -1) {
+				} // try
+				catch(error) {
+					//Do nothing
+					var a = 1;
+				}
+			} // if (excludedArr.indexOf(i) == -1) {
+		} // for (var i in current){					
+	} //if (action2 == 'insert') {
+	
+	//update --------------------------------------------------------------	
+	if (action2 == 'update') {		
+		for (var u in current){
+			if (excludedArr.indexOf(u) == -1) {
+				if (current[u] != previous[u]) {	
+				
+					// put in a try / catch block as some fields e.g. sys_meta cause a problem
+					try {
+						var uelement = current.getElement(u);
+						var udescriptor = uelement.getED();
+						var usz = udescriptor.getLength();
+						var ulbl = udescriptor.getLabel();
+						var utp = udescriptor.getInternalType();
+						var uisChoice = udescriptor.isChoiceTable();
+						var uoldval = previous.getElement(u) || '';
+						var uoldvalstr = '';
+						var uoldln = 0;
+						var unewval = current.getElement(u) || '';				
+						var unewvalstr = '';				
+						var unewln = 0;
+
+						var uref = '';
+						if (utp == 'reference') {
+							uref = udescriptor.getReference();			  
+						}
+
+						if (utp == 'string' || utp == 'reference' || utp == 'integer') {
+							uoldvalstr = uoldval.toString();
+							unewvalstr = unewval.toString();
+							uoldln = uoldvalstr.length;
+							unewln = unewvalstr.length;
+						}
+
+						if (utp == 'boolean') {
+							if (uoldval == true) {
+								uoldvalstr = 'true';
+							}
+							else {
+								uoldvalstr = 'false';
+							}
+
+							if (unewval == true) {
+								unewvalstr = 'true';
+							}
+							else {
+								unewvalstr = 'false';
+							}
+						} //if (utp == 'boolean') {
+
+						var gr2 = new GlideRecord(debugTable);
+						gr2.initialize();
+						gr2.setValue('action',action2);
+						gr2.setValue('table_name',tblName2);
+						gr2.setValue('column_name',u);
+						gr2.setValue('column_label',ulbl);
+						gr2.setValue('data_type',utp);
+						gr2.setValue('field_size',usz);
+						gr2.setValue('choice',uisChoice);
+						gr2.setValue('updated_by_script',current.updated_by_script);	
+						if (utp == 'string' || utp == 'reference' || utp == 'integer') {
+							gr2.setValue('old_value_length',uoldln);
+							gr2.setValue('new_value_length',unewln);							
+							gr2.setValue('old_value',uoldvalstr);
+							gr2.setValue('new_value',unewvalstr);							
+						}
+						if (utp == 'boolean') {
+							gr2.setValue('old_value',uoldvalstr);
+							gr2.setValue('new_value',unewvalstr);					
+						}
+						if (utp == 'reference') {
+							gr2.setValue('reference_to_table',uref);
+						}
+						gr2.insert();
+					} // try
+					catch(error) {
+						//Do nothing
+						var b = 1;						
+					}
+				} // if (current[u] != previous[u]) {
+			} //if (excludedArr.indexOf(u) == -1) {
 		} //for (var x in current){
 	} //if (action2 == 'update') {
 	
-})(current, previous);
-]]></script>
+})(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-03 14:35:29</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4cbce7e7db49149041d08f3813961912</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Debug - CMDB Updates - A I</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -197,7 +212,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_4cbce7e7db49149041d08f3813961912</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 17:55:42</sys_updated_on>
+        <sys_updated_on>2020-06-04 15:13:39</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

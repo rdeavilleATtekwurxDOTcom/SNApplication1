@@ -3,107 +3,107 @@
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>number</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>0</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>c72be0f6db53405041d08f3813961985</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>3f1fbcc0db9d90504f29252b13961974</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
-            <element>operation</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <element>action</element>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>1</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>4b2be0f6db53405041d08f3813961985</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>f31fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>table</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>2</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>cb2be0f6db53405041d08f3813961985</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>771fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>base_table</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>3</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>4f2be0f6db53405041d08f3813961985</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>f71fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>sys_created_on</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>4</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>cf2be0f6db53405041d08f3813961985</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>7b1fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>sys_created_by</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>5</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>432be0f6db53405041d08f3813961986</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>fb1fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list_element action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
             <element>data_to_process</element>
-            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">8f2be0f6db53405041d08f3813961984</list_id>
+            <list_id display_value="x_tekso_twxapp01_cmdb_changes" element="NULL" name="x_tekso_twxapp01_cmdb_changes" parent="NULL" relationship="NULL" sys_domain="global" view="e45d35f8dbfe041041d08f381396193f">f31fbcc0db9d90504f29252b13961973</list_id>
             <max_value>false</max_value>
             <min_value>false</min_value>
             <position>6</position>
             <sum>false</sum>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
-            <sys_id>c32be0f6db53405041d08f3813961986</sys_id>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
+            <sys_id>7f1fbcc0db9d90504f29252b13961975</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
         </sys_ui_list_element>
         <sys_ui_list action="INSERT_OR_UPDATE">
             <average_value>false</average_value>
@@ -117,10 +117,10 @@
             <sum>false</sum>
             <sys_class_name>sys_ui_list</sys_class_name>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-05 16:34:26</sys_created_on>
+            <sys_created_on>2020-06-04 15:03:52</sys_created_on>
             <sys_domain>global</sys_domain>
             <sys_domain_path>/</sys_domain_path>
-            <sys_id>8f2be0f6db53405041d08f3813961984</sys_id>
+            <sys_id>f31fbcc0db9d90504f29252b13961973</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_name>x_tekso_twxapp01_cmdb_changes</sys_name>
             <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -128,7 +128,7 @@
             <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
             <sys_update_name>sys_ui_list_x_tekso_twxapp01_cmdb_changes_pending_data</sys_update_name>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-05 16:34:26</sys_updated_on>
+            <sys_updated_on>2020-06-04 15:03:52</sys_updated_on>
             <sys_user/>
             <view display_value="Pending Data" name="pending_data">e45d35f8dbfe041041d08f381396193f</view>
             <view_name/>

@@ -159,7 +159,7 @@ function isCMDBTrackingRunning(setupTable) {
 	// in that case the base table will be cmdb_ci
 	var baseTable = current.base_table;
 	
-	var operation = 'delete';	
+	var action = 'delete';	
 		
 	var supportedClass = false;
 	if (baseTable == 'cmdb_rel_ci') {
@@ -298,14 +298,14 @@ function isCMDBTrackingRunning(setupTable) {
 		//0 = Created by uControl Integration User & deleted by another user
 		//1 = Deleted by a user other than uControl Integration User
 		//2 = Any Delete
-		carryOn = false;	
+		var carryOn = false;	
 		if (criteria == 2) {
 			//2 = Any Delete
 			carryOn = true;
 		}
 		if (criteria == 1) {
 			//1 = Deleted by a user other than uControl Integration User
-			if (gotConfigUsr == true & stringsMatch(recordDeletedBy,configUsrName) == false) {
+			if (gotConfigUsr == true && stringsMatch(recordDeletedBy,configUsrName) == false) {
 				statusMsg = 'Deleted By: ' + recordDeletedBy + ' != uControl Integration User: ' + configUsrName;
 				statusDetails = buildStatusDetails(statusDetails,statusMsg);
 				carryOn = true;
@@ -313,7 +313,7 @@ function isCMDBTrackingRunning(setupTable) {
 		}
 		if (criteria == 0) {
 			//0 = Created by uControl Integration User & deleted by another user	
-			if (gotConfigUsr == true & stringsMatch(recordDeletedBy,configUsrName) == false) {
+			if (gotConfigUsr == true && stringsMatch(recordDeletedBy,configUsrName) == false) {
 				statusMsg = 'Deleted By: ' + recordDeletedBy + ' != uControl Integration User: ' + configUsrName;
 				statusDetails = buildStatusDetails(statusDetails,statusMsg);				
 				if (stringsMatch(recordOriginallyCreatedBy,configUsrName) == true) {
@@ -416,7 +416,7 @@ function isCMDBTrackingRunning(setupTable) {
 				data = data + '\"test_data\":\"true\"';		
 			}
 			
-			var dbInfo = '\"operation\":\"' + operation + '\",'; // Insert,Update,Delete
+			var dbInfo = '\"operation\":\"' + action + '\",'; // Insert,Update,Delete
 			dbInfo = dbInfo + '\"base_table\":\"' + baseTable + '\",'; // Base Table
 			dbInfo = dbInfo + '\"source\":\"' + source + '\",';	// ServiceNow
 			dbInfo = dbInfo + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
@@ -428,11 +428,11 @@ function isCMDBTrackingRunning(setupTable) {
 			
 			var gr2 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
 			gr2.initialize();
-			gr2.setValue('operation',operation);
-			if (operation == 'update') {
+			gr2.setValue('action',action);
+			if (action == 'update') {
 				gr2.setValue('link_to_originating_update_record',thisRecordSysID);
 			}
-			if (operation == 'delete') {
+			if (action == 'delete') {
 				gr2.setValue('link_to_originating_delete_record',thisRecordSysID);	
 			}			
 			gr2.setValue('table',tableName);
@@ -558,7 +558,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>64</sys_mod_count>
+        <sys_mod_count>65</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -566,7 +566,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:47:55</sys_updated_on>
+        <sys_updated_on>2020-06-04 14:52:35</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

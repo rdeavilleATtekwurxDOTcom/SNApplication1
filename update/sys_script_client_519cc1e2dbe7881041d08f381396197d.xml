@@ -12,13 +12,13 @@
         <order/>
         <script><![CDATA[function onLoad() {
 
-	var op = g_form.getValue('sh_operation');
+	var action = g_form.getValue('sh_action');
 	
-	if (op == 'update' ) {
+	if (action == 'update' ) {
 		updateRecord();
 	}
 	
-	if (op == 'delete' || op == 'insert') {
+	if (action == 'delete' || action == 'insert') {
 		// Delete and Insert have no previous values
 		deleteOrInsertRecord();
 	}
@@ -108,7 +108,7 @@ function updateRecord() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>519cc1e2dbe7881041d08f381396197d</sys_id>
-        <sys_mod_count>53</sys_mod_count>
+        <sys_mod_count>54</sys_mod_count>
         <sys_name>Setup History Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -116,7 +116,7 @@ function updateRecord() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_519cc1e2dbe7881041d08f381396197d</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-20 13:18:17</sys_updated_on>
+        <sys_updated_on>2020-06-04 15:36:06</sys_updated_on>
         <table>x_tekso_twxapp01_setup_history</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

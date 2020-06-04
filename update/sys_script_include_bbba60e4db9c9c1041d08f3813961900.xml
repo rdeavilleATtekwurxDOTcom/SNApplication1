@@ -51,7 +51,7 @@ HandleRESTResponse.prototype = {
 			// sys_id for the corresponsing scheduled_job_log record
 			var jobSysID = gr1.getValue('link_to_scheduled_job_log_record');
 			
-			var operation = gr1.getValue('operation');
+			var action = gr1.getValue('action');
 			var dtSent = gr1.getValue('sent_to_ucontrol_at');
 
 			var gdt1 = new GlideDateTime(dtSent); //Need to convert into a GlideDateTime
@@ -119,7 +119,7 @@ HandleRESTResponse.prototype = {
 			var completedAt = GlideDateTime();
 			
 			// Update the processing log record
-			var processingSummary = this.updateProcessingLog(logSysID,operation,noOfRecords2,completedAt);
+			var processingSummary = this.updateProcessingLog(logSysID,action,noOfRecords2,completedAt);
 
 			// Update Setup
 			var gr5 = new GlideRecord(setupTable);
@@ -133,7 +133,7 @@ HandleRESTResponse.prototype = {
 			} //if (gr5.next()) 
 
 			// Update the scheduled job log record
-			var jobSummary = this.updateScheduledJobLog(jobSysID,operation,noOfRecords2,completedAt);
+			var jobSummary = this.updateScheduledJobLog(jobSysID,action,noOfRecords2,completedAt);
 
 			// Update Setup
 			var gr6 = new GlideRecord(setupTable);
@@ -148,7 +148,7 @@ HandleRESTResponse.prototype = {
 					
 		} //if (gr1.next()) 		
 	},
-	updateProcessingLog: function(logSysID,operation,noOfRecords2,completedAt) {
+	updateProcessingLog: function(logSysID,action,noOfRecords2,completedAt) {
 		var logTable = 'x_tekso_twxapp01_processing_log';
 		var summary = '';
 		
@@ -164,10 +164,10 @@ HandleRESTResponse.prototype = {
 			var updCnt2 = parseInt(updCnt);
 
 			recCnt2 = recCnt2 + noOfRecords2;
-			if (operation == 'delete') {
+			if (action == 'delete') {
 				delCnt2 = delCnt2 + noOfRecords2;
 			}
-			if (operation == 'update') {
+			if (action == 'update') {
 				updCnt2 = updCnt2 + noOfRecords2;
 			}
 
@@ -183,7 +183,7 @@ HandleRESTResponse.prototype = {
 		} //if (gr1.next())		
 		return summary;
 	},
-	updateScheduledJobLog: function(jobSysID,operation,noOfRecords2,completedAt) {
+	updateScheduledJobLog: function(jobSysID,action,noOfRecords2,completedAt) {
 		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';		
 		var summary = '';
 		
@@ -199,10 +199,10 @@ HandleRESTResponse.prototype = {
 			var updCnt2 = parseInt(updCnt);
 
 			recCnt2 = recCnt2 + noOfRecords2;
-			if (operation == 'delete') {
+			if (action == 'delete') {
 				delCnt2 = delCnt2 + noOfRecords2;
 			}
-			if (operation == 'update') {
+			if (action == 'update') {
 				updCnt2 = updCnt2 + noOfRecords2;
 			}
 
@@ -265,13 +265,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>26</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:12:30</sys_updated_on>
+        <sys_updated_on>2020-06-04 14:40:24</sys_updated_on>
     </sys_script_include>
 </record_update>
