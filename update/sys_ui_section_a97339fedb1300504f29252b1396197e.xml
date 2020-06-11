@@ -574,6 +574,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>test_data</element>
+            <position>41</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-04 20:13:49</sys_created_on>
+            <sys_id>c01642ccdb51d0504f29252b139619b5</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol" sys_domain="global" view="Default view">a97339fedb1300504f29252b1396197e</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-04 20:13:49</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Debug Track Data Changes" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes" type="collection">
+    <element label="Debug Track Data Changes" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes" sizeclass="70595" type="collection">
         <element label="Action" max_length="20" name="action" type="string"/>
         <element label="Choice Field" max_length="40" name="choice_field" type="boolean"/>
         <element label="Column Label" max_length="80" name="column_label" type="string"/>

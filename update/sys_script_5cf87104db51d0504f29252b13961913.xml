@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_debug_log</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Debug Log - Stop Number Duplication</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[//Before Insert & Update
+(function executeRule(current, previous /*null when async*/) {
+
+	// Stop a record from being created/updated with the same number
+	// This should only happpen if there is a mistake in a script
+	// as the system should generate the numbers correctly.
+	var sys_id = current.sys_id;
+	var sys_id2 = sys_id.toString();
+	var num = current.number || '';
+	var num2 = num.toString();
+	if (sys_id2.length > 0 && num2.length > 0) {	
+		var gr1 = new GlideRecord('x_tekso_twxapp01_debug_log');
+		//Look for a record with this number that has a different sys_id
+		gr1.addQuery('number',num2);
+		gr1.addQuery('sys_id','!=',sys_id2);
+		gr1.query();
+		if (gr1.next()) {
+			current.setAbortAction(true);		
+		}
+	}
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-04 19:21:14</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5cf87104db51d0504f29252b13961913</sys_id>
+        <sys_mod_count>15</sys_mod_count>
+        <sys_name>Debug Log - Stop Number Duplication</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_5cf87104db51d0504f29252b13961913</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-04 20:59:26</sys_updated_on>
+        <template/>
+        <when>before</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=5cf87104db51d0504f29252b13961913"/>
+</record_update>
