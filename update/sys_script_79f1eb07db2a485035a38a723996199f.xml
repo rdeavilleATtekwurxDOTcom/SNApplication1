@@ -63,6 +63,14 @@
 			}
 		}	
 
+		var timeoutMinutes = current.ucontrol_connection_timeout_minutes;
+		var triggeredBy = 'BR Setup When Connection Test Req Changes';
+		var startSending = current.start_sending_requested;
+		var userName = gs.getUserName();
+		
+		var si = new x_tekso_twxapp01.ConnectionTest();
+		si.buildRequestRecord(current.sys_id,url,midServerName,midServerSysID,userName,startSending,triggeredBy,timeoutMinutes);
+/*
 		// Check if there is already a record pending
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var gr2 = new GlideRecord(connectionTestTable);
@@ -126,6 +134,7 @@
 			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
 			gr3.insert();						
 		}
+*/		
 	}
 })(current, previous);
 
@@ -138,7 +147,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
-        <sys_mod_count>82</sys_mod_count>
+        <sys_mod_count>84</sys_mod_count>
         <sys_name>Setup - When Connection Test Req Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -146,7 +155,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-19 13:21:22</sys_updated_on>
+        <sys_updated_on>2020-06-11 16:49:26</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

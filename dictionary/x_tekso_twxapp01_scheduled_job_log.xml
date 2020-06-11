@@ -3,6 +3,7 @@
         <element label="Background Job Finished At" max_length="40" name="background_job_finished_at" type="glide_date_time"/>
         <element label="Background Job Started At" max_length="40" name="background_job_started_at" type="glide_date_time"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
+        <element label="Connection Test Requested By Job" max_length="40" name="connection_test_requested_by_job" type="boolean"/>
         <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
         <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>
@@ -28,6 +29,7 @@
         <element label="Records Selected At" max_length="40" name="records_selected_at" type="glide_date_time"/>
         <element label="Records Sent" max_length="40" name="records_sent" type="boolean"/>
         <element label="Setup Status" max_length="40" name="setup_status" type="string"/>
+        <element label="Time Elapsed Since Last Connection Test" max_length="40" name="time_elapsed_since_last_connection_test" type="glide_duration"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Selected" max_length="40" name="total_number_of_records_selected" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>

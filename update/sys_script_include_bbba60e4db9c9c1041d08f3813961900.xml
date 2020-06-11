@@ -7,7 +7,11 @@
         <client_callable>false</client_callable>
         <description/>
         <name>HandleRESTResponse</name>
-        <script><![CDATA[var HandleRESTResponse = Class.create();
+        <script><![CDATA[/* Example calling
+var si = new x_tekso_twxapp01.HandleRESTResponse();
+si.handleRESTResponse(resultRestResponse,dataSysID);
+*/
+var HandleRESTResponse = Class.create();
 HandleRESTResponse.prototype = {
     initialize: function() {
     },
@@ -256,22 +260,20 @@ HandleRESTResponse.prototype = {
 };
 
 /* Example calling
-
 var si = new x_tekso_twxapp01.HandleRESTResponse();
 si.handleRESTResponse(resultRestResponse,dataSysID);
-
 */]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>27</sys_mod_count>
+        <sys_mod_count>28</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:40:24</sys_updated_on>
+        <sys_updated_on>2020-06-11 16:21:49</sys_updated_on>
     </sys_script_include>
 </record_update>

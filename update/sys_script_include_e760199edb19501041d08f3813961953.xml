@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.ConnectionTest</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>ConnectionTest</name>
+        <script><![CDATA[// Example Calling new x_tekso_twxapp01.ConnectionTest().buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins);
+
+/* Example calling
+var si = new x_tekso_twxapp01.ConnectionTest();
+si.buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins);
+*/
+
+
+var ConnectionTest = Class.create();
+ConnectionTest.prototype = {
+    initialize: function() {
+    },
+
+	buildRequestRecord: function(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins) {
+
+		// Check if there is already a record pending
+		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+		var gr1 = new GlideRecord(connectionTestTable);
+		gr1.addQuery('setup_record',setupSysID);
+		gr1.addQuery('ucontrol_url',url);
+		gr1.addQuery('ucontrol_mid_server_name',midSrvrName);
+		gr1.addQuery('ucontrol_mid_server_sys_id',midSrvrSysID);	
+		gr1.addQuery('status','Pending');
+		gr1.query();
+		if (!gr1.next()) {
+			// There is not already a record pending
+			var dtRequest = new GlideDateTime();
+
+			// e.g. dev91664
+			var snInstance = gs.getProperty("instance_name");	
+			// e.g. https://dev91664.service-now.com/
+			var snURL = gs.getProperty("glide.servlet.uri");
+
+			if (snURL.length > 0) {
+				// Remove the last character if it is a /
+				if (snURL.charAt(snURL.length - 1) == '/') {
+					snURL = snURL.substr(0, snURL.length - 1);
+				}
+			}	
+			
+			var source = 'ServiceNow';
+
+			var json = '{\"source\":\"' + source + '\",';	// ServiceNow
+			json = json  + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
+			json = json + '\"source_url\":\"' + snURL + '\",'; // ServiceNow URL e.g. https://dev91664.service-now.com/
+			json = json +  '\"date_sent\":\"' + dtRequest + '\",';	
+			json = json + '\"user\":\"' + usrNm + '\"}'; // No comma at the end				
+
+			var gdt = new GlideDateTime();
+			var timeoutMinutes = connTimeOutMins;
+			var timeoutSeconds = timeoutMinutes * 60;
+			gdt.addSeconds(timeoutSeconds);
+		
+			var gr2 = new GlideRecord(connectionTestTable);
+			gr2.initialize();
+			gr2.setValue('status','Pending');
+			gr2.setValue('setup_record',setupSysID);
+			gr2.setValue('ucontrol_url',url);
+			gr2.setValue('ucontrol_mid_server_name',midSrvrName);
+			gr2.setValue('ucontrol_mid_server_sys_id',midSrvrSysID);
+			gr2.setValue('test_connection_triggered_by',triggeredBy);
+			gr2.setValue('request_will_time_out_at',gdt);
+			gr2.setValue('json_request_body',json);
+			gr2.setValue('total_length_of_json_request_body',json.length);
+			if (startSending == true) {
+				gr2.setValue('start_sending_requested',true);				
+			}
+			else {
+				gr2.setValue('start_sending_requested',false);
+			}
+			gr2.setValue('inserted_by_script','SI ConnectionTest'); // Debug	
+			
+			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
+			gr2.insert();	
+		}
+	},
+    type: 'ConnectionTest'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-11 16:26:07</sys_created_on>
+        <sys_id>e760199edb19501041d08f3813961953</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>ConnectionTest</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_e760199edb19501041d08f3813961953</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-11 16:26:07</sys_updated_on>
+    </sys_script_include>
+</record_update>
