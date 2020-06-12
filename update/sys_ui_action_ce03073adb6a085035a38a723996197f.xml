@@ -130,7 +130,10 @@ function runStartBusRuleCode(){
 	// This will always be updated
 	var gdt = new GlideDateTime();
 	current.connection_test_requested_at = gdt.getDisplayValue();	
+	var usr = gs.getUserName();
+	current.connection_test_requested_by = usr;
 	current.start_sending_requested_at = gdt.getDisplayValue();	
+	current.start_sending_requested_by = usr;
 	current.updated_by_script = 'UI Action Start Sending';
 	current.update();
 
@@ -153,7 +156,7 @@ function runStartBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ce03073adb6a085035a38a723996197f</sys_id>
-        <sys_mod_count>60</sys_mod_count>
+        <sys_mod_count>62</sys_mod_count>
         <sys_name>Start Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -161,7 +164,7 @@ function runStartBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_ce03073adb6a085035a38a723996197f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 10:09:23</sys_updated_on>
+        <sys_updated_on>2020-06-12 15:17:10</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

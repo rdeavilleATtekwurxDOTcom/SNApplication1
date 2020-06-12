@@ -61,6 +61,7 @@ OutboundREST.prototype = {
 	},
 	// Check if user returned is valid and update x_tekso_twxapp01_setup
 	handleTestResults2: function(setupSysID,connection_sys_id,resultUserAccount,startIfSuccess,testConnectionUsr,dtBack,classesArr) {
+		//testConnectionUsr - Could be a real user or the scheduled job	
 		
 		var setupSysID2 = setupSysID.toString();
 		var connection_sys_id2 = connection_sys_id.toString();
@@ -94,9 +95,12 @@ OutboundREST.prototype = {
 			connStatusDtls = 'No user account returned';				
 		}
 		// Update x_tekso_twxapp01_setup with the results of the test connection
+		
+		//testConnectionUsr - Could be a real user or the scheduled job
 		this.updateSetupRecord(setupSysID2,connOKAndGotUsr,connStatus,connStatusDtls,dtBack,usr,usrIsValid,startIfSuccess,testConnectionUsr,classesArr);	
 	},
 	handleTestResults: function(rtnArr,setupSysID,connSysID,startIfSuccess,testConnectionUser) {
+		//testConnectionUser - Could be a real user or the scheduled job	
 		var successFail = '';
 		var statusCode = 0;
 		var restResponse = '';
@@ -148,18 +152,21 @@ OutboundREST.prototype = {
 		var connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,statusCode,statusMsg,connection,userAccount);
 		if (connectionOK == true) {
 			// Check if user returned is valid and update x_tekso_twxapp01_setup
-			this.handleTestResults2(setupSysID2,connSysID2,userAccount,startIfSuccess,testConnectionUser,dtBack,classesArr);
+			//testConnectionUser - Could be a real user or the scheduled job	
+			this.handleTestResults2(setupSysID2,connSysID2,userAccount,startIfSuccess,testConnectionUser,dtBack,classesArr);		
 		}
 		else {
 			// Failed
 			
 			// Update x_tekso_twxapp01_setup with the results of the connection test
+			//testConnectionUser - Could be a real user or the scheduled job	
 			this.updateSetupRecord(setupSysID,false,'Failed',statusMsg,dtBack,'',false,startIfSuccess,testConnectionUser,classesArr);			
 		}
 	},
 	// Update x_tekso_twxapp01_setup with the results of the connection test
 	// Called by processTestConnection -> handleTestResults and processTestConnection -> handleTestResults -> handleTestResults2
 	updateSetupRecord: function(setupSysID,connOKAndGotUser,connStatus,connStatusDetails,dtBack,usr,usrIsValid,startIfSuccess,testUsr,classesArr) {
+		//testUsr - Could be a real user or the scheduled job
 
 		var setupSysID2 = setupSysID.toString();
 		
@@ -185,6 +192,7 @@ OutboundREST.prototype = {
 			gr2.setValue('connection_status',connStatus);
 			gr2.setValue('connection_status_details',connStatusDetails);
 			gr2.setValue('connection_tested_at',dtBack);
+			gr2.setValue('connection_test_requested_by',testUsr); // Could be a real user or the scheduled job
 			gr2.setValue('ucontrol_integration_user',usr);		
 			gr2.setValue('ucontrol_integration_user_is_valid',usrIsValid);						
 			gr2.setValue('start_sending_requested',false); //
@@ -697,9 +705,10 @@ OutboundREST.prototype = {
 			var setupSysID = gr1.getValue('setup_record') || '';
 			var setupSysID2 = setupSysID.toString();
 			
-			// sys_created_by for record x_tekso_twxapp01_connection_test
-			// will be the user who requested the test
-			testConnectionUser = gr1.getValue('sys_created_by') || '';
+			// user who requested the test - could be the scheduled job
+			
+			//testConnectionUser = gr1.getValue('sys_created_by') || '';
+			testConnectionUser = gr1.getValue('connection_test_requested_by') || '';
 			
 			var jsonRequestBody = gr1.getValue('json_request_body') || '';
 			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
@@ -730,6 +739,7 @@ OutboundREST.prototype = {
 
 			var abort = this.checkForAbortedOrTimedOut(connection_sys_id2);
 			if (abort == false) {
+				//testConnectionUser - Could be a real user or the scheduled job	
 				this.handleTestResults(rtnArr,setupSysID2,connection_sys_id2,startIfSuccess,testConnectionUser);
 			}
 			
@@ -975,13 +985,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>220</sys_mod_count>
+        <sys_mod_count>224</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:37:48</sys_updated_on>
+        <sys_updated_on>2020-06-12 17:05:33</sys_updated_on>
     </sys_script_include>
 </record_update>

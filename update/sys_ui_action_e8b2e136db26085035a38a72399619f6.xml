@@ -125,6 +125,8 @@ function runTestBusRuleCode(){
 	current.connection_status = 'Testing Connection - Please Wait';
 	
 	// This will always be updated
+	var usr = gs.getUserName();
+	current.connection_test_requested_by = usr;	
 	var gdt = new GlideDateTime();
 	current.connection_test_requested_at = gdt.getDisplayValue();
 	current.updated_by_script = 'UI Action Test Connection';
@@ -148,7 +150,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>142</sys_mod_count>
+        <sys_mod_count>143</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -156,7 +158,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-11 14:04:37</sys_updated_on>
+        <sys_updated_on>2020-06-12 15:18:10</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

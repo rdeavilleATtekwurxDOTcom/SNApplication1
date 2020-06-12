@@ -22,6 +22,7 @@
         <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
+        <element label="Connection Test Requested By" max_length="40" name="connection_test_requested_by" type="string"/>
         <element choice="3" default="0" label="Delete Criteria" max_length="40" name="delete_criteria" type="integer">
             <choice>
                 <element inactive_on_update="false" label="Created by uControl Integration User &amp; deleted by another user" sequence="0" value="0"/>
@@ -56,6 +57,7 @@
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
         <element label="Start Sending Requested At" max_length="40" name="start_sending_requested_at" type="glide_date_time"/>
+        <element label="Start Sending Requested By" max_length="40" name="start_sending_requested_by" type="string"/>
         <element choice="3" default="Not Sending" label="Status" max_length="40" name="status" type="string">
             <choice>
                 <element inactive_on_update="false" label="Error" value="Error"/>

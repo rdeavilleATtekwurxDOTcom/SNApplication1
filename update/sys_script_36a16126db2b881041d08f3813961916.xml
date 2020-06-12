@@ -54,9 +54,17 @@
 	gr1.setValue('sh_status_was_sending_when_connection_failed_at',current.status_was_sending_when_connection_failed_at);
 	gr1.setValue('sh_connection_test_requested',current.connection_test_requested);
 	gr1.setValue('sh_connection_test_requested_at',current.connection_test_requested_at);
-	gr1.setValue('sh_connection_tested_at',current.connection_tested_at);	
+	gr1.setValue('sh_connection_test_requested_by',current.connection_test_requested_by);	
+	gr1.setValue('sh_connection_tested_at',current.connection_tested_at);		
 	gr1.setValue('sh_start_sending_requested',current.start_sending_requested);
 	gr1.setValue('sh_start_sending_requested_at',current.start_sending_requested_at);	
+	gr1.setValue('sh_start_sending_requested_by',current.start_sending_requested_by);		
+	gr1.setValue('sh_status_set_to_not_sending_at',current.status_set_to_not_sending_at);
+	gr1.setValue('sh_status_set_to_not_sending_by',current.status_set_to_not_sending_by);
+	gr1.setValue('sh_cmdb_tracking_switched_on_at',current.cmdb_tracking_switched_on_at);
+	gr1.setValue('sh_cmdb_tracking_switched_on_by',current.cmdb_tracking_switched_on_by);
+	gr1.setValue('sh_cmdb_tracking_switched_off_at',current.cmdb_tracking_switched_off_at);
+	gr1.setValue('sh_cmdb_tracking_switched_off_by',current.cmdb_tracking_switched_off_by);	
 	gr1.setValue('sh_ucontrol_connection_timeout_minutes',current.ucontrol_connection_timeout_minutes);
 	gr1.setValue('sh_update_criteria',current.update_criteria);
 	gr1.setValue('sh_delete_criteria',current.delete_criteria);	
@@ -69,7 +77,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>36a16126db2b881041d08f3813961916</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Setup - Track Changes - Delete</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -77,7 +85,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_36a16126db2b881041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 15:34:28</sys_updated_on>
+        <sys_updated_on>2020-06-12 14:15:39</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -11,7 +11,7 @@
         <name>Setup Set Fields onLoad</name>
         <order/>
         <script><![CDATA[function onLoad() {
-	
+
 	// Hide Updated By Script and Inserted By Script
 	g_form.setDisplay('updated_by_script',false);
 	g_form.setDisplay('inserted_by_script',false);
@@ -30,11 +30,25 @@
 	g_form.setReadOnly('status',true);   
 	g_form.setReadOnly('status_details',true);	
 	g_form.setReadOnly('status_error_details',true);		
+	
+	g_form.setReadOnly('start_sending_requested_at',true);
+	g_form.setReadOnly('start_sending_requested_by',true);
+	g_form.setReadOnly('status_set_to_sending_at',true);
+	g_form.setReadOnly('status_set_to_sending_by',true);
+	g_form.setReadOnly('status_set_to_not_sending_at',true);
+	g_form.setReadOnly('status_set_to_not_sending_by',true);
+
 	g_form.setReadOnly('connection_status',true);
 	g_form.setReadOnly('connection_status_details',true);
 	g_form.setReadOnly('ucontrol_integration_user',true);
 	g_form.setReadOnly('number_of_supported_classes',true);
 	g_form.setReadOnly('cmdb_tracking',true);
+	
+	g_form.setReadOnly('cmdb_tracking_switched_on_at',true);
+	g_form.setReadOnly('cmdb_tracking_switched_on_by',true);
+	g_form.setReadOnly('cmdb_tracking_switched_off_at',true);
+	g_form.setReadOnly('cmdb_tracking_switched_off_by',true);
+
 	g_form.setReadOnly('cmdb_tracking_details',true);
 	g_form.setReadOnly('cmdb_tracking_error_details',true);	
 	g_form.setReadOnly('number_of_pending_records',true);	
@@ -129,6 +143,15 @@
 
 
 	if (g_form.getValue('cmdb_tracking') == 'Running') {
+
+		g_form.setDisplay('cmdb_tracking_switched_on_at',true);
+		g_form.setDisplay('cmdb_tracking_switched_on_by',true);
+		g_form.getElement('cmdb_tracking_switched_on_at').style.backgroundColor = "lightgreen";
+		g_form.getElement('cmdb_tracking_switched_on_by').style.backgroundColor = "lightgreen";
+		
+		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
+		
 		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";	
 		g_form.setDisplay('cmdb_tracking_details',true);
 		g_form.setDisplay('cmdb_tracking_error_details',false);		
@@ -136,6 +159,15 @@
 	}
 	
 	if (g_form.getValue('cmdb_tracking') == 'Off') {
+
+		g_form.setDisplay('cmdb_tracking_switched_off_at',true);
+		g_form.setDisplay('cmdb_tracking_switched_off_by',true);
+		g_form.getElement('cmdb_tracking_switched_off_at').style.backgroundColor = "Tomato";
+		g_form.getElement('cmdb_tracking_switched_off_by').style.backgroundColor = "Tomato";
+		
+		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
+		
 		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
 		g_form.setDisplay('cmdb_tracking_details',true);
 		g_form.setDisplay('cmdb_tracking_error_details',false);
@@ -143,6 +175,11 @@
 	}
 	
 	if (g_form.getValue('cmdb_tracking') == 'Error') {
+		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
+		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
+		
 		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";
 		g_form.setDisplay('cmdb_tracking_details',false);	
 		g_form.setDisplay('cmdb_tracking_error_details',true);			
@@ -152,6 +189,19 @@
 	if (g_form.getValue('status') == 'Sending') {
 		g_form.getElement('status').style.backgroundColor = "lightgreen";
 		g_form.setDisplay('status_details',true); // Show
+		
+		g_form.setDisplay('start_sending_requested_at',true);
+		g_form.setDisplay('start_sending_requested_by',true);
+		g_form.setDisplay('status_set_to_sending_at',true);
+		g_form.setDisplay('status_set_to_sending_by',true);
+		g_form.setDisplay('status_set_to_not_sending_at',false); // Hide
+		g_form.setDisplay('status_set_to_not_sending_by',false); // Hide
+
+		g_form.getElement('start_sending_requested_at').style.backgroundColor = "lightgreen";
+		g_form.getElement('start_sending_requested_by').style.backgroundColor = "lightgreen";
+		g_form.getElement('status_set_to_sending_at').style.backgroundColor = "lightgreen";
+		g_form.getElement('status_set_to_sending_by').style.backgroundColor = "lightgreen";
+		
 		g_form.setDisplay('status_error_details',false); // Hide
 		g_form.getElement('status_details').style.backgroundColor = "lightgreen";		
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
@@ -162,6 +212,14 @@
 	else if (g_form.getValue('status') == 'Error') {
 		g_form.getElement('status').style.backgroundColor = "Tomato";
 		g_form.setDisplay('status_details',false); // Hide
+
+		g_form.setDisplay('start_sending_requested_at',false); // Hide
+		g_form.setDisplay('start_sending_requested_by',false); // Hide
+		g_form.setDisplay('status_set_to_sending_at',false); // Hide
+		g_form.setDisplay('status_set_to_sending_by',false); // Hide
+		g_form.setDisplay('status_set_to_not_sending_at',false); // Hide
+		g_form.setDisplay('status_set_to_not_sending_by',false); // Hide
+		
 		g_form.setDisplay('status_error_details',true); // Show
 		g_form.getElement('status_error_details').style.backgroundColor = "Tomato";
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
@@ -172,6 +230,16 @@
 		// Not Sending
 		g_form.getElement('status').style.backgroundColor = "Tomato";
 		g_form.setDisplay('status_details',true); // Show
+
+		g_form.setDisplay('start_sending_requested_at',false); // Hide
+		g_form.setDisplay('start_sending_requested_by',false); // Hide
+		g_form.setDisplay('status_set_to_sending_at',false); // Hide
+		g_form.setDisplay('status_set_to_sending_by',false); // Hide
+		g_form.setDisplay('status_set_to_not_sending_at',true);
+		g_form.setDisplay('status_set_to_not_sending_by',true);
+		g_form.getElement('status_set_to_not_sending_at').style.backgroundColor = "Tomato";
+		g_form.getElement('status_set_to_not_sending_by').style.backgroundColor = "Tomato";
+		
 		g_form.setDisplay('status_error_details',false); // Hide
 		g_form.getElement('status_details').style.backgroundColor = "Tomato";	
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',false); // Could do this via ACL?
@@ -374,7 +442,7 @@ function sendingStartingUp() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>194</sys_mod_count>
+        <sys_mod_count>200</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -382,7 +450,7 @@ function sendingStartingUp() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-06 12:59:54</sys_updated_on>
+        <sys_updated_on>2020-06-12 14:34:00</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

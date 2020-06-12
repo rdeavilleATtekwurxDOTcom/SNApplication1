@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="sh_status_set_to_not_sending_by" label="SH Status Set To Not Sending By " language="en" table="x_tekso_twxapp01_setup_history">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>sh_status_set_to_not_sending_by</element>
+            <help/>
+            <hint/>
+            <label>SH Status Set To Not Sending By </label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_setup_history</name>
+            <plural>SH Status Set To Not Sending By s</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-12 13:21:31</sys_created_on>
+            <sys_id>2a64bda2dbd994104f29252b13961920</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>SH Status Set To Not Sending By</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_setup_history_sh_status_set_to_not_sending_by_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-12 13:21:31</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

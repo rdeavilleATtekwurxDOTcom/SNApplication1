@@ -5,11 +5,16 @@
         <element label="SH CMDB Tracking" max_length="40" name="sh_cmdb_tracking" type="string"/>
         <element label="SH CMDB Tracking Details" max_length="100" name="sh_cmdb_tracking_details" type="string"/>
         <element label="SH CMDB Tracking Error Details" max_length="100" name="sh_cmdb_tracking_error_details" type="string"/>
+        <element label="SH CMDB Tracking Switched Off At" max_length="40" name="sh_cmdb_tracking_switched_off_at" type="glide_date_time"/>
+        <element label="SH CMDB Tracking Switched Off By" max_length="40" name="sh_cmdb_tracking_switched_off_by" type="string"/>
+        <element label="SH CMDB Tracking Switched On At " max_length="40" name="sh_cmdb_tracking_switched_on_at" type="glide_date_time"/>
+        <element label="SH CMDB Tracking Switched On By" max_length="40" name="sh_cmdb_tracking_switched_on_by" type="string"/>
         <element label="SH Connection Status" max_length="40" name="sh_connection_status" type="string"/>
         <element label="SH Connection Status Details" max_length="200" name="sh_connection_status_details" type="string"/>
         <element label="SH Connection Tested At" max_length="40" name="sh_connection_tested_at" type="glide_date_time"/>
         <element label="SH Connection Test Requested" max_length="40" name="sh_connection_test_requested" type="boolean"/>
         <element label="SH Connection Test Requested At" max_length="40" name="sh_connection_test_requested_at" type="glide_date_time"/>
+        <element label="SH Connection Test Requested By" max_length="40" name="sh_connection_test_requested_by" type="string"/>
         <element label="SH Delete Criteria" max_length="40" name="sh_delete_criteria" type="integer"/>
         <element label="SH Fields Updated" max_length="200" name="sh_fields_updated" type="string"/>
         <element label="SH Last Button Clicked" max_length="40" name="sh_last_button_clicked" type="string"/>
@@ -18,20 +23,28 @@
         <element label="SH Previous CMDB Tracking" max_length="40" name="sh_previous_cmdb_tracking" type="string"/>
         <element label="SH Previous CMDB Tracking Details" max_length="100" name="sh_previous_cmdb_tracking_details" type="string"/>
         <element label="SH Previous CMDB Tracking Error Details" max_length="100" name="sh_previous_cmdb_tracking_error_details" type="string"/>
+        <element label="SH Previous CMDB Tracking Switched Off At" max_length="40" name="sh_previous_cmdb_tracking_switched_off_at" type="glide_date_time"/>
+        <element label="SH Previous CMDB Tracking Switched Off By" max_length="40" name="sh_previous_cmdb_tracking_switched_off_by" type="string"/>
+        <element label="SH Previous CMDB Tracking Switched On At " max_length="40" name="sh_previous_cmdb_tracking_switched_on_at" type="glide_date_time"/>
+        <element label="SH Previous CMDB Tracking Switched On By" max_length="40" name="sh_previous_cmdb_tracking_switched_on_by" type="string"/>
         <element label="SH Previous Connection Status" max_length="40" name="sh_previous_connection_status" type="string"/>
         <element label="SH Previous Connection Status Details" max_length="200" name="sh_previous_connection_status_details" type="string"/>
         <element label="SH Previous Connection Tested At" max_length="40" name="sh_previous_connection_tested_at" type="glide_date_time"/>
         <element label="SH Previous Connection Test Requested" max_length="40" name="sh_previous_connection_test_requested" type="boolean"/>
         <element label="SH Previous Connection Test Requested At" max_length="40" name="sh_previous_connection_test_requested_at" type="glide_date_time"/>
+        <element label="SH Previous Connection Test Requested By" max_length="40" name="sh_previous_connection_test_requested_by" type="string"/>
         <element label="SH Previous Delete Criteria" max_length="40" name="sh_previous_delete_criteria" type="integer"/>
         <element label="SH Previous Last Button Clicked" max_length="40" name="sh_previous_last_button_clicked" type="string"/>
         <element default="0" label="SH Previous Max Retries" max_length="40" name="sh_previous_max_retries" type="integer"/>
         <element default="0" label="SH Previous Number Of Supported Classes" max_length="40" name="sh_previous_number_of_supported_classes" type="integer"/>
         <element label="SH Previous Start Sending Requested" max_length="40" name="sh_previous_start_sending_requested" type="boolean"/>
         <element label="SH Previous Start Sending Requested At" max_length="40" name="sh_previous_start_sending_requested_at" type="glide_date_time"/>
+        <element label="SH Previous Start Sending Requested By" max_length="40" name="sh_previous_start_sending_requested_by" type="string"/>
         <element label="SH Previous Status" max_length="40" name="sh_previous_status" type="string"/>
         <element label="SH Previous Status Details" max_length="100" name="sh_previous_status_details" type="string"/>
         <element label="SH Previous Status Error Details" max_length="100" name="sh_previous_status_error_details" type="string"/>
+        <element label="SH Previous Status Set To Not Sending At " max_length="40" name="sh_previous_status_set_to_not_sending_at" type="glide_date_time"/>
+        <element label="SH Previous Status Set To Not Sending By " max_length="40" name="sh_previous_status_set_to_not_sending_by" type="string"/>
         <element label="SH Previous Status Was Sending When Connection Failed" max_length="40" name="sh_previous_status_was_sending_when_connection_failed" type="boolean"/>
         <element label="SH Previous Status Was Sending When Connection Failed At" max_length="40" name="sh_previous_status_was_sending_when_connection_failed_at" type="glide_date_time"/>
         <element label="SH Previous uControl Connection Timeout (minutes)" max_length="40" name="sh_previous_ucontrol_connection_timeout_minutes" type="integer"/>
@@ -45,9 +58,12 @@
         <element label="SH Previous Update Criteria" max_length="40" name="sh_previous_update_criteria" type="integer"/>
         <element label="SH Start Sending Requested" max_length="40" name="sh_start_sending_requested" type="boolean"/>
         <element label="SH Start Sending Requested At" max_length="40" name="sh_start_sending_requested_at" type="glide_date_time"/>
+        <element label="SH Start Sending Requested By" max_length="40" name="sh_start_sending_requested_by" type="string"/>
         <element label="SH Status" max_length="40" name="sh_status" type="string"/>
         <element label="SH Status Details" max_length="100" name="sh_status_details" type="string"/>
         <element label="SH Status Error Details" max_length="100" name="sh_status_error_details" type="string"/>
+        <element label="SH Status Set To Not Sending At " max_length="40" name="sh_status_set_to_not_sending_at" type="glide_date_time"/>
+        <element label="SH Status Set To Not Sending By " max_length="40" name="sh_status_set_to_not_sending_by" type="string"/>
         <element label="SH Status Was Sending When Connection Failed" max_length="40" name="sh_status_was_sending_when_connection_failed" type="boolean"/>
         <element label="SH Status Was Sending When Connection Failed At" max_length="40" name="sh_status_was_sending_when_connection_failed_at" type="glide_date_time"/>
         <element label="SH uControl Connection Timeout (minutes)" max_length="40" name="sh_ucontrol_connection_timeout_minutes" type="integer"/>
