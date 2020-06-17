@@ -16,19 +16,40 @@
 	var stat = g_form.getValue('status');
 
 	if (stat == 'New' || stat == 'Unsubmitted') {
-		// Start a timer
-		startTimer();
-		var msg = '';
-		var num = parseInt(g_scratchpad.number_of_test_data_records_already_pending);
-		if (num > 0) {
-			msg = 'Number of test records already pending: ' + num.toString();
-			if (num > 2000)  {
-				msg = msg + '. The threshold of 2000 records has been exceeded.'; 
-				msg = msg + ' No more test data can be generated at this time';
-				g_form.showFieldMsg('status',msg,'error');	
+		var msg1 = '';	
+		if (g_scratchpad.setup_status != 'Sending') {
+			msg1 = 'Status is Not Sending';
+		}
+		
+		if (g_scratchpad.setup_cmdb_tracking != 'Running') {
+			if (msg1.length > 0) {
+				msg1 = msg1 + ' and ' + 'CMDB Tracking is Not Running';
 			}
 			else {
-				g_form.showFieldMsg('status',msg,'info');					
+				msg1 = 'CMDB Tracking is Not Running';
+			}
+		}
+		
+		if (msg1.length > 0) {	
+			g_form.showFieldMsg('update_relations_qty',msg1);
+		}
+		else {
+			g_form.hideFieldMsg('update_relations_qty');
+		}
+		
+		// Start a timer
+		startTimer();
+		var msg2 = '';
+		var num = parseInt(g_scratchpad.number_of_test_data_records_already_pending);
+		if (num > 0) {
+			msg2 = 'Number of test records already pending: ' + num.toString();
+			if (num > 2000)  {
+				msg2 = msg2 + '. The threshold of 2000 records has been exceeded.'; 
+				msg2 = msg2 + ' No more test data can be generated at this time';
+				g_form.showFieldMsg('status',msg2,'error');	
+			}
+			else {
+				g_form.showFieldMsg('status',msg2,'info');					
 			}
 		}
 		else {
@@ -212,7 +233,7 @@ function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>42f77559db88901041d08f3813961916</sys_id>
-        <sys_mod_count>79</sys_mod_count>
+        <sys_mod_count>82</sys_mod_count>
         <sys_name>Generate Test Data - onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -220,7 +241,7 @@ function numberOfTestDataRecordsAlreadyPendingCallBackFunction(response) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_42f77559db88901041d08f3813961916</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 11:42:37</sys_updated_on>
+        <sys_updated_on>2020-06-15 14:12:40</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

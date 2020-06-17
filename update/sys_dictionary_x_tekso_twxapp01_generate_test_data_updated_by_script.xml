@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="test_connection_triggered_by" table="x_tekso_twxapp01_connection_test">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="updated_by_script" table="x_tekso_twxapp01_generate_test_data">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -14,7 +14,7 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>Test Connection Triggered By</column_label>
+        <column_label>Updated By Script</column_label>
         <comments/>
         <create_roles/>
         <default_value/>
@@ -27,7 +27,7 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>test_connection_triggered_by</element>
+        <element>updated_by_script</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
@@ -35,7 +35,7 @@
         <internal_type display_value="String">string</internal_type>
         <mandatory>false</mandatory>
         <max_length>100</max_length>
-        <name>x_tekso_twxapp01_connection_test</name>
+        <name>x_tekso_twxapp01_generate_test_data</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -52,16 +52,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-02-03 11:12:55</sys_created_on>
-        <sys_id>4e673be4db3a041041d08f3813961935</sys_id>
+        <sys_created_on>2020-06-17 15:02:19</sys_created_on>
+        <sys_id>d35bfb48dbe1181041d08f38139619c0</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>Test Connection Triggered By</sys_name>
+        <sys_name>Updated By Script</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_dictionary_x_tekso_twxapp01_connection_test_test_connection_triggered_by</sys_update_name>
+        <sys_update_name>sys_dictionary_x_tekso_twxapp01_generate_test_data_updated_by_script</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-02-03 11:12:55</sys_updated_on>
+        <sys_updated_on>2020-06-17 15:02:19</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

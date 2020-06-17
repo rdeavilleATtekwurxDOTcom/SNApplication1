@@ -2,7 +2,7 @@
     <sys_ui_action action="INSERT_OR_UPDATE">
         <action_name>stop_action</action_name>
         <active>true</active>
-        <client>false</client>
+        <client>true</client>
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
@@ -26,27 +26,60 @@
         <list_save_with_form_button>false</list_save_with_form_button>
         <list_style/>
         <name>Stop Sending</name>
-        <onclick/>
+        <onclick>runStopSendingClientCode()</onclick>
         <order>104</order>
-        <script><![CDATA[current.status = 'Not Sending';
-var gdt = new GlideDateTime();
-var usr = gs.getUserName();
-current.status_set_to_not_sending_by = usr;
-current.status_set_to_not_sending_at = gdt;
-current.status_was_sending_when_connection_failed = false;
-current.status_was_sending_when_connection_failed_at = '';
-current.status_error_details = '';	
+        <script><![CDATA[function runStopSendingClientCode() {
+	
+	var cancelIt = function(){
+		//do nothing
+	};
+	var doIt = function(){
+		//Call the UI Action and skip the 'onclick' function
+		gsftSubmit(null, g_form.getFormElement(), 'stop_action'); //MUST call the 'Action name' set in this UI Action	
+	};
+	
+	var wndw = 'x_tekso_twxapp01_stop_sending_when_tracking_is_off';
+	if (g_form.getValue('cmdb_tracking') == 'Running') {
+		wndw = 'x_tekso_twxapp01_stop_sending_when_tracking_is_running';
+	}
+	
+	var gdw = new GlideDialogWindow(wndw);
+	gdw.setTitle('<h1><strong>Stop Sending To uControl</strong></h1>');
+	gdw.setPreference('onCancel', cancelIt.bind(this));
+	gdw.setPreference('onContinue', doIt.bind(this));
 
-// Can set the user because we know that we are sure that it is being stopped
-current.status_details = 'Stopped at: ' + gdt + ' by: ' + usr;
-current.last_button_clicked = 'Stop Sending';
-if (current.cmdb_tracking == 'Running') {
-	// This will trigger a message to be displayed when the form is reloaded		
-	current.show_message_on_form_reload = 'x_tekso_twxapp01_stop_sending_message';	
+	// To hide the x in the window
+	gdw.removeCloseDecoration();
+	gdw.render();
+	
 }
-current.updated_by_script = 'UI Action Stop Sending';
-current.update();
-action.setRedirectURL(current);	]]></script>
+
+//Server Side Code..........
+
+//Code that runs without 'onclick'
+//Ensure call to server-side function with no browser errors
+if(typeof window == 'undefined')
+   runStopSendingBusRuleCode();
+
+//Server-side function
+function runStopSendingBusRuleCode(){
+	
+	current.status = 'Not Sending';
+	var gdt = new GlideDateTime();
+	var usr = gs.getUserName();
+	// Can set the user because we know that we are sure that it is being stopped
+	current.status_set_to_not_sending_by = usr;
+	current.status_set_to_not_sending_at = gdt;
+	current.status_was_sending_when_connection_failed = false;
+	current.status_was_sending_when_connection_failed_at = '';
+	current.status_error_details = '';	
+
+	current.last_button_clicked = 'Stop Sending';
+	current.updated_by_script = 'UI Action Stop Sending';
+	current.update();
+	action.setRedirectURL(current);	
+
+}]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -57,7 +90,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>199607fadb6a085035a38a7239961983</sys_id>
-        <sys_mod_count>47</sys_mod_count>
+        <sys_mod_count>52</sys_mod_count>
         <sys_name>Stop Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -65,7 +98,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_199607fadb6a085035a38a7239961983</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-20 20:31:03</sys_updated_on>
+        <sys_updated_on>2020-06-15 12:38:25</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

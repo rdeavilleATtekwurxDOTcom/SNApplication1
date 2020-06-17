@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Setup" max_length="40" name="x_tekso_twxapp01_setup" type="collection">
         <element default="Off" hint="The system is checking the CMDB for changes" label="CMDB Tracking" max_length="40" name="cmdb_tracking" type="string"/>
-        <element default="Off&#13;&#10;" label="CMDB Tracking Details" max_length="100" name="cmdb_tracking_details" type="string"/>
         <element label="CMDB Tracking Error Details" max_length="100" name="cmdb_tracking_error_details" type="string"/>
         <element label="CMDB Tracking Switched Off At" max_length="40" name="cmdb_tracking_switched_off_at" type="glide_date_time"/>
         <element label="CMDB Tracking Switched Off By" max_length="40" name="cmdb_tracking_switched_off_by" type="string"/>
@@ -65,7 +64,6 @@
                 <element inactive_on_update="false" label="Sending" value="Sending"/>
             </choice>
         </element>
-        <element default="Missing Connection Details" label="Status Details" max_length="100" name="status_details" type="string"/>
         <element label="Status Error Details" max_length="100" name="status_error_details" type="string"/>
         <element label="Status Set To Not Sending At" max_length="40" name="status_set_to_not_sending_at" type="glide_date_time"/>
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>

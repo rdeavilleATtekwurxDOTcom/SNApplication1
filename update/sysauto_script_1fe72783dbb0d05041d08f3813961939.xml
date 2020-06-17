@@ -16,7 +16,9 @@
 
 function main() {
 	// --Start ------------------------------------------------------------
-	writeDebugLog('SJ Send Data to uControl - Started');
+	var script = 'SJ Send Data to uControl';
+	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'SJ Send Data to uControl - Started');
 	
 	var calculatedNextJobStartTime = new GlideDateTime();
 
@@ -101,7 +103,7 @@ function main() {
 	} // if (setupStatus == 'Sending')
 	else {
 		gr1.setValue('setup_status',setupStatus);
-		gr1.setValue('updated_by_script','SJ Send Data to uControl');
+		gr1.setValue('updated_by_script',script);
 		gr1.update();		
 	} // if (setupStatus == 'Sending')
 	
@@ -155,18 +157,9 @@ function main() {
 		si.buildRequestRecord(setupSysID2,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
 
 	}
-					
-	//status_was_sending_when_connection_failed
-	writeDebugLog('SJ Send Data to uControl - Finished');
-}
-
-function writeDebugLog(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecord(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.setValue('inserted_by_script','SJ Send Data to uControl');			
-	gr1.insert();
+	
+	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'SJ Send Data to uControl - Finished');	
 }
 
 
@@ -181,19 +174,21 @@ function getNumberOfAllPendingRecords() {
 	rtnCnt = gr1.getRowCount();
 	return rtnCnt;
 }
+
+
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>76</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-11 17:23:31</sys_updated_on>
+        <sys_updated_on>2020-06-17 12:41:36</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

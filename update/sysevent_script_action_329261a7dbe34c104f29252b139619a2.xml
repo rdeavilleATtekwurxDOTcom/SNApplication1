@@ -62,6 +62,12 @@ function TestConnectionTimeOutScriptAction() {
 				gr1.update();
 				var gr2 = new GlideRecord(setupTable);
 				gr2.addQuery('sys_id',setupRecord);
+				//When a connection test is generated the sys_id of the connection test is linked back to the Setup Record
+				//I.e. Setup has a link to the latest connection test
+				//We should only be updating Setup if the Connection Test that has Timed Out
+				//Only if this test connection record is the one that is currently linked to Setup
+				//I.e. only update Setup if connection_test_link = sysID
+				gr2.addQuery('connection_test_link',sysID);
 				gr2.query();
 				if (gr2.next()) {
 					var gdt = new GlideDateTime();
@@ -85,7 +91,7 @@ function TestConnectionTimeOutScriptAction() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>329261a7dbe34c104f29252b139619a2</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>23</sys_mod_count>
         <sys_name>TestConnectionTimeOut</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -93,6 +99,6 @@ function TestConnectionTimeOutScriptAction() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 09:41:58</sys_updated_on>
+        <sys_updated_on>2020-06-15 10:02:24</sys_updated_on>
     </sysevent_script_action>
 </record_update>

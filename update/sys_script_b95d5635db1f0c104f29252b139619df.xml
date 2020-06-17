@@ -33,15 +33,28 @@
 	// After BR - this writes to x_tekso_twxapp01_cmdb_deletes
 	// Then there is an Async BR on x_tekso_twxapp01_cmdb_deletes which is triggered on insert
 	// BR uControl Track Deletes
+
+	var script = 'BR uControl Track Del cmdb_ci';
+	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'BR uControl Track Del cmdb_ci');	
+	
 	var tblName = current.getTableName();
 	
 	var fieldCnt = 0;
 	var allFields = '';
 	var allFieldsArr = [];
-	
+
 	for (var x in current){
-		allFieldsArr.push(x);		
-		fieldCnt++;
+		//By default 'in' iterates over inherited properties as well
+		//Be aware that members that are added to the prototype of the object will be included in the enumeration. 
+		//It is wise to program defensively by using the hasOwnProperty method to distinguish the true members of the object:
+		//hasOwnProperty returns a boolean value indicating whether the object on which you are calling it has a 
+		//property with the name of the argument.
+		//Using hasOwnPropery(property) filters-out these unnecessary looping through meta-informations
+		if (current.hasOwnProperty(x)) {	
+			allFieldsArr.push(x);		
+			fieldCnt++;
+		}
 	}
 	
 	if (fieldCnt > 0) {
@@ -70,17 +83,18 @@
 	gr1.setValue('all_fields',allFields);
 	gr1.setValue('no_of_fields',fieldCnt);
 	gr1.setValue('total_length_of_all_fields_list',allFields.length);
-	gr1.setValue('inserted_by_script','BR uControl Track Del cmdb_ci');
+	gr1.setValue('inserted_by_script',script);
 	gr1.insert();
 		
-})(current, previous);]]></script>
+})(current, previous);
+]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-02 22:24:45</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>b95d5635db1f0c104f29252b139619df</sys_id>
-        <sys_mod_count>25</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>uControl Track Del cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -88,7 +102,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_b95d5635db1f0c104f29252b139619df</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 12:36:23</sys_updated_on>
+        <sys_updated_on>2020-06-17 13:38:07</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

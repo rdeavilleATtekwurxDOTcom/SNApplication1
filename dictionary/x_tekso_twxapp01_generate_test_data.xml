@@ -31,12 +31,14 @@
         <element default="0" label="Delete Application Qty" max_length="40" name="delete_application_qty" type="integer"/>
         <element default="0" label="Delete Relations Qty" max_length="40" name="delete_relations_qty" type="integer"/>
         <element default="0" label="Delete Server Qty" max_length="40" name="delete_server_qty" type="integer"/>
+        <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Build Test Data Options Completed" max_length="40" name="number_of_build_test_data_options_completed" type="integer"/>
         <element label="Number Of Build Test Data Options Selected" max_length="40" name="number_of_build_test_data_options_selected" type="integer"/>
         <element default="0" label="Number Of Build Test Data Options Started" max_length="40" name="number_of_build_test_data_options_started" type="integer"/>
         <element default="New" label="Status" max_length="40" name="status" type="string"/>
         <element label="Time Taken To Build Test Data" max_length="40" name="time_taken_to_build_test_data" type="glide_duration"/>
+        <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
         <element label="Update Application Completely Fill String Fields" max_length="40" name="update_application_completely_fill_string_fields" type="boolean"/>
         <element label="Update Application Include All Fields" max_length="40" name="update_application_include_all_fields" type="boolean"/>
         <element default="0" label="Update Application Qty" max_length="40" name="update_application_qty" type="integer"/>

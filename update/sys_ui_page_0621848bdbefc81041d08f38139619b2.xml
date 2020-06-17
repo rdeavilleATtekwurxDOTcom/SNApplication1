@@ -98,7 +98,7 @@ var gr1 = new GlideRecord(setupTable);
 gr1.addQuery('sys_id',sysID);
 gr1.query();
 if (gr1.next()) {
-	// Get the sysID for the Connection Test Record - x_tekso_twxapp01_connection_test
+	// Get the sysID for the Connection Test Record from Setup - x_tekso_twxapp01_connection_test
 	var connectionTestSysID = gr1.getValue('connection_test_link') || '';
 	var gdt = new GlideDateTime();
 	var usr = gs.getUserName();		
@@ -133,13 +133,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 18:26:40</sys_created_on>
         <sys_id>0621848bdbefc81041d08f38139619b2</sys_id>
-        <sys_mod_count>22</sys_mod_count>
+        <sys_mod_count>23</sys_mod_count>
         <sys_name>sending_starting_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_0621848bdbefc81041d08f38139619b2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-06 13:23:20</sys_updated_on>
+        <sys_updated_on>2020-06-15 10:18:44</sys_updated_on>
     </sys_ui_page>
 </record_update>

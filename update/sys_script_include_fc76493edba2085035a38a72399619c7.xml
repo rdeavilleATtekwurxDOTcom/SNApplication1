@@ -60,14 +60,13 @@ OutboundREST.prototype = {
 		return rtnConnectionOK;
 	},
 	// Check if user returned is valid and update x_tekso_twxapp01_setup
-	handleTestResults2: function(setupSysID,connection_sys_id,resultUserAccount,startIfSuccess,testConnectionUsr,dtBack,classesArr) {
-		//testConnectionUsr - Could be a real user or the scheduled job	
+	handleTestResults2: function(setupSysID,connection_sys_id,resultUserAccount,startIfOK,testConnUsr,dtBack,clsArr) {
+		//testConnUsr - Could be a real user or the scheduled job	
 		
 		var setupSysID2 = setupSysID.toString();
 		var connection_sys_id2 = connection_sys_id.toString();
 		var usr = '';
-		var usrIsValid = false;
-		var connOKAndGotUsr = false;
+		var usrIsOK = false;
 		var connStatus = 'Failed';
 		var connStatusDtls = 'Failed';
 		if (resultUserAccount.length > 0) {
@@ -77,8 +76,7 @@ OutboundREST.prototype = {
 				// Add the user details to the x_tekso_twxapp01_connection_test record
 				this.updateConnectionTestRecordUser(connection_sys_id2,usrSysID);
 				usr = usrSysID;
-				usrIsValid = true;
-				connOKAndGotUsr = true;
+				usrIsOK = true;
 				// SUCCESS
 				connStatus = 'OK';
 				connStatusDtls = 'Connection Working';				
@@ -96,18 +94,19 @@ OutboundREST.prototype = {
 		}
 		// Update x_tekso_twxapp01_setup with the results of the test connection
 		
-		//testConnectionUsr - Could be a real user or the scheduled job
-		this.updateSetupRecord(setupSysID2,connOKAndGotUsr,connStatus,connStatusDtls,dtBack,usr,usrIsValid,startIfSuccess,testConnectionUsr,classesArr);	
+		//testConnUsr - Could be a real user or the scheduled job
+		this.updateSetupRecord(setupSysID2,connStatus,connStatusDtls,dtBack,usr,usrIsOK,startIfOK,testConnUsr,clsArr);
+
 	},
-	handleTestResults: function(rtnArr,setupSysID,connSysID,startIfSuccess,testConnectionUser) {
-		//testConnectionUser - Could be a real user or the scheduled job	
+	handleTestResults: function(rtnArr,setupSysID,connSysID,startIfOK,testConnUsr) {
+		//testConnUsr - Could be a real user or the scheduled job	
 		var successFail = '';
 		var statusCode = 0;
 		var restResponse = '';
 		var statusMsg = '';
 		var connection = false;
 		var userAccount = '';
-		var classesArr = [];
+		var clsArr = [];
 
 		var setupSysID2 = setupSysID.toString();
 		var connSysID2 = connSysID.toString();
@@ -138,7 +137,7 @@ OutboundREST.prototype = {
 				connection = jsonBack.result.connection;
 				userAccount = jsonBack.result.user_account;		
 
-				classesArr = jsonBack.result.classes;		
+				clsArr = jsonBack.result.classes;		
 
 			} // if got result / statusCode / connection
 			else {
@@ -152,27 +151,26 @@ OutboundREST.prototype = {
 		var connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,statusCode,statusMsg,connection,userAccount);
 		if (connectionOK == true) {
 			// Check if user returned is valid and update x_tekso_twxapp01_setup
-			//testConnectionUser - Could be a real user or the scheduled job	
-			this.handleTestResults2(setupSysID2,connSysID2,userAccount,startIfSuccess,testConnectionUser,dtBack,classesArr);		
+			//testConnUsr - Could be a real user or the scheduled job	
+			this.handleTestResults2(setupSysID2,connSysID2,userAccount,startIfOK,testConnUsr,dtBack,clsArr);		
 		}
 		else {
 			// Failed
 			
 			// Update x_tekso_twxapp01_setup with the results of the connection test
-			//testConnectionUser - Could be a real user or the scheduled job	
-			this.updateSetupRecord(setupSysID,false,'Failed',statusMsg,dtBack,'',false,startIfSuccess,testConnectionUser,classesArr);			
+			//testConnUsr - Could be a real user or the scheduled job	
+			this.updateSetupRecord(setupSysID,'Failed',statusMsg,dtBack,'',false,startIfOK,testConnUsr,clsArr);			
 		}
 	},
 	// Update x_tekso_twxapp01_setup with the results of the connection test
 	// Called by processTestConnection -> handleTestResults and processTestConnection -> handleTestResults -> handleTestResults2
-	updateSetupRecord: function(setupSysID,connOKAndGotUser,connStatus,connStatusDetails,dtBack,usr,usrIsValid,startIfSuccess,testUsr,classesArr) {
+	updateSetupRecord: function(setupSysID,connStatus,connStatusDetails,dtBack,usr,usrIsOK,startIfOK,testUsr,clsArr) {
 		//testUsr - Could be a real user or the scheduled job
 
 		var setupSysID2 = setupSysID.toString();
 		
 		var setupTable = 'x_tekso_twxapp01_setup';
 		var setupExistingStatus = '';
-		var setupExistingStatusDetails = '';
 		var setupStatusWasSendingWhenConnectionFailed = false;
 		var cmdbTracking = '';
 		var gr2 = new GlideRecord(setupTable);
@@ -181,12 +179,11 @@ OutboundREST.prototype = {
 		if (gr2.next()) {
 			cmdbTracking = gr2.getValue('cmdb_tracking') || '';
 			setupExistingStatus = gr2.getValue('status') || '';
-			setupExistingStatusDetails = gr2.getValue('status_details') || '';
 			setupStatusWasSendingWhenConnectionFailed = gr2.getValue('status_was_sending_when_connection_failed') || false;
-			if (connOKAndGotUser == true) {
+			if (connStatus == 'OK' && usrIsOK == true) {
 				// Update the classes - we should only do that if this is a success
 				var osi = new x_tekso_twxapp01.UpdateSupportedClasses();
-				osi.updateSupportedClassesTable(setupSysID2,classesArr);
+				osi.updateSupportedClassesTable(setupSysID2,clsArr);
 			} 
 
 			gr2.setValue('connection_status',connStatus);
@@ -194,7 +191,7 @@ OutboundREST.prototype = {
 			gr2.setValue('connection_tested_at',dtBack);
 			gr2.setValue('connection_test_requested_by',testUsr); // Could be a real user or the scheduled job
 			gr2.setValue('ucontrol_integration_user',usr);		
-			gr2.setValue('ucontrol_integration_user_is_valid',usrIsValid);						
+			gr2.setValue('ucontrol_integration_user_is_valid',usrIsOK);						
 			gr2.setValue('start_sending_requested',false); //
 			gr2.setValue('connection_test_requested',false); //
 			gr2.setValue('connection_test_link',''); //
@@ -209,10 +206,10 @@ OutboundREST.prototype = {
 					gr2.setValue('status_was_sending_when_connection_failed_at',dtBack);
 					gr2.setValue('status_error_details','Connection failed at ' + dtBack);
 				}
-			} // if (setupConnectionStatus == 'Failed') 
+			} // if (connStatus == 'Failed')
 
 			if (connStatus == 'OK') {
-				if (startIfSuccess == true && setupExistingStatus != 'Sending') {
+				if (startIfOK == true && setupExistingStatus != 'Sending') {
 					// Set status to Sending
 					gr2.setValue('status','Sending'); 
 					gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); 
@@ -223,33 +220,28 @@ OutboundREST.prototype = {
 						// form reloads
 						var popupmsg = 'x_tekso_twxapp01_start_sending_message';
 						gr2.setValue('show_message_on_form_reload',popupmsg);		
-					}
+					} //if (cmdbTracking == 'Off')
 					if (setupExistingStatus == 'Error') {
 						// If the previous status was Error then clear the error details
 						gr2.setValue('status_error_details',''); 						
-					}
+					} //if (setupExistingStatus == 'Error')
 					else {
 						// Record when and who set the status to Sending - but only do this if the previous
 						// status was not an Error. If we are recovering from an Error then we should retain the earlier 
 						// values
 						
-						// testConnectionUser is the sys_created_by from x_tekso_twxapp01_connection_test
+						// testConnUsr is the sys_created_by from x_tekso_twxapp01_connection_test
 						// i.e this is the user who requested the test/start
-						gr2.setValue('status_details','Started at ' + dtBack + ' by: ' + testUsr);	
 						gr2.setValue('status_set_to_sending_by',testUsr);
 						gr2.setValue('status_set_to_sending_at',dtBack);
 					} //if (setupExistingStatus == 'Error')					
-				} //if (startIfSuccess == true && setupExistingStatus != 'Sending') {
+				} //if (startIfOK == true && setupExistingStatus != 'Sending') {
 				// 
 				// "Not Sending"
 
 				else {
 					// Connection OK but do not start
-					if (setupExistingStatus == 'Not Sending') {
-						if (setupExistingStatusDetails == 'Connection Requires Testing') {
-							gr2.setValue('status_details',setupExistingStatus);	
-						}
-					}
+
 					if (setupExistingStatus == 'Error' && setupStatusWasSendingWhenConnectionFailed == true) {
 						//Restart the status - back to Sending
 						gr2.setValue('status','Sending'); //
@@ -261,13 +253,13 @@ OutboundREST.prototype = {
 			} // if (setupConnectionStatus == 'OK') 
 
 			// CMDB Tracking is Running but we have lost the user
-			if (usrIsValid == false && cmdbTracking == 'Running') {
+			if (usrIsOK == false && cmdbTracking == 'Running') {
 				gr2.setValue('cmdb_tracking','Error'); //
 				gr2.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	//
 			}
 
 			// Now got a valid user set status back to Running
-			if (usrIsValid == true && cmdbTracking == 'Error') {
+			if (usrIsOK == true && cmdbTracking == 'Error') {
 				gr2.setValue('cmdb_tracking','Running'); //
 				gr2.setValue('cmdb_tracking_error_details',''); //
 			}
@@ -695,7 +687,7 @@ OutboundREST.prototype = {
 		var connection_sys_id2 = connection_sys_id.toString();
 
 		// User who intiated the test connection
-		var testConnectionUser = '';	
+		var testConnUsr = '';	
 		
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var gr1 = new GlideRecord(connectionTestTable);
@@ -707,14 +699,14 @@ OutboundREST.prototype = {
 			
 			// user who requested the test - could be the scheduled job
 			
-			//testConnectionUser = gr1.getValue('sys_created_by') || '';
-			testConnectionUser = gr1.getValue('connection_test_requested_by') || '';
+			//testConnUsr = gr1.getValue('sys_created_by') || '';
+			testConnUsr = gr1.getValue('connection_test_requested_by') || '';
 			
 			var jsonRequestBody = gr1.getValue('json_request_body') || '';
 			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
 			
 			// If this is true then if the test connection is successful the status should be set to Sending
-			var startIfSuccess = gr1.getValue('start_sending_requested') || false;	
+			var startIfOK = gr1.getValue('start_sending_requested') || false;	
 			var url = gr1.getValue('ucontrol_url') || '';
 		
 			var dtSent = new GlideDateTime();
@@ -739,8 +731,8 @@ OutboundREST.prototype = {
 
 			var abort = this.checkForAbortedOrTimedOut(connection_sys_id2);
 			if (abort == false) {
-				//testConnectionUser - Could be a real user or the scheduled job	
-				this.handleTestResults(rtnArr,setupSysID2,connection_sys_id2,startIfSuccess,testConnectionUser);
+				//testConnUsr - Could be a real user or the scheduled job	
+				this.handleTestResults(rtnArr,setupSysID2,connection_sys_id2,startIfOK,testConnUsr);
 			}
 			
 			/* Not used
@@ -985,13 +977,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>224</sys_mod_count>
+        <sys_mod_count>226</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-12 17:05:33</sys_updated_on>
+        <sys_updated_on>2020-06-15 09:30:31</sys_updated_on>
     </sys_script_include>
 </record_update>

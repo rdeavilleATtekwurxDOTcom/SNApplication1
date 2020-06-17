@@ -220,6 +220,10 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 // Should be an ASYNCH BR 	
 (function executeRule(current, previous) {
 
+	var script = 'BR uControl Track Updates';
+	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'BR uControl Track Updates');
+	
 	//0 = Created by uControl Integration User & updated by another user
 	//1 = Updated by a user other than uControl Integration User
 	//2 = Any Update
@@ -325,7 +329,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			cmdbTrackingRunning = 'Error';
 			gr1.setValue('cmdb_tracking','Error');
 			gr1.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
-			gr1.setValue('updated_by_script','BR uControl Track Updates'); // Debug				
+			gr1.setValue('updated_by_script',script); // Debug				
 			gr1.update();
 		}
 	}
@@ -334,7 +338,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			cmdbTrackingRunning = 'Running';
 			gr1.setValue('cmdb_tracking','Running');
 			gr1.setValue('cmdb_tracking_error_details','');	
-			gr1.setValue('updated_by_script','BR uControl Track Updates'); // Debug				
+			gr1.setValue('updated_by_script',script); // Debug				
 			gr1.update();
 		}		
 	}
@@ -817,7 +821,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							gr3.setValue('generate_test_data_record_sys_id','');
 						}
 
-						gr3.setValue('inserted_by_script','BR uControl Track Updates'); // Debug					
+						gr3.setValue('inserted_by_script',script); // Debug					
 						var trackingSysID = gr3.insert();
 
 						// Only update if the status field is blank - this should stop the risk of the BR's looping
@@ -827,7 +831,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 							gr4.query();
 							if (gr4.next()) {
 								gr4.setValue('status','Matched Criteria For Processing');
-								gr4.setValue('status_details',statusDetails);
+								gr4.setValue('status_details',statusDetails); //x_tekso_twxapp01_cmdb_updates
 								gr4.setValue('link_to_processing_record',trackingSysID);
 								gr4.setValue('cmdb_tracking_status',cmdbTrackingRunning);
 								gr4.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
@@ -841,7 +845,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 								gr4.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
 								gr4.setValue('updated_by_ucontrol_integration_user',recordUpdatedByuControlIntegrationUser);
 								gr4.setValue('updated_by_record_creator',recordUpdatedByCreator);								
-								gr4.setValue('updated_by_script','BR uControl Track Updates'); // Debug		
+								gr4.setValue('updated_by_script',script); // Debug		
 								//Do not run Business Rules
 								gr4.setWorkflow(false);
 								gr4.update();
@@ -888,7 +892,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			gr5.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
 			gr5.setValue('updated_by_ucontrol_integration_user',recordUpdatedByuControlIntegrationUser);
 			gr5.setValue('updated_by_record_creator',recordUpdatedByCreator);				
-			gr5.setValue('updated_by_script','BR uControl Track Updates'); // Debug		
+			gr5.setValue('updated_by_script',script); // Debug		
 			//Do not run Business Rules
 			gr5.setWorkflow(false);		
 			gr5.update();	
@@ -902,7 +906,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>87</sys_mod_count>
+        <sys_mod_count>89</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -910,7 +914,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:54:23</sys_updated_on>
+        <sys_updated_on>2020-06-17 12:51:45</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -42,10 +42,8 @@
 	fieldsArr.push('connection_status');
 	fieldsArr.push('cmdb_tracking'); 
 	fieldsArr.push('last_button_clicked');
-	fieldsArr.push('cmdb_tracking_details');
 	fieldsArr.push('cmdb_tracking_error_details'); 
 	fieldsArr.push('connection_status_details');
-	fieldsArr.push('status_details');
 	fieldsArr.push('status_error_details'); 
 	fieldsArr.push('ucontrol_integration_user_is_valid');
 	fieldsArr.push('number_of_supported_classes');
@@ -67,17 +65,26 @@
 	fieldsArr.push('ucontrol_connection_timeout_minutes');
 	fieldsArr.push('update_criteria');
 	fieldsArr.push('delete_criteria');	
+	
 	for (var x in current){
-		if (fieldsArr.indexOf(x) > -1) {
-			if (current[x] != previous[x]) {
-				if (updateCnt == 0) {
-					fieldsUpdated = x;
-				}
-				else {
-					fieldsUpdated = fieldsUpdated + ', ' + x;
-				}
-				updateCnt++;				
-			} // if (current[x] != previous[x])
+		//By default 'in' iterates over inherited properties as well
+		//Be aware that members that are added to the prototype of the object will be included in the enumeration. 
+		//It is wise to program defensively by using the hasOwnProperty method to distinguish the true members of the object:
+		//hasOwnProperty returns a boolean value indicating whether the object on which you are calling it has a 
+		//property with the name of the argument.
+		//Using hasOwnPropery(property) filters-out these unnecessary looping through meta-informations
+		if (current.hasOwnProperty(x)) {			
+			if (fieldsArr.indexOf(x) > -1) {
+				if (current[x] != previous[x]) {
+					if (updateCnt == 0) {
+						fieldsUpdated = x;
+					}
+					else {
+						fieldsUpdated = fieldsUpdated + ', ' + x;
+					}
+					updateCnt++;				
+				} // if (current[x] != previous[x])
+			}
 		}
 	} // for
 	if (updateCnt > 0) {
@@ -92,12 +99,10 @@
 		gr1.setValue('sh_ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
 		gr1.setValue('sh_max_retries',current.max_retries);
 		gr1.setValue('sh_status',current.status);
-		gr1.setValue('sh_status_details',current.status_details);
 		gr1.setValue('sh_status_error_details',current.status_error_details);
 		gr1.setValue('sh_connection_status',current.connection_status);
 		gr1.setValue('sh_connection_status_details',current.connection_status_details);
 		gr1.setValue('sh_cmdb_tracking',current.cmdb_tracking);	
-		gr1.setValue('sh_cmdb_tracking_details',current.cmdb_tracking_details);	
 		gr1.setValue('sh_cmdb_tracking_error_details',current.cmdb_tracking_error_details);	
 		gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
 		gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
@@ -130,13 +135,11 @@
 		gr1.setValue('sh_previous_ucontrol_polling_interval_minutes',previous.ucontrol_polling_interval_minutes);
 		gr1.setValue('sh_previous_max_retries',previous.max_retries);
 		gr1.setValue('sh_previous_status',previous.status);
-		gr1.setValue('sh_previous_status_details',previous.status_details);
 		gr1.setValue('sh_previous_status_error_details',previous.status_error_details);			
 		gr1.setValue('sh_previous_connection_status',previous.connection_status);
 		gr1.setValue('sh_previous_connection_status_details',previous.connection_status_details);
 		gr1.setValue('sh_previous_cmdb_tracking',previous.cmdb_tracking);	
 		gr1.setValue('sh_previous_cmdb_tracking_error_details',previous.cmdb_tracking_error_details);	
-		gr1.setValue('sh_previous_cmdb_tracking_details',previous.cmdb_tracking_details);	
 		gr1.setValue('sh_previous_last_button_clicked',previous.last_button_clicked);
 		gr1.setValue('sh_previous_ucontrol_integration_user_is_valid',previous.ucontrol_integration_user_is_valid);
 		gr1.setValue('sh_previous_number_of_supported_classes',previous.number_of_supported_classes);	
@@ -172,7 +175,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>46e26de6db2b881041d08f381396198e</sys_id>
-        <sys_mod_count>19</sys_mod_count>
+        <sys_mod_count>21</sys_mod_count>
         <sys_name>Setup - Track Changes - Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -180,7 +183,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_46e26de6db2b881041d08f381396198e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-12 14:25:11</sys_updated_on>
+        <sys_updated_on>2020-06-17 13:46:08</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

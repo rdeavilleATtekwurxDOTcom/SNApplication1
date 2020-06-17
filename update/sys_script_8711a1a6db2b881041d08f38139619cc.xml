@@ -40,12 +40,10 @@
 	gr1.setValue('sh_ucontrol_polling_interval_minutes',current.ucontrol_polling_interval_minutes);
 	gr1.setValue('sh_max_retries',current.max_retries);
 	gr1.setValue('sh_status',current.status);
-	gr1.setValue('sh_status_details',current.status_details);
 	gr1.setValue('sh_status_error_details',current.status_error_details);
 	gr1.setValue('sh_connection_status',current.connection_status);
 	gr1.setValue('sh_connection_status_details',current.connection_status_details);
 	gr1.setValue('sh_cmdb_tracking',current.cmdb_tracking);	
-	gr1.setValue('sh_cmdb_tracking_details',current.cmdb_tracking_details);	
 	gr1.setValue('sh_cmdb_tracking_error_details',current.cmdb_tracking_error_details);	
 	gr1.setValue('sh_last_button_clicked',current.last_button_clicked);
 	gr1.setValue('sh_ucontrol_integration_user_is_valid',current.ucontrol_integration_user_is_valid);
@@ -77,7 +75,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8711a1a6db2b881041d08f38139619cc</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Setup - Track Changes - Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -85,7 +83,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_8711a1a6db2b881041d08f38139619cc</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-12 14:15:33</sys_updated_on>
+        <sys_updated_on>2020-06-15 08:31:30</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

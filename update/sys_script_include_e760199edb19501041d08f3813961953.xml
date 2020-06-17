@@ -68,7 +68,7 @@ ConnectionTest.prototype = {
 			gr2.setValue('ucontrol_url',url);
 			gr2.setValue('ucontrol_mid_server_name',midSrvrName);
 			gr2.setValue('ucontrol_mid_server_sys_id',midSrvrSysID);
-			gr2.setValue('test_connection_triggered_by',triggeredBy);
+			gr2.setValue('connection_test_triggered_by',triggeredBy);
 			gr2.setValue('request_will_time_out_at',gdt);
 			gr2.setValue('json_request_body',json);
 			gr2.setValue('connection_test_requested_by',usrNm); //This could be a user or the scheduled job
@@ -91,13 +91,13 @@ ConnectionTest.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-11 16:26:07</sys_created_on>
         <sys_id>e760199edb19501041d08f3813961953</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>ConnectionTest</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e760199edb19501041d08f3813961953</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-12 16:20:24</sys_updated_on>
+        <sys_updated_on>2020-06-15 09:41:41</sys_updated_on>
     </sys_script_include>
 </record_update>

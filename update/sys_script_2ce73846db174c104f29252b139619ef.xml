@@ -67,24 +67,6 @@ function getUserSysID(userName) {
 }
 
 
-//Check that the table name provided is in the list of classes supported by
-//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes
-function isTableInSupportedClasses(tblName,supportedClassesTable) {
-	var rtn = false;
-	// Ensure that this is a string
-	var tblName2 = tblName.toString();
-	if (tblName2.length > 0) {
-		var gr1 = new GlideRecord(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
-		gr1.addQuery('class',tblName2);
-		gr1.query();
-		if (gr1.next()) {
-			// Matching record found
-			rtn = true;
-		}
-	}
-	return rtn;
- }
-
 // Check if x_tekso_twxapp01_setup.cmdb_tracking is 'Off'
 function isCMDBTrackingRunning(setupTable) {
 	// Default to Off
@@ -109,9 +91,31 @@ function isCMDBTrackingRunning(setupTable) {
 	return rtn;
 }
 
+//Check that the table name provided is in the list of classes supported by
+//uControl - i.e. it is in x_tekso_twxapp01_cmdb_supported_classes
+function isTableInSupportedClasses(tblName,supportedClassesTable) {
+	var rtn = false;
+	// Ensure that this is a string
+	var tblName2 = tblName.toString();
+	if (tblName2.length > 0) {
+		var gr1 = new GlideRecord(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
+		gr1.addQuery('class',tblName2);
+		gr1.query();
+		if (gr1.next()) {
+			// Matching record found
+			rtn = true;
+		}
+	}
+	return rtn;
+ }
+
 // Should be an ASYNCH BR 
 (function executeRule(current, previous) {
 
+	var script = 'BR uControl Track Deletes';
+	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'BR uControl Track Deletes');	
+	
 	//0 = Created by uControl Integration User & deleted by another user
 	//1 = Deleted by a user other than uControl Integration User
 	//2 = Any Delete
@@ -225,7 +229,7 @@ function isCMDBTrackingRunning(setupTable) {
 			cmdbTrackingRunning = 'Error';
 			gr1.setValue('cmdb_tracking','Error');
 			gr1.setValue('cmdb_tracking_error_details','Stopped - No uControl Integration User');	
-			gr1.setValue('updated_by_script','BR uControl Track Deletes'); // Debug	
+			gr1.setValue('updated_by_script',script); // Debug	
 			gr1.update();
 		}
 	}
@@ -234,7 +238,7 @@ function isCMDBTrackingRunning(setupTable) {
 			cmdbTrackingRunning = 'Running';
 			gr1.setValue('cmdb_tracking','Running');
 			gr1.setValue('cmdb_tracking_error_details','');	
-			gr1.setValue('updated_by_script','BR uControl Track Deletes'); // Debug				
+			gr1.setValue('updated_by_script',script); // Debug				
 			gr1.update();
 		}		
 	}
@@ -488,7 +492,7 @@ function isCMDBTrackingRunning(setupTable) {
 				gr2.setValue('test_table_name','');		
 				gr2.setValue('generate_test_data_record_sys_id','');
 			}
-			gr2.setValue('inserted_by_script','BR uControl Track Deletes'); // Debug	
+			gr2.setValue('inserted_by_script',script); // Debug	
 			
 			var trackingSysID = gr2.insert();
 
@@ -499,7 +503,7 @@ function isCMDBTrackingRunning(setupTable) {
 				gr3.query();
 				if (gr3.next()) {
 					gr3.setValue('status','Matched Criteria For Processing');
-					gr3.setValue('status_details',statusDetails);
+					gr3.setValue('status_details',statusDetails); //x_tekso_twxapp01_cmdb_deletes
 					gr3.setValue('link_to_processing_record',trackingSysID);
 					gr3.setValue('cmdb_tracking_status',cmdbTrackingRunning);
 					gr3.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
@@ -510,7 +514,7 @@ function isCMDBTrackingRunning(setupTable) {
 					gr3.setValue('record_originally_created_by_sys_id',recordOriginallyCreatedBySysID);
 					gr3.setValue('delete_criteria_code',criteria);
 					gr3.setValue('delete_criteria_description',criteriaDescription);	
-					gr3.setValue('updated_by_script','BR uControl Track Deletes'); // Debug
+					gr3.setValue('updated_by_script',script); // Debug
 					gr3.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
 					gr3.setValue('deleted_by_ucontrol_integration_user',recordDeletedByuControlIntegrationUser);
 					gr3.setValue('deleted_by_record_creator',recordDeletedByCreator);
@@ -544,7 +548,7 @@ function isCMDBTrackingRunning(setupTable) {
 			gr4.setValue('created_by_ucontrol_integration_user',recordCreatedByuControlIntegrationUser);
 			gr4.setValue('deleted_by_ucontrol_integration_user',recordDeletedByuControlIntegrationUser);
 			gr4.setValue('deleted_by_record_creator',recordDeletedByCreator);			
-			gr4.setValue('updated_by_script','BR uControl Track Deletes'); // Debug		
+			gr4.setValue('updated_by_script',script); // Debug		
 			//Do not trigger Business Rules
 			gr4.setWorkflow(false);		
 			gr4.update();	
@@ -558,7 +562,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>65</sys_mod_count>
+        <sys_mod_count>70</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -566,7 +570,7 @@ function isCMDBTrackingRunning(setupTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 14:52:35</sys_updated_on>
+        <sys_updated_on>2020-06-17 14:39:04</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

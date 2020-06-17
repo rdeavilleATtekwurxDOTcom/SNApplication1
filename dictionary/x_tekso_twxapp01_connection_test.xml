@@ -3,6 +3,7 @@
         <element label="Aborted" max_length="40" name="aborted" type="boolean"/>
         <element label="Connection Status" max_length="40" name="connection_status" type="string"/>
         <element label="Connection Test Requested By" max_length="40" name="connection_test_requested_by" type="string"/>
+        <element label="Connection Test Triggered By" max_length="100" name="connection_test_triggered_by" type="string"/>
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
@@ -28,7 +29,6 @@
                 <element inactive_on_update="false" label="Timed Out" value="Timed Out"/>
             </choice>
         </element>
-        <element label="Test Connection Triggered By" max_length="100" name="test_connection_triggered_by" type="string"/>
         <element label="Timed Out" max_length="40" name="timed_out" type="boolean"/>
         <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>

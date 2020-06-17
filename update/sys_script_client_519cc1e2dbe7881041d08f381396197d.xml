@@ -69,14 +69,14 @@ function updateRecord() {
 			g_form.setLabelOf(fieldName,lbl);
 		}
 		
-		// If a field is sh_previous_ e.g. sh_previous_cmdb_tracking_details
-		// then their should be a twin - sh_cmdb_tracking_details		
+		// If a field is sh_previous_ e.g. sh_previous_cmdb_xxxx
+		// then their should be a twin - sh_cmdb_xxxx	
 		if (fieldName.substring(0,12) == 'sh_previous_') {
 			var field1 = fieldName.substring(12); // Strip off sh_previous_
-			// e.g. sh_previous_cmdb_tracking_details bececomes cmdb_tracking_details
+			// e.g. sh_previous_cmdb_xxxx bececomes cmdb_xxxx
 			
 			var field2 = 'sh_' + field1;
-			// the twin should be sh_ + field1 e.g. sh_cmdb_tracking_details
+			// the twin should be sh_ + field1 e.g. sh_cmdb_xxxx
 			// Check if the values in the two fields are different
 			if (g_form.getValue(fieldName) != g_form.getValue(field2)) {
 
@@ -108,7 +108,7 @@ function updateRecord() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>519cc1e2dbe7881041d08f381396197d</sys_id>
-        <sys_mod_count>54</sys_mod_count>
+        <sys_mod_count>55</sys_mod_count>
         <sys_name>Setup History Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -116,7 +116,7 @@ function updateRecord() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_519cc1e2dbe7881041d08f381396197d</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-04 15:36:06</sys_updated_on>
+        <sys_updated_on>2020-06-15 08:33:36</sys_updated_on>
         <table>x_tekso_twxapp01_setup_history</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

@@ -28,7 +28,6 @@
 
 	// Set fields ReadOnly
 	g_form.setReadOnly('status',true);   
-	g_form.setReadOnly('status_details',true);	
 	g_form.setReadOnly('status_error_details',true);		
 	
 	g_form.setReadOnly('start_sending_requested_at',true);
@@ -49,7 +48,6 @@
 	g_form.setReadOnly('cmdb_tracking_switched_off_at',true);
 	g_form.setReadOnly('cmdb_tracking_switched_off_by',true);
 
-	g_form.setReadOnly('cmdb_tracking_details',true);
 	g_form.setReadOnly('cmdb_tracking_error_details',true);	
 	g_form.setReadOnly('number_of_pending_records',true);	
 	g_form.setReadonly('ucontrol_mid_server.status',true);
@@ -153,9 +151,7 @@
 		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
 		
 		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";	
-		g_form.setDisplay('cmdb_tracking_details',true);
 		g_form.setDisplay('cmdb_tracking_error_details',false);		
-		g_form.getElement('cmdb_tracking_details').style.backgroundColor = "lightgreen";
 	}
 	
 	if (g_form.getValue('cmdb_tracking') == 'Off') {
@@ -169,9 +165,7 @@
 		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
 		
 		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
-		g_form.setDisplay('cmdb_tracking_details',true);
 		g_form.setDisplay('cmdb_tracking_error_details',false);
-		g_form.getElement('cmdb_tracking_details').style.backgroundColor = "Tomato";
 	}
 	
 	if (g_form.getValue('cmdb_tracking') == 'Error') {
@@ -180,20 +174,18 @@
 		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
 		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
 		
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";
-		g_form.setDisplay('cmdb_tracking_details',false);	
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
 		g_form.setDisplay('cmdb_tracking_error_details',true);			
 		g_form.getElement('cmdb_tracking_error_details').style.backgroundColor = "Tomato";			
 	}
 	
 	if (g_form.getValue('status') == 'Sending') {
 		g_form.getElement('status').style.backgroundColor = "lightgreen";
-		g_form.setDisplay('status_details',true); // Show
 		
-		g_form.setDisplay('start_sending_requested_at',true);
-		g_form.setDisplay('start_sending_requested_by',true);
-		g_form.setDisplay('status_set_to_sending_at',true);
-		g_form.setDisplay('status_set_to_sending_by',true);
+		g_form.setDisplay('start_sending_requested_at',true); // Show
+		g_form.setDisplay('start_sending_requested_by',true); // Show
+		g_form.setDisplay('status_set_to_sending_at',true); // Show
+		g_form.setDisplay('status_set_to_sending_by',true); // Show
 		g_form.setDisplay('status_set_to_not_sending_at',false); // Hide
 		g_form.setDisplay('status_set_to_not_sending_by',false); // Hide
 
@@ -202,8 +194,7 @@
 		g_form.getElement('status_set_to_sending_at').style.backgroundColor = "lightgreen";
 		g_form.getElement('status_set_to_sending_by').style.backgroundColor = "lightgreen";
 		
-		g_form.setDisplay('status_error_details',false); // Hide
-		g_form.getElement('status_details').style.backgroundColor = "lightgreen";		
+		g_form.setDisplay('status_error_details',false); // Hide		
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
 		g_form.setReadOnly('ucontrol_connection_timeout_minutes',true);
 		g_form.setReadOnly('max_retries',true); // Could do this via ACL?
@@ -211,7 +202,6 @@
 	}
 	else if (g_form.getValue('status') == 'Error') {
 		g_form.getElement('status').style.backgroundColor = "Tomato";
-		g_form.setDisplay('status_details',false); // Hide
 
 		g_form.setDisplay('start_sending_requested_at',false); // Hide
 		g_form.setDisplay('start_sending_requested_by',false); // Hide
@@ -229,7 +219,6 @@
 	else {
 		// Not Sending
 		g_form.getElement('status').style.backgroundColor = "Tomato";
-		g_form.setDisplay('status_details',true); // Show
 
 		g_form.setDisplay('start_sending_requested_at',false); // Hide
 		g_form.setDisplay('start_sending_requested_by',false); // Hide
@@ -241,7 +230,6 @@
 		g_form.getElement('status_set_to_not_sending_by').style.backgroundColor = "Tomato";
 		
 		g_form.setDisplay('status_error_details',false); // Hide
-		g_form.getElement('status_details').style.backgroundColor = "Tomato";	
 		g_form.setReadOnly('ucontrol_polling_interval_minutes',false); // Could do this via ACL?
 		g_form.setReadOnly('ucontrol_connection_timeout_minutes',false);
 		g_form.setReadOnly('max_retries',false); // Could do this via ACL?		
@@ -306,24 +294,6 @@
 		gdw.removeCloseDecoration();			
 		gdw.render();	
 	}
-
-	if (g_scratchpad.show_message_on_form_reload == 'x_tekso_twxapp01_stop_sending_message') {
-		var sysID2 = g_form.getUniqueValue();
-		
-		// Call script include function to clear show_message_on_form_reload
-		var ga2 = new GlideAjax('x_tekso_twxapp01.ClientUpdateSetup');//this is the script include
-		ga2.addParam("sysparm_name", "setShowMessageOnFormReloadToBlank"); //this is the function within the script include
-		ga2.addParam("sysparm_sys_id", sysID2);
-		ga2.getXML();
-		
-		var gdw2 = new GlideDialogWindow('x_tekso_twxapp01_stop_sending_message');
-		gdw2.setPreference('sysparm_sysid',sysID2);
-		//gdw.setPreference('sysparm_now',gdt);	
-		gdw2.setTitle('<h1><strong>Stop Sending To uControl</strong></h1>');
-		// To hide the x in the window
-		gdw2.removeCloseDecoration();		
-		gdw2.render();	
-	}
 	
 	if (g_scratchpad.show_message_on_form_reload == 'x_tekso_twxapp01_start_tracking_message') {
 		
@@ -352,11 +322,9 @@ function testConnectionIsRunning() {
 	fieldsToDisplayArr.push('ucontrol_url');
 	fieldsToDisplayArr.push('ucontrol_mid_server');
 	fieldsToDisplayArr.push('status');
-	fieldsToDisplayArr.push('status_details');
 	fieldsToDisplayArr.push('connection_status');
 	fieldsToDisplayArr.push('connection_status_details');
 	fieldsToDisplayArr.push('cmdb_tracking');
-    fieldsToDisplayArr.push('cmdb_tracking_details');
 	fieldsToDisplayArr.push('max_retries');
 	fieldsToDisplayArr.push('number_of_pending_records');
 	fieldsToDisplayArr.push('help');
@@ -398,11 +366,9 @@ function sendingStartingUp() {
 	fieldsToDisplayArr.push('ucontrol_mid_server');
 	fieldsToDisplayArr.push('ucontrol_integration_user'); // User	
 	fieldsToDisplayArr.push('status');
-	fieldsToDisplayArr.push('status_details');
 	fieldsToDisplayArr.push('connection_status');
 	fieldsToDisplayArr.push('connection_status_details');
 	fieldsToDisplayArr.push('cmdb_tracking');
-    fieldsToDisplayArr.push('cmdb_tracking_details');
 	fieldsToDisplayArr.push('max_retries');
 	fieldsToDisplayArr.push('number_of_pending_records');
 	fieldsToDisplayArr.push('help');
@@ -442,7 +408,7 @@ function sendingStartingUp() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>200</sys_mod_count>
+        <sys_mod_count>202</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -450,7 +416,7 @@ function sendingStartingUp() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-12 14:34:00</sys_updated_on>
+        <sys_updated_on>2020-06-15 12:24:01</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>
