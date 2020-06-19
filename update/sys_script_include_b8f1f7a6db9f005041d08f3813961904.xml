@@ -16,6 +16,90 @@ si.tableAndSysID(table,sys_id);
 
 var CheckRecordExists = Class.create();
 CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	
+	// Called by UI Action - List All CMDB Records Included In Job
+	listAllCMDBRecordsIncludedInJob: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_cmdb_changes';
+		var field = 'link_to_scheduled_job_log_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);		
+		return rtn;
+	},
+	
+	// Called by UI Action - List All CMDB Records In This JSON Block
+	listAllCMDBRecordsInThisJSONBlock: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_cmdb_changes';
+		var field = 'link_to_latest_rest_data_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);
+		return rtn;
+	},
+	
+	// Called by UI Action - List Processing Log Records
+	listProcessingLogRecords: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_processing_log';
+		var field = 'link_to_scheduled_job_log_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);
+		return rtn;
+	},
+
+	// Called by UI Action - List All REST Response Records For This - on REST Data
+	listAllRESTResponseRecordsForThisOnREST: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var field = 'link_to_rest_data_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);
+		return rtn;
+	},
+	
+	// Called by UI Action - List All REST Response Records For This - on Processing Log
+	listAllRESTResponseRecordsForThisOnProLog: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var field = 'link_to_processing_log_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);
+		return rtn;
+	},
+	
+	// Called by UI Action - List All REST Data Records In This Log
+	listAllRESTDataRecordsInThisLog: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var field = 'link_to_processing_log_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);
+		return rtn;
+	},
+	
+	// Called by UI Action - List All CMDB Records Included In Log
+	listAllCMDBRecordsIncludedInLog: function(sys_id) {
+		var tbl = 'x_tekso_twxapp01_cmdb_changes';
+		var field = 'link_to_processing_log_record';
+		var rtn = this.tableAndFieldAndSysID(tbl,field,sys_id);		
+		return rtn;
+	},
+	
+	// Used where we have a table e.g. x_tekso_twxapp01_cmdb_changes
+	// And there is a reference field e.g. link_to_processing_log_record
+	// Which is linking to the processing_log_record table
+	// If we have the sys_id from the processing_log_record table
+	// we want to check that x_tekso_twxapp01_cmdb_changes has some records
+	// where link_to_processing_log_record = sys_id
+	tableAndFieldAndSysID: function(table,field,sys_id) {
+		var rtn = false;
+		// Used in a UI Action to determine whether a button should be displayed	
+		// Check that we have got a sys_id and a table and a field
+		var sys_id_str = sys_id.toString();
+		var table_str = table.toString();		
+		var field_str = field.toString();	
+		if (sys_id_str.length == 32 && table_str.length > 0 && field_str.length > 0) {
+			var gr1 = new GlideRecord(table_str);
+			gr1.addQuery(field_str,sys_id_str);
+			gr1.query();
+			if (gr1.next()) {
+				// Record exists
+				rtn = true;
+			}
+		}
+		return rtn;			
+	},
+		
+	// Used where we have a table e.g. x_tekso_twxapp01_cmdb_deletes
+	// And we have a sys_id - so we can check that the record exists
 	tableAndSysID: function(table,sys_id){	
 		// Returns true if the sys_id exists in the table
 		// Used in a UI Action to determine whether a button should be displayed		
@@ -85,6 +169,7 @@ CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
 		}
 		return rtn;
 	},
+	
 	tableAndHigherNumber: function(table,number) {
 		// Returns true if the table contains at least one
 		// record where the number field is > number
@@ -116,13 +201,13 @@ CheckRecordExists.prototype = Object.extendsObject(global.AbstractAjaxProcessor,
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 12:32:43</sys_created_on>
         <sys_id>b8f1f7a6db9f005041d08f3813961904</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>20</sys_mod_count>
         <sys_name>CheckRecordExists</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_b8f1f7a6db9f005041d08f3813961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-11 16:23:31</sys_updated_on>
+        <sys_updated_on>2020-06-18 09:50:12</sys_updated_on>
     </sys_script_include>
 </record_update>

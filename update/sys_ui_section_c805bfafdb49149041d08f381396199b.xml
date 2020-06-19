@@ -308,6 +308,76 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>value</element>
+            <position>22</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-18 19:38:07</sys_created_on>
+            <sys_id>e9240e68dba910104f29252b1396195b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes" sys_domain="global" view="Default view">c805bfafdb49149041d08f381396199b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-18 19:38:07</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>value_length</element>
+            <position>23</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-18 19:38:37</sys_created_on>
+            <sys_id>49448e68dba910104f29252b139619d1</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes" sys_domain="global" view="Default view">c805bfafdb49149041d08f381396199b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-18 19:38:37</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>record_sys_id</element>
+            <position>24</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-18 19:40:56</sys_created_on>
+            <sys_id>b2c486a8dba910104f29252b13961928</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes" sys_domain="global" view="Default view">c805bfafdb49149041d08f381396199b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-18 19:40:56</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>updated_fields</element>
+            <position>25</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:00:01</sys_created_on>
+            <sys_id>d8bb7478dbe150104f29252b139619a6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes" sys_domain="global" view="Default view">c805bfafdb49149041d08f381396199b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:00:01</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>number</element>
+            <position>26</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:12:18</sys_created_on>
+            <sys_id>008ebcf8dbe150104f29252b139619ec</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes" sys_domain="global" view="Default view">c805bfafdb49149041d08f381396199b</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:12:18</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

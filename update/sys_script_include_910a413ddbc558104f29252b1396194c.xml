@@ -131,7 +131,7 @@ GenerateTestData.prototype = {
 			var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;
 			var numStarted2 = parseInt(numStarted);
 			
-			gr1.setWorkflow(false);
+			//gr1.setWorkflow(false);
 			if (data == 'delete_cmdb_ci_appl') {
 				gr1.setValue('build_delete_application_test_data_started',true);
 				gr1.setValue('build_delete_application_test_data_started_at',gdt);	
@@ -182,7 +182,7 @@ GenerateTestData.prototype = {
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {	
-			gr1.setWorkflow(false);
+			//gr1.setWorkflow(false);
 			var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;
 			var numCompleted2 = parseInt(numCompleted);
 			
@@ -233,7 +233,7 @@ GenerateTestData.prototype = {
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {
-			gr1.setWorkflow(false);
+			//gr1.setWorkflow(false);
 			var delRelQty = gr1.getValue('delete_relations_qty') || 0;				
 			var delServQty = gr1.getValue('delete_server_qty') || 0;				
 			var delApplQty = gr1.getValue('delete_application_qty') || 0;				
@@ -1610,13 +1610,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>34</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 15:23:42</sys_updated_on>
+        <sys_updated_on>2020-06-18 20:12:36</sys_updated_on>
     </sys_script_include>
 </record_update>

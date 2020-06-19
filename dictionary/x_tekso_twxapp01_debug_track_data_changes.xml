@@ -1,18 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Debug Track Data Changes" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes" sizeclass="70595" type="collection">
         <element label="Action" max_length="20" name="action" type="string"/>
-        <element label="Choice Field" max_length="40" name="choice_field" type="boolean"/>
-        <element label="Column Label" max_length="80" name="column_label" type="string"/>
-        <element label="Column Name" max_length="80" name="column_name" type="string"/>
-        <element label="Data Type" max_length="40" name="data_type" type="string"/>
-        <element default="0" label="Field Size" max_length="40" name="field_size" type="integer"/>
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
-        <element label="New Value" max_length="100" name="new_value" type="string"/>
-        <element default="0" label="New Value Length" max_length="40" name="new_value_length" type="integer"/>
-        <element label="Old Value" max_length="100" name="old_value" type="string"/>
-        <element default="0" label="Old Value Length" max_length="40" name="old_value_length" type="integer"/>
-        <element label="Reference To Table" max_length="80" name="reference_to_table" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
         <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
+        <element label="Updated Fields" max_length="1000" name="updated_fields" type="string"/>
     </element>
 </database>

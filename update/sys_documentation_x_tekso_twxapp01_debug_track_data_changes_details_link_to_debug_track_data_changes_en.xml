@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="link_to_debug_track_data_changes" label="Link To Debug Track Data Changes" language="en" table="x_tekso_twxapp01_debug_track_data_changes_details">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>link_to_debug_track_data_changes</element>
+            <help/>
+            <hint/>
+            <label>Link To Debug Track Data Changes</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_debug_track_data_changes_details</name>
+            <plural>Link To Debug Track Data Changes</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 13:34:04</sys_created_on>
+            <sys_id>526af17cdba550104f29252b139619f9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Link To Debug Track Data Changes</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_debug_track_data_changes_details_link_to_debug_track_data_changes_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 13:34:04</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

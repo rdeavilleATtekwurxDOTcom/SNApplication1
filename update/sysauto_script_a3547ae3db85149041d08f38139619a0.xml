@@ -17,20 +17,21 @@
 function deleteData(tbl) {
 	var gr1 = new GlideRecord(tbl);
 	gr1.query();
+	gr1.setWorkflow(false);
 	gr1.deleteMultiple();
 }]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-03 10:19:57</sys_created_on>
         <sys_id>a3547ae3db85149041d08f38139619a0</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Testing - Delete Debug Log</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a3547ae3db85149041d08f38139619a0</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 10:19:57</sys_updated_on>
+        <sys_updated_on>2020-06-17 17:27:58</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

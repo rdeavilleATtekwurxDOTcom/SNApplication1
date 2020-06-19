@@ -65,7 +65,8 @@
 	gr1.setValue('sh_cmdb_tracking_switched_off_by',current.cmdb_tracking_switched_off_by);	
 	gr1.setValue('sh_ucontrol_connection_timeout_minutes',current.ucontrol_connection_timeout_minutes);	
 	gr1.setValue('sh_update_criteria',current.update_criteria);
-	gr1.setValue('sh_delete_criteria',current.delete_criteria);		
+	gr1.setValue('sh_delete_criteria',current.delete_criteria);	
+	gr1.setValue('sh_inserted_by_script','BR Setup - Track Changes - Insert');
 	gr1.insert();
 
 })(current, previous);]]></script>
@@ -75,7 +76,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>8711a1a6db2b881041d08f38139619cc</sys_id>
-        <sys_mod_count>13</sys_mod_count>
+        <sys_mod_count>14</sys_mod_count>
         <sys_name>Setup - Track Changes - Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -83,7 +84,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_8711a1a6db2b881041d08f38139619cc</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 08:31:30</sys_updated_on>
+        <sys_updated_on>2020-06-19 12:56:36</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
     <sysauto_script action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition/>
         <conditional>false</conditional>
-        <name>Testing - Build Test cmdb_rel_ci Deletion</name>
+        <name>OBSOLETE - Testing - Build Test cmdb_rel_ci Deletion</name>
         <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
@@ -225,14 +225,14 @@ function zeroPad(number,maxSize) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 08:45:55</sys_created_on>
         <sys_id>e07d93addb4158104f29252b1396194a</sys_id>
-        <sys_mod_count>10</sys_mod_count>
-        <sys_name>Testing - Build Test cmdb_rel_ci Deletion</sys_name>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>OBSOLETE - Testing - Build Test cmdb_rel_ci Deletion</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_e07d93addb4158104f29252b1396194a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 12:34:09</sys_updated_on>
+        <sys_updated_on>2020-06-17 17:25:48</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

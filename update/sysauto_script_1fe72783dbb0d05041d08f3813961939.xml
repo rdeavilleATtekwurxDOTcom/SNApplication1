@@ -8,7 +8,7 @@
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
-        <run_period>1970-01-01 00:05:00</run_period>
+        <run_period>1970-01-01 00:02:00</run_period>
         <run_start>2020-05-20 14:31:47</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>periodically</run_type>
@@ -47,7 +47,8 @@ function main() {
 
 	// Two ways of calculating the next time
 	// 1: Get the current time and add on the run_period
-	// 2: Get the next_action from sys_trigger -- unfortunately this won't work because it is updated after the job ends
+	// 2: Get the next_action from sys_trigger -- unfortunately this won't work because it is 
+	//    updated after the job ends
 	//    The time retrieved is the time of the current run
 	calculatedNextJobStartTime.addSeconds(jobIntervalDurationSeconds);
 
@@ -56,8 +57,9 @@ function main() {
 	gr1.initialize();
 	gr1.setValue('inserted_by_script','SJ Send Data to uControl'); // Debug
 	gr1.setValue('next_run_at',calculatedNextJobStartTime);	
-	gr1.insert();
-
+	var jobSysID = gr1.insert();
+    var jobSysID2 = jobSysID.toString();
+	
 	// --Get the setup record and update ------------------------------------
 	var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
 	gr2.query();
@@ -99,7 +101,7 @@ function main() {
 	if (setupStatus == 'Sending') {
 		// Trigger an event to do the background processing -- seems to be about a 10 sec delay
 		// this will trigger a script action
-		gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, gs.getUserID(),calculatedNextJobStartTime);
+		gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, jobSysID2, calculatedNextJobStartTime);
 	} // if (setupStatus == 'Sending')
 	else {
 		gr1.setValue('setup_status',setupStatus);
@@ -181,14 +183,14 @@ function getNumberOfAllPendingRecords() {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>89</sys_mod_count>
+        <sys_mod_count>91</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 12:41:36</sys_updated_on>
+        <sys_updated_on>2020-06-18 13:33:28</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

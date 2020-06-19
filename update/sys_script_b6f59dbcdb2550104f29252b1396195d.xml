@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_debug_track_data_changes_details</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Debug Track Data Changes Details - A I</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[// ASYNC INSERT
+(function executeRule(current, previous /*null when async*/) {
+
+	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes_details';	
+	var action = current.action;
+	var action2 = action.toString();
+	if (action2 == 'update') {
+		var num = current.number;
+		var num2 = num.toString();
+		
+		var tbl = current.table_name;		
+		var tbl2 = tbl.toString();
+		
+		var recordSysID = current.record_sys_id;	
+		var recordSysID2 = recordSysID.toString();
+		
+		var colname = current.column_name;		
+		var colname2 = colname.toString();
+
+		var sysID = current.sys_id;		
+		var sysID2 = sysID.toString();
+		
+		// Find the previous record for this table/record/column
+		var gr1 = new GlideRecord(debugTable);
+		gr1.addQuery('table_name',tbl2); // Same table
+		gr1.addQuery('record_sys_id',recordSysID2); // Same record sys id
+		gr1.addQuery('column_name',colname2); // Same column
+		gr1.addQuery('sys_id','!=',sysID2); // Do not select itself
+		gr1.addQuery('number','<',num2); // Number <
+		gr1.orderByDesc('number'); // Order by number in descending order
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			// Got a previous record
+			var prevVal = gr1.getValue('value') || '';
+			var prevVal2 = prevVal.toString();
+
+			var prev2Val = gr1.getValue('previous_value') || '';
+			var prev2Val2 = prev2Val.toString();
+
+			var prev3Val = gr1.getValue('previous_value2') || '';
+			var prev3Val2 = prev3Val.toString();
+
+			var prev4Val = gr1.getValue('previous_value3') || '';
+			var prev4Val2 = prev4Val.toString();
+			
+			var gr2 = new GlideRecord(debugTable);
+			gr2.addQuery('sys_id',sysID2);
+			gr2.query();
+			if (gr2.next()) {
+				gr2.setWorkflow(false);
+				gr2.setValue('previous_value',prevVal2);
+				gr2.setValue('previous_value2',prev2Val2);	
+				gr2.setValue('previous_value3',prev3Val2);					
+				gr2.setValue('previous_value4',prev4Val2);	
+				gr2.update();
+			}
+		}
+	}
+
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-19 10:55:42</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>b6f59dbcdb2550104f29252b1396195d</sys_id>
+        <sys_mod_count>7</sys_mod_count>
+        <sys_name>Debug Track Data Changes Details - A I</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_b6f59dbcdb2550104f29252b1396195d</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-19 13:44:57</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=b6f59dbcdb2550104f29252b1396195d"/>
+</record_update>

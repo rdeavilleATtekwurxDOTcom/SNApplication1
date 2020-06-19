@@ -6,8 +6,8 @@
         <event_name>x_tekso_twxapp01.senddatatoucontrol</event_name>
         <name>SendDataTouControl</name>
         <order>100</order>
-        <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr2, gs.getUserID(),nextActionTime);
-//gr2 = x_tekso_twxapp01_scheduled_job_log record
+        <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, jobSysID2, calculatedNextJobStartTime);
+//gr1 = x_tekso_twxapp01_scheduled_job_log record
 
 SendDataToUControl();
 
@@ -20,7 +20,7 @@ function SendDataToUControl() {
 	var setupTable = 'x_tekso_twxapp01_setup';
 
 	var scriptStartTime = new GlideDateTime();	
-	var jobSysID = current.sys_id;
+	var jobSysID = event.parm1; //current.sys_id;
 	var nextRunAt = event.parm2; // The date/time the scheduled job is going to run next
 
 	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
@@ -1580,7 +1580,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>73</sys_mod_count>
+        <sys_mod_count>74</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1588,6 +1588,6 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-11 15:45:28</sys_updated_on>
+        <sys_updated_on>2020-06-18 13:34:43</sys_updated_on>
     </sysevent_script_action>
 </record_update>

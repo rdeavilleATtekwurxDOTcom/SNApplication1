@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_tekso_twxapp01_debug_track_data_changes_details" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>action</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>11564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>choice_field</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>95564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>column_label</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>19564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>column_name</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>3</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>99564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>data_type</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>4</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>1d564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>field_size</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>5</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>9d564db0db2550104f29252b13961925</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>inserted_by_script</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>6</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>11564db0db2550104f29252b13961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>record_sys_id</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>7</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>91564db0db2550104f29252b13961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>table_name</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>8</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>15564db0db2550104f29252b13961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>updated_by_script</element>
+            <list_id display_value="x_tekso_twxapp01_debug_track_data_changes_details" element="NULL" name="x_tekso_twxapp01_debug_track_data_changes_details" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">d1564db0db2550104f29252b13961924</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>9</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_id>95564db0db2550104f29252b13961926</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_tekso_twxapp01_debug_track_data_changes_details</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 09:46:31</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>d1564db0db2550104f29252b13961924</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_debug_track_data_changes_details</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_list_x_tekso_twxapp01_debug_track_data_changes_details_null</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 09:46:31</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

@@ -125,6 +125,7 @@
 		gr1.setValue('sh_ucontrol_connection_timeout_minutes',current.ucontrol_connection_timeout_minutes);		
 		gr1.setValue('sh_update_criteria',current.update_criteria);
 		gr1.setValue('sh_delete_criteria',current.delete_criteria);	
+		gr1.setValue('sh_inserted_by_script','BR Setup - Track Changes - Update');
 		
 		// For an update - capture the previous values as well
 		gr1.setValue('sh_previous_ucontrol_url',previous.ucontrol_url);
@@ -143,7 +144,7 @@
 		gr1.setValue('sh_previous_last_button_clicked',previous.last_button_clicked);
 		gr1.setValue('sh_previous_ucontrol_integration_user_is_valid',previous.ucontrol_integration_user_is_valid);
 		gr1.setValue('sh_previous_number_of_supported_classes',previous.number_of_supported_classes);	
-		gr1.setValue('sh_previous_status_was_sending_when_connection_failed',previous.status_was_sending_when_connection_failed);		gr1.setValue('sh_previous_status_was_sending_when_connection_failed_at',previous.status_was_sending_when_connection_failed_at);	
+		gr1.setValue('sh_previous_status_was_sending_when_connection_failed',previous.status_was_sending_when_connection_failed);		 gr1.setValue('sh_previous_status_was_sending_when_connection_failed_at',previous.status_was_sending_when_connection_failed_at);
 		gr1.setValue('sh_previous_connection_test_requested',previous.connection_test_requested);
 		gr1.setValue('sh_previous_connection_test_requested_at',previous.connection_test_requested_at);
 		gr1.setValue('sh_previous_connection_test_requested_by',previous.connection_test_requested_by);		
@@ -175,7 +176,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>46e26de6db2b881041d08f381396198e</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>Setup - Track Changes - Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -183,7 +184,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_46e26de6db2b881041d08f381396198e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 13:46:08</sys_updated_on>
+        <sys_updated_on>2020-06-19 12:58:29</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

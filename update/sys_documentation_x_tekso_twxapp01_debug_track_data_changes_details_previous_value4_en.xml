@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="previous_value4" label="Previous Value4" language="en" table="x_tekso_twxapp01_debug_track_data_changes_details">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>previous_value4</element>
+            <help/>
+            <hint/>
+            <label>Previous Value4</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_debug_track_data_changes_details</name>
+            <plural>Previous Value4s</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-19 13:16:20</sys_created_on>
+            <sys_id>7e5675b8dba550104f29252b1396199f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Previous Value4</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_debug_track_data_changes_details_previous_value4_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-19 13:16:20</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

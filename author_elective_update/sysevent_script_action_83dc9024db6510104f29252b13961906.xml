@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="DELETE">
+        <active>true</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.debugtrackdatainserts</event_name>
+        <name>DebugTrackDataInserts</name>
+        <order>100</order>
+        <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.debugtrackdatainserts', current, current.getTableName(), current.sys_id);
+
+DebugTrackDataInserts();
+
+function DebugTrackDataInserts() {
+	gs.info('Script Action - DebugTrackDataInserts');
+	
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 
+	
+	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
+	var action = 'insert';
+	var sysID = current.sys_id;
+	
+	//var tblName = current.getTableName();	
+	//var tblName2 = tblName.toString();
+	var tblName = event.parm1;
+	//event.parm2 current.sys_is is not used
+
+	var excludedArr = [];
+	excludedArr.push('sys_id');
+	excludedArr.push('sys_created_on');
+	excludedArr.push('sys_created_by');
+	excludedArr.push('sys_updated_on');
+	excludedArr.push('sys_updated_by');
+	excludedArr.push('sys_mod_count');
+	//excludedArr.push('sys_meta'); //causes getED() to crash
+	excludedArr.push('updated_by_script');
+	excludedArr.push('inserted_by_script');	
+
+	// There will be no previous values for an insert
+	for (var i in current){
+		//By default 'in' iterates over inherited properties as well
+		//Be aware that members that are added to the prototype of the object will be included in the enumeration. 
+		//It is wise to program defensively by using the hasOwnProperty method to distinguish the true 
+		//members of the object:
+		//hasOwnProperty returns a boolean value indicating whether the object on which you are calling it has a 
+		//property with the name of the argument.
+		//Using hasOwnPropery(property) filters-out these unnecessary looping through meta-informations
+		if (current.hasOwnProperty(i)) {				
+			if (excludedArr.indexOf(i) == -1) {
+				// put in a try / catch block as some fields e.g. sys_meta cause a problem
+				try {
+					var ielement = current.getElement(i);					
+					var idescriptor = ielement.getED();					
+					var isz = idescriptor.getLength();					
+					var ilbl = idescriptor.getLabel();					
+					var itp = idescriptor.getInternalType();					
+					var iisChoice = idescriptor.isChoiceTable();	
+					var ival = current.getElement(i);			
+					var ivalstr = '';				
+					var iln = 0;
+					var iref = '';
+
+					if (itp == 'reference') {
+						iref = idescriptor.getReference();			  
+					}
+					if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+						ivalstr = ival.toString();
+						iln = ivalstr.length;
+					}
+
+					if (itp == 'boolean') {
+						if (ival == true) {
+							ivalstr = 'true';
+						}
+						else {
+							ivalstr = 'false';
+						}
+					} //if (itp == 'boolean') {
+
+					// Check if this combination of data has been inserted recently
+					// We don't want to keep writing the same stuff to the table all the time
+					if (checkIfAlreadyInserted(action,tblName,i,ilbl,itp,isz,ivalstr,iref,iln) == false) {	
+						var gr1 = new GlideRecord(debugTable);
+						gr1.initialize();
+						gr1.setValue('action',action);
+						gr1.setValue('table_name',tblName);
+						gr1.setValue('column_name',i);
+						gr1.setValue('column_label',ilbl);
+						gr1.setValue('data_type',itp);
+						gr1.setValue('field_size',isz);
+						gr1.setValue('choice',iisChoice);
+						gr1.setValue('record_sys_id',sysID);
+						gr1.setValue('inserted_by_script',current.inserted_by_script);					
+						if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+							gr1.setValue('value_length',iln);							
+							gr1.setValue('value',ivalstr);							
+						}
+						if (itp == 'boolean') {
+							gr1.setValue('value',ivalstr);					
+						}
+						if (itp == 'reference') {
+							gr1.setValue('reference_to_table',iref);
+						}
+						gr1.insert();
+					}
+				} // try
+				catch(error) {
+					//Do nothing
+					var a = 1;
+				}
+			} // if (excludedArr.indexOf(i) == -1) {
+		} // if (current.hasOwnProperty(i)) {
+	} // for (var i in current){					
+}
+
+
+// Check if this combination of data has been inserted recently
+function checkIfAlreadyInserted(action,tblName,i,ilbl,itp,isz,ivalstr,iref,iln) {
+
+	var rtn = false;
+	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
+
+	var gr1 = new GlideRecord(debugTable);
+	// Find records created in last 15 minutes
+	gr1.addQuery('sys_created_on','>=', gs.minutesAgo(15));		
+	gr1.addQuery('action',action); // Action
+	gr1.addQuery('table_name',tblName); // Table
+	gr1.addQuery('column_name',i); // Column Name
+	gr1.addQuery('column_label',ilbl); // Column Label
+	gr1.addQuery('data_type',itp); // Data Type
+	gr1.addQuery('field_size',isz);	// Field Size
+	if (itp == 'string' || itp == 'reference' || itp == 'integer' || itp == 'boolean') {
+		gr1.addQuery('value',ivalstr); // Value
+	}
+
+	if (itp == 'reference') {
+		gr1.addQuery('reference_to_table',iref); //Reference sys_id
+	}
+
+	if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+		gr1.addQuery('value_length',iln); //Value length												
+	}
+
+	gr1.query();
+	if (gr1.next()) {
+		rtn = true;
+	}
+	return rtn;
+}
+]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-18 12:07:30</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>83dc9024db6510104f29252b13961906</sys_id>
+        <sys_mod_count>6</sys_mod_count>
+        <sys_name>DebugTrackDataInserts</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_83dc9024db6510104f29252b13961906</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-18 19:50:04</sys_updated_on>
+    </sysevent_script_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_script_action_83dc9024db6510104f29252b13961906</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;x_tekso_twxapp01.debugtrackdatainserts&lt;/event_name&gt;&lt;name&gt;DebugTrackDataInserts&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[//gs.eventQueue('x_tekso_twxapp01.debugtrackdatainserts', current, current.getTableName(), current.sys_id);
+
+DebugTrackDataInserts();
+
+function DebugTrackDataInserts() {
+	gs.info('Script Action - DebugTrackDataInserts');
+	
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 
+	
+	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
+	var action = 'insert';
+	var sysID = current.sys_id;
+	
+	//var tblName = current.getTableName();	
+	//var tblName2 = tblName.toString();
+	var tblName = event.parm1;
+	//event.parm2 current.sys_is is not used
+
+	var excludedArr = [];
+	excludedArr.push('sys_id');
+	excludedArr.push('sys_created_on');
+	excludedArr.push('sys_created_by');
+	excludedArr.push('sys_updated_on');
+	excludedArr.push('sys_updated_by');
+	excludedArr.push('sys_mod_count');
+	//excludedArr.push('sys_meta'); //causes getED() to crash
+	excludedArr.push('updated_by_script');
+	excludedArr.push('inserted_by_script');	
+
+	// There will be no previous values for an insert
+	for (var i in current){
+		//By default 'in' iterates over inherited properties as well
+		//Be aware that members that are added to the prototype of the object will be included in the enumeration. 
+		//It is wise to program defensively by using the hasOwnProperty method to distinguish the true 
+		//members of the object:
+		//hasOwnProperty returns a boolean value indicating whether the object on which you are calling it has a 
+		//property with the name of the argument.
+		//Using hasOwnPropery(property) filters-out these unnecessary looping through meta-informations
+		if (current.hasOwnProperty(i)) {				
+			if (excludedArr.indexOf(i) == -1) {
+				// put in a try / catch block as some fields e.g. sys_meta cause a problem
+				try {
+					var ielement = current.getElement(i);					
+					var idescriptor = ielement.getED();					
+					var isz = idescriptor.getLength();					
+					var ilbl = idescriptor.getLabel();					
+					var itp = idescriptor.getInternalType();					
+					var iisChoice = idescriptor.isChoiceTable();	
+					var ival = current.getElement(i);			
+					var ivalstr = '';				
+					var iln = 0;
+					var iref = '';
+
+					if (itp == 'reference') {
+						iref = idescriptor.getReference();			  
+					}
+					if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+						ivalstr = ival.toString();
+						iln = ivalstr.length;
+					}
+
+					if (itp == 'boolean') {
+						if (ival == true) {
+							ivalstr = 'true';
+						}
+						else {
+							ivalstr = 'false';
+						}
+					} //if (itp == 'boolean') {
+
+					// Check if this combination of data has been inserted recently
+					// We don't want to keep writing the same stuff to the table all the time
+					if (checkIfAlreadyInserted(action,tblName,i,ilbl,itp,isz,ivalstr,iref,iln) == false) {	
+						var gr1 = new GlideRecord(debugTable);
+						gr1.initialize();
+						gr1.setValue('action',action);
+						gr1.setValue('table_name',tblName);
+						gr1.setValue('column_name',i);
+						gr1.setValue('column_label',ilbl);
+						gr1.setValue('data_type',itp);
+						gr1.setValue('field_size',isz);
+						gr1.setValue('choice',iisChoice);
+						gr1.setValue('record_sys_id',sysID);
+						gr1.setValue('inserted_by_script',current.inserted_by_script);					
+						if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+							gr1.setValue('value_length',iln);							
+							gr1.setValue('value',ivalstr);							
+						}
+						if (itp == 'boolean') {
+							gr1.setValue('value',ivalstr);					
+						}
+						if (itp == 'reference') {
+							gr1.setValue('reference_to_table',iref);
+						}
+						gr1.insert();
+					}
+				} // try
+				catch(error) {
+					//Do nothing
+					var a = 1;
+				}
+			} // if (excludedArr.indexOf(i) == -1) {
+		} // if (current.hasOwnProperty(i)) {
+	} // for (var i in current){					
+}
+
+
+// Check if this combination of data has been inserted recently
+function checkIfAlreadyInserted(action,tblName,i,ilbl,itp,isz,ivalstr,iref,iln) {
+
+	var rtn = false;
+	var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
+
+	var gr1 = new GlideRecord(debugTable);
+	// Find records created in last 15 minutes
+	gr1.addQuery('sys_created_on','&gt;=', gs.minutesAgo(15));		
+	gr1.addQuery('action',action); // Action
+	gr1.addQuery('table_name',tblName); // Table
+	gr1.addQuery('column_name',i); // Column Name
+	gr1.addQuery('column_label',ilbl); // Column Label
+	gr1.addQuery('data_type',itp); // Data Type
+	gr1.addQuery('field_size',isz);	// Field Size
+	if (itp == 'string' || itp == 'reference' || itp == 'integer' || itp == 'boolean') {
+		gr1.addQuery('value',ivalstr); // Value
+	}
+
+	if (itp == 'reference') {
+		gr1.addQuery('reference_to_table',iref); //Reference sys_id
+	}
+
+	if (itp == 'string' || itp == 'reference' || itp == 'integer') {
+		gr1.addQuery('value_length',iln); //Value length												
+	}
+
+	gr1.query();
+	if (gr1.next()) {
+		rtn = true;
+	}
+	return rtn;
+}
+]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-18 12:07:30&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;83dc9024db6510104f29252b13961906&lt;/sys_id&gt;&lt;sys_mod_count&gt;6&lt;/sys_mod_count&gt;&lt;sys_name&gt;DebugTrackDataInserts&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_83dc9024db6510104f29252b13961906&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-18 19:50:04&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1063164503</payload_hash>
+        <record_name>DebugTrackDataInserts</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-18 19:50:04</sys_created_on>
+        <sys_id>b4e6c2e8dba910104f29252b13961947</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172c8fb314f0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-18 19:50:04</sys_updated_on>
+        <type>Script Action</type>
+        <update_guid>fce6c2e8f1a91010f76614cf4e92b146</update_guid>
+        <update_guid_history>fce6c2e8f1a91010f76614cf4e92b146:-1063164503,bce006a456a91010865c04a934218102:-378995781,b82082a490a91010c446053b2891efb8:544171388,bf5f796481a91010c1e535f84e1b4a61:2100810654,b7ec3d6059a910106f7ace17b430a3af:1952711250,2bcaa164cc69101051995639cb335305:756775488,700d18a079651010d9231685fca073a1:-702610167</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-19 10:32:32</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_script_action">sysevent_script_action</sys_db_object>
+        <sys_id>01b33965fe544d4d9bb47ec42bc68351</sys_id>
+        <sys_metadata>83dc9024db6510104f29252b13961906</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>DebugTrackDataInserts</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_script_action_83dc9024db6510104f29252b13961906</sys_update_name>
+        <sys_update_version display_value="sysevent_script_action_83dc9024db6510104f29252b13961906">b4e6c2e8dba910104f29252b13961947</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-19 10:32:32</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
