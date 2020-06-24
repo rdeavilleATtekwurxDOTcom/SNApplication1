@@ -39,7 +39,7 @@
 		var url = current.ucontrol_url.toString(); 		
 		if (midServerName.length > 0 && midServerSysID.length > 0 && url.length > 0 ) {
 			var setupTable = 'x_tekso_twxapp01_setup';
-			var gr1 = new GlideRecord(setupTable);
+			var gr1 = new GlideRecordSecure(setupTable);
 			gr1.addQuery('sys_id',sysID); // sys_id for the setup record
 			gr1.query();
 			if (gr1.next()) {
@@ -58,7 +58,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e390302fdb234c104f29252b13961921</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>Setup - When MID Server Or URL Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -66,7 +66,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_e390302fdb234c104f29252b13961921</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-15 10:43:42</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:44:25</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

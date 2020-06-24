@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments>Can only switch on if we have got a valid user</comments>
-        <condition>current.cmdb_tracking != 'Running' &amp;&amp; current.ucontrol_integration_user_is_valid == true &amp;&amp; current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.cmdb_tracking != 'Running' &amp;&amp; current.ucontrol_integration_user_is_valid == true &amp;&amp; current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,7 +28,11 @@
         <name>Start CMDB Tracking</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[current.cmdb_tracking = 'Running';
+        <script><![CDATA[var script = 'UI Action Start CMDB Tracking';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Start CMDB Tracking - Started');
+
+current.cmdb_tracking = 'Running';
 var gdt = new GlideDateTime();
 var usr = gs.getUserName();
 current.cmdb_tracking_switched_on_by = usr;
@@ -40,7 +44,10 @@ if (current.status != 'Sending') {
 }
 current.updated_by_script = 'UI Action Start CMDB Tracking';
 current.update();
-action.setRedirectURL(current);	]]></script>
+action.setRedirectURL(current);	
+
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Start CMDB Tracking - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -51,7 +58,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>867900a8db17481041d08f3813961930</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>Start CMDB Tracking</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -59,7 +66,7 @@ action.setRedirectURL(current);	]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_867900a8db17481041d08f3813961930</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 08:44:56</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:16:20</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

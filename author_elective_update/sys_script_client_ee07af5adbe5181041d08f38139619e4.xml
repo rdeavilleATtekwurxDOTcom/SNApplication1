@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="DELETE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>build_test_data_completed</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Generate Build Test Data Completed</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	if (isLoading || newValue === '') {
+      return;
+	}
+	
+	var fieldName1 = 'build_test_data_completed';
+	var fieldName2 = 'build_test_data_completed_at';
+	//Type appropriate comment here, and begin script below
+	if (newValue == 'true') {  //newValue is a string so needs to be 'true' not true
+		g_form.getElement(fieldName1).style.backgroundColor = "lightgreen";			
+		g_form.getElement(fieldName2).style.backgroundColor = "lightgreen";	
+   
+		// Set the field labels to be green
+		// Need to set flsh twice in order to get it to stick
+		// Do this before setting the fields readonly
+		g_form.flash(fieldName1, "lightgreen", 0);
+		g_form.flash(fieldName1, "lightgreen", 0);
+   
+		g_form.flash(fieldName2, "lightgreen", 0);
+		g_form.flash(fieldName2, "lightgreen", 0);	   
+	}
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-24 13:22:43</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ee07af5adbe5181041d08f38139619e4</sys_id>
+        <sys_mod_count>10</sys_mod_count>
+        <sys_name>Generate Build Test Data Completed</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_ee07af5adbe5181041d08f38139619e4</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-24 13:34:17</sys_updated_on>
+        <table>x_tekso_twxapp01_generate_test_data</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_client_ee07af5adbe5181041d08f38139619e4</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description/&gt;&lt;field&gt;build_test_data_completed&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Generate Build Test Data Completed&lt;/name&gt;&lt;order/&gt;&lt;script&gt;&lt;![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+	if (isLoading || newValue === '') {
+      return;
+	}
+	
+	var fieldName1 = 'build_test_data_completed';
+	var fieldName2 = 'build_test_data_completed_at';
+	//Type appropriate comment here, and begin script below
+	if (newValue == 'true') {  //newValue is a string so needs to be 'true' not true
+		g_form.getElement(fieldName1).style.backgroundColor = "lightgreen";			
+		g_form.getElement(fieldName2).style.backgroundColor = "lightgreen";	
+   
+		// Set the field labels to be green
+		// Need to set flsh twice in order to get it to stick
+		// Do this before setting the fields readonly
+		g_form.flash(fieldName1, "lightgreen", 0);
+		g_form.flash(fieldName1, "lightgreen", 0);
+   
+		g_form.flash(fieldName2, "lightgreen", 0);
+		g_form.flash(fieldName2, "lightgreen", 0);	   
+	}
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-24 13:22:43&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;ee07af5adbe5181041d08f38139619e4&lt;/sys_id&gt;&lt;sys_mod_count&gt;10&lt;/sys_mod_count&gt;&lt;sys_name&gt;Generate Build Test Data Completed&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_ee07af5adbe5181041d08f38139619e4&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-06-24 13:34:17&lt;/sys_updated_on&gt;&lt;table&gt;x_tekso_twxapp01_generate_test_data&lt;/table&gt;&lt;type&gt;onChange&lt;/type&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>2050107322</payload_hash>
+        <record_name>Generate Build Test Data Completed</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-24 13:34:17</sys_created_on>
+        <sys_id>966a639edbe5181041d08f38139619f1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>172e6894bf40000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-24 13:34:17</sys_updated_on>
+        <type>Client Script</type>
+        <update_guid>de6a639e37e518105856b48a037f0bf0</update_guid>
+        <update_guid_history>de6a639e37e518105856b48a037f0bf0:2050107322,3f3aab1e56e51810205c3a4bff5a6978:-663982975,cb2a2f5e27e51810d57ed6401e37694d:-1982590465,3929abda08e51810b29bd76246096d60:734998473,21c8631e57e51810ba4974be81e856fb:782373729,8198a7dabee51810aad9a44dab25fbde:1611993250,7878e7da07e51810d9e6d9e562a36884:683029662,b548e3da25e518108c33ed71eb0fbcb7:-1873132290,cd286b9a50e51810d02a818c62fcf85b:-500467187,d4f72fd61fe5181058f5a1d67b5636e0:-2094593002,0dc76fd674e51810a7d78d62af39091d:383123171</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-24 13:47:38</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_client">sys_script_client</sys_db_object>
+        <sys_id>830a495b64864bdca7ebde2cdc2af201</sys_id>
+        <sys_metadata>ee07af5adbe5181041d08f38139619e4</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Generate Build Test Data Completed</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Generate Test Data">87dd9511db48901041d08f3813961934</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_client_ee07af5adbe5181041d08f38139619e4</sys_update_name>
+        <sys_update_version display_value="sys_script_client_ee07af5adbe5181041d08f38139619e4">966a639edbe5181041d08f38139619f1</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-24 13:47:38</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

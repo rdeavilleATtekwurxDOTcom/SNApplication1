@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Testing - Check For Unused Fields</name>
+        <run_as/>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-06-22 12:22:43</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[var unusedTbl = 'x_tekso_twxapp01_debug_track_data_changes_unused_fields';
+deleteRecords(unusedTbl);
+CheckForUnusedFields('x_tekso_twxapp01_cmdb_deletes');
+CheckForUnusedFields('x_tekso_twxapp01_cmdb_updates');
+CheckForUnusedFields('x_tekso_twxapp01_setup'); 
+CheckForUnusedFields('x_tekso_twxapp01_cmdb_changes');
+CheckForUnusedFields('x_tekso_twxapp01_setup_history');
+CheckForUnusedFields('x_tekso_twxapp01_connection_test'); 
+CheckForUnusedFields('x_tekso_twxapp01_scheduled_job_log'); 
+CheckForUnusedFields('x_tekso_twxapp01_processing_log'); 
+CheckForUnusedFields('x_tekso_twxapp01_cmdb_link_to_rest_data');
+CheckForUnusedFields('x_tekso_twxapp01_rest_data_to_ucontrol');
+CheckForUnusedFields('x_tekso_twxapp01_generate_test_data');
+
+function CheckForUnusedFields(tbl) {
+	
+	var unusedTbl = 'x_tekso_twxapp01_debug_track_data_changes_unused_fields';
+	
+	var excludedArr = [];
+	excludedArr.push('sys_id');
+	excludedArr.push('sys_created_on');
+	excludedArr.push('sys_created_by');
+	excludedArr.push('sys_updated_on');
+	excludedArr.push('sys_updated_by');
+	excludedArr.push('sys_mod_count');
+	excludedArr.push('sys_tags');			
+	excludedArr.push('sys_meta'); 
+	excludedArr.push('updated_by_script');
+	excludedArr.push('inserted_by_script');	
+
+	var gr1 = new GlideRecordSecure('sys_dictionary');
+	gr1.addQuery('name',tbl);
+	gr1.addQuery('internal_type','!=','Collection');
+	gr1.query();
+	while(gr1.next()) {
+		var col = gr1.getValue('element') || '';
+		if (excludedArr.indexOf(col) == -1) {
+			var gr2 = new GlideRecordSecure('x_tekso_twxapp01_debug_track_data_changes_details');
+			gr2.addQuery('table_name',tbl);
+			gr2.addQuery('column_name',col);
+			gr2.addQuery('action','update'); // Only if updated
+			gr2.query();
+			if (!gr2.next()) {
+				var gr3 = new GlideRecordSecure(unusedTbl);
+				gr3.initialize();
+				gr3.setValue('table_name',tbl);
+				gr3.setValue('column_name',col);
+				gr3.insert();
+			}
+		}
+	}
+}
+
+function deleteRecords(tbl) {
+	var gr1 = new GlideRecordSecure(tbl);
+	gr1.deleteMultiple();
+}
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-22 12:26:21</sys_created_on>
+        <sys_id>a6d6097ddb6954104f29252b13961940</sys_id>
+        <sys_mod_count>14</sys_mod_count>
+        <sys_name>Testing - Check For Unused Fields</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_a6d6097ddb6954104f29252b13961940</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-06-24 11:03:14</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

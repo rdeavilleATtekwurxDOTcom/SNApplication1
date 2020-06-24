@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Debug Track Data Changes Selected Records" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes_selected_records" type="collection">
+        <element label="Base Table" max_length="80" name="base_table" type="string"/>
+        <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
+        <element label="Table Name" max_length="80" name="table_name" type="string"/>
+    </element>
+</database>

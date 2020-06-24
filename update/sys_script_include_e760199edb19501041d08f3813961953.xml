@@ -25,7 +25,7 @@ ConnectionTest.prototype = {
 		
 		// Check if there is already a record pending
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-		var gr1 = new GlideRecord(connectionTestTable);
+		var gr1 = new GlideRecordSecure(connectionTestTable);
 		gr1.addQuery('setup_record',setupSysID);
 		gr1.addQuery('ucontrol_url',url);
 		gr1.addQuery('ucontrol_mid_server_name',midSrvrName);
@@ -61,7 +61,7 @@ ConnectionTest.prototype = {
 			var timeoutSeconds = timeoutMinutes * 60;
 			gdt.addSeconds(timeoutSeconds);
 		
-			var gr2 = new GlideRecord(connectionTestTable);
+			var gr2 = new GlideRecordSecure(connectionTestTable);
 			gr2.initialize();
 			gr2.setValue('status','Pending');
 			gr2.setValue('setup_record',setupSysID);
@@ -91,13 +91,13 @@ ConnectionTest.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-11 16:26:07</sys_created_on>
         <sys_id>e760199edb19501041d08f3813961953</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>ConnectionTest</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
-        <sys_policy>read</sys_policy>
+        <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e760199edb19501041d08f3813961953</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 09:41:41</sys_updated_on>
+        <sys_updated_on>2020-06-24 21:48:52</sys_updated_on>
     </sys_script_include>
 </record_update>

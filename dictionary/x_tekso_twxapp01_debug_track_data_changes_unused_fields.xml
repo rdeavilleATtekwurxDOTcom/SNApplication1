@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Debug Track Data Changes Unused Fields" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes_unused_fields" type="collection">
+        <element label="Column Name" max_length="80" name="column_name" type="string"/>
+        <element label="Table Name" max_length="80" name="table_name" type="string"/>
+    </element>
+</database>

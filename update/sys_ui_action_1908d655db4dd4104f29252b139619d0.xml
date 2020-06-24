@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition/>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin')</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,9 +28,13 @@
         <name>Export JSON To A Txt Attachment</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+        <script><![CDATA[var script = 'UI Action Export JSON To A Txt Attachment';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Export JSON To A Txt Attachment - Started');
+
+var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 var filename = current.number + '_json.txt';
-var gr1 = new GlideRecord('sys_attachment');
+var gr1 = new GlideRecordSecure('sys_attachment');
 gr1.addQuery('content_type','text/plain');
 gr1.addQuery('file_name',filename);
 gr1.addQuery('table_name',dataTable);
@@ -41,7 +45,11 @@ if (!gr1.next())	{
 	var gsa = new GlideSysAttachment(); 
 	var attachmentId = gsa.write(current,filename, 'text/plain',current.json_request_body);
 }
-action.setRedirectURL(current);]]></script>
+
+action.setRedirectURL(current);
+
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Export JSON To A Txt Attachment - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -52,7 +60,7 @@ action.setRedirectURL(current);]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>1908d655db4dd4104f29252b139619d0</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>Export JSON To A Txt Attachment</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -60,7 +68,7 @@ action.setRedirectURL(current);]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_1908d655db4dd4104f29252b139619d0</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-27 13:50:33</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:12:53</sys_updated_on>
         <table>x_tekso_twxapp01_rest_data_to_ucontrol</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

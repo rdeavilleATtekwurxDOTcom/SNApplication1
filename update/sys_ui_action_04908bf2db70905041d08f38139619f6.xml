@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments>On Processing Log Table</comments>
-        <condition>new x_tekso_twxapp01.CheckRecordExists().tableAndSysID('x_tekso_twxapp01_scheduled_job_log',current.link_to_scheduled_job_log_record);</condition>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().tableAndSysID('x_tekso_twxapp01_scheduled_job_log',current.link_to_scheduled_job_log_record)</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,11 +28,18 @@
         <name>Open Scheduled Job Record</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var sys_id = current.link_to_scheduled_job_log_record;
+        <script><![CDATA[var script = 'UI Action Open Scheduled Job Record';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Open Scheduled Job Record - Started');
+
+var sys_id = current.link_to_scheduled_job_log_record;
 var url = 'x_tekso_twxapp01_scheduled_job_log.do?sys_id=' + sys_id;
 action.setRedirectURL(url);
 // Return here afterwards
-action.setReturnURL(current);]]></script>
+action.setReturnURL(current);
+
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Open Scheduled Job Record - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -43,7 +50,7 @@ action.setReturnURL(current);]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>04908bf2db70905041d08f38139619f6</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Open Scheduled Job Record</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -51,7 +58,7 @@ action.setReturnURL(current);]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_04908bf2db70905041d08f38139619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-25 20:17:14</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:37:48</sys_updated_on>
         <table>x_tekso_twxapp01_processing_log</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

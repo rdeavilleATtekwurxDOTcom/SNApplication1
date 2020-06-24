@@ -43,7 +43,6 @@
 	// been triggered - so don't run again
 	
 	var sys_id = current.sys_id;
-	var genTable = 'x_tekso_twxapp01_generate_test_data';
 	
 	var del_srv_qty = current.delete_server_qty;			
 	var del_appl_qty = current.delete_application_qty;	
@@ -55,11 +54,6 @@
 	var upd_srv_fill = current.update_server_completely_fill_string_fields;
 	var upd_appl_inc = current.update_application_include_all_fields;
 	var upd_appl_fill = current.update_application_completely_fill_string_fields;
-	
-	var includeAllFields = false;
-	var completelyFillStrings = false;
-	var data = '';
-	var qty = 0;
 	
 	if (del_srv_qty < 0) {
 		del_srv_qty = 0;
@@ -118,7 +112,7 @@
 	}
 	
 	if (upd_appl_qty > 0) {
-		// Cap at 10,000
+		// Cap at 2000
 		if (upd_appl_qty > 2000) {
 			upd_appl_qty = 2000;
 		}
@@ -126,7 +120,7 @@
 	}
 	
 	if (upd_rel_qty > 0) {
-		// Cap at 10,000
+		// Cap at 2000
 		if (upd_rel_qty > 2000) {
 			upd_rel_qty = 2000;
 		}
@@ -143,7 +137,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>fea12ebfdb84d81041d08f38139619d1</sys_id>
-        <sys_mod_count>58</sys_mod_count>
+        <sys_mod_count>59</sys_mod_count>
         <sys_name>Generate Test Data - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -151,7 +145,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_fea12ebfdb84d81041d08f38139619d1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-01 11:36:47</sys_updated_on>
+        <sys_updated_on>2020-06-22 11:49:54</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

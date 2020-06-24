@@ -55,7 +55,7 @@ function getUserSysID(userName) {
 	var userName2 = userName.toString();
 	var rtnSysID = '';
 	if (userName2.length > 0){
-		var gr1 = new GlideRecord('sys_user');
+		var gr1 = new GlideRecordSecure('sys_user');
 		gr1.addQuery('user_name',userName2);
 		gr1.query();
 		if (gr1.next()) {
@@ -75,7 +75,7 @@ function isCMDBTrackingRunning(setupTable) {
 	// Default to Off
 	var cmdbTracking = 'Off';
 
-	var gr1 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	var gr1 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 	gr1.query();
 	if (gr1.next()) {
 		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
@@ -98,7 +98,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	// Ensure that this is a string
 	var tblName2 = tblName.toString();
 	if (tblName2.length > 0) {
-		var gr1 = new GlideRecord(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
+		var gr1 = new GlideRecordSecure(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
 		gr1.addQuery('class',tblName2);
 		gr1.query();
 		if (gr1.next()) {
@@ -187,7 +187,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var gotConfigUsr = false;
 	
 	// Read the Config Table
-	var gr1 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	var gr1 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 	gr1.query();
 	if (gr1.next()) {
 		//Cannot do dot walking with getValue
@@ -430,7 +430,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 			var jsonRequestBody = '{' + data + '}';	
 			
-			var gr2 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+			var gr2 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 			gr2.initialize();
 			gr2.setValue('action',action);
 			if (action == 'update') {
@@ -498,7 +498,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 			// Only update if the status field is blank - this should stop the risk of the BR's looping
 			if (thisRecordStatus.length < 1) {
-				var gr3 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_deletes
+				var gr3 = new GlideRecordSecure(thisTable); //x_tekso_twxapp01_cmdb_deletes
 				gr3.addQuery('sys_id',thisRecordSysID);
 				gr3.query();
 				if (gr3.next()) {
@@ -530,7 +530,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	} //if (supportedClass == true)
 	
 	if (matchedCriteriaForProcessing == false && thisRecordStatus.length < 1) {
-		var gr4 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_deletes
+		var gr4 = new GlideRecordSecure(thisTable); //x_tekso_twxapp01_cmdb_deletes
 		gr4.addQuery('sys_id',thisRecordSysID);
 		gr4.query();
 		if (gr4.next()) {
@@ -562,7 +562,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>70</sys_mod_count>
+        <sys_mod_count>71</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -570,7 +570,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 14:39:04</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:53:08</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

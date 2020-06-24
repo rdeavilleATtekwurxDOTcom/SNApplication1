@@ -28,13 +28,20 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 		
 		//source_record_sys_id = this is the sys_id of the cmdb record thst has been updated\deleted e.g. cmdb_ci_win_server
 		//link_to_processing_record = this is the sys_id of cmdb_changes
-	
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
+
+		var gr1 = new GlideAggregate('x_tekso_twxapp01_cmdb_link_to_rest_data');
 		gr1.addQuery('link_to_processing_record',link_to_processing_record);
 		gr1.addQuery('source_record_sys_id',source_record_sys_id);
-		gr1.orderBy('sys_created_on'); // Earliest first, latest last
+		gr1.addAggregate('COUNT');
 		gr1.query();
-		var cnt = gr1.getRowCount();
+		gr1.next(); // GlideAggregate needs the .next()
+		var cnt = gr1.getAggregate('COUNT');
+		
+		var gr2 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_link_to_rest_data');
+		gr2.addQuery('link_to_processing_record',link_to_processing_record);
+		gr2.addQuery('source_record_sys_id',source_record_sys_id);
+		gr2.orderBy('sys_created_on'); // Earliest first, latest last
+		gr2.query();
 		var rowcnt = 1;
 		var first_sys_id = '';
 		var last_sys_id = '';
@@ -43,14 +50,14 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 		// Only 1 record
 		if (cnt == 1) {
 			// Only 1 record first = true, last = true
-			if (gr1.next()) {
-				gr1.setValue('first_process_record',true);
-				gr1.setValue('latest_process_record',true);
-				gr1.setValue('link_to_previous_record','');
-				gr1.setValue('link_to_next_record','');	
-				gr1.setValue('send_to_ucontrol_attempt_no',1);
-				gr1.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
-				gr1.update();			
+			if (gr2.next()) {
+				gr2.setValue('first_process_record',true);
+				gr2.setValue('latest_process_record',true);
+				gr2.setValue('link_to_previous_record','');
+				gr2.setValue('link_to_next_record','');	
+				gr2.setValue('send_to_ucontrol_attempt_no',1);
+				gr2.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
+				gr2.update();			
 			}
 		} // if (cnt == 1)
 
@@ -58,11 +65,11 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 		if (cnt == 2) {
 			// 2 records
 			rowcnt = 1;
-			while (gr1.next()) {
+			while (gr2.next()) {
 				if (rowcnt == 1) {
 					// Get first sys_id
-					first_sys_id = gr1.sys_id.toString();
-					attempt_no = gr1.getValue('send_to_ucontrol_attempt_no') || 0;
+					first_sys_id = gr2.sys_id.toString();
+					attempt_no = gr2.getValue('send_to_ucontrol_attempt_no') || 0;
 					if (attempt_no < 1) {
 						attempt_no = 1;
 					}
@@ -70,37 +77,16 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 				}
 				if (rowcnt == 2) {
 					// Get second sys_id
-					last_sys_id = gr1.sys_id.toString();
+					last_sys_id = gr2.sys_id.toString();
 				}
 				rowcnt++;
 			} // while
 			// Set first record to point to last record
-			var gr2 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
-			gr2.addQuery('sys_id',first_sys_id);
-			gr2.query();
-			if (gr2.next()) {
-				gr2.setValue('first_process_record',true);
-				gr2.setValue('latest_process_record',false);
-				gr2.setValue('link_to_previous_record','');
-				gr2.setValue('link_to_next_record',last_sys_id);
-				gr2.setValue('send_to_ucontrol_attempt_no',attempt_no);
-				gr2.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
-				gr2.update();				
-			}
+			this.firstToLast(first_sys_id,last_sys_id,attempt_no);
+
 			// Set last record to point to first record
 			attempt_no++;
-			var gr3 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
-			gr3.addQuery('sys_id',last_sys_id);
-			gr3.query();
-			if (gr3.next()) {
-				gr3.setValue('first_process_record',false);
-				gr3.setValue('latest_process_record',true);
-				gr3.setValue('link_to_previous_record',first_sys_id);
-				gr3.setValue('link_to_next_record','');	
-				gr3.setValue('send_to_ucontrol_attempt_no',attempt_no);
-				gr3.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug					
-				gr3.update();				
-			}		
+			this.lastToFirst(first_sys_id,last_sys_id,attempt_no);		
 		} // if (cnt == 2)
 
 		// More than 2 records
@@ -110,16 +96,16 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 			first_sys_id = '';
 			last_sys_id = '';
 			attempt_no = 0;
-			while (gr1.next()) {
+			while (gr2.next()) {
 				if (rowcnt == 1) {
 					// First record
-					first_sys_id = gr1.sys_id.toString();
-					attempt_no = gr1.getValue('send_to_ucontrol_attempt_no') || 0;
+					first_sys_id = gr2.sys_id.toString();
+					attempt_no = gr2.getValue('send_to_ucontrol_attempt_no') || 0;
 					if (attempt_no < 1) {
 						attempt_no = 1;
 					}
 				}
-				last_sys_id = gr1.sys_id.toString();
+				last_sys_id = gr2.sys_id.toString();
 				sys_id_arr.push(last_sys_id); // Put the sys_id into an array
 				rowcnt++;
 			} // while	
@@ -153,35 +139,67 @@ SetPrevNextRecordsForCMDBLinkToREST.prototype = {
 					isLast = false;
 				}
 
-				var gr4 = new GlideRecord('x_tekso_twxapp01_cmdb_link_to_rest_data');
-				gr4.addQuery('sys_id',sys_id);
-				gr4.query();
-				if (gr4.next()) {
-					gr4.setValue('first_process_record',isFirst);
-					gr4.setValue('latest_process_record',isLast);
-					gr4.setValue('link_to_previous_record',prev_sys_id);
-					gr4.setValue('link_to_next_record',next_sys_id);	
-					gr4.setValue('send_to_ucontrol_attempt_no',attempt_no);
-					gr4.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
-					gr4.update();
+				var gr3 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_link_to_rest_data');
+				gr3.addQuery('sys_id',sys_id);
+				gr3.query();
+				if (gr3.next()) {
+					gr3.setValue('first_process_record',isFirst);
+					gr3.setValue('latest_process_record',isLast);
+					gr3.setValue('link_to_previous_record',prev_sys_id);
+					gr3.setValue('link_to_next_record',next_sys_id);	
+					gr3.setValue('send_to_ucontrol_attempt_no',attempt_no);
+					gr3.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
+					gr3.update();
 					attempt_no++;
 				}
 			} // for		
 		} // if (cnt > 2)}	
 	},
+	
+	firstToLast: function(first_sys_id,last_sys_id,attempt_no) {
+		// Set first record to point to last record
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_link_to_rest_data');
+		gr1.addQuery('sys_id',first_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('first_process_record',true);
+			gr1.setValue('latest_process_record',false);
+			gr1.setValue('link_to_previous_record','');
+			gr1.setValue('link_to_next_record',last_sys_id);
+			gr1.setValue('send_to_ucontrol_attempt_no',attempt_no);
+			gr1.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug	
+			gr1.update();				
+		}		
+	},
+	
+	lastToFirst: function(first_sys_id,last_sys_id,attempt_no) {
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_link_to_rest_data');
+		gr1.addQuery('sys_id',last_sys_id);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('first_process_record',false);
+			gr1.setValue('latest_process_record',true);
+			gr1.setValue('link_to_previous_record',first_sys_id);
+			gr1.setValue('link_to_next_record','');	
+			gr1.setValue('send_to_ucontrol_attempt_no',attempt_no);
+			gr1.setValue('updated_by_script','SI SetPrevNextRecordsForCMDBLinkToREST'); // Debug					
+			gr1.update();				
+		}			
+	},
+	
     type: 'SetPrevNextRecordsForCMDBLinkToREST'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 15:49:39</sys_created_on>
         <sys_id>0b2e503edb13405041d08f3813961968</sys_id>
-        <sys_mod_count>10</sys_mod_count>
+        <sys_mod_count>12</sys_mod_count>
         <sys_name>SetPrevNextRecordsForCMDBLinkToREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_0b2e503edb13405041d08f3813961968</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-06 13:22:25</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:56:09</sys_updated_on>
     </sys_script_include>
 </record_update>

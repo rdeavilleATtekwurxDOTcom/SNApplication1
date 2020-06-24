@@ -7,7 +7,27 @@
         <client_callable>true</client_callable>
         <description/>
         <name>ClientReadSetupRecord</name>
-        <script><![CDATA[var ClientReadSetupRecord = Class.create();
+        <script><![CDATA[/* Example calling - client side
+
+	// Use a script include to check the current connnection_status	
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientReadSetupRecord');
+	ga.addParam('sysparm_name','getConnectionStatus');
+	ga.addParam("sysparm_sys_id", sysID);
+	ga.getXML(callBack);
+
+}
+
+// This is the return from the script include
+function callBack(response){
+	var connectionStatus = response.responseXML.documentElement.getAttribute("answer");
+	if (connectionStatus == 'OK' || connectionStatus == 'Failed') {
+		g_form.save();
+	}
+}
+
+*/
+
+var ClientReadSetupRecord = Class.create();
 ClientReadSetupRecord.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
 	getConnectionStatus: function() {
@@ -15,7 +35,7 @@ ClientReadSetupRecord.prototype = Object.extendsObject(global.AbstractAjaxProces
 		var sysID = this.getParameter('sysparm_sys_id');
 		var connectionStatus = '';
 		var setupTable = 'x_tekso_twxapp01_setup';
-		var gr1 = new GlideRecord(setupTable);
+		var gr1 = new GlideRecordSecure(setupTable);
 		gr1.addQuery('sys_id',sysID);
 		gr1.query();
 		if (gr1.next()) {
@@ -30,13 +50,13 @@ ClientReadSetupRecord.prototype = Object.extendsObject(global.AbstractAjaxProces
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-06 12:31:57</sys_created_on>
         <sys_id>f4c5a449db08501041d08f3813961960</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>ClientReadSetupRecord</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_f4c5a449db08501041d08f3813961960</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-02 10:54:25</sys_updated_on>
+        <sys_updated_on>2020-06-24 12:58:15</sys_updated_on>
     </sys_script_include>
 </record_update>

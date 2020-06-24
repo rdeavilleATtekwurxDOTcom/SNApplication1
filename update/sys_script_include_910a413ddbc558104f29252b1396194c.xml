@@ -16,83 +16,54 @@ GenerateTestData.prototype = {
 		var srvTable = 'x_tekso_twxapp01_test_server';
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';	
 		var applTable = 'x_tekso_twxapp01_test_application';	
-		
-		var gr1 = new GlideRecord(applTable);
+				
+		var gr1 = new GlideAggregate(applTable);
+		gr1.addAggregate('COUNT');
 		gr1.query();
-		var rowCnt1 = gr1.getRowCount();
+		gr1.next(); // GlideAggregate needs the .next()
+		var rowCnt1 = gr1.getAggregate('COUNT');
 		
-		var gr2 = new GlideRecord(srvTable);
+		var gr2 = new GlideAggregate(srvTable);
+		gr2.addAggregate('COUNT');
 		gr2.query();
-		var rowCnt2 = gr2.getRowCount();
+		gr2.next(); // GlideAggregate needs the .next()
+		var rowCnt2 = gr2.getAggregate('COUNT');
 		
-		var gr3 = new GlideRecord(relTable);
+		var gr3 = new GlideAggregate(relTable);
+		gr3.addAggregate('COUNT');
 		gr3.query();
-		var rowCnt3 = gr3.getRowCount();	
+		gr3.next(); // GlideAggregate needs the .next()
+		var rowCnt3 = gr3.getAggregate('COUNT');
 		
 		if (rowCnt1 < 1 || rowCnt2 < 2 || rowCnt3 < 3) {
 			new x_tekso_twxapp01.BuildTestData().buildTestData();
 		}
 	},
-/*
-	test_data_records_already_pending_is_below_threshold: function(threshold,gen_sys_id) {
-		// This is used in a ui action condition 'Save & Build Test Data; so can only return true or false
-		// Pass in the threshold level e.g. 1000 records
-		// Then we see if how many records are already pendiing
-		// If it is < than threshold then return true
-		// Otherwise return false
-		var rtn = false;
-		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
-
-		var gr1 = new GlideRecord(dataTable);
-		gr1.addQuery('status','Pending');
-		gr1.addQuery('test_data',true);
-		gr1.addQuery('generate_test_data_record_sys_id','!=',gen_sys_id);
-		gr1.query();
-		var rowCnt = gr1.getRowCount();
-		if (rowCnt < threshold) {
-			rtn = true;
-		}
-		return rtn;
-	},
-	//Called like this:
-	//new x_tekso_twxapp01.GenerateTestData().test_data_records_already_pending_is_below_threshold(1000,current.sys_id)
-*/	
+	
 	number_of_test_data_records_already_pending: function(gen_sys_id) {
 		// Get the number of test data records
 		// that are already pending from other test runs
 		var rtn = 0;
 		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
 
-		var gr1 = new GlideRecord(dataTable);
+		var gr1 = new GlideAggregate(dataTable);
 		gr1.addQuery('status','Pending');
 		gr1.addQuery('test_data',true);
 		gr1.addQuery('generate_test_data_record_sys_id','!=',current.sys_id);
+		gr1.addAggregate('COUNT');
 		gr1.query();
-		rtn = gr1.getRowCount();
-		return rtn;
+		gr1.next(); // GlideAggregate needs the .next()
+		rtn = gr1.getAggregate('COUNT');		
 	},
 	//Called like this:
 	//new x_tekso_twxapp01.GenerateTestData().number_of_test_data_records_already_pending(current.sys_id)
-/*
-	number_of_generate_test_data_records_already_building: function(gen_sys_id) {
-		var rtn = 0;
-		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gr1 = new GlideRecord(genTable);
-		gr1.addQuery('sys_id','!=',gen_sys_id);
-		gr1.addQuery('status','Test Data Build In Progress');		
-		gr1.query();	
-		rtn = gr1.getRowCount();
-		return rtn;
-	},
-	//Called like this:
-	//new x_tekso_twxapp01.GenerateTestData().number_of_generate_test_data_records_already_building(current.sys_id)
-*/	
+	
 	generate_already_started: function(gen_sys_id,data) {
 		// Checks to see if the flag build_delete_application_test_data_started etc
 		// has already been set to true
 		var rtn = false;
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gr1 = new GlideRecord(genTable);
+		var gr1 = new GlideRecordSecure(genTable);
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -124,7 +95,7 @@ GenerateTestData.prototype = {
 		// Set the start flag and start date/time
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecord(genTable);
+		var gr1 = new GlideRecordSecure(genTable);
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -178,7 +149,7 @@ GenerateTestData.prototype = {
 		// Sets the completed flag and the completed date/time
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecord(genTable);
+		var gr1 = new GlideRecordSecure(genTable);
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {	
@@ -229,7 +200,7 @@ GenerateTestData.prototype = {
 		// or is there other stuff that is still outstanding
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecord(genTable);
+		var gr1 = new GlideRecordSecure(genTable);
 		gr1.addQuery('sys_id',gen_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -336,7 +307,7 @@ GenerateTestData.prototype = {
 
 		var gdt = new GlideDateTime();	
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_deletes');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -344,7 +315,7 @@ GenerateTestData.prototype = {
 		var createdOn = new GlideDateTime();
 		var updatedBy = gs.getUserName();
 		var updatedOn = new GlideDateTime();
-		var gr2 = new GlideRecord(testTableName); //x_tekso_twxapp01_test_application
+		var gr2 = new GlideRecordSecure(testTableName); //x_tekso_twxapp01_test_application
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -513,7 +484,7 @@ GenerateTestData.prototype = {
 
 		var gdt = new GlideDateTime();	
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_deletes');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -521,7 +492,7 @@ GenerateTestData.prototype = {
 		var createdOn = new GlideDateTime();
 		var updatedBy = gs.getUserName();
 		var updatedOn = new GlideDateTime();	
-		var gr2 = new GlideRecord(testTableName); //x_tekso_twxapp01_test_server
+		var gr2 = new GlideRecordSecure(testTableName); //x_tekso_twxapp01_test_server
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -706,7 +677,7 @@ GenerateTestData.prototype = {
 
 		var gdt = new GlideDateTime();	
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_deletes');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -718,7 +689,7 @@ GenerateTestData.prototype = {
 		var childSysID = '';
 		var typeSysID = '';
 		var typeName = '';
-		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_ci_relationship
+		var gr2 = new GlideRecordSecure(testTableName); // x_tekso_twxapp01_test_ci_relationship
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -851,7 +822,7 @@ GenerateTestData.prototype = {
 		var testTableName = 'x_tekso_twxapp01_test_ci_relationship';
 		var tableName = 'cmdb_rel_ci';
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_updates');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -863,7 +834,7 @@ GenerateTestData.prototype = {
 		var childSysID = '';
 		var typeSysID = '';
 		var typeName = '';	
-		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_ci_relationship
+		var gr2 = new GlideRecordSecure(testTableName); // x_tekso_twxapp01_test_ci_relationship
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -987,7 +958,7 @@ GenerateTestData.prototype = {
 		var tableName = 'cmdb_ci_appl';
 		var testTableName = 'x_tekso_twxapp01_test_application';
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_updates');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -995,7 +966,7 @@ GenerateTestData.prototype = {
 		var createdOn = new GlideDateTime();
 		var updatedBy = gs.getUserName();
 		var updatedOn = new GlideDateTime();	
-		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_application
+		var gr2 = new GlideRecordSecure(testTableName); // x_tekso_twxapp01_test_application
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -1260,7 +1231,7 @@ GenerateTestData.prototype = {
 		var tableName = 'cmdb_ci_server';
 		var testTableName = 'x_tekso_twxapp01_test_server';
 
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_updates');
 		gr1.initialize();
 
 		var sourceRecordSysID = '';
@@ -1268,7 +1239,7 @@ GenerateTestData.prototype = {
 		var createdOn = new GlideDateTime();
 		var updatedBy = gs.getUserName();
 		var updatedOn = new GlideDateTime();		
-		var gr2 = new GlideRecord(testTableName); // x_tekso_twxapp01_test_application
+		var gr2 = new GlideRecordSecure(testTableName); // x_tekso_twxapp01_test_application
 		gr2.setLimit(1);
 		gr2.query();
 		if (gr2.next()) {
@@ -1610,13 +1581,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>34</sys_mod_count>
+        <sys_mod_count>37</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-18 20:12:36</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:56:46</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Testing - Get Max Size Of CMDB</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -59,7 +59,7 @@ function getSizeOfAllTables() {
 	var biggest_tbl = '';
 	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
 	for (var i = 0; i < arr.length; i++) {
-		var gr1 = new GlideRecord('sys_db_object');
+		var gr1 = new GlideRecordSecure('sys_db_object');
 		gr1.addQuery('sys_id',arr[i]);
 		gr1.query();
 		if(gr1.next()) {
@@ -79,7 +79,7 @@ function findBigFieldsInAllTables(threshold) {
 	
 	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
 	for (var i = 0; i < arr.length; i++) {
-		var gr1 = new GlideRecord('sys_db_object');
+		var gr1 = new GlideRecordSecure('sys_db_object');
 		gr1.addQuery('sys_id',arr[i]);
 		gr1.query();
 		if(gr1.next()) {
@@ -95,7 +95,7 @@ function listColumnsAndSizesForAllTables() {
 	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
 	var dataArr = [];
 	for (var i = 0; i < arr.length; i++) {
-		var gr1 = new GlideRecord('sys_db_object');
+		var gr1 = new GlideRecordSecure('sys_db_object');
 		gr1.addQuery('sys_id',arr[i]);
 		gr1.query();
 		if(gr1.next()) {
@@ -117,7 +117,7 @@ function getSizeOfRestDataForAllTables() {
 	var biggest_tbl = '';	
 	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
 	for (var i = 0; i < arr.length; i++) {
-		var gr1 = new GlideRecord('sys_db_object');
+		var gr1 = new GlideRecordSecure('sys_db_object');
 		gr1.addQuery('sys_id',arr[i]);
 		gr1.query();
 		if(gr1.next()) {
@@ -139,7 +139,7 @@ function getSizeOfAllFieldNamesForAllTables() {
 	var biggest_tbl = '';
 	var arr = getAllCMDBSysIDs(); // Gets an array of sys_id's
 	for (var i = 0; i < arr.length; i++) {
-		var gr1 = new GlideRecord('sys_db_object');
+		var gr1 = new GlideRecordSecure('sys_db_object');
 		gr1.addQuery('sys_id',arr[i]);
 		gr1.query();
 		if(gr1.next()) {
@@ -159,10 +159,12 @@ function getAllCMDBSysIDs() {
 	var masterArr = [];
 	// Get the sys_id for cmdb
 	var cmdb_sys_id = getTableSysID('cmdb');
-	for (var j = 0; j < 10; j++) {
+	var j = 0;
+	var i = 0;
+	for (j = 0; j < 10; j++) {
 		// Returns an array of sys_ids extended from cmdb
 		var arr = getExtendedSysIDs(cmdb_sys_id,j);
-		for (var i = 0; i < arr.length; i++) {
+		for (i = 0; i < arr.length; i++) {
 			// Add the sys_id to the master array if it is not already present
 			if (masterArr.indexOf(arr[i]) == -1) {
 				masterArr.push(arr[i]);
@@ -174,11 +176,11 @@ function getAllCMDBSysIDs() {
 	var cmdb_ci_sys_id = getTableSysID('cmdb_ci');
 	for (j = 0; j < 10; j++) {
 		// Returns an array of sys_ids extended from cmdb_ci
-		arr = getExtendedSysIDs(cmdb_ci_sys_id,j);
-		for (i = 0; i < arr.length; i++) {
+		var arr2 = getExtendedSysIDs(cmdb_ci_sys_id,j);
+		for (i = 0; i < arr2.length; i++) {
 			// Add the sys_id to the master array if it is not already present
-			if (masterArr.indexOf(arr[i]) == -1) {
-				masterArr.push(arr[i]);
+			if (masterArr.indexOf(arr2[i]) == -1) {
+				masterArr.push(arr2[i]);
 			}
 		}
 	}
@@ -222,7 +224,7 @@ function getExtendedSysIDs(rootSysID,lvl) {
 		}
 
 		if (qry.length > 0) {
-			var gr1 = new GlideRecord('sys_db_object');
+			var gr1 = new GlideRecordSecure('sys_db_object');
 			gr1.addEncodedQuery(qry);
 			gr1.query();
 			while(gr1.next()) {
@@ -238,7 +240,7 @@ function getExtendedSysIDs(rootSysID,lvl) {
 
 function getTableSysID(tbl) {
 	var sys_id = '';
-	var gr1 = new GlideRecord('sys_db_object');
+	var gr1 = new GlideRecordSecure('sys_db_object');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	if (gr1.next()) {
@@ -249,7 +251,7 @@ function getTableSysID(tbl) {
 	
 function getSizeOfTable(tbl) {
 
-	var gr1 = new GlideRecord('sys_dictionary');
+	var gr1 = new GlideRecordSecure('sys_dictionary');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	var totalSize = 0;
@@ -277,7 +279,7 @@ function getSizeOfTable(tbl) {
 
 function findBigFieldsInTable(tbl,threshold) {
 
-	var gr1 = new GlideRecord('sys_dictionary');
+	var gr1 = new GlideRecordSecure('sys_dictionary');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	while (gr1.next()) {
@@ -300,7 +302,7 @@ function getSizeOfRestData(tbl) {
 	var restData2 = '';
 	var cnt = 0;
 	var lst = '';
-	var gr1 = new GlideRecord('sys_dictionary');
+	var gr1 = new GlideRecordSecure('sys_dictionary');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	while (gr1.next()) {
@@ -352,7 +354,7 @@ function getSizeOfRestData(tbl) {
 function listColumnAndSizes(dataArr,tbl) {
 
 	var rtnArr = [];
-	var gr1 = new GlideRecord('sys_dictionary');
+	var gr1 = new GlideRecordSecure('sys_dictionary');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	while (gr1.next()) {
@@ -363,7 +365,7 @@ function listColumnAndSizes(dataArr,tbl) {
 			var txt = element + '(' + type + ') (' + max_length.toString() + ')';
 			// Not already used
 			if (dataArr.indexOf(txt) == -1) {
-				var gr2 = new GlideRecord('x_tekso_twxapp01_debug_log');
+				var gr2 = new GlideRecordSecure('x_tekso_twxapp01_debug_log');
 				gr2.addQuery('debug_text2',element);
 				gr2.addQuery('debug_text3',type);
 				gr2.addQuery('debug_int',max_length);
@@ -381,7 +383,7 @@ function listColumnAndSizes(dataArr,tbl) {
 
 function getSizeOfAllFieldNames(tbl) {
 
-	var gr1 = new GlideRecord('sys_dictionary');
+	var gr1 = new GlideRecordSecure('sys_dictionary');
 	gr1.addQuery('name',tbl);
 	gr1.query();
 	var totalSize = 0;
@@ -391,7 +393,6 @@ function getSizeOfAllFieldNames(tbl) {
 		var element = gr1.getValue('element') || '';
 		var type = gr1.getValue('internal_type') || '';
 		if (type != 'collection') { 
-			var ln = element.length;
 			if (noOfFields == 0) {
 				lst = element;
 			}
@@ -410,7 +411,7 @@ function getSizeOfAllFieldNames(tbl) {
 
 function writeLog(txt1,txt2,txt3,txt4,int1,int2,int3,int4) {
 	var debugTbl = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecord(debugTbl);
+	var gr1 = new GlideRecordSecure(debugTbl);
 	gr1.initialize();
 	gr1.setValue('updated_by_script','SJ Testing - Get Max Size Of CMDB');	
 	gr1.setValue('debug_text',txt1);
@@ -425,7 +426,7 @@ function writeLog(txt1,txt2,txt3,txt4,int1,int2,int3,int4) {
 }
 
 function clearLog() {
-	var gr1 = new GlideRecord('x_tekso_twxapp01_debug_log');
+	var gr1 = new GlideRecordSecure('x_tekso_twxapp01_debug_log');
 	gr1.setWorkflow(false);
 	gr1.deleteMultiple();
 }
@@ -450,14 +451,14 @@ function stringPad(size) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-25 09:51:25</sys_created_on>
         <sys_id>481ec641dbf380504f29252b13961997</sys_id>
-        <sys_mod_count>114</sys_mod_count>
+        <sys_mod_count>116</sys_mod_count>
         <sys_name>Testing - Get Max Size Of CMDB</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_481ec641dbf380504f29252b13961997</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 17:40:31</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:39:02</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

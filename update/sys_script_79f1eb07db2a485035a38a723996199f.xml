@@ -39,11 +39,13 @@
 	var midServerSysID = current.ucontrol_mid_server.sys_id.toString();
 	var url = current.ucontrol_url.toString(); 		
 	if (midServerName.length > 0 && midServerSysID.length > 0 && url.length > 0 ) {
-		// Update the connection status - but we only need to do this if this BR has been triggered by a change to the URL or MID Server
-		// If someone has clicked on the Test Connection or Start Sending then connection status should have already been set correctly
+		// Update the connection status - but we only need to do this if this BR has been triggered by a change to the URL or 
+		// MID Server
+		// If someone has clicked on the Test Connection or Start Sending then connection status should have already been set 
+		// correctly
 		// This is needed if someone has changed the MID Server or URL and then hit the update button
 		var setupTable = 'x_tekso_twxapp01_setup';
-		var gr1 = new GlideRecord(setupTable);
+		var gr1 = new GlideRecordSecure(setupTable);
 		gr1.addQuery('sys_id',sysID); // sys_id for the setup record
 		gr1.query();
 		if (gr1.next()) {
@@ -70,71 +72,7 @@
 		
 		var si = new x_tekso_twxapp01.ConnectionTest();
 		si.buildRequestRecord(current.sys_id,url,midServerName,midServerSysID,userName,startSending,triggeredBy,timeoutMinutes);
-/*
-		// Check if there is already a record pending
-		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-		var gr2 = new GlideRecord(connectionTestTable);
-		gr2.addQuery('setup_record',current.sys_id);
-		gr2.addQuery('ucontrol_url',url);
-		gr2.addQuery('ucontrol_mid_server_name',midServerName);
-		gr2.addQuery('ucontrol_mid_server_sys_id',midServerSysID);	
-		gr2.addQuery('status','Pending');
-		gr2.query();
-		if (!gr2.next()) {
-			// There is not already a record pending
-			var dtRequest = new GlideDateTime();
-
-			// gets the user name
-			var userName = gs.getUserName();
-
-			// e.g. dev91664
-			var snInstance = gs.getProperty("instance_name");	
-			// e.g. https://dev91664.service-now.com/
-			var snURL = gs.getProperty("glide.servlet.uri");
-
-			if (snURL.length > 0) {
-				// Remove the last character if it is a /
-				if (snURL.charAt(snURL.length - 1) == '/') {
-					snURL = snURL.substr(0, snURL.length - 1);
-				}
-			}	
-			
-			var source = 'ServiceNow';
-
-			var json = '{\"source\":\"' + source + '\",';	// ServiceNow
-			json = json  + '\"source_name\":\"' + snInstance + '\",'; // ServiceNow Instance e.g. dev91664
-			json = json + '\"source_url\":\"' + snURL + '\",'; // ServiceNow URL e.g. https://dev91664.service-now.com/
-			json = json +  '\"date_sent\":\"' + dtRequest + '\",';	
-			json = json + '\"user\":\"' + userName + '\"}'; // No comma at the end				
-
-			var gdt = new GlideDateTime();
-			var timeoutMinutes = current.ucontrol_connection_timeout_minutes;
-			var timeoutSeconds = timeoutMinutes * 60;
-			gdt.addSeconds(timeoutSeconds);
-			
-			var gr3 = new GlideRecord(connectionTestTable);
-			gr3.initialize();
-			gr3.setValue('status','Pending');
-			gr3.setValue('setup_record',current.sys_id);
-			gr3.setValue('ucontrol_url',url);
-			gr3.setValue('ucontrol_mid_server_name',midServerName);
-			gr3.setValue('ucontrol_mid_server_sys_id',midServerSysID);
-			gr3.setValue('connection_test_triggered_by','BR Setup When Connection Test Req Changes');
-			gr3.setValue('request_will_time_out_at',gdt);
-			gr3.setValue('json_request_body',json);
-			gr3.setValue('total_length_of_json_request_body',json.length);
-			if (current.start_sending_requested == true) {
-				gr3.setValue('start_sending_requested',true);				
-			}
-			else {
-				gr3.setValue('start_sending_requested',false);
-			}
-			gr3.setValue('inserted_by_script','BR Setup When Connection Test Req Changes'); // Debug	
-			
-			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
-			gr3.insert();						
-		}
-*/		
+	
 	}
 })(current, previous);
 
@@ -147,7 +85,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>79f1eb07db2a485035a38a723996199f</sys_id>
-        <sys_mod_count>85</sys_mod_count>
+        <sys_mod_count>86</sys_mod_count>
         <sys_name>Setup - When Connection Test Req Changes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -155,7 +93,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_79f1eb07db2a485035a38a723996199f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 09:42:36</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:42:09</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

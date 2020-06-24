@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments>new x_tekso_twxapp01.CheckRecordExists().listAllCMDBRecordsIncludedInJob(current.sys_id)</comments>
-        <condition>current.total_number_of_records_selected &gt; 0 &amp;&amp; current.records_selected == true &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().listAllCMDBRecordsIncludedInJob(current.sys_id);</condition>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.total_number_of_records_selected &gt; 0 &amp;&amp; current.records_selected == true &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().listAllCMDBRecordsIncludedInJob(current.sys_id)</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,12 +28,19 @@
         <name>List All CMDB Records Included In Job</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var sys_id = current.sys_id;
+        <script><![CDATA[var script = 'UI Action List All CMDB Records Included In Job';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action List All CMDB Records Included In Job - Started');
+
+var sys_id = current.sys_id;
 var url = 'x_tekso_twxapp01_cmdb_changes_list.do?sysparm_query=link_to_scheduled_job_log_record=' + sys_id;
 url = url + '&sysparm_view=default&sysparm_view_forced=true';
 action.setRedirectURL(url);
 // Return here afterwards
-action.setReturnURL(current);]]></script>
+action.setReturnURL(current);
+
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action List All CMDB Records Included In Job - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -44,7 +51,7 @@ action.setReturnURL(current);]]></script>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>fc1cde6fdb05149041d08f381396194d</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>List All CMDB Records Included In Job</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -52,7 +59,7 @@ action.setReturnURL(current);]]></script>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_fc1cde6fdb05149041d08f381396194d</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-18 09:24:46</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:26:13</sys_updated_on>
         <table>x_tekso_twxapp01_scheduled_job_log</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

@@ -6,7 +6,7 @@
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
-        <comments>Deactivate the submit button</comments>
+        <comments>Remove the Submit button – it is controlled by the action name sysverb_update not the name</comments>
         <condition>false</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
@@ -25,7 +25,7 @@
         <list_link>false</list_link>
         <list_save_with_form_button>false</list_save_with_form_button>
         <list_style/>
-        <name>Submit</name>
+        <name>Submit - Generate Test Data</name>
         <onclick/>
         <order>100</order>
         <script/>
@@ -39,15 +39,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>811af569dbb05c1041d08f3813961946</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>Submit</sys_name>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Submit - Generate Test Data</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_811af569dbb05c1041d08f3813961946</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-15 14:41:51</sys_updated_on>
+        <sys_updated_on>2020-06-22 09:10:37</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

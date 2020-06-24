@@ -77,7 +77,7 @@
 		fieldsChangedArr.sort(); // Sort alphabetically
 		fieldsChanged = fieldsChangedArr.join(",");	// Convert to a comma separated list	
 		
-		var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_updates');
+		var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_updates');
 		gr1.initialize();
 		gr1.setValue('source_record_sys_id',current.sys_id);		
 		gr1.setValue('table_name',tblName.toString()); // getTableName() returns an object - need to convert to String
@@ -104,7 +104,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>28222d4edb974c104f29252b13961946</sys_id>
-        <sys_mod_count>34</sys_mod_count>
+        <sys_mod_count>35</sys_mod_count>
         <sys_name>uControl Track Upd cmdb_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -112,7 +112,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_28222d4edb974c104f29252b13961946</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 13:36:24</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:53:37</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

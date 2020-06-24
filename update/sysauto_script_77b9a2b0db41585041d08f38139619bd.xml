@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Testing - Set Processing Records Back To Pending</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -12,7 +12,7 @@
         <run_start>2020-05-25 20:29:28</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[var gr3 = new GlideRecord('x_tekso_twxapp01_cmdb_changes');
+        <script><![CDATA[var gr3 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_changes');
 gr3.addQuery('status','Processing');
 gr3.query();
 while(gr3.next()) {
@@ -25,14 +25,14 @@ while(gr3.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-25 20:32:08</sys_created_on>
         <sys_id>77b9a2b0db41585041d08f38139619bd</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Testing - Set Processing Records Back To Pending</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_77b9a2b0db41585041d08f38139619bd</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-25 20:32:08</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:47:09</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

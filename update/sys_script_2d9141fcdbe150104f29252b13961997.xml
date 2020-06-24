@@ -43,146 +43,155 @@
 	
 	var tableName = current.table_name;
 	var tableName2 = tableName.toString();
-	
-	var number = current.number;
-	var number2 = number.toString();
-	
-	var updatedFields = current.updated_fields;
-	var updatedFields2 = updatedFields.toString();
-	//Convert a comma separated string into an array
-	var updatedFieldsArr = updatedFields2.split(',');
 
-	//Fields to be excluded
-	var excludedArr = [];
-	excludedArr.push('sys_id');
-	excludedArr.push('sys_created_on');
-	excludedArr.push('sys_created_by');
-	excludedArr.push('sys_updated_on');
-	excludedArr.push('sys_updated_by');
-	excludedArr.push('sys_mod_count');
-	excludedArr.push('sys_tags');	
-	excludedArr.push('sys_meta'); //causes getED() to crash
-	excludedArr.push('updated_by_script');
-	excludedArr.push('inserted_by_script');
+	//Ration the amount of data we are going to track
+	var si = new x_tekso_twxapp01.DebugTrackDataChanges();
+	var ok = si.okToInsert(tableName2,recordSysID,100);
+	if (ok == true) {
 
-	//Datatypes that can be converted to a string
-	var stringArr = [];
-	stringArr.push('string');
-	stringArr.push('reference');
-	stringArr.push('integer');
-	stringArr.push('glide_date_time');
-	stringArr.push('glide_duration');	
+		var number = current.number;
+		var number2 = number.toString();
 
-	var gr1 = new GlideRecord(tableName2);
-	gr1.addQuery('sys_id',recordSysID2);
-	gr1.query();
-	if (gr1.next()) {
-		// Got the record
-		
-		/*
-		GlideRecord also has a getElements method. This returns an array (if in scope) or an ArrayList (if in global) 
-		of all of the elements on the record. You can then loop through the array (in scope) or iterate through it 
-		(in global) to get things like the label, field name, and value.
-		*/
-		
-		var elements = gr1.getElements();
-		//Double check we are in scope
-		if (typeof elements.size == 'undefined') {	
-			// The element does not have a size so it must be an array
-			for (var i=0; i<elements.length; i++) {
-				// put in a try / catch block as some fields e.g. sys_meta cause a problem
-				try {			
-					var element2 = elements[i];
+		var updatedFields = current.updated_fields;
+		var updatedFields2 = updatedFields.toString();
+		//Convert a comma separated string into an array
+		var updatedFieldsArr = updatedFields2.split(',');
 
-					var name = element2.getName();	
-					
-					// Only continue of the field is not in the excluded list e.g. sys_id, sys_created_on etc
-					if (excludedArr.indexOf(name) == -1) {
-						// If action = insert we want all the fields
-						// If action = update we are only interested in fields that have changed
-						if (action2 == 'insert' || (action2 == 'update' && updatedFieldsArr.indexOf(name) > -1)) {
+		//Fields to be excluded
+		var excludedArr = [];
+		excludedArr.push('sys_id');
+		excludedArr.push('sys_created_on');
+		excludedArr.push('sys_created_by');
+		excludedArr.push('sys_updated_on');
+		excludedArr.push('sys_updated_by');
+		excludedArr.push('sys_mod_count');
+		excludedArr.push('sys_tags');	
+		excludedArr.push('sys_meta'); //causes getED() to crash
+		excludedArr.push('updated_by_script');
+		excludedArr.push('inserted_by_script');
 
-							var label = element2.getLabel();
-							var val = gr1.getValue(name);	
+		//Datatypes that can be converted to a string
+		var stringArr = [];
+		stringArr.push('string');
+		stringArr.push('reference');
+		stringArr.push('integer');
+		stringArr.push('glide_date_time');
+		stringArr.push('glide_duration');	
 
-							var descriptor = element2.getED();	
-							var sz = descriptor.getLength();								
-							var tp = descriptor.getInternalType();					
-							var isChoice = descriptor.isChoiceTable();
+		var gr1 = new GlideRecordSecure(tableName2);
+		gr1.addQuery('sys_id',recordSysID2);
+		gr1.query();
+		if (gr1.next()) {
+			// Got the record
 
-							var valstr = '';				
-							var ln = 0;
-							var ref = '';
+			/*
+			GlideRecord also has a getElements method. This returns an array (if in scope) or an ArrayList (if in global) 
+			of all of the elements on the record. You can then loop through the array (in scope) or iterate through it 
+			(in global) to get things like the label, field name, and value.
+			*/
 
-							if (tp == 'reference') {
-								ref = descriptor.getReference();			  
-							}
-							
-							if (stringArr.indexOf(tp) > -1) {
-								//Is a string,reference,integer,glide_date_time,glide_duration
-								valstr = val.toString();
-								ln = valstr.length;
-							}
+			var elements = gr1.getElements();
+			//Double check we are in scope
+			if (typeof elements.size == 'undefined') {	
+				// The element does not have a size so it must be an array
+				for (var i=0; i<elements.length; i++) {
+					// put in a try / catch block as some fields e.g. sys_meta cause a problem
+					try {			
+						var element2 = elements[i];
 
-							if (tp == 'boolean') {
-								if (val == true) {
-									valstr = 'true';
+						var name = element2.getName();	
+
+						// Only continue of the field is not in the excluded list e.g. sys_id, sys_created_on etc
+						if (excludedArr.indexOf(name) == -1) {
+							// If action = insert we want all the fields
+							// If action = update we are only interested in fields that have changed
+							if (action2 == 'insert' || (action2 == 'update' && updatedFieldsArr.indexOf(name) > -1)) {
+
+								var label = element2.getLabel();
+								var val = gr1.getValue(name);	
+
+								var descriptor = element2.getED();	
+								var sz = descriptor.getLength();								
+								var tp = descriptor.getInternalType();					
+								var isChoice = descriptor.isChoiceTable();
+
+								var valstr = '';				
+								var ln = 0;
+								var ref = '';
+
+								if (tp == 'reference') {
+									ref = descriptor.getReference();			  
 								}
-								else {
-									valstr = 'false';
+
+								if (stringArr.indexOf(tp) > -1) {
+									//Is a string,reference,integer,glide_date_time,glide_duration
+									valstr = val.toString();
+									ln = valstr.length;
 								}
-							} //if (tp == 'boolean') {			
 
-							var gr2 = new GlideRecord(debugTable);
-							gr2.initialize();
-							gr2.setValue('action',action2);
-							gr2.setValue('number',number2);
-							gr2.setValue('table_name',tableName2);
-							gr2.setValue('record_sys_id',recordSysID2);
-							gr2.setValue('link_to_debug_track_data_changes',sysID2);
-							gr2.setValue('debug_track_data_changes_record_sys_id',sysID2);
-							gr2.setValue('column_name',name);
-							gr2.setValue('column_label',label);
-							gr2.setValue('data_type',tp);
-							gr2.setValue('field_size',sz);
-							gr2.setValue('choice',isChoice);
-							if (current.action == 'insert') {
-								gr2.setValue('inserted_by_script',current.inserted_by_script);	
-							}
-							if (current.action == 'update') {
-								gr2.setValue('updated_by_script',current.updated_by_script);	
-							}
+								if (tp == 'boolean') {
+									if (val == true) {
+										valstr = 'true';
+									}
+									else {
+										valstr = 'false';
+									}
+								} //if (tp == 'boolean') {			
 
-							if (stringArr.indexOf(tp) > -1) {
-								//Is a string,reference,integer,glide_date_time,glide_duration
-								gr2.setValue('value_length',ln);							
-								gr2.setValue('value',valstr);							
-							}
-							if (tp == 'boolean') {
-								gr2.setValue('new_value',valstr);					
-							}
-							if (tp == 'reference') {
-								gr2.setValue('reference_to_table',ref);
-							}
-							gr2.insert();
-						} // if (action == 'insert' || (action == 'update'
-					} // if (excludedArr.indexOf(name) == -1) {
-				} // try
-				catch(error) {
-					//Do nothing
-					var a = 1;
-				} // try
-			} // for
-		} // if (typeof		
-	} // if (gr1.next()) 
-})(current, previous);]]></script>
+								var gr2 = new GlideRecordSecure(debugTable);
+								gr2.initialize();
+								gr2.setValue('action',action2);
+								gr2.setValue('number',number2);
+								gr2.setValue('table_name',tableName2);
+								gr2.setValue('record_sys_id',recordSysID2);
+								gr2.setValue('link_to_debug_track_data_changes',sysID2);
+								gr2.setValue('debug_track_data_changes_record_sys_id',sysID2);
+								gr2.setValue('column_name',name);
+								gr2.setValue('column_label',label);
+								gr2.setValue('data_type',tp);
+								gr2.setValue('field_size',sz);
+								gr2.setValue('choice',isChoice);
+								if (current.action == 'insert') {
+									gr2.setValue('inserted_by_script',current.inserted_by_script);	
+								}
+								if (current.action == 'update') {
+									gr2.setValue('updated_by_script',current.updated_by_script);	
+								}
+
+								if (stringArr.indexOf(tp) > -1) {
+									//Is a string,reference,integer,glide_date_time,glide_duration
+									gr2.setValue('value_length',ln);							
+									gr2.setValue('value',valstr);							
+								}
+								if (tp == 'boolean') {
+									gr2.setValue('value',valstr);					
+								}
+								if (tp == 'reference') {
+									gr2.setValue('reference_to_table',ref);
+								}
+								gr2.insert();
+							} // if (action == 'insert' || (action == 'update'
+						} // if (excludedArr.indexOf(name) == -1) {
+					} // try
+					catch(error) {
+						//Do nothing
+						var a = 1;
+					} // try
+				} // for
+			} // if (typeof		
+		} // if (gr1.next()) 
+	} // if (ok == true) {
+})(current, previous);
+
+
+]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-19 09:46:09</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2d9141fcdbe150104f29252b13961997</sys_id>
-        <sys_mod_count>14</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>Debug Track Data Changes - Async Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -190,7 +199,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2d9141fcdbe150104f29252b13961997</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-19 13:47:16</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:28:46</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

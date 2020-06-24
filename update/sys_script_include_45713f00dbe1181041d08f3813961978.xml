@@ -18,7 +18,7 @@ var DebugTrackDataChanges = Class.create();
 DebugTrackDataChanges.prototype = {
     initialize: function() {
     },
-	
+		
 	// Returns a comma separated list of fields that have changed
 	getUpdates: function(brCurrent, brPrevious) {
 		var rtn = '';
@@ -41,7 +41,8 @@ DebugTrackDataChanges.prototype = {
 
 			//By default 'in' iterates over inherited properties as well
 			//Be aware that members that are added to the prototype of the object will be included in the enumeration. 
-			//It is wise to program defensively by using the hasOwnProperty method to distinguish the true members of the object:
+			//It is wise to program defensively by using the hasOwnProperty method to distinguish 
+			//the true members of the object:
 			//hasOwnProperty returns a boolean value indicating whether the object on which you are calling it has a 
 			//property with the name of the argument.
 			//Using hasOwnPropery(property) filters-out these unnecessary looping through meta-informations
@@ -60,43 +61,285 @@ DebugTrackDataChanges.prototype = {
 		return rtn;
 	},
 	
-	//Takes in current and previous objects from BR but renamed to brCurrent and brPrevious
-	//to avoid confusions
-	trackChanges: function(brCurrent, brPrevious) {
-		
-		var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
-
-		var sysID = brCurrent.sys_id;
-		var sysID2 = sysID.toString();
-		var tblName = brCurrent.getTableName();	
+	rowCntForTable: function(tblName) {
+		var rowCnt = 0;
 		var tblName2 = tblName.toString();
-
-		var action = brCurrent.operation(); // insert or update or delete		
-		var action2 = action.toString();
-
-		var gr1 = new GlideRecord(debugTable);
-		gr1.initialize();
-		gr1.setValue('action',action2);
-		gr1.setValue('table_name',tblName2);
-		gr1.setValue('record_sys_id',sysID2);
-		
-		if (action2 == 'insert') {			
-			var insertedBy = '';
-			if (tblName2 == 'x_tekso_twxapp01_setup_history') {
-				insertedBy = brCurrent.sh_inserted_by_script;
-			}			
-			else {
-				insertedBy = brCurrent.inserted_by_script;
-			}
-			gr1.setValue('inserted_by_script',insertedBy);
+		if (tblName2.length > 0) {
+			var gr1 = new GlideAggregate('x_tekso_twxapp01_debug_track_data_changes_selected_records');
+			gr1.addQuery('table_name',tblName2);	
+			gr1.addAggregate('COUNT');
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');			
 		}
+		return rowCnt;
+	},
+
+	rowCntForTableAndSysID: function(tblName,sysID) {
+		var rowCnt = 0;
+		var tblName2 = tblName.toString();
+		var sysID2 = sysID.toString();
+		if (tblName2.length > 0 && sysID2.length > 0) {		
+			var gr1 = new GlideAggregate('x_tekso_twxapp01_debug_track_data_changes_selected_records');
+			gr1.addQuery('table_name',tblName2);		
+			gr1.addQuery('record_sys_id',sysID2);
+			gr1.addAggregate('COUNT');
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');		
+		}
+		return rowCnt;
+	},
+
+	rowCntForTableAndSysIDAndBaseTable: function(tblName,sysID,baseTable) {
+		var rowCnt = 0;
+		var tblName2 = tblName.toString();
+		var sysID2 = sysID.toString();
+		var baseTable2 = baseTable.toString();
+		if (tblName2.length > 0 && sysID2.length > 0 && baseTable2.length > 0) {		
+			var gr1 = new GlideAggregate('x_tekso_twxapp01_debug_track_data_changes_selected_records');
+			gr1.addQuery('table_name',tblName2);		
+			gr1.addQuery('record_sys_id',sysID2);
+			gr1.addQuery('base_table',baseTable);
+			gr1.addAggregate('COUNT');
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');	
+		}
+		return rowCnt;
+	},
+	
+	rowCntForTableAndBaseTable: function(tblName,baseTable) {
+		var rowCnt = 0;
+		var tblName2 = tblName.toString();
+		var baseTable2 = baseTable.toString();
+		if (tblName2.length > 0 && baseTable2.length > 0) {		
+			var gr1 = new GlideAggregate('x_tekso_twxapp01_debug_track_data_changes_selected_records');
+			gr1.addQuery('table_name',tblName2);		
+			gr1.addQuery('base_table',baseTable2);
+			gr1.addAggregate('COUNT');			
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');	
+		}
+		return rowCnt;
+	},
+	
+	getBaseTable: function(tblName,sysID) {
+		var baseTable = '';
+		var tblName2 = tblName.toString();
+		var sysID2 = sysID.toString();
+		if (tblName2.length > 0 && sysID2.length > 0) {	
+			var gr1 = new GlideRecordSecure(tblName2);
+			gr1.addQuery('sys_id',sysID2);
+			gr1.setLimit(1);
+			gr1.query();
+			if (gr1.next()) {
+				baseTable = gr1.getValue('base_table') || '';
+			}
+		}
+		return baseTable;
+	},
+	
+	okToInsert: function(tblName,sysID,ration) {
+		var rtn = false;
+		var createRec = false;
+		
+		var tbl = 'x_tekso_twxapp01_debug_track_data_changes_selected_records';
+		var rowCnt = 0;
+		var baseTable = '';
+		
+		var tblArr = [];	
+		tblArr.push('x_tekso_twxapp01_setup');
+		tblArr.push('x_tekso_twxapp01_setup_history');
+		tblArr.push('x_tekso_twxapp01_connection_test');
+		tblArr.push('x_tekso_twxapp01_scheduled_job_log');
+		tblArr.push('x_tekso_twxapp01_processing_log');
+		tblArr.push('x_tekso_twxapp01_generate_test_data');
+		tblArr.push('x_tekso_twxapp01_cmdb_link_to_rest_data');
+		tblArr.push('x_tekso_twxapp01_rest_data_to_ucontrol');
+
+		//x_tekso_twxapp01_processing_log link_to_scheduled_job_log_record -> x_tekso_twxapp01_scheduled_job_log
+		
+		//Only the changes that can be linked to an update or a delete
+		if (tblName == 'x_tekso_twxapp01_cmdb_changes') {
+			rowCnt = this.rowCntForTableAndSysID(tblName,sysID);
+			if (rowCnt == 1) {
+				// This record already exists in the table - OK to proceed
+				rtn = true;
+			}
+			else {
+				var delLnk = this.getLinkToDelete(sysID);
+				if (delLnk.length > 0) {
+					var gr1 = new GlideRecordSecure(tbl);
+					gr1.addQuery('table_name','x_tekso_twxapp01_cmdb_deletes');
+					gr1.addQuery('record_sys_id',delLnk);
+					gr1.query();
+					if (gr1.next()) {
+						// This CMDB record links to one of the allowed x_tekso_twxapp01_cmdb_deletes
+						rtn = true;
+						createRec = true;
+					}
+				}
 				
-		if (action2 == 'update') {
-			gr1.setValue('updated_by_script',brCurrent.updated_by_script);
-			var updatedFields = this.getUpdates(brCurrent,brPrevious);
-			gr1.setValue('updated_fields',updatedFields);
-		}		
-		gr1.insert();	
+				if (createRec == false) {
+					//i.e there was no delLnk
+					var updLnk = this.getLinkToUpdate(sysID);
+					if (updLnk.length > 0) {
+						var gr2 = new GlideRecordSecure(tbl);
+						gr2.addQuery('table_name','x_tekso_twxapp01_cmdb_updates');
+						gr2.addQuery('record_sys_id',updLnk);
+						gr2.query();
+						if (gr2.next()) {		
+							// This CMDB record links to one of the allowed x_tekso_twxapp01_cmdb_updates		
+							rtn = true;
+							createRec = true;
+						}
+					} //if (updLnk.length > 0) {
+				} // if (createRec == false) {
+			} // if (rowCnt == 1) {
+		} // if (tblName == 'x_tekso_twxapp01_cmdb_changes') {
+		
+
+		if (tblName == 'x_tekso_twxapp01_cmdb_updates' || tblName == 'x_tekso_twxapp01_cmdb_deletes') {
+			baseTable = this.getBaseTable(tblName,sysID);
+			if (baseTable.length > 0) {
+				rowCnt = this.rowCntForTableAndSysIDAndBaseTable(tblName,sysID,baseTable);
+				if (rowCnt == 1) {
+					// This record already exists in the table - OK to proceed
+					rtn = true;
+				}
+				else {
+					rowCnt = this.rowCntForTableAndBaseTable(tblName,baseTable);
+					if (rowCnt < 1  || rowCnt < ration) {
+						//No records exist - OK to proceed
+						//Or some records exist but we are below the ration
+						rtn = true;
+						createRec = true;
+					}
+				}
+			}
+		}
+		
+		if (tblArr.indexOf(tblName) > -1) {
+			/*
+			x_tekso_twxapp01_setup
+			x_tekso_twxapp01_setup_history
+			x_tekso_twxapp01_connection_test
+			x_tekso_twxapp01_scheduled_job_log
+			x_tekso_twxapp01_processing_log
+			x_tekso_twxapp01_generate_test_data
+			x_tekso_twxapp01_cmdb_link_to_rest_data
+			x_tekso_twxapp01_rest_data_to_ucontrol
+			*/
+			
+			rowCnt = this.rowCntForTableAndSysID(tblName,sysID);
+			if (rowCnt == 1) {
+				// This record already exists in the table - OK to proceed
+				rtn = true;
+			}
+			else {
+				rowCnt = this.rowCntForTable(tblName);
+				if (rowCnt < 1  || rowCnt < ration) {
+					//No records exist - OK to proceed
+					//Or some records exist but we are below the ration
+					rtn = true;
+					createRec = true;
+				} // if (rowCnt < 1)
+			} // if (rowCnt == 1)		
+		} // if (tblArr.indexOf(tblName) > -1) {
+		
+		if (createRec == true) {
+			var gr3 = new GlideRecordSecure(tbl); //x_tekso_twxapp01_debug_track_data_changes_selected_records
+			gr3.initialize();
+			gr3.setValue('table_name',tblName);
+			gr3.setValue('record_sys_id',sysID);
+			if (tblName == 'x_tekso_twxapp01_cmdb_updates' || tblName == 'x_tekso_twxapp01_cmdb_deletes') {
+				gr3.setValue('base_table',baseTable);
+			}
+			gr3.insert();
+		}
+		return rtn;
+	},
+	
+	getLinkToDelete: function(sysID) {
+		var lnk = '';		
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {
+			var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_changes');
+			gr1.addQuery('sys_id',sysID2);
+			gr1.addQuery('action','delete');
+			gr1.setLimit(1);
+			gr1.query();
+			if (gr1.next()) {
+				lnk = gr1.getValue('link_to_originating_delete_record') || '';
+			}	
+		}
+		return lnk;
+	},
+
+	getLinkToUpdate: function(sysID) {
+		var lnk = '';
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {		
+			var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_changes');
+			gr1.addQuery('sys_id',sysID2);
+			gr1.addQuery('action','update');
+			gr1.setLimit(1);
+			gr1.query();
+			if (gr1.next()) {
+				lnk = gr1.getValue('link_to_originating_update_record') || '';
+			}	
+		}
+		return lnk;
+	},
+	
+	//Takes in current and previous objects from BR but renamed to brCurrent and brPrevious
+	//to avoid confusion
+	trackChanges: function(brCurrent, brPrevious) {
+	
+		var ration = 100;
+				
+		//Only run if x_tekso_twxapp01.debug.track.data.changes == 1
+		var trck = gs.getProperty('x_tekso_twxapp01.debug.track.data.changes') || 0;
+		if (trck == 1) {
+			//Only run if x_tekso_twxapp01.debug.track.data.changes == 1
+			var debugTable = 'x_tekso_twxapp01_debug_track_data_changes';
+
+			var sysID = brCurrent.sys_id;
+			var sysID2 = sysID.toString();
+			var tblName = brCurrent.getTableName();	
+			var tblName2 = tblName.toString();
+					
+			var action = brCurrent.operation(); // insert or update or delete		
+			var action2 = action.toString();
+			
+			if (this.okToInsert(tblName2,sysID2,ration) == true) {
+				var gr2 = new GlideRecordSecure(debugTable);
+				gr2.initialize();
+				gr2.setValue('action',action2);
+				gr2.setValue('table_name',tblName2);
+				gr2.setValue('record_sys_id',sysID2);
+
+				if (action2 == 'insert') {			
+					var insertedBy = '';
+					if (tblName2 == 'x_tekso_twxapp01_setup_history') {
+						insertedBy = brCurrent.sh_inserted_by_script;
+					}			
+					else {
+						insertedBy = brCurrent.inserted_by_script;
+					}
+					gr2.setValue('inserted_by_script',insertedBy);
+				}
+
+				if (action2 == 'update') {
+					gr2.setValue('updated_by_script',brCurrent.updated_by_script);
+					var updatedFields = this.getUpdates(brCurrent,brPrevious);
+					gr2.setValue('updated_fields',updatedFields);
+				}	
+				gr2.insert(); // This will trigger an Aynch BR - Debug Track Data Changes - Async Insert
+			} // if (this.okToInsert(tblName2,sysID2,ration) == true) {
+		} //if (trck == 1) {
 	},
 	
     type: 'DebugTrackDataChanges'
@@ -105,13 +348,13 @@ DebugTrackDataChanges.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-17 14:26:26</sys_created_on>
         <sys_id>45713f00dbe1181041d08f3813961978</sys_id>
-        <sys_mod_count>11</sys_mod_count>
+        <sys_mod_count>31</sys_mod_count>
         <sys_name>DebugTrackDataChanges</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
-        <sys_policy>read</sys_policy>
+        <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_45713f00dbe1181041d08f3813961978</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-19 13:25:24</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:00:55</sys_updated_on>
     </sys_script_include>
 </record_update>

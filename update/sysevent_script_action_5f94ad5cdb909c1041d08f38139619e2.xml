@@ -15,6 +15,10 @@ function OutboundRESTProcess() {
 	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
 	//gs DOT info('event.parm2: ' + event.parm2); 
 
+	var script = 'SA OutboundRESTProcess';
+	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA OutboundRESTProcess - Started');
+	
 	//Need to ensure that this is a string
 	var data_sys_id = event.parm2;
 	var data_sys_id2 = data_sys_id.toString();
@@ -23,7 +27,9 @@ function OutboundRESTProcess() {
 	//processNoWait does not get a result - need to query ecc_queue to get the response
 	//this is handled by a business rule
 	si.processNoWait(data_sys_id2);
-	
+
+	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA OutboundRESTProcess - Finished');	
 }]]></script>
         <synchronous>false</synchronous>
         <sys_class_name>sysevent_script_action</sys_class_name>
@@ -32,7 +38,7 @@ function OutboundRESTProcess() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>5f94ad5cdb909c1041d08f38139619e2</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>OutboundRESTProcess</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -40,6 +46,6 @@ function OutboundRESTProcess() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_5f94ad5cdb909c1041d08f38139619e2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 09:44:05</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:04:50</sys_updated_on>
     </sysevent_script_action>
 </record_update>

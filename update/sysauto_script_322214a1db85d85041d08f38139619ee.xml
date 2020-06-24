@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Testing - Set generate_test_data_in_progress to False</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -13,7 +13,7 @@
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
         <script><![CDATA[var ciTable = 'x_tekso_twxapp01_test_configuration_item';
-var gr1 = new GlideRecord(ciTable);
+var gr1 = new GlideRecordSecure(ciTable);
 gr1.addQuery('generate_test_data_in_progress',true);
 gr1.query();
 gr1.setValue('generate_test_data_in_progress',false);
@@ -21,7 +21,7 @@ gr1.setValue('generate_test_data_record_sys_id','');
 gr1.updateMultiple();
 
 var relTable = 'x_tekso_twxapp01_test_ci_relationship';
-var gr2 = new GlideRecord(relTable);
+var gr2 = new GlideRecordSecure(relTable);
 gr2.addQuery('generate_test_data_in_progress',true);
 gr2.query();
 gr2.setValue('generate_test_data_in_progress',false);
@@ -31,14 +31,14 @@ gr2.updateMultiple();]]></script>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-27 17:25:03</sys_created_on>
         <sys_id>322214a1db85d85041d08f38139619ee</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>4</sys_mod_count>
         <sys_name>Testing - Set generate_test_data_in_progress to False</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_322214a1db85d85041d08f38139619ee</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-05-27 17:59:31</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:03:56</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition/>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin')</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -28,9 +28,13 @@
         <name>Copy CMDB Delete</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[var hasBeenCopied = false;
+        <script><![CDATA[var script = 'UI Action Copy CMDB Delete';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Delete - Started');
 
-var gr1 = new GlideRecord('x_tekso_twxapp01_cmdb_deletes');
+var hasBeenCopied = false;
+
+var gr1 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_deletes');
 gr1.initialize();
 gr1.setValue('source_record_sys_id',current.source_record_sys_id);	
 gr1.setValue('table_name',current.table_name);
@@ -74,14 +78,17 @@ else {
 	hasBeenCopied = true;
 }
 
-gr1.setValue('inserted_by_script','UI Action Copy');
+gr1.setValue('inserted_by_script','UI Action Copy CMDB Delete');
 gr1.insert();
 
 if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) {
 	current.has_been_copied_by_another_record = true;
-	current.updated_by_script = 'UI Action Copy';		
+	current.updated_by_script = 'UI Action Copy CMDB Delete';		
 	current.update();
-}]]></script>
+}
+
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Delete - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -92,7 +99,7 @@ if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) 
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>9e3740f6dbe4d0104f29252b139619be</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>10</sys_mod_count>
         <sys_name>Copy CMDB Delete</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -100,7 +107,7 @@ if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) 
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_9e3740f6dbe4d0104f29252b139619be</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 12:27:31</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:10:29</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_deletes</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

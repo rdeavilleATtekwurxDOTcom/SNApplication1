@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Send Data to uControl</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -53,7 +53,7 @@ function main() {
 	calculatedNextJobStartTime.addSeconds(jobIntervalDurationSeconds);
 
 	// --Create a new scheduled_job_log record -------------------------------
-	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
+	var gr1 = new GlideRecordSecure(jobTable); //x_tekso_twxapp01_scheduled_job_log
 	gr1.initialize();
 	gr1.setValue('inserted_by_script','SJ Send Data to uControl'); // Debug
 	gr1.setValue('next_run_at',calculatedNextJobStartTime);	
@@ -61,7 +61,7 @@ function main() {
     var jobSysID2 = jobSysID.toString();
 	
 	// --Get the setup record and update ------------------------------------
-	var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	var gr2 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 	gr2.query();
 	if (gr2.next()) {
 		gotSetupRecord = true;
@@ -169,11 +169,13 @@ function getNumberOfAllPendingRecords() {
 	// Get the number of all Pending Records - this is used to determine if the queue is empty
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var rtnCnt = 0;
-	var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	var gr1 = new GlideAggregate(trackingTable); //x_tekso_twxapp01_cmdb_changes
 	gr1.addQuery('status','Pending');
 	gr1.addQuery('processing_id','');	
+	gr1.addAggregate('COUNT');	
 	gr1.query();
-	rtnCnt = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()
+	rtnCnt = gr1.getAggregate('COUNT');	
 	return rtnCnt;
 }
 
@@ -183,14 +185,14 @@ function getNumberOfAllPendingRecords() {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>91</sys_mod_count>
+        <sys_mod_count>94</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-18 13:33:28</sys_updated_on>
+        <sys_updated_on>2020-06-24 12:00:00</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

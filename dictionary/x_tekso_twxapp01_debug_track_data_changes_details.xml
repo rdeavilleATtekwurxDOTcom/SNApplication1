@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Debug Track Data Changes Details" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes_details" type="collection">
+    <element label="Debug Track Data Changes Details" max_length="40" name="x_tekso_twxapp01_debug_track_data_changes_details" sizeclass="25866" type="collection">
         <element label="Action" max_length="20" name="action" type="string"/>
         <element label="Choice Field" max_length="40" name="choice_field" type="boolean"/>
         <element label="Column Label" max_length="80" name="column_label" type="string"/>
@@ -15,6 +15,8 @@
         <element label="Previous Value3" max_length="100" name="previous_value3" type="string"/>
         <element label="Previous Value4" max_length="100" name="previous_value4" type="string"/>
         <element label="Record Sys ID" max_length="32" name="record_sys_id" type="string"/>
+        <element label="Reference To Table" max_length="80" name="reference_to_table" type="string"/>
+        <element label="Superseded" max_length="40" name="superseded" type="boolean"/>
         <element label="Table Name" max_length="80" name="table_name" type="string"/>
         <element label="Updated By Script" max_length="100" name="updated_by_script" type="string"/>
         <element label="Value" max_length="100" name="value" type="string"/>

@@ -44,7 +44,7 @@
 	var setupTable = 'x_tekso_twxapp01_setup';
 	var setupCMDBTracking = '';
 	var setupStatus = '';
-	var gr1 = new GlideRecord(setupTable);
+	var gr1 = new GlideRecordSecure(setupTable);
 	gr1.query();
 	if (gr1.next()) {
 		setupCMDBTracking = gr1.getValue('cmdb_tracking') || '';
@@ -61,7 +61,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ffeb914edb499c5041d08f38139619e9</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Generate Test Data - Display</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -69,7 +69,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_ffeb914edb499c5041d08f38139619e9</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 14:00:54</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:29:22</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>

@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Testing - Update Setup</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -12,7 +12,7 @@
         <run_start>2020-03-17 13:37:54</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[var gr1 = new GlideRecord('x_tekso_twxapp01_setup');
+        <script><![CDATA[var gr1 = new GlideRecordSecure('x_tekso_twxapp01_setup');
 gr1.query();
 if (gr1.next()) {
 
@@ -42,14 +42,14 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-17 13:44:55</sys_created_on>
         <sys_id>0ad5b5aadb6b881041d08f38139619d9</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>Testing - Update Setup</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_0ad5b5aadb6b881041d08f38139619d9</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 08:39:49</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:58:46</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

@@ -15,7 +15,7 @@ OutboundREST.prototype = {
 	updateConnectionTestRecordUser: function(connection_sys_id,usrSysID) {
 		if (usrSysID.length > 0) {
 			var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-			var gr1 = new GlideRecord(connectionTestTable);
+			var gr1 = new GlideRecordSecure(connectionTestTable);
 			gr1.addQuery('sys_id',connection_sys_id);
 			gr1.query();
 			if (gr1.next()) {			
@@ -28,24 +28,25 @@ OutboundREST.prototype = {
 		}
 	},
 	// Update x_tekso_twxapp01_connection_test with the results of the connection test
-	updateConnectionTestRecord: function(connSysID,successFail,restResponse,dtBack,statusCode,statusMsg,connection,usrAccount) {
+	updateConnectionTestRecord: function(connSysID,successFail,restResponse,dtBack,staCode,staMsg,connection,usrAcc) {
 		var rtnConnectionOK = false;
 		if (connSysID.length > 0) {
 			var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-			var gr1 = new GlideRecord(connectionTestTable);
+			var gr1 = new GlideRecordSecure(connectionTestTable);
 			gr1.addQuery('sys_id',connSysID);
 			gr1.query();
 			if (gr1.next()) {			
 				gr1.setValue('status','Processed');
-				gr1.setValue('response_from_ucontrol',restResponse);
+				// {"result":{"statusCode":200,"statusMsg":"OK","connection":true,"user_account":"ucontrol.integration",
+				gr1.setValue('response_from_ucontrol',restResponse); 
 				gr1.setValue('total_length_of_response_from_ucontrol',restResponse.length);
 				gr1.setValue('response_received_at',dtBack);
-				gr1.setValue('response_status_code',statusCode);
-				gr1.setValue('response_status_message',statusMsg);
-				gr1.setValue('response_connection',connection);
-				gr1.setValue('response_user_account',usrAccount);
+				gr1.setValue('response_status_code',staCode);
+				gr1.setValue('response_status_message',staMsg);
+				gr1.setValue('response_connection',connection); // T/F
+				gr1.setValue('response_user_account',usrAcc);
 
-				if (successFail == 'SUCCESS' && statusCode == 200 && connection == true) {
+				if (successFail == 'SUCCESS' && staCode == 200 && connection == true) {
 					gr1.setValue('connection_status','OK');
 					rtnConnectionOK  = true;
 				}
@@ -101,11 +102,11 @@ OutboundREST.prototype = {
 	handleTestResults: function(rtnArr,setupSysID,connSysID,startIfOK,testConnUsr) {
 		//testConnUsr - Could be a real user or the scheduled job	
 		var successFail = '';
-		var statusCode = 0;
+		var staCode = 0;
 		var restResponse = '';
-		var statusMsg = '';
-		var connection = false;
-		var userAccount = '';
+		var staMsg = '';
+		var conn = false;  // Connection T/F
+		var usrAcc = '';
 		var clsArr = [];
 
 		var setupSysID2 = setupSysID.toString();
@@ -113,7 +114,7 @@ OutboundREST.prototype = {
 		
 		if (rtnArr.length > 2) {
 			successFail= rtnArr[0];
-			statusCode = parseInt(rtnArr[1]);
+			staCode = parseInt(rtnArr[1]);
 			restResponse = rtnArr[2];
 			/*
 			{
@@ -127,32 +128,33 @@ OutboundREST.prototype = {
 			}
 			*/
 			// Need to check if string contains 'result', 'statusCode', 'connection'
+			// {"result":{"statusCode":200,"statusMsg":"OK","connection":true,"user_account":"ucontrol.integration",
 			if (restResponse.indexOf('result') >= 0 && 
 				restResponse.indexOf('statusCode') && 
-				restResponse.indexOf('connection')) {				
+				restResponse.indexOf('connection')) {			
 				var parser = new global.JSON();
 				var jsonBack = parser.decode(restResponse);	
-				statusCode = parseInt(jsonBack.result.statusCode);
-				statusMsg = jsonBack.result.statusMsg;	
-				connection = jsonBack.result.connection;
-				userAccount = jsonBack.result.user_account;		
+				staCode = parseInt(jsonBack.result.statusCode);
+				staMsg = jsonBack.result.statusMsg;	
+				conn = jsonBack.result.connection; // Connection T/F
+				usrAcc = jsonBack.result.user_account;		
 
 				clsArr = jsonBack.result.classes;		
 
 			} // if got result / statusCode / connection
 			else {
-				statusMsg = restResponse;
+				staMsg = restResponse;
 			}
 		} // if (rtnArr.length > 2) 
 		
 		var dtBack = new GlideDateTime();
 
 		// Update x_tekso_twxapp01_connection_test with the results of the connection test		
-		var connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,statusCode,statusMsg,connection,userAccount);
+		var connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,staCode,staMsg,conn,usrAcc);
 		if (connectionOK == true) {
 			// Check if user returned is valid and update x_tekso_twxapp01_setup
 			//testConnUsr - Could be a real user or the scheduled job	
-			this.handleTestResults2(setupSysID2,connSysID2,userAccount,startIfOK,testConnUsr,dtBack,clsArr);		
+			this.handleTestResults2(setupSysID2,connSysID2,usrAcc,startIfOK,testConnUsr,dtBack,clsArr);		
 		}
 		else {
 			// Failed
@@ -163,12 +165,12 @@ OutboundREST.prototype = {
 				
 				// Update x_tekso_twxapp01_setup with the results of the connection test
 				//testConnUsr - Could be a real user or the scheduled job	
-				this.updateSetupRecord(setupSysID,'Failed',statusMsg,dtBack,usrSysID,true,startIfOK,testConnUsr,clsArr);		
+				this.updateSetupRecord(setupSysID,'Failed',staMsg,dtBack,usrSysID,true,startIfOK,testConnUsr,clsArr);		
 			}
 			else {
 				// Update x_tekso_twxapp01_setup with the results of the connection test
 				//testConnUsr - Could be a real user or the scheduled job	
-				this.updateSetupRecord(setupSysID,'Failed',statusMsg,dtBack,'',false,startIfOK,testConnUsr,clsArr);		
+				this.updateSetupRecord(setupSysID,'Failed',staMsg,dtBack,'',false,startIfOK,testConnUsr,clsArr);		
 			}
 		}
 	},
@@ -183,7 +185,10 @@ OutboundREST.prototype = {
 		var setupExistingStatus = '';
 		var setupStatusWasSendingWhenConnectionFailed = false;
 		var cmdbTracking = '';
-		var gr2 = new GlideRecord(setupTable);
+		var hlp = 'uControl URL, uControl MID Server, uControl Polling Interval (minutes), ';
+		hlp = hlp + 'Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped';		
+		
+		var gr2 = new GlideRecordSecure(setupTable);
 		gr2.addQuery('sys_id',setupSysID2);
 		gr2.query();
 		if (gr2.next()) {
@@ -202,7 +207,6 @@ OutboundREST.prototype = {
 			gr2.setValue('connection_test_requested_by',testUsr); // Could be a real user or the scheduled job
 			gr2.setValue('ucontrol_integration_user',usr);		
 			gr2.setValue('ucontrol_integration_user_is_valid',usrIsOK);	
-			gr2.setValue('last_good_ucontrol_integration_user',usr);
 			gr2.setValue('start_sending_requested',false); //
 			gr2.setValue('connection_test_requested',false); //
 			gr2.setValue('connection_test_link',''); //
@@ -222,8 +226,8 @@ OutboundREST.prototype = {
 			if (connStatus == 'OK') {
 				if (startIfOK == true && setupExistingStatus != 'Sending') {
 					// Set status to Sending
-					gr2.setValue('status','Sending'); 
-					gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); 
+					gr2.setValue('status','Sending'); 					
+					gr2.setValue('help',hlp);
 					gr2.setValue('status_was_sending_when_connection_failed',false);
 					gr2.setValue('status_was_sending_when_connection_failed_at','');					
 					if (cmdbTracking == 'Off') {
@@ -256,7 +260,7 @@ OutboundREST.prototype = {
 					if (setupExistingStatus == 'Error' && setupStatusWasSendingWhenConnectionFailed == true) {
 						//Restart the status - back to Sending
 						gr2.setValue('status','Sending'); //
-						gr2.setValue('help','uControl URL, uControl MID Server, uControl Polling Interval (minutes), Max Retries and uControl Connection Timeout (minutes) can only be updated when Sending is Stopped'); //
+						gr2.setValue('help',hlp); 
 						gr2.setValue('status_was_sending_when_connection_failed',false);
 						gr2.setValue('status_was_sending_when_connection_failed_at','');						
 					}
@@ -283,22 +287,16 @@ OutboundREST.prototype = {
 		var usrSysID = '';
 		var setupTable = 'x_tekso_twxapp01_setup';
 		var setupSysID2 = setupSysID.toString();
-		var gr1 = new GlideRecord(setupTable);
+		var gr1 = new GlideRecordSecure(setupTable);
 		gr1.addQuery('sys_id',setupSysID2);
 		gr1.query();
 		if (gr1.next()) {
 			var usrSysID1 = gr1.getValue('ucontrol_integration_user') || '';
 			var usrSysID2 = usrSysID1.toString();
-			var usrSysID3 = this.checkForValidUserAccount(usrSysID2);
-			if (usrSysID3.length > 0) {
-				usrSysID = usrSysID3;
-			}
-			else {
-				var lstUsrSysID1 = gr1.getValue('last_good_ucontrol_integration_user') || '';
-				var lstUsrSysID2 = lstUsrSysID1.toString();
-				var lstUsrSysID3 = this.checkForValidUserAccount(lstUsrSysID2);
-				if (lstUsrSysID3.length > 0) {
-					usrSysID = lstUsrSysID3;
+			if (usrSysID2.length > 0) {
+				var usrSysID3 = this.checkForValidUserAccount(usrSysID2);
+				if (usrSysID3.length > 0) {
+					usrSysID = usrSysID3;
 				}
 			}
 		}
@@ -308,7 +306,7 @@ OutboundREST.prototype = {
 	checkForValidUserAccount: function(resultUserAccount){
 		var rtnSysID = '';
 		if (resultUserAccount.length > 0){
-			var gr1 = new GlideRecord('sys_user');
+			var gr1 = new GlideRecordSecure('sys_user');
 			gr1.addQuery('user_name',resultUserAccount);
 			gr1.query();
 			if (gr1.next()) {
@@ -322,7 +320,7 @@ OutboundREST.prototype = {
 	checkForAbortedOrTimedOut: function(connectionSysID){
 		var abort = false;
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-		var gr1 = new GlideRecord(connectionTestTable);
+		var gr1 = new GlideRecordSecure(connectionTestTable);
 		gr1.addQuery('sys_id',connectionSysID);
 		gr1.query();
 		if (gr1.next()) {
@@ -392,7 +390,8 @@ OutboundREST.prototype = {
 			return rtnArr;
 			// Bad MID Server:
 			// 500
-			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting for 30 seconds in ECC Queue
+			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting 
+			// for 30 seconds in ECC Queue
 
 			// Bad url:
 			// 500
@@ -488,7 +487,8 @@ OutboundREST.prototype = {
 			return rtnArr;
 			// Bad MID Server:
 			// 500
-			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting for 30 seconds in ECC Queue
+			// No response for ECC message request with sysid=00bd017a1b6ec450f953ff72cd4bcbfc after waiting for 
+			// 30 seconds in ECC Queue
 
 			// Bad url:
 			// 500
@@ -727,7 +727,7 @@ OutboundREST.prototype = {
 		var testConnUsr = '';	
 		
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-		var gr1 = new GlideRecord(connectionTestTable);
+		var gr1 = new GlideRecordSecure(connectionTestTable);
 		gr1.addQuery('sys_id',connection_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -784,7 +784,7 @@ OutboundREST.prototype = {
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 		
-		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 		gr1.addQuery('sys_id',data_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -809,7 +809,7 @@ OutboundREST.prototype = {
 			gr1.setValue('updated_by_script','SI process'); // Debug
 			gr1.update();
 
-			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
 			gr2.addQuery('link_to_rest_data_record',data_sys_id);
 			gr2.query();
 			while(gr2.next()) {
@@ -820,7 +820,7 @@ OutboundREST.prototype = {
 				var link_sys_id = gr2.sys_id;
 				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
 				// Get the change record
-				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 				gr3.addQuery('sys_id',cmdb_changes_sys_id);
 				gr3.query();
 				while(gr3.next()) {
@@ -865,64 +865,6 @@ OutboundREST.prototype = {
 			var si = new x_tekso_twxapp01.HandleRESTResponse();
 			si.handleRESTResponse(resultRestResponse,data_sys_id);
 			
-			/*
-			var dtBack = new GlideDateTime();
-			
-			gr1.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
-			gr1.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-			gr1.setValue('response_received_at',dtBack);
-			gr1.setValue('response_received',true);
-			gr1.setValue('response_status_code',resultStatusCode);
-			gr1.setValue('response_status_message',resultStatusMsg);
-			gr1.setValue('updated_by_script','SI process'); // Debug					
-			gr1.update(); //x_tekso_twxapp01_rest_data_to_ucontrol
-
-			// Get all the link records that have this data_sys_id
-			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
-			gr2.addQuery('link_to_rest_data_record',data_sys_id);
-			gr2.query();
-			while(gr2.next()) {
-				// For each one - loop through and get each change record
-				var link_sys_id = gr2.sys_id;
-				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
-				// Update the REST response on the link record
-				gr2.setValue('sent_to_ucontrol_at',dtSent);
-				gr2.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
-				gr2.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-				gr2.setValue('response_received_at',dtBack);
-				gr2.setValue('response_received',true);
-				gr2.setValue('response_status_code',resultStatusCode);
-				gr2.setValue('response_status_message',resultStatusMsg);
-				gr2.setValue('updated_by_script','SI process'); // Debug						
-				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data
-
-				// Get the change record
-				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
-				gr3.addQuery('sys_id',cmdb_changes_sys_id);
-				gr3.query();
-				while(gr3.next()) {
-					// Update the REST response on the change record
-					// There should only be 1 record
-					gr3.setValue('status','Sent'); // If success?????????????????????????????????
-					gr3.setValue('sent_to_ucontrol_at',dtSent); 
-					gr3.setValue('response_from_ucontrol',resultRestResponse); // rtnArr[2]
-					gr3.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-					gr3.setValue('response_received_at',dtBack);	
-					gr3.setValue('response_received',true);
-					gr3.setValue('response_status_code',resultStatusCode);
-					gr3.setValue('response_status_message',resultStatusMsg);
-					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
-					no_of_times_sent_to_ucontrol++;
-					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
-					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
-					gr3.setValue('rest_data_record_created',true);
-					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
-					gr3.setValue('rest_response_record_created',true);
-					gr3.setValue('updated_by_script','SI process'); // Debug	
-					gr3.update(); //x_tekso_twxapp01_cmdb_changes
-				} // while(gr3.next())
-			} //while(gr2.next())	
-			*/
 		}	
 	},
 	processNoWait: function (data_sys_id){
@@ -931,7 +873,7 @@ OutboundREST.prototype = {
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 		
-		var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 		gr1.addQuery('sys_id',data_sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -955,7 +897,7 @@ OutboundREST.prototype = {
 			gr1.setValue('updated_by_script','SI process'); // Debug	
 			gr1.update();
 
-			var gr2 = new GlideRecord(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+			var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
 			gr2.addQuery('link_to_rest_data_record',data_sys_id);
 			gr2.query();
 			while(gr2.next()) {
@@ -966,7 +908,7 @@ OutboundREST.prototype = {
 				var link_sys_id = gr2.sys_id;
 				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
 				// Get the change record
-				var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+				var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 				gr3.addQuery('sys_id',cmdb_changes_sys_id);
 				gr3.query();
 				while(gr3.next()) {
@@ -1002,7 +944,7 @@ OutboundREST.prototype = {
 	},	
 	writeDebugLog: function(msg) {
 		var debugTable = 'x_tekso_twxapp01_debug_log';
-		var gr1 = new GlideRecord(debugTable);
+		var gr1 = new GlideRecordSecure(debugTable);
 		gr1.initialize();
 		gr1.setValue('message',msg);
 		gr1.setValue('inserted_by_script','SI OutboundREST');				
@@ -1014,13 +956,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>228</sys_mod_count>
+        <sys_mod_count>230</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-19 16:36:34</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:55:31</sys_updated_on>
     </sys_script_include>
 </record_update>

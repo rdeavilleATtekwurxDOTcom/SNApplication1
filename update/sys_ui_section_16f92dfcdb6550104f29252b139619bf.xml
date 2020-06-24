@@ -350,6 +350,34 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>superseded</element>
+            <position>25</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-22 12:00:00</sys_created_on>
+            <sys_id>7da101f9db2954104f29252b1396193f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes_details" sys_domain="global" view="Default view">16f92dfcdb6550104f29252b139619bf</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-22 12:00:00</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>reference_to_table</element>
+            <position>26</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-06-23 09:27:04</sys_created_on>
+            <sys_id>ab38ad4edbad94104f29252b1396195a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_debug_track_data_changes_details" sys_domain="global" view="Default view">16f92dfcdb6550104f29252b139619bf</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-06-23 09:27:04</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

@@ -68,9 +68,11 @@ BuildTestData.prototype = {
 	
 	deleteAllSilently: function(table) {
 
-		var gr1 = new GlideRecord(table);
+		var gr1 = new GlideAggregate(table);
+		gr1.addAggregate('COUNT');
 		gr1.query();
-		var rowCnt = gr1.getRowCount();
+		gr1.next(); // GlideAggregate needs the .next()
+		var rowCnt = gr1.getAggregate('COUNT');
 		while (rowCnt > 0) {
 			// Delete in blocks of 1000
 			this.deleteChunkSilently(table,1000);
@@ -80,7 +82,7 @@ BuildTestData.prototype = {
 
 	deleteChunkSilently: function(table,limit) {
 
-		var gr1 = new GlideRecord(table);
+		var gr1 = new GlideRecordSecure(table);
 
 		// Do not trigger Business Rules	
 		gr1.setWorkflow(false);	
@@ -91,11 +93,11 @@ BuildTestData.prototype = {
 	findOrInsertTestCompany: function(name) {
 		var rtnSysID = '';
 		var cmpTable = 'x_tekso_twxapp01_test_company';
-		var gr1 = new GlideRecord(cmpTable);
+		var gr1 = new GlideRecordSecure(cmpTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(cmpTable);
+			var gr2 = new GlideRecordSecure(cmpTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -110,11 +112,11 @@ BuildTestData.prototype = {
 	findOrInsertTestProductModel: function(name) {
 		var rtnSysID = '';
 		var prdTable = 'x_tekso_twxapp01_test_product_model';
-		var gr1 = new GlideRecord(prdTable);
+		var gr1 = new GlideRecordSecure(prdTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(prdTable);
+			var gr2 = new GlideRecordSecure(prdTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -129,11 +131,11 @@ BuildTestData.prototype = {
 	findOrInsertTestGroup: function(name) {
 		var rtnSysID = '';
 		var grpTable = 'x_tekso_twxapp01_test_group';
-		var gr1 = new GlideRecord(grpTable);
+		var gr1 = new GlideRecordSecure(grpTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(grpTable);
+			var gr2 = new GlideRecordSecure(grpTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -148,11 +150,11 @@ BuildTestData.prototype = {
 	findOrInsertTestDepartment: function(name) {
 		var rtnSysID = '';
 		var depTable = 'x_tekso_twxapp01_test_department';
-		var gr1 = new GlideRecord(depTable);
+		var gr1 = new GlideRecordSecure(depTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(depTable);
+			var gr2 = new GlideRecordSecure(depTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -168,11 +170,11 @@ BuildTestData.prototype = {
 	findOrInsertTestLocation: function(name) {
 		var rtnSysID = '';
 		var locTable = 'x_tekso_twxapp01_test_location';
-		var gr1 = new GlideRecord(locTable);
+		var gr1 = new GlideRecordSecure(locTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(locTable);
+			var gr2 = new GlideRecordSecure(locTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -188,11 +190,11 @@ BuildTestData.prototype = {
 	findOrInsertTestCostCenter: function(name) {
 		var rtnSysID = '';
 		var cstTable = 'x_tekso_twxapp01_test_cost_center';
-		var gr1 = new GlideRecord(cstTable);
+		var gr1 = new GlideRecordSecure(cstTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(cstTable);
+			var gr2 = new GlideRecordSecure(cstTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -208,11 +210,11 @@ BuildTestData.prototype = {
 	findOrInsertTestSchedule: function(name) {
 		var rtnSysID = '';
 		var schTable = 'x_tekso_twxapp01_test_schedule';
-		var gr1 = new GlideRecord(schTable);
+		var gr1 = new GlideRecordSecure(schTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(schTable);
+			var gr2 = new GlideRecordSecure(schTable);
 			gr2.initialize();
 			gr2.setValue('name',name);
 			rtnSysID = gr2.insert();
@@ -227,11 +229,11 @@ BuildTestData.prototype = {
 	findOrInsertTestAsset: function(display_name) {
 		var rtnSysID = '';
 		var assTable = 'x_tekso_twxapp01_test_asset';
-		var gr1 = new GlideRecord(assTable);
+		var gr1 = new GlideRecordSecure(assTable);
 		gr1.addQuery('display_name',display_name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(assTable);
+			var gr2 = new GlideRecordSecure(assTable);
 			gr2.initialize();
 			gr2.setValue('display_name',display_name);
 			rtnSysID = gr2.insert();
@@ -246,11 +248,11 @@ BuildTestData.prototype = {
 	findOrInsertTestUser: function(user_name) {
 		var rtnSysID = '';
 		var usrTable = 'x_tekso_twxapp01_test_user';
-		var gr1 = new GlideRecord(usrTable);
+		var gr1 = new GlideRecordSecure(usrTable);
 		gr1.addQuery('user_name',user_name);
 		gr1.query();
 		if (!gr1.next()) {
-			var gr2 = new GlideRecord(usrTable);
+			var gr2 = new GlideRecordSecure(usrTable);
 			gr2.initialize();
 			gr2.setValue('user_name',user_name);
 			rtnSysID = gr2.insert();
@@ -266,14 +268,14 @@ BuildTestData.prototype = {
 		//('Runs on','Runs','Runs on::Runs');
 		var rtnSysID = '';
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship_type';
-		var gr1 = new GlideRecord(relTable);
+		var gr1 = new GlideRecordSecure(relTable);
 		gr1.addQuery('parent_descriptor',parent); // Runs on
 		gr1.addQuery('child_descriptor',child); // Runs
 		gr1.addQuery('name',name); // Runs on::Runs
 		gr1.query();
 		if (!gr1.next()) {		
 			// Does not exist
-			var gr2 = new GlideRecord(relTable);
+			var gr2 = new GlideRecordSecure(relTable);
 			gr2.initialize();
 			gr2.setValue('parent_descriptor',parent); // Runs on
 			gr2.setValue('child_descriptor',child); // Runs
@@ -288,7 +290,7 @@ BuildTestData.prototype = {
 	newCMDBCI: function(name,ciTable,realTableName,padOut,zeroPaddedNumStr) {
 
 		var sysID = '';
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('name',name);
 		gr1.query();
 		if (!gr1.next()) {
@@ -362,7 +364,7 @@ BuildTestData.prototype = {
 				strSubcategory = this.padOutString(plainSubcategory,40,'!!'); // 40
 			}
 
-			var gr2 = new GlideRecord(ciTable);
+			var gr2 = new GlideRecordSecure(ciTable);
 			gr2.initialize();
 
 			gr2.setValue('name',name); // 255
@@ -469,7 +471,7 @@ BuildTestData.prototype = {
 		//var ciTable = 'x_tekso_twxapp01_test_configuration_item';
 		//var ciTable = 'x_tekso_twxapp01_test_application';
 
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('sys_id',sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -639,7 +641,7 @@ BuildTestData.prototype = {
 	updateCMDBApplicationSpecificFields: function(sys_id,padOut) {
 		// Class specific fields
 		var ciTable = 'x_tekso_twxapp01_test_application';	
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('sys_id',sys_id);
 		gr1.query();
 		if (gr1.next()) {		
@@ -702,7 +704,7 @@ BuildTestData.prototype = {
 	updateCMDBHardwareSpecificFields: function(sys_id,padOut) {
 		// Class specific fields
 		var ciTable = 'x_tekso_twxapp01_test_hardware';	
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('sys_id',sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -729,7 +731,7 @@ BuildTestData.prototype = {
 	updateCMDBComputerSpecificFields: function(sys_id,padOut) {
 		// Class specific fields
 		var ciTable = 'x_tekso_twxapp01_test_computer';	
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('sys_id',sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -790,7 +792,7 @@ BuildTestData.prototype = {
 	updateCMDBServerSpecificFields: function(sys_id,padOut) {
 		// Class specific fields
 		var ciTable = 'x_tekso_twxapp01_test_server';	
-		var gr1 = new GlideRecord(ciTable);
+		var gr1 = new GlideRecordSecure(ciTable);
 		gr1.addQuery('sys_id',sys_id);
 		gr1.query();
 		if (gr1.next()) {
@@ -851,13 +853,13 @@ BuildTestData.prototype = {
 	newRelation: function(parent,child,type,checkIfAlreadyExists) {
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';
 		if (checkIfAlreadyExists == true) {
-			var gr1 = new GlideRecord(relTable);
+			var gr1 = new GlideRecordSecure(relTable);
 			gr1.addQuery('parent',parent);
 			gr1.addQuery('child',child);	
 			gr1.addQuery('type',type);
 			gr1.query();
 			if (!gr1.next()) {
-				var gr2 = new GlideRecord(relTable);
+				var gr2 = new GlideRecordSecure(relTable);
 				gr2.initialize();
 				gr2.setValue('parent',parent); // Ref
 				gr2.setValue('child',child); // Ref
@@ -874,7 +876,7 @@ BuildTestData.prototype = {
 		}
 		else {
 			// Don't check if it already exists
-			var gr3 = new GlideRecord(relTable);
+			var gr3 = new GlideRecordSecure(relTable);
 			gr3.initialize();
 			gr3.setValue('parent',parent); // Ref
 			gr3.setValue('child',child); // Ref
@@ -942,7 +944,7 @@ BuildTestData.prototype = {
 
 	writeDebugLog: function(msg) {
 		var debugTable = 'x_tekso_twxapp01_debug_log';
-		var gr1 = new GlideRecord(debugTable);
+		var gr1 = new GlideRecordSecure(debugTable);
 		gr1.initialize();
 		gr1.setValue('updated_by_script','SI BuildTestData');
 		gr1.setValue('message',msg);
@@ -968,13 +970,13 @@ new x_tekso_twxapp01.BuildTestData().buildTestData();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-09 10:01:50</sys_created_on>
         <sys_id>9a071b35db4814104f29252b13961990</sys_id>
-        <sys_mod_count>14</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>BuildTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_9a071b35db4814104f29252b13961990</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-01 16:59:23</sys_updated_on>
+        <sys_updated_on>2020-06-24 11:20:10</sys_updated_on>
     </sys_script_include>
 </record_update>

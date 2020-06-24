@@ -16,6 +16,10 @@ function SendDataToUControl() {
 	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
 	//gs DOT info('event.parm2: ' + event.parm2); 
 
+	var script = 'SA SendDataTouControl';
+	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl - Started');
+	
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var setupTable = 'x_tekso_twxapp01_setup';
 
@@ -23,7 +27,7 @@ function SendDataToUControl() {
 	var jobSysID = event.parm1; //current.sys_id;
 	var nextRunAt = event.parm2; // The date/time the scheduled job is going to run next
 
-	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
+	var gr1 = new GlideRecordSecure(jobTable); //x_tekso_twxapp01_scheduled_job_log
 	gr1.addQuery('sys_id',jobSysID);
 	gr1.query();
 	if (gr1.next()) {
@@ -34,7 +38,7 @@ function SendDataToUControl() {
 		gr1.update();
 		
 		var setupStatus = '';
-		var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+		var gr2 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 		gr2.query();
 		if (gr2.next()) {
 			// Got the x_tekso_twxapp01_setup record
@@ -97,6 +101,9 @@ function SendDataToUControl() {
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug
 		gr1.update();
 	} // if (gr1.next()) {
+	
+	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl - Finished');	
 }	
 
 function updateScheduledJobLogStats(jobSysID) {
@@ -105,7 +112,7 @@ function updateScheduledJobLogStats(jobSysID) {
 	var logTable = 'x_tekso_twxapp01_processing_log';
 	var setupTable = 'x_tekso_twxapp01_setup';
 	
-	var gr1 = new GlideRecord(jobTable);
+	var gr1 = new GlideRecordSecure(jobTable);
 	gr1.addQuery('sys_id',jobSysID);
 	gr1.query();
 	if (gr1.next()) {
@@ -121,7 +128,7 @@ function updateScheduledJobLogStats(jobSysID) {
 			var updatesPerClass = getUpdatesPerClassLinkedToJob(jobSysID);
 			var deletesPerClass = getDeletesPerClassLinkedToJob(jobSysID);
 
-			var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+			var gr2 = new GlideRecordSecure(logTable); //x_tekso_twxapp01_processing_log
 			gr2.addQuery('link_to_scheduled_job_log_record',jobSysID);
 			gr2.orderBy('number');
 			gr2.query();
@@ -164,7 +171,7 @@ function updateScheduledJobLogStats(jobSysID) {
 		
 		// Only update setup if there was some data in this scheduled job log
 		if (noOfDeletesSent > 0 || noOfUpdatesSent > 0) {
-			var gr3 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+			var gr3 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 			gr3.query();
 			if (gr3.next()) {
 				gr3.setValue('link_to_last_scheduled_job_log_record',jobSysID);		
@@ -180,12 +187,14 @@ function getNumberOfPendingRecords(jobStartTime) {
 	// Get the number of pending records with a cut off at the job start time
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var rtnCnt = 0;
-	var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	var gr1 = new GlideAggregate(trackingTable); //x_tekso_twxapp01_cmdb_changes
 	gr1.addQuery('status','Pending');
 	gr1.addQuery('processing_id','');	
 	gr1.addQuery('sys_created_on','<',jobStartTime); 
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtnCnt = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()
+	rtnCnt = gr1.getAggregate('COUNT');	
 	return rtnCnt;
 }
 
@@ -224,7 +233,7 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 		
 		// Don't want to mix live data and test data together
 		// Get the first record back - and see if it is test or live
-		var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+		var gr1 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 		gr1.addQuery('status','Pending');
 		gr1.addQuery('processing_id','');		
 		gr1.addQuery('test_data',tstData); 
@@ -286,7 +295,7 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 	// loopCnt < 1000 is a safety
 	while (repeat == true && loopCnt < 1000);
 	
-	var gr3 = new GlideRecord(jobTable);
+	var gr3 = new GlideRecordSecure(jobTable);
 	gr3.addQuery('sys_id',jobSysID);
 	gr3.query();
 	if (gr3.next()) {	
@@ -321,7 +330,7 @@ function secondsRemainingBeforeNextRunOfScheduledJob(nextRunAt) {
 function isFirstPendingRecordATestRecord(jobStartTime) {
 	var rtn = false;
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
-	var gr1 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	var gr1 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 	gr1.addQuery('status','Pending');
 	gr1.addQuery('processing_id','');
 
@@ -403,7 +412,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 	
 	var brkRsn = 'First';
 	
-	var gr2 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	var gr2 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 	gr2.addQuery('status','Processing');
 	gr2.addQuery('processing_id',pID); // Processing ID GUID. Used to ensure we pick up the correct block of data
 	//as if there are jobs running concurrently then status = Processing may pick up the wrong records
@@ -809,7 +818,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 
 function writeDebugLog(msg) {
 	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecord(debugTable);
+	var gr1 = new GlideRecordSecure(debugTable);
 	gr1.initialize();
 	gr1.setValue('message',msg);
 	gr1.setValue('inserted_by_script','SA SendDataTouControl');	
@@ -838,7 +847,7 @@ function createNewLogRecord(jobSysID,processCnt,pID) {
 	var noOfLogRecords = 0; 
 	var gotJobRecord = false;
 	
-	var gr1 = new GlideRecord(jobTable); //x_tekso_twxapp01_scheduled_job_log
+	var gr1 = new GlideRecordSecure(jobTable); //x_tekso_twxapp01_scheduled_job_log
 	gr1.addQuery('sys_id',jobSysID);
 	gr1.query();
 	if (gr1.next()) {	
@@ -860,7 +869,7 @@ function createNewLogRecord(jobSysID,processCnt,pID) {
 	}
 	
 	var rtnSysID = '';
-	var gr2 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+	var gr2 = new GlideRecordSecure(logTable); //x_tekso_twxapp01_processing_log
 	gr2.initialize();
 	gr2.setValue('total_number_of_records_sent',0);
 	gr2.setValue('scheduled_job_started_at',jobStartedAt);	
@@ -900,7 +909,7 @@ function createNewLogRecord(jobSysID,processCnt,pID) {
 function createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,trackingSysID,logSysID,jobSysID,pID) {
 				
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data';
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data';
 	gr1.initialize();
 	gr1.setValue('action',action); // insert / delete
 	gr1.setValue('table',table); // Blank for Delete
@@ -925,7 +934,7 @@ function createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,tra
 // Called by processBlock
 function createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,logSysID,jobSysID,pID) {
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.initialize();
 	gr1.setValue('action',action); // insert / delete
 	gr1.setValue('base_table',bsTbl);
@@ -953,7 +962,7 @@ function createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midS
 // Called by processBlock
 function addJSONToDataRecord(data_sys_id,jsonRequestBody,noOfRecsInJSON) {
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol	
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol	
 	gr1.addQuery('sys_id',data_sys_id);
 	gr1.query();
 	if (gr1.next()) {
@@ -975,7 +984,7 @@ function addJSONToDataRecord(data_sys_id,jsonRequestBody,noOfRecsInJSON) {
 function getDataRecordNo(data_sys_id) {
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';	
 	var recordNo = '';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.addQuery('sys_id',data_sys_id);
 	gr1.query();
 	if (gr1.next()) {
@@ -1007,7 +1016,7 @@ function updateProcessingLogStats(logSysID) {
 	var restDataRecordContentSummary = restDataRecordContentsSummaryLinkedToLog(logSysID);
 	
 	//Totals	
-	var gr1 = new GlideRecord(logTable); //x_tekso_twxapp01_processing_log
+	var gr1 = new GlideRecordSecure(logTable); //x_tekso_twxapp01_processing_log
 	gr1.addQuery('sys_id',logSysID);
 	gr1.query();
 	if (gr1.next()) {
@@ -1039,7 +1048,7 @@ function updateProcessingLogStats(logSysID) {
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug			
 		gr1.update();	
 		
-		var gr2 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+		var gr2 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 		gr2.query();
 		if (gr2.next()) {
 			gr2.setValue('link_to_last_processing_log_record',logSysID);		
@@ -1084,20 +1093,24 @@ function sendSummary(recCnt,updCnt,delCnt) {
 function numberOfRecordsLinkedToLog(logSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_processing_log_record',logSysID);
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()	
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
 
 function numberOfRestRecordsLinkedToLog(logSysID) {
 	var rtn = 0;
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //'x_tekso_twxapp01_rest_data_to_ucontrol'
+	var gr1 = new GlideAggregate(dataTable); //'x_tekso_twxapp01_rest_data_to_ucontrol'
 	gr1.addQuery('link_to_processing_log_record',logSysID);	
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;	
 }
 
@@ -1105,22 +1118,26 @@ function numberOfRestRecordsLinkedToLog(logSysID) {
 function numberOfUpdatesLinkedToLog(logSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.addQuery('action','update');
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
 
 function numberOfDeletesLinkedToLog(logSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.addQuery('action','delete');
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
 
@@ -1128,45 +1145,38 @@ function numberOfDeletesLinkedToLog(logSysID) {
 function numberOfRecordsLinkedToJob(jobSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
-
-/*
-function numberOfRestRecordsLinkedToJob(jobSysID) {
-	var rtn = 0;
-	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //'x_tekso_twxapp01_rest_data_to_ucontrol'
-	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
-	gr1.query();
-	rtn = gr1.getRowCount();
-	return rtn;	
-}
-*/
-
 
 function numberOfUpdatesLinkedToJob(jobSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
 	gr1.addQuery('action','update');
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
 
 function numberOfDeletesLinkedToJob(jobSysID) {
 	var rtn = 0;
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
+	var gr1 = new GlideAggregate(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
 	gr1.addQuery('action','delete');
+	gr1.addAggregate('COUNT');
 	gr1.query();
-	rtn = gr1.getRowCount();
+	gr1.next(); // GlideAggregate needs the .next()		
+	rtn = gr1.getAggregate('COUNT');
 	return rtn;
 }
 
@@ -1179,7 +1189,7 @@ function getUpdatesPerClassLinkedToLog(logSysID) {
 	var sentUpdPerCls = '';
 	var cnt = 0;
 
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.addQuery('action','update');	
 	gr1.query();	
@@ -1222,7 +1232,7 @@ function getDeletesPerClassLinkedToLog(logSysID) {
 	var sentDelPerCls = '';
 	var cnt = 0;
 
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.addQuery('action','delete');	
 	gr1.query();	
@@ -1266,7 +1276,7 @@ function getUpdatesPerClassLinkedToJob(jobSysID) {
 	var sentUpdPerCls = '';
 	var cnt = 0;
 
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
 	gr1.addQuery('action','update');	
 	gr1.query();	
@@ -1310,7 +1320,7 @@ function getDeletesPerClassLinkedToJob(jobSysID) {
 	var sentDelPerCls = '';
 	var cnt = 0;
 
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_scheduled_job_log_record',jobSysID);
 	gr1.addQuery('action','delete');	
 	gr1.query();	
@@ -1349,7 +1359,7 @@ function firstRestResponseSysIDLinkedToLog(logSysID) {
 
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';	
 	var firstRestResponseSysID = '';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.orderBy('sys_created_on');
 	gr1.setLimit(1);
@@ -1365,7 +1375,7 @@ function lastRestResponseSysIDLinkedToLog(logSysID) {
 
 	var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';	
 	var lastRestResponseSysID = '';
-	var gr1 = new GlideRecord(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
+	var gr1 = new GlideRecordSecure(linkTable); //'x_tekso_twxapp01_cmdb_link_to_rest_data'	
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.orderBy('number');
 	gr1.orderBy('sys_created_on');
@@ -1382,7 +1392,7 @@ function firstRestSysIDLinkedToLog(logSysID) {
 
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 	var firstRestSysID = '';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.orderBy('sys_created_on');
 	gr1.setLimit(1);
@@ -1399,7 +1409,7 @@ function lastRestSysIDLinkedToLog(logSysID) {
 
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 	var lastRestSysID = '';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.addQuery('link_to_processing_log_record',logSysID);	
 	gr1.orderBy('number');
 	gr1.orderBy('sys_created_on');
@@ -1487,7 +1497,7 @@ function lastDataDateLinkedToLog(logSysID) {
 
 	var dt = new GlideDateTime();
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol	
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol	
 	gr1.addQuery('link_to_processing_log_record',logSysID);
 	gr1.orderBy('number');
 	gr1.orderBy('sys_created_on');
@@ -1519,7 +1529,7 @@ function restDataRecordContentsSummaryLinkedToLog(logSysID) {
 
 	var summary = '';
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-	var gr1 = new GlideRecord(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.addQuery('link_to_processing_log_record',logSysID);	
 	gr1.orderBy('number');
 	gr1.orderBy('sys_created_on');
@@ -1580,7 +1590,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>74</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1588,6 +1598,6 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-18 13:34:43</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:03:45</sys_updated_on>
     </sysevent_script_action>
 </record_update>

@@ -10,7 +10,7 @@
 Pass in 2 table names, the flag to say whether this is test data and the sys_id&#13;
 If testData = false use table If testData = true use testTable		&#13;
 Returns true if the sys_id exists in the table</comments>
-        <condition>new x_tekso_twxapp01.CheckRecordExists().tableAndTestTableAndSysID(current.table_name,current.test_table_name,current.test_data,current.source_record_sys_id);</condition>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().tableAndTestTableAndSysID(current.table_name,current.test_table_name,current.test_data,current.source_record_sys_id)</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -31,7 +31,11 @@ Returns true if the sys_id exists in the table</comments>
         <name>Open Source Record</name>
         <onclick/>
         <order>100</order>
-        <script><![CDATA[//If testData = false use table 
+        <script><![CDATA[var script = 'UI Action Open Source Record';
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Open Source Record - Started');
+
+//If testData = false use table 
 //If testData = true use testTable		
 var sys_id = current.source_record_sys_id;
 var table = '';
@@ -46,7 +50,8 @@ action.setRedirectURL(url);
 // Return here afterwards
 action.setReturnURL(current);
 
-]]></script>
+//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Open Source Record - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
         <show_query>false</show_query>
@@ -57,7 +62,7 @@ action.setReturnURL(current);
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>bf080037dbfb04104f29252b139619c8</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Open Source Record</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -65,7 +70,7 @@ action.setReturnURL(current);
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_bf080037dbfb04104f29252b139619c8</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-03 12:24:51</sys_updated_on>
+        <sys_updated_on>2020-06-24 14:39:54</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_updates</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

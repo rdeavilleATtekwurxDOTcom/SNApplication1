@@ -32,7 +32,7 @@
 	var tbl2 = tbl.toString();
 	var rtn = false;
 	if (tbl2.length > 0 && sysID2.length > 0) {
-		var gr1 = new GlideRecord(tbl2);
+		var gr1 = new GlideRecordSecure(tbl2);
 		gr1.addQuery('sys_id',sysID2);
 		gr1.query();
 		if (gr1.next()) {
@@ -70,7 +70,7 @@ function getUserSysID(userName) {
 	var userName2 = userName.toString();
 	var rtnSysID = '';
 	if (userName2.length > 0){
-		var gr1 = new GlideRecord('sys_user');
+		var gr1 = new GlideRecordSecure('sys_user');
 		gr1.addQuery('user_name',userName2);
 		gr1.query();
 		if (gr1.next()) {
@@ -94,7 +94,7 @@ function isValueAName(val,tbl,testData) {
 	
 	// Name should be > 0 and table is in list of allowed tables
 	if (val2.length > 0 && reference_tbl_arr.indexOf(tbl2) >= 0) {
-		var gr = new GlideRecord(tbl2);
+		var gr = new GlideRecordSecure(tbl2);
 		gr.addQuery('name',val2);
 		gr.query();
 		if (gr.next()) {
@@ -116,7 +116,7 @@ function isValueASysID(val,tbl,testData) {
 	}
 	// Sys ID should be 32 and table is in list of allowed tables
 	if (val2.length == 32 && reference_tbl_arr.indexOf(tbl2) >= 0) {
-		var gr = new GlideRecord(tbl2);
+		var gr = new GlideRecordSecure(tbl2);
 		gr.addQuery('sys_id',val2);
 		gr.query();
 		if (gr.next()) {
@@ -141,7 +141,7 @@ function getSysIDForName(name,tbl,testData) {
 	}
 	// A name must be > 0 and table is in list of allowed tables
 	if (name2.length > 0 && reference_tbl_arr.indexOf(tbl2) >= 0) {
-		var gr = new GlideRecord(tbl2);
+		var gr = new GlideRecordSecure(tbl2);
 		gr.addQuery('name',name2);
 		gr.query();
 		if (gr.next()) {
@@ -165,7 +165,7 @@ function getNameForSysID(sys_id,tbl,testData) {
 	}
 	// Sys ID should be 32 and table is in list of allowed tables
 	if (sys_id2.length == 32 && reference_tbl_arr.indexOf(tbl2) >= 0) {
-		var gr = new GlideRecord(tbl2);
+		var gr = new GlideRecordSecure(tbl2);
 		gr.addQuery('sys_id',sys_id2);
 		gr.query();
 		if (gr.next()) {
@@ -183,7 +183,7 @@ function isCMDBTrackingRunning(setupTable) {
 	// Default to Off
 	var cmdbTracking = 'Off';
 
-	var gr1 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	var gr1 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 	gr1.query();
 	if (gr1.next()) {
 		cmdbTracking = gr1.getValue('cmdb_tracking') || '';
@@ -206,7 +206,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	// Ensure that this is a string
 	var tblName2 = tblName.toString();
 	if (tblName2.length > 0) {
-		var gr1 = new GlideRecord(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
+		var gr1 = new GlideRecordSecure(supportedClassesTable); //x_tekso_twxapp01_cmdb_supported_classes
 		gr1.addQuery('class',tblName2);
 		gr1.query();
 		if (gr1.next()) {
@@ -286,7 +286,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var gotConfigUsr = false;
 	
 	// Read the Config Table
-	var gr1 = new GlideRecord(setupTable); //x_tekso_twxapp01_setup
+	var gr1 = new GlideRecordSecure(setupTable); //x_tekso_twxapp01_setup
 	gr1.query();
 	if (gr1.next()) {
 		//Cannot do dot walking with getValue
@@ -522,7 +522,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 				// This is the table that contaans the data we need to read. 
 				// For real will be cmdb_ci_appl etc
 				// For test will be x_tekso_twxapp01_test_application etc				
-				var gr2 = new GlideRecord(dataTable);
+				var gr2 = new GlideRecordSecure(dataTable);
 				if (current.test_data == true) {
 					//For test data check if the sys id we have got is genuine or made up
 					var exsts = checkIfRecordExists(dataTable,sourceRecordSysID);		
@@ -758,7 +758,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 						var jsonRequestBody = '{' + data + '}';	
 
-						var gr3 = new GlideRecord(trackingTable); //x_tekso_twxapp01_cmdb_changes
+						var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
 						gr3.initialize();
 						gr3.setValue('action',action);
 						if (action == 'update') {
@@ -826,7 +826,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 
 						// Only update if the status field is blank - this should stop the risk of the BR's looping
 						if (thisRecordStatus.length < 1) {
-							var gr4 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_updates
+							var gr4 = new GlideRecordSecure(thisTable); //x_tekso_twxapp01_cmdb_updates
 							gr4.addQuery('sys_id',thisRecordSysID);
 							gr4.query();
 							if (gr4.next()) {
@@ -874,7 +874,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	} // if (supportedClass == true && cmdbTrackingRunning == true) {
 
 	if (matchedCriteriaForProcessing == false && thisRecordStatus.length < 1) {
-		var gr5 = new GlideRecord(thisTable); //x_tekso_twxapp01_cmdb_updates
+		var gr5 = new GlideRecordSecure(thisTable); //x_tekso_twxapp01_cmdb_updates
 		gr5.addQuery('sys_id',thisRecordSysID);
 		gr5.query();
 		if (gr5.next()) {
@@ -906,7 +906,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>89</sys_mod_count>
+        <sys_mod_count>90</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -914,7 +914,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-17 12:51:45</sys_updated_on>
+        <sys_updated_on>2020-06-24 10:40:29</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

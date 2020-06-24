@@ -4,7 +4,7 @@
         <condition/>
         <conditional>false</conditional>
         <name>Testing - Housekeeping</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -58,14 +58,14 @@ new x_tekso_twxapp01.HouseKeeping().deleteRecordsCreatedEarlierThanNDaysAgo(tbl,
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-05 08:39:00</sys_created_on>
         <sys_id>5cdba094db59d0504f29252b139619d2</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>33</sys_mod_count>
         <sys_name>Testing - Housekeeping</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_5cdba094db59d0504f29252b139619d2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-08 10:16:00</sys_updated_on>
+        <sys_updated_on>2020-06-23 17:39:09</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
