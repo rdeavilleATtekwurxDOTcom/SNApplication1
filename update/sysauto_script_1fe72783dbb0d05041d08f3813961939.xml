@@ -26,7 +26,10 @@ function main() {
 	var setupTable = 'x_tekso_twxapp01_setup';
 	var setupSysID = '';
 	var setupSysID2 = '';
+
 	var setupStatus = '';
+	var gotSetupRecord = false;	
+/*		
 	var setupStatusWasSendingWhenConnectionFailed = false;
 	var setupURL = '';
 	var setupMIDSrvrSysID = '';
@@ -34,8 +37,8 @@ function main() {
 	var setupMIDSrvrName = '';
 	var setupMIDSrvrName2 = '';	
 	var setupConnTimeoutMins = 0;
-	var gotSetupRecord = false;
 	var connectionTestRequested = false;
+*/
 	
 	// --Work out when the scheduled job is going to run next -----------------
 	// Number of seconds till the next run of the job
@@ -77,7 +80,9 @@ function main() {
 		if (sysIDForThisScript != setupScheduledJobSysID) {
 			gr2.setValue('scheduled_job_sys_id',sysIDForThisScript);
 		}
+		
 		setupStatus = gr2.getValue('status') || '';
+/*
 		setupStatusWasSendingWhenConnectionFailed = gr2.getValue('status_was_sending_when_connection_failed');
 		
 		setupConnTimeoutMins = gr2.getValue('ucontrol_connection_timeout_minutes') || 0; 
@@ -89,6 +94,7 @@ function main() {
 
 		setupMIDSrvrName = gr2.getElement('ucontrol_mid_server.name') || '';	
 		setupMIDSrvrName2 = setupMIDSrvrName.toString();		
+*/		
 	}
 	else {
 		// Could not get gr2 record -- i.e. setup record could not be found
@@ -111,8 +117,11 @@ function main() {
 	
 	// --Finished ------------------------------------------------------------
 	if (gotSetupRecord == true) {
+		gs.eventQueue('x_tekso_twxapp01.isconnectiontestdue', gr2, setupSysID2, jobSysID2);
+		
+/*		
 		// Check the last time a connection test was performed
-		var setupConnTestedAt = gr2.getValue('connection_tested_at');
+		var setupConnTestedAt = gr2.getValue('connection_tested_at'); //Setup
 		var now = new GlideDateTime();
 		//Need to put this through GlideDateTime()
 		var lastTestedAt = new GlideDateTime(setupConnTestedAt);
@@ -144,27 +153,33 @@ function main() {
 				}				
 			}
 		}
+*/		
+		
 	}
+
+	//Cleanup
+	gs.eventQueue('x_tekso_twxapp01.cleanup', gr2, setupSysID2, jobSysID2);
 	
 	var finishedAt = GlideDateTime();
 	gr1.setValue('finished_at',finishedAt);
 	gr1.setValue('updated_by_script','SJ Send Data to uControl');
 	gr1.update();
-
+/*
 	if (connectionTestRequested == true) {				
 		var trggrdBy = 'SJ Send Data to uControl';
 		var usrNm = 'Scheduled Job';
 		
 		var si = new x_tekso_twxapp01.ConnectionTest();
 		si.buildRequestRecord(setupSysID2,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
-
 	}
+*/	
+
 	
 	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,1,'SJ Send Data to uControl - Finished');	
 }
 
-
+/*
 function getNumberOfAllPendingRecords() {
 	// Get the number of all Pending Records - this is used to determine if the queue is empty
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -178,21 +193,21 @@ function getNumberOfAllPendingRecords() {
 	rtnCnt = gr1.getAggregate('COUNT');	
 	return rtnCnt;
 }
-
+*/
 
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>94</sys_mod_count>
+        <sys_mod_count>98</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 12:00:00</sys_updated_on>
+        <sys_updated_on>2020-06-25 20:03:55</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

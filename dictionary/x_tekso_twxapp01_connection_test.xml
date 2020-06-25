@@ -8,6 +8,7 @@
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Request Will Time Out At" max_length="40" name="request_will_time_out_at" type="glide_date_time"/>
+        <element label="Request Will Time Out At Has Value" max_length="40" name="request_will_time_out_at_has_value" type="boolean"/>
         <element label="Response Connection" max_length="40" name="response_connection" type="boolean"/>
         <element label="Response From uControl" max_length="4000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
@@ -30,8 +31,10 @@
             </choice>
         </element>
         <element label="Timed Out" max_length="40" name="timed_out" type="boolean"/>
+        <element label="Timed Out By" max_length="100" name="timed_out_by" type="string"/>
         <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
+        <element default="0" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>

@@ -14,7 +14,6 @@ var si = new x_tekso_twxapp01.ConnectionTest();
 si.buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins);
 */
 
-
 var ConnectionTest = Class.create();
 ConnectionTest.prototype = {
     initialize: function() {
@@ -55,12 +54,7 @@ ConnectionTest.prototype = {
 			json = json + '\"source_url\":\"' + snURL + '\",'; // ServiceNow URL e.g. https://dev91664.service-now.com/
 			json = json +  '\"date_sent\":\"' + dtRequest + '\",';	
 			json = json + '\"user\":\"' + usrNm + '\"}'; // No comma at the end				
-
-			var gdt = new GlideDateTime();
-			var timeoutMinutes = connTimeOutMins;
-			var timeoutSeconds = timeoutMinutes * 60;
-			gdt.addSeconds(timeoutSeconds);
-		
+			
 			var gr2 = new GlideRecordSecure(connectionTestTable);
 			gr2.initialize();
 			gr2.setValue('status','Pending');
@@ -68,8 +62,8 @@ ConnectionTest.prototype = {
 			gr2.setValue('ucontrol_url',url);
 			gr2.setValue('ucontrol_mid_server_name',midSrvrName);
 			gr2.setValue('ucontrol_mid_server_sys_id',midSrvrSysID);
+			gr2.setValue('ucontrol_connection_timeout_minutes',connTimeOutMins);
 			gr2.setValue('connection_test_triggered_by',triggeredBy);
-			gr2.setValue('request_will_time_out_at',gdt);
 			gr2.setValue('json_request_body',json);
 			gr2.setValue('connection_test_requested_by',usrNm); //This could be a user or the scheduled job
 			gr2.setValue('total_length_of_json_request_body',json.length);
@@ -81,7 +75,8 @@ ConnectionTest.prototype = {
 			}
 			gr2.setValue('inserted_by_script','SI ConnectionTest'); // Debug	
 			
-			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered		
+			// An After INSERT BR on x_tekso_twxapp01_connection_test will be triggered
+			// That BR will then fire of the event: x_tekso_twxapp01.testconnection
 			gr2.insert();	
 		}
 	},
@@ -91,13 +86,13 @@ ConnectionTest.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-11 16:26:07</sys_created_on>
         <sys_id>e760199edb19501041d08f3813961953</sys_id>
-        <sys_mod_count>9</sys_mod_count>
+        <sys_mod_count>14</sys_mod_count>
         <sys_name>ConnectionTest</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e760199edb19501041d08f3813961953</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 21:48:52</sys_updated_on>
+        <sys_updated_on>2020-06-25 10:44:03</sys_updated_on>
     </sys_script_include>
 </record_update>

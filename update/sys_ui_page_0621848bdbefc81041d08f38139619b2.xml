@@ -34,6 +34,15 @@ function callBack(response){
 	if (connectionStatus == 'OK' || connectionStatus == 'Failed') {
 		g_form.save();
 	}
+	
+	//If we have not aborted we need to check if the test connection has timed out
+	// Get the value from <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	var sysID = gel("sysID").value;
+	// Use a script include to check the current connnection_status
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientConnectionTestTimeout');
+	ga.addParam('sysparm_name','checkForTimeout');
+	ga.addParam("sysparm_sys_id", sysID);
+	ga.getXML(); //This does not require a call back	
 }
 
 // Trigger myTimer every 1 second
@@ -133,13 +142,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 18:26:40</sys_created_on>
         <sys_id>0621848bdbefc81041d08f38139619b2</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>25</sys_mod_count>
         <sys_name>sending_starting_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_0621848bdbefc81041d08f38139619b2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:44:29</sys_updated_on>
+        <sys_updated_on>2020-06-25 14:43:08</sys_updated_on>
     </sys_ui_page>
 </record_update>

@@ -61,7 +61,7 @@ OutboundREST.prototype = {
 		return rtnConnectionOK;
 	},
 	// Check if user returned is valid and update x_tekso_twxapp01_setup
-	handleTestResults2: function(setupSysID,connection_sys_id,resultUserAccount,startIfOK,testConnUsr,dtBack,clsArr) {
+	checkIfUserReturnedIsValid: function(setupSysID,connection_sys_id,resultUserAccount,startIfOK,testConnUsr,dtBack,clsArr) {
 		//testConnUsr - Could be a real user or the scheduled job	
 		
 		var setupSysID2 = setupSysID.toString();
@@ -149,12 +149,15 @@ OutboundREST.prototype = {
 		
 		var dtBack = new GlideDateTime();
 
-		// Update x_tekso_twxapp01_connection_test with the results of the connection test		
-		var connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,staCode,staMsg,conn,usrAcc);
+		// Update x_tekso_twxapp01_connection_test with the results of the connection test	
+		var connectionOK = false;
+		/* RMD comment out to simulate a connection fail */
+		connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,staCode,staMsg,conn,usrAcc);
+		
 		if (connectionOK == true) {
-			// Check if user returned is valid and update x_tekso_twxapp01_setup
+			//Check if user returned is valid and update x_tekso_twxapp01_setup
 			//testConnUsr - Could be a real user or the scheduled job	
-			this.handleTestResults2(setupSysID2,connSysID2,usrAcc,startIfOK,testConnUsr,dtBack,clsArr);		
+			this.checkIfUserReturnedIsValid(setupSysID2,connSysID2,usrAcc,startIfOK,testConnUsr,dtBack,clsArr);		
 		}
 		else {
 			// Failed
@@ -175,7 +178,7 @@ OutboundREST.prototype = {
 		}
 	},
 	// Update x_tekso_twxapp01_setup with the results of the connection test
-	// Called by processTestConnection -> handleTestResults and processTestConnection -> handleTestResults -> handleTestResults2
+	// Called by processTestConnection -> handleTestResults and processTestConnection -> handleTestResults -> checkIfUserReturnedIsValid
 	updateSetupRecord: function(setupSysID,connStatus,connStatusDetails,dtBack,usr,usrIsOK,startIfOK,testUsr,clsArr) {
 		//testUsr - Could be a real user or the scheduled job
 
@@ -195,6 +198,7 @@ OutboundREST.prototype = {
 			cmdbTracking = gr2.getValue('cmdb_tracking') || '';
 			setupExistingStatus = gr2.getValue('status') || '';
 			setupStatusWasSendingWhenConnectionFailed = gr2.getValue('status_was_sending_when_connection_failed') || false;
+
 			if (connStatus == 'OK' && usrIsOK == true) {
 				// Update the classes - we should only do that if this is a success
 				var osi = new x_tekso_twxapp01.UpdateSupportedClasses();
@@ -294,7 +298,7 @@ OutboundREST.prototype = {
 			var usrSysID1 = gr1.getValue('ucontrol_integration_user') || '';
 			var usrSysID2 = usrSysID1.toString();
 			if (usrSysID2.length > 0) {
-				var usrSysID3 = this.checkForValidUserAccount(usrSysID2);
+				var usrSysID3 = this.checkForValidUserAccountSysID(usrSysID2);
 				if (usrSysID3.length > 0) {
 					usrSysID = usrSysID3;
 				}
@@ -304,6 +308,7 @@ OutboundREST.prototype = {
 	},
 
 	checkForValidUserAccount: function(resultUserAccount){
+		//Checks is a user name matches for a sys_user record
 		var rtnSysID = '';
 		if (resultUserAccount.length > 0){
 			var gr1 = new GlideRecordSecure('sys_user');
@@ -317,6 +322,23 @@ OutboundREST.prototype = {
 		}	
 		return rtnSysID;
 	},
+	
+	checkForValidUserAccountSysID: function(usrSysID){
+		//Checks if a sys_id for a sys_user record is valid		
+		var rtnSysID = '';
+		if (usrSysID.length > 0){
+			var gr1 = new GlideRecordSecure('sys_user');
+			gr1.addQuery('sys_id',usrSysID);
+			gr1.query();
+			if (gr1.next()) {
+				// Found a matching user account
+				// Success	
+				rtnSysID = gr1.getValue('sys_id') || '';
+			}
+		}	
+		return rtnSysID;
+	},
+	
 	checkForAbortedOrTimedOut: function(connectionSysID){
 		var abort = false;
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
@@ -326,7 +348,7 @@ OutboundREST.prototype = {
 		if (gr1.next()) {
 			var status = gr1.getValue('status') || '';
 			var timedOutStatus =  gr1.getValue('timed_out') || false;
-			var abortedStatus =  gr1.getValue('aborted') || false;				
+			var abortedStatus =  gr1.getValue('aborted') || false;		
 			if (status == 'Aborted') {
 				abort = true;
 			}
@@ -728,7 +750,7 @@ OutboundREST.prototype = {
 		
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var gr1 = new GlideRecordSecure(connectionTestTable);
-		gr1.addQuery('sys_id',connection_sys_id);
+		gr1.addQuery('sys_id',connection_sys_id2);
 		gr1.query();
 		if (gr1.next()) {
 			var setupSysID = gr1.getValue('setup_record') || '';
@@ -759,24 +781,32 @@ OutboundREST.prototype = {
 				}
 			}	
 			
+			var connTimeOutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
+			var timeOutAt = new GlideDateTime();
+			var timeoutMinutes = connTimeOutMins;
+			var timeoutSeconds = timeoutMinutes * 60;
+			/* RMD - Set to 0 to cause a timeout */
+			//timeoutSeconds = 0; 
+			timeOutAt.addSeconds(timeoutSeconds);
+			gr1.setValue('request_will_time_out_at',timeOutAt);	
+			gr1.setValue('request_will_time_out_at_has_value',true);
 			gr1.setValue('status','Sent');
 			gr1.setValue('sent_to_ucontrol_at',dtSent);
 			gr1.setValue('updated_by_script','SI processTestConnection'); // Debug				
 			gr1.update();
 			
-			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
+			// Script Action to kill the test - but delayed
+			var evnt = 'x_tekso_twxapp01.testconnectiontimeout';
+			gs.eventQueueScheduled(evnt, gr1, gs.getUserID(), gs.getUserName(),timeOutAt);
 
+			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
+			
 			var abort = this.checkForAbortedOrTimedOut(connection_sys_id2);
 			if (abort == false) {
 				//testConnUsr - Could be a real user or the scheduled job	
 				this.handleTestResults(rtnArr,setupSysID2,connection_sys_id2,startIfOK,testConnUsr);
 			}
 			
-			/* Not used
-			if (abort == false) {
-				var resultSuccessFail = '';
-			} 
-			*/
 		} // if (gr1.next()) 
 	},
 	process: function (data_sys_id){
@@ -956,13 +986,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>230</sys_mod_count>
+        <sys_mod_count>268</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:55:31</sys_updated_on>
+        <sys_updated_on>2020-06-25 15:57:03</sys_updated_on>
     </sys_script_include>
 </record_update>
