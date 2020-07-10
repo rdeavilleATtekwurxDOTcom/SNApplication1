@@ -7,6 +7,7 @@
         <name>IsConnectionTestDue</name>
         <order>100</order>
         <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.isconnectiontestdue', gr2, setupSysID2, jobSysID2);
+//Event is triggered by scheduled job - Send Data to uControl
 
 isConnectionTestDue();
 
@@ -22,10 +23,9 @@ function isConnectionTestDue() {
 	var setupSysID = event.parm1;
 	var jobSysID = event.parm2;
 	
-	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
 	var setupTable = 'x_tekso_twxapp01_setup';
 	
-	var connectionTestRequested = false;
+	var testRequired = false;
 	var setupURL = '';
 	var setupMIDSrvrSysID = '';
 	var setupMIDSrvrSysID2 = '';
@@ -39,7 +39,7 @@ function isConnectionTestDue() {
 	if (gr1.next()) {
 		//Got the setup record
 		var setupStatus = gr1.getValue('status') || '';
-		var setupStatusWasSendingWhenConnectionFailed = gr1.getValue('status_was_sending_when_connection_failed');
+		var wasSending = gr1.getValue('status_was_sending_when_connection_failed');
 		
 		setupConnTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
 		
@@ -49,55 +49,32 @@ function isConnectionTestDue() {
 		setupMIDSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
 		setupMIDSrvrSysID2 = setupMIDSrvrSysID.toString(); 
 
-		setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
-		setupMIDSrvrName2 = setupMIDSrvrName.toString();	
-		
-		var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
-		var now = new GlideDateTime();
-		//Need to put this through GlideDateTime()
-		var lastTestedAt = new GlideDateTime(setupConnTestedAt);
-		var dur = new GlideDuration();
-		dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
-		
-		// Seconds - will be floating point e.g. 4,152.345
-		//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
-		
-		// Minutes - will be floating point e.g. 69.206
-		var elapsedTimeSinceConnectionTestInMins = dur.getNumericValue() / 1000 / 60;  
-		var elapsedTimeSinceConnectionTestInMins2 = parseInt(elapsedTimeSinceConnectionTestInMins); // e.g. 69
-		
-		var gr2 = new GlideRecordSecure(jobTable);
-		gr2.addQuery('sys_id',jobSysID);
-		gr2.query();
-		if (gr2.next()) {
-			// For the Scheduled Job Record
-			gr2.setValue('time_elapsed_since_last_connection_test',dur);		
-			gr2.setValue('connection_tested_at',setupConnTestedAt);
+		var midSrvrStatus = getMidServerStatus(setupMIDSrvrSysID2);
+		if (midSrvrStatus != 'Down') {
+			//If the mid server is Down then there is no point trying
+			setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+			setupMIDSrvrName2 = setupMIDSrvrName.toString();	
 
-			if (elapsedTimeSinceConnectionTestInMins2 > 30) {
-				//Last Connection Test was more than 30 minutes ago
-				if (setupStatus == 'Sending') {
-					var noOfPendingRecs = getNumberOfAllPendingRecords();	
-					if (noOfPendingRecs == 0) {
-						// Status is Sending and there is nothing in the queue - Do a connection test
-						connectionTestRequested = true;
-						gr2.setValue('connection_test_requested_by_job',true);
-					}
-				}
-				else {
-					if (setupStatusWasSendingWhenConnectionFailed == true) {
-						connectionTestRequested = true;
-						gr2.setValue('connection_test_requested_by_job',true);
-					}				
-				}				
-			}		
-			gr2.setValue('updated_by_script','SA IsConnectionTestDue');
-			gr2.update();
-			
-		} //if (gr2.next()) {
+			var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
+			var now = new GlideDateTime();
+			//Need to put this through GlideDateTime()
+			var lastTestedAt = new GlideDateTime(setupConnTestedAt);
+			var dur = new GlideDuration();
+			dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
+
+			// Seconds - will be floating point e.g. 4,152.345
+			//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+
+			// Minutes - will be floating point e.g. 69.206
+			var minutesSinceLastTest = dur.getNumericValue() / 1000 / 60;  
+			var minutesSinceLastTest2 = parseInt(minutesSinceLastTest); // e.g. 69
+
+			testRequired = isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest2,setupStatus,wasSending);
+
+		} //if (midSrvrStatus != 'Down') {
 	} // if (gr1.next()) {
 	
-	if (connectionTestRequested == true) {		
+	if (testRequired == true) {		
 		var trggrdBy = 'SA IsConnectionTestDue';
 		var usrNm = 'Scheduled Job';
 		
@@ -122,7 +99,57 @@ function getNumberOfAllPendingRecords() {
 	rtnCnt = gr1.getAggregate('COUNT');	
 	return rtnCnt;
 }
-]]></script>
+
+
+function getMidServerStatus(sys_id) {
+	var rtn = '';
+	var sys_id2 = sys_id.toString();
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure('ecc_agent');
+		gr1.addQuery('sys_id',sys_id2);
+		gr1.query();
+		if (gr1.next()) {
+			var status = gr1.getValue('status');
+			rtn = status.toString();
+		}
+	}
+}
+
+
+function isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest,setupStatus,wasSending) {
+	var rtn = false;
+	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
+	var gr1 = new GlideRecordSecure(jobTable);
+	gr1.addQuery('sys_id',jobSysID);
+	gr1.query();
+	if (gr1.next()) {
+		// For the Scheduled Job Record
+		gr1.setValue('time_elapsed_since_last_connection_test',dur);		
+		gr1.setValue('connection_tested_at',setupConnTestedAt);
+
+		if (minutesSinceLastTest > 30) {
+			//Last Connection Test was more than 30 minutes ago
+			if (setupStatus == 'Sending') {
+				var noOfPendingRecs = getNumberOfAllPendingRecords();	
+				if (noOfPendingRecs == 0) {
+					// Status is Sending and there is nothing in the queue - Do a connection test
+					rtn = true;
+					gr1.setValue('connection_test_requested_by_job',true);
+				}
+			}
+			else {
+				if (wasSending == true) {
+					rtn = true;
+					gr1.setValue('connection_test_requested_by_job',true);
+				}				
+			}				
+		}		
+		gr1.setValue('updated_by_script','SA IsConnectionTestDue');
+		gr1.update();
+
+	} //if (gr1.next()) {	
+	return rtn;
+}]]></script>
         <synchronous>false</synchronous>
         <sys_class_name>sysevent_script_action</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -130,7 +157,7 @@ function getNumberOfAllPendingRecords() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>5ecfd9fedbe9581041d08f38139619f2</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>IsConnectionTestDue</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -138,6 +165,6 @@ function getNumberOfAllPendingRecords() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 18:04:42</sys_updated_on>
+        <sys_updated_on>2020-07-10 16:12:42</sys_updated_on>
     </sysevent_script_action>
 </record_update>

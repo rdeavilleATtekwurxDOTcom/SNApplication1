@@ -6,8 +6,10 @@
         <event_name>x_tekso_twxapp01.outboundrestprocess</event_name>
         <name>OutboundRESTProcess</name>
         <order>100</order>
-        <script><![CDATA[//x_tekso_twxapp01.outboundrestprocess
-//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+        <script><![CDATA[/*
+x_tekso_twxapp01.outboundrestprocess
+gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr0, gs.getUserID(),'sj_send_data_to_ucontrol_last_ran_at');
+*/
 OutboundRESTProcess();
 
 function OutboundRESTProcess() {
@@ -38,7 +40,7 @@ function OutboundRESTProcess() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>5f94ad5cdb909c1041d08f38139619e2</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>OutboundRESTProcess</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -46,6 +48,6 @@ function OutboundRESTProcess() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_5f94ad5cdb909c1041d08f38139619e2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 14:04:50</sys_updated_on>
+        <sys_updated_on>2020-07-10 12:12:52</sys_updated_on>
     </sysevent_script_action>
 </record_update>

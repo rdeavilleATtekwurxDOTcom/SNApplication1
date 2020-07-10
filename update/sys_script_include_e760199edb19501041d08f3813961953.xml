@@ -7,11 +7,11 @@
         <client_callable>false</client_callable>
         <description/>
         <name>ConnectionTest</name>
-        <script><![CDATA[// Example Calling new x_tekso_twxapp01.ConnectionTest().buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins);
+        <script><![CDATA[// Example Calling new x_tekso_twxapp01.ConnectionTest().buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeoutMins);
 
 /* Example calling
 var si = new x_tekso_twxapp01.ConnectionTest();
-si.buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins);
+si.buildRequestRecord(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeoutMins);
 */
 
 var ConnectionTest = Class.create();
@@ -19,7 +19,7 @@ ConnectionTest.prototype = {
     initialize: function() {
     },
 
-	buildRequestRecord: function(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeOutMins) {
+	buildRequestRecord: function(setupSysID,url,midSrvrName,midSrvrSysID,usrNm,startSending,triggeredBy,connTimeoutMins) {
 		// usrNm - could be a user or the scheduled job
 		
 		// Check if there is already a record pending
@@ -62,7 +62,7 @@ ConnectionTest.prototype = {
 			gr2.setValue('ucontrol_url',url);
 			gr2.setValue('ucontrol_mid_server_name',midSrvrName);
 			gr2.setValue('ucontrol_mid_server_sys_id',midSrvrSysID);
-			gr2.setValue('ucontrol_connection_timeout_minutes',connTimeOutMins);
+			gr2.setValue('ucontrol_connection_timeout_minutes',connTimeoutMins);
 			gr2.setValue('connection_test_triggered_by',triggeredBy);
 			gr2.setValue('json_request_body',json);
 			gr2.setValue('connection_test_requested_by',usrNm); //This could be a user or the scheduled job
@@ -86,13 +86,13 @@ ConnectionTest.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-11 16:26:07</sys_created_on>
         <sys_id>e760199edb19501041d08f3813961953</sys_id>
-        <sys_mod_count>14</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>ConnectionTest</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e760199edb19501041d08f3813961953</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 10:44:03</sys_updated_on>
+        <sys_updated_on>2020-07-10 12:08:45</sys_updated_on>
     </sys_script_include>
 </record_update>

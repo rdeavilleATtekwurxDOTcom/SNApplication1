@@ -7,11 +7,70 @@
         <client_callable>false</client_callable>
         <description/>
         <name>GenerateTestData</name>
-        <script><![CDATA[var GenerateTestData = Class.create();
+        <script><![CDATA[/* Example
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_rel_qty,sys_id,'delete_cmdb_rel_ci',true,true);	
+
+		new x_tekso_twxapp01.GenerateTestData().cleanup();
+*/
+
+var GenerateTestData = Class.create();
 GenerateTestData.prototype = {
     initialize: function() {
     },
-		
+	
+	cleanup_old_incomplete_generate_test_data_records: function() {
+		var genTable = 'x_tekso_twxapp01_generate_test_data';
+		var gr1 = new GlideRecordSecure(genTable);	
+		gr1.addQuery('status','Test Data Build In Progress');
+		//Anything older than one day is timed out
+		gr1.addQuery('sys_created_on','<',gs.daysAgo(1));
+		gr1.query();
+		while(gr1.next()) {
+			var genSysID = gr1.getValue('sys_id') || '';
+			var genSysID2 = genSysID.toString();
+			if (genSysID2.length > 0) {		
+				this.set_record_to_timed_out(genSysID2);				
+			}
+		}
+	},
+	
+	set_record_to_timed_out: function(gen_sys_id) {
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
+			var genTable = 'x_tekso_twxapp01_generate_test_data';
+			var gr1 = new GlideRecordSecure(genTable);
+			gr1.addQuery('sys_id',gen_sys_id2);
+			gr1.addQuery('status','Test Data Build In Progress');
+			gr1.query();
+			if (gr1.next()) {
+				gr1.setWorkflow(false);
+
+				gr1.setValue('status','Timed Out');
+				gr1.setValue('number_of_build_test_data_options_started',0);
+				gr1.setValue('number_of_build_test_data_options_completed',0);
+
+				gr1.setValue('build_delete_application_test_data_started',false);
+				gr1.setValue('build_delete_server_test_data_started',false);
+				gr1.setValue('build_delete_relations_test_data_started',false);
+				gr1.setValue('build_update_application_test_data_started',false);
+				gr1.setValue('build_update_server_test_data_started',false);
+				gr1.setValue('build_update_relations_test_data_started',false);
+
+				gr1.setValue('build_delete_application_test_data_completed',false);
+				gr1.setValue('build_delete_server_test_data_completed',false);
+				gr1.setValue('build_delete_relations_test_data_completed',false);
+				gr1.setValue('build_update_application_test_data_completed',false);
+				gr1.setValue('build_update_server_test_data_completed',false);
+				gr1.setValue('build_update_relations_test_data_completed',false);
+
+				gr1.setValue('build_test_data_completed',0);
+				gr1.setValue('build_test_data_started',0);
+
+				gr1.update();
+			}
+		}
+	},
+	
 	build_test_data_if_it_does_not_exist: function() {
 		var srvTable = 'x_tekso_twxapp01_test_server';
 		var relTable = 'x_tekso_twxapp01_test_ci_relationship';	
@@ -46,14 +105,19 @@ GenerateTestData.prototype = {
 		var rtn = 0;
 		var dataTable = 'x_tekso_twxapp01_cmdb_changes';
 
-		var gr1 = new GlideAggregate(dataTable);
-		gr1.addQuery('status','Pending');
-		gr1.addQuery('test_data',true);
-		gr1.addQuery('generate_test_data_record_sys_id','!=',current.sys_id);
-		gr1.addAggregate('COUNT');
-		gr1.query();
-		gr1.next(); // GlideAggregate needs the .next()
-		rtn = gr1.getAggregate('COUNT');		
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
+			
+			var gr1 = new GlideAggregate(dataTable);
+			gr1.addQuery('status','Pending');
+			gr1.addQuery('test_data',true);
+			gr1.addQuery('generate_test_data_record_sys_id','!=',gen_sys_id2);
+			gr1.addAggregate('COUNT');
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rtn = gr1.getAggregate('COUNT');		
+		}
+		return rtn;
 	},
 	//Called like this:
 	//new x_tekso_twxapp01.GenerateTestData().number_of_test_data_records_already_pending(current.sys_id)
@@ -63,29 +127,34 @@ GenerateTestData.prototype = {
 		// has already been set to true
 		var rtn = false;
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gr1 = new GlideRecordSecure(genTable);
-		gr1.addQuery('sys_id',gen_sys_id);
-		gr1.query();
-		if (gr1.next()) {
-			gr1.setWorkflow(false);
-			if (data == 'delete_cmdb_ci_appl') {
-				rtn = gr1.getValue('build_delete_application_test_data_started');	
-			}
-			if (data == 'delete_cmdb_ci_server') {
-				rtn = gr1.getValue('build_delete_server_test_data_started');		
-			}			
-			if (data == 'delete_cmdb_rel_ci') {
-				rtn = gr1.getValue('build_delete_relations_test_data_started');		
-			}			
+		
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
+			
+			var gr1 = new GlideRecordSecure(genTable);
+			gr1.addQuery('sys_id',gen_sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				gr1.setWorkflow(false);
+				if (data == 'delete_cmdb_ci_appl') {
+					rtn = gr1.getValue('build_delete_application_test_data_started');	
+				}
+				if (data == 'delete_cmdb_ci_server') {
+					rtn = gr1.getValue('build_delete_server_test_data_started');		
+				}			
+				if (data == 'delete_cmdb_rel_ci') {
+					rtn = gr1.getValue('build_delete_relations_test_data_started');		
+				}			
 
-			if (data == 'update_cmdb_ci_appl') {
-				rtn = gr1.getValue('build_update_application_test_data_started');	
-			}
-			if (data == 'update_cmdb_ci_server') {
-				rtn = gr1.getValue('build_update_server_test_data_started');		
-			}			
-			if (data == 'update_cmdb_rel_ci') {
-				rtn = gr1.getValue('build_update_relations_test_data_started');		
+				if (data == 'update_cmdb_ci_appl') {
+					rtn = gr1.getValue('build_update_application_test_data_started');	
+				}
+				if (data == 'update_cmdb_ci_server') {
+					rtn = gr1.getValue('build_update_server_test_data_started');		
+				}			
+				if (data == 'update_cmdb_rel_ci') {
+					rtn = gr1.getValue('build_update_relations_test_data_started');		
+				}
 			}
 		}
 		return rtn;
@@ -93,208 +162,227 @@ GenerateTestData.prototype = {
 					
 	generate_started: function(gen_sys_id,data) {
 		// Set the start flag and start date/time
-		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecordSecure(genTable);
-		gr1.addQuery('sys_id',gen_sys_id);
-		gr1.query();
-		if (gr1.next()) {
-			var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;
-			var numStarted2 = parseInt(numStarted);
-			
-			//gr1.setWorkflow(false);
-			if (data == 'delete_cmdb_ci_appl') {
-				gr1.setValue('build_delete_application_test_data_started',true);
-				gr1.setValue('build_delete_application_test_data_started_at',gdt);	
-				numStarted2 = numStarted2 + 1;
-			}
-			if (data == 'delete_cmdb_ci_server') {
-				gr1.setValue('build_delete_server_test_data_started',true);
-				gr1.setValue('build_delete_server_test_data_started_at',gdt);
-				numStarted2 = numStarted2 + 1;
-			}			
-			if (data == 'delete_cmdb_rel_ci') {
-				gr1.setValue('build_delete_relations_test_data_started',true);
-				gr1.setValue('build_delete_relations_test_data_started_at',gdt);		
-				numStarted2 = numStarted2 + 1;
-			}			
 
-			if (data == 'update_cmdb_ci_appl') {
-				gr1.setValue('build_update_application_test_data_started',true);
-				gr1.setValue('build_update_application_test_data_started_at',gdt);	
-				numStarted2 = numStarted2 + 1;
-			}
-			if (data == 'update_cmdb_ci_server') {
-				gr1.setValue('build_update_server_test_data_started',true);
-				gr1.setValue('build_update_server_test_data_started_at',gdt);
-				numStarted2 = numStarted2 + 1;
-			}			
-			if (data == 'update_cmdb_rel_ci') {
-				gr1.setValue('build_update_relations_test_data_started',true);
-				gr1.setValue('build_update_relations_test_data_started_at',gdt);
-				numStarted2 = numStarted2 + 1;
-			}	
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
 			
-			var alreadyStarted = gr1.getValue('build_test_data_started') || false;
-			if (alreadyStarted == false) {
-				gr1.setValue('build_test_data_started',true);
-				gr1.setValue('build_test_data_started_at',gdt);		
-			}			
-			gr1.setValue('number_of_build_test_data_options_started',numStarted2);
-			gr1.update();
-		}		
+			var genTable = 'x_tekso_twxapp01_generate_test_data';
+			var gdt = new GlideDateTime();
+			var gr1 = new GlideRecordSecure(genTable);
+			gr1.addQuery('sys_id',gen_sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;
+				var numStarted2 = parseInt(numStarted);
+
+				//gr1.setWorkflow(false);
+				if (data == 'delete_cmdb_ci_appl') {
+					gr1.setValue('build_delete_application_test_data_started',true);
+					gr1.setValue('build_delete_application_test_data_started_at',gdt);	
+					numStarted2 = numStarted2 + 1;
+				}
+				if (data == 'delete_cmdb_ci_server') {
+					gr1.setValue('build_delete_server_test_data_started',true);
+					gr1.setValue('build_delete_server_test_data_started_at',gdt);
+					numStarted2 = numStarted2 + 1;
+				}			
+				if (data == 'delete_cmdb_rel_ci') {
+					gr1.setValue('build_delete_relations_test_data_started',true);
+					gr1.setValue('build_delete_relations_test_data_started_at',gdt);		
+					numStarted2 = numStarted2 + 1;
+				}			
+
+				if (data == 'update_cmdb_ci_appl') {
+					gr1.setValue('build_update_application_test_data_started',true);
+					gr1.setValue('build_update_application_test_data_started_at',gdt);	
+					numStarted2 = numStarted2 + 1;
+				}
+				if (data == 'update_cmdb_ci_server') {
+					gr1.setValue('build_update_server_test_data_started',true);
+					gr1.setValue('build_update_server_test_data_started_at',gdt);
+					numStarted2 = numStarted2 + 1;
+				}			
+				if (data == 'update_cmdb_rel_ci') {
+					gr1.setValue('build_update_relations_test_data_started',true);
+					gr1.setValue('build_update_relations_test_data_started_at',gdt);
+					numStarted2 = numStarted2 + 1;
+				}	
+
+				var alreadyStarted = gr1.getValue('build_test_data_started') || false;
+				if (alreadyStarted == false) {
+					gr1.setValue('build_test_data_started',true);
+					gr1.setValue('build_test_data_started_at',gdt);		
+				}			
+				gr1.setValue('number_of_build_test_data_options_started',numStarted2);
+				gr1.update();
+			}
+		}
 	},
 	
 	generate_completed: function(gen_sys_id,data) {	
 		// Sets the completed flag and the completed date/time
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecordSecure(genTable);
-		gr1.addQuery('sys_id',gen_sys_id);
-		gr1.query();
-		if (gr1.next()) {	
-			//gr1.setWorkflow(false);
-			var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;
-			var numCompleted2 = parseInt(numCompleted);
+		
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
 			
-			if (data == 'delete_cmdb_ci_appl') {
-				gr1.setValue('build_delete_application_test_data_completed',true);
-				gr1.setValue('build_delete_application_test_data_completed_at',gdt);	
-				numCompleted2 = numCompleted2 + 1;
-			}
-			if (data == 'delete_cmdb_ci_server') {
-				gr1.setValue('build_delete_server_test_data_completed',true);
-				gr1.setValue('build_delete_server_test_data_completed_at',gdt);		
-				numCompleted2 = numCompleted2 + 1;				
-			}			
-			if (data == 'delete_cmdb_rel_ci') {
-				gr1.setValue('build_delete_relations_test_data_completed',true);
-				gr1.setValue('build_delete_relations_test_data_completed_at',gdt);	
-				numCompleted2 = numCompleted2 + 1;				
-			}			
+			var gdt = new GlideDateTime();
+			var gr1 = new GlideRecordSecure(genTable);
+			gr1.addQuery('sys_id',gen_sys_id2);
+			gr1.query();
+			if (gr1.next()) {	
+				//gr1.setWorkflow(false);
+				var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;
+				var numCompleted2 = parseInt(numCompleted);
 
-			if (data == 'update_cmdb_ci_appl') {
-				gr1.setValue('build_update_application_test_data_completed',true);
-				gr1.setValue('build_update_application_test_data_completed_at',gdt);	
-				numCompleted2 = numCompleted2 + 1;				
+				if (data == 'delete_cmdb_ci_appl') {
+					gr1.setValue('build_delete_application_test_data_completed',true);
+					gr1.setValue('build_delete_application_test_data_completed_at',gdt);	
+					numCompleted2 = numCompleted2 + 1;
+				}
+				if (data == 'delete_cmdb_ci_server') {
+					gr1.setValue('build_delete_server_test_data_completed',true);
+					gr1.setValue('build_delete_server_test_data_completed_at',gdt);		
+					numCompleted2 = numCompleted2 + 1;				
+				}			
+				if (data == 'delete_cmdb_rel_ci') {
+					gr1.setValue('build_delete_relations_test_data_completed',true);
+					gr1.setValue('build_delete_relations_test_data_completed_at',gdt);	
+					numCompleted2 = numCompleted2 + 1;				
+				}			
+
+				if (data == 'update_cmdb_ci_appl') {
+					gr1.setValue('build_update_application_test_data_completed',true);
+					gr1.setValue('build_update_application_test_data_completed_at',gdt);	
+					numCompleted2 = numCompleted2 + 1;				
+				}
+				if (data == 'update_cmdb_ci_server') {
+					gr1.setValue('build_update_server_test_data_completed',true);
+					gr1.setValue('build_update_server_test_data_completed_at',gdt);	
+					numCompleted2 = numCompleted2 + 1;				
+				}			
+				if (data == 'update_cmdb_rel_ci') {
+					gr1.setValue('build_update_relations_test_data_completed',true);
+					gr1.setValue('build_update_relations_test_data_completed_at',gdt);		
+					numCompleted2 = numCompleted2 + 1;				
+				}	
+
+				gr1.setValue('number_of_build_test_data_options_completed',numCompleted2);						
+				gr1.update();
 			}
-			if (data == 'update_cmdb_ci_server') {
-				gr1.setValue('build_update_server_test_data_completed',true);
-				gr1.setValue('build_update_server_test_data_completed_at',gdt);	
-				numCompleted2 = numCompleted2 + 1;				
-			}			
-			if (data == 'update_cmdb_rel_ci') {
-				gr1.setValue('build_update_relations_test_data_completed',true);
-				gr1.setValue('build_update_relations_test_data_completed_at',gdt);		
-				numCompleted2 = numCompleted2 + 1;				
-			}	
-			
-			gr1.setValue('number_of_build_test_data_options_completed',numCompleted2);						
-			gr1.update();
+			this.generate_totally_completed(gen_sys_id2);
 		}
-		this.generate_totally_completed(gen_sys_id);
 	},
 	
 	generate_totally_completed: function(gen_sys_id) {
 		// Check if we have totally finished - i.e. was this the last thing that was needed to complete
 		// or is there other stuff that is still outstanding
-		var genTable = 'x_tekso_twxapp01_generate_test_data';
-		var gdt = new GlideDateTime();
-		var gr1 = new GlideRecordSecure(genTable);
-		gr1.addQuery('sys_id',gen_sys_id);
-		gr1.query();
-		if (gr1.next()) {
-			//gr1.setWorkflow(false);
-			var delRelQty = gr1.getValue('delete_relations_qty') || 0;				
-			var delServQty = gr1.getValue('delete_server_qty') || 0;				
-			var delApplQty = gr1.getValue('delete_application_qty') || 0;				
-			var updRelQty = gr1.getValue('update_relations_qty') || 0;			
-			var updServQty = gr1.getValue('update_server_qty') || 0;				
-			var updApplQty = gr1.getValue('update_application_qty') || 0;
-			
-			var delApplCmp = gr1.getValue('build_delete_application_test_data_completed') || false;
-			var delSrvCmp = gr1.getValue('build_delete_server_test_data_completed') || false;
-			var delRelCmp = gr1.getValue('build_delete_relations_test_data_completed') || false;			
-			var updRelCmp = gr1.getValue('build_update_relations_test_data_completed') || false;
-			var updServCmp = gr1.getValue('build_update_server_test_data_completed') || false;
-			var updApplCmp = gr1.getValue('build_update_application_test_data_completed') || false;
+		
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
 
-			var numSelected = gr1.getValue('number_of_build_test_data_options_selected') || 0;
-			var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;		
-			var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;	
-			
-			if (numSelected == numStarted && numStarted == numCompleted) {
-				if (delServQty < 1 || (delServQty > 0 && delSrvCmp == true)) {
-					if (delApplQty < 1 || (delApplQty > 0 && delApplCmp == true)) {
-						if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
-							if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
-								if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
-									if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
-										// All done
-										gr1.setValue('build_test_data_completed',true);
-										gr1.setValue('build_test_data_completed_at',gdt);
-										//Need to put this through GlideDateTime()
-										var strt = new GlideDateTime(gr1.getValue('build_test_data_started_at'));
-										var dur = new GlideDuration();
-										dur = GlideDateTime.subtract(strt,gdt);														
-										gr1.setValue('time_taken_to_build_test_data',dur);										
-										gr1.setValue('status','Test Data Build Complete');								
-										gr1.update();		
+			var genTable = 'x_tekso_twxapp01_generate_test_data';
+			var gdt = new GlideDateTime();
+			var gr1 = new GlideRecordSecure(genTable);
+			gr1.addQuery('sys_id',gen_sys_id);
+			gr1.query();
+			if (gr1.next()) {
+				//gr1.setWorkflow(false);
+				var delRelQty = gr1.getValue('delete_relations_qty') || 0;				
+				var delServQty = gr1.getValue('delete_server_qty') || 0;				
+				var delApplQty = gr1.getValue('delete_application_qty') || 0;				
+				var updRelQty = gr1.getValue('update_relations_qty') || 0;			
+				var updServQty = gr1.getValue('update_server_qty') || 0;				
+				var updApplQty = gr1.getValue('update_application_qty') || 0;
+
+				var delApplCmp = gr1.getValue('build_delete_application_test_data_completed') || false;
+				var delSrvCmp = gr1.getValue('build_delete_server_test_data_completed') || false;
+				var delRelCmp = gr1.getValue('build_delete_relations_test_data_completed') || false;			
+				var updRelCmp = gr1.getValue('build_update_relations_test_data_completed') || false;
+				var updServCmp = gr1.getValue('build_update_server_test_data_completed') || false;
+				var updApplCmp = gr1.getValue('build_update_application_test_data_completed') || false;
+
+				var numSelected = gr1.getValue('number_of_build_test_data_options_selected') || 0;
+				var numStarted = gr1.getValue('number_of_build_test_data_options_started') || 0;		
+				var numCompleted = gr1.getValue('number_of_build_test_data_options_completed') || 0;	
+
+				if (numSelected == numStarted && numStarted == numCompleted) {
+					if (delServQty < 1 || (delServQty > 0 && delSrvCmp == true)) {
+						if (delApplQty < 1 || (delApplQty > 0 && delApplCmp == true)) {
+							if (delRelQty < 1 || (delRelQty > 0 && delRelCmp == true)) {
+								if (updRelQty < 1 || (updRelQty > 0 && updRelCmp == true)) {
+									if (updServQty < 1 || (updServQty > 0 && updServCmp == true)) {
+										if (updApplQty < 1 || (updApplQty > 0 && updApplCmp == true)) {
+											// All done
+											gr1.setValue('build_test_data_completed',true);
+											gr1.setValue('build_test_data_completed_at',gdt);
+											//Need to put this through GlideDateTime()
+											var strt = new GlideDateTime(gr1.getValue('build_test_data_started_at'));
+											var dur = new GlideDuration();
+											dur = GlideDateTime.subtract(strt,gdt);														
+											gr1.setValue('time_taken_to_build_test_data',dur);										
+											gr1.setValue('status','Test Data Build Complete');								
+											gr1.update();		
+										}
 									}
 								}
 							}
 						}
-					}
-				}	
-			}
-		} //if (gr1.next()) {		
+					}	
+				}
+			} //if (gr1.next()) {	
+		}
 	},
 	
 	generate_data: function(qty,gen_sys_id,data,includeAllFields,completelyFillStrings) {
-		
-		// includeAllFields only needed for update server/appl
-		// completelyFillStrings only needed for update server/appl
-		var alreadyStarted = this.generate_already_started(gen_sys_id,data);
-		// Checks to see if the flag build_delete_XXXXXX_test_data_started etc
-		// has already been set to true
-		// This is a safety check to see if the data has already been generated
-		// So if the BR triggers again then it won't start processing a second time
-		if (alreadyStarted == false) {	
-			// Not already started - safe to proceed
+
+		var gen_sys_id2 = gen_sys_id.toString();
+		if (gen_sys_id2.length > 0) {
 			
-			this.build_test_data_if_it_does_not_exist();
-		
-			// Set the flag start time
-			this.generate_started(gen_sys_id,data);
-			if (qty < 1) {
-				qty = 1;
-			}
+			// includeAllFields only needed for update server/appl
+			// completelyFillStrings only needed for update server/appl
+			var alreadyStarted = this.generate_already_started(gen_sys_id,data);
+			// Checks to see if the flag build_delete_XXXXXX_test_data_started etc
+			// has already been set to true
+			// This is a safety check to see if the data has already been generated
+			// So if the BR triggers again then it won't start processing a second time
+			if (alreadyStarted == false) {	
+				// Not already started - safe to proceed
 
-			var cnt = 0;
-			while (cnt < qty) {
-				cnt = cnt + 1;
-				if (data == 'delete_cmdb_ci_appl') {
-					this.delete_cmdb_ci_appl(cnt,gen_sys_id);
-				}
-				if (data == 'delete_cmdb_ci_server') {
-					this.delete_cmdb_ci_server(cnt,gen_sys_id);
-				}			
-				if (data == 'delete_cmdb_rel_ci') {
-					this.delete_cmdb_rel_ci(cnt,gen_sys_id);
-				}	
+				this.build_test_data_if_it_does_not_exist();
 
-				if (data == 'update_cmdb_ci_appl') {
-					this.update_cmdb_ci_appl(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
+				// Set the flag start time
+				this.generate_started(gen_sys_id,data);
+				if (qty < 1) {
+					qty = 1;
 				}
-				if (data == 'update_cmdb_ci_server') {
-					this.update_cmdb_ci_server(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
-				}			
-				if (data == 'update_cmdb_rel_ci') {
-					this.update_cmdb_rel_ci(cnt,gen_sys_id);
-				}				
+
+				var cnt = 0;
+				while (cnt < qty) {
+					cnt = cnt + 1;
+					if (data == 'delete_cmdb_ci_appl') {
+						this.delete_cmdb_ci_appl(cnt,gen_sys_id);
+					}
+					if (data == 'delete_cmdb_ci_server') {
+						this.delete_cmdb_ci_server(cnt,gen_sys_id);
+					}			
+					if (data == 'delete_cmdb_rel_ci') {
+						this.delete_cmdb_rel_ci(cnt,gen_sys_id);
+					}	
+
+					if (data == 'update_cmdb_ci_appl') {
+						this.update_cmdb_ci_appl(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
+					}
+					if (data == 'update_cmdb_ci_server') {
+						this.update_cmdb_ci_server(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
+					}			
+					if (data == 'update_cmdb_rel_ci') {
+						this.update_cmdb_rel_ci(cnt,gen_sys_id);
+					}				
+				}
+				// Set the completed flag and the end date\time
+				this.generate_completed(gen_sys_id,data);
 			}
-			// Set the completed flag and the end date\time
-			this.generate_completed(gen_sys_id,data);
 		}
 	},
 
@@ -1581,13 +1669,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>37</sys_mod_count>
+        <sys_mod_count>40</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:56:46</sys_updated_on>
+        <sys_updated_on>2020-07-10 09:49:58</sys_updated_on>
     </sys_script_include>
 </record_update>

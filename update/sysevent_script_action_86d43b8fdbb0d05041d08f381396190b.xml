@@ -62,12 +62,12 @@ function SendDataToUControl() {
 			var setupIntegrationUserName2 = setupIntegrationUserName.toString(); 
 
 			var setupMaxRetries = gr2.getValue('max_retries') || 0;
-			
+
 			gr2.setValue('last_scan_performed_at',jobStartTime);	
 			gr2.setValue('updated_by_script','SA SendDataTouControl'); // Debug
 			gr2.update();	
 			
-			gr1.setValue('max_retries',setupMaxRetries);
+			gr1.setValue('max_retries',setupMaxRetries); //x_tekso_twxapp01_scheduled_job_log
 			gr1.setValue('ucontrol_connection_timeout_minutes',setupConnTimeout);
 			gr1.setValue('ucontrol_integration_user_name',setupIntegrationUserName2);
 			gr1.setValue('ucontrol_integration_user_sys_id',setupIntegrationUserSysID2);
@@ -273,8 +273,6 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 		arrUniqueData.push(sysIDsInBlockAreUnique); //T/F
 		arrTestData.push(tstData); //T/F
 		
-
-		
 		// Get another 2000?
 		var secsLeft = secondsRemainingBeforeNextRunOfScheduledJob(nextRunAt);
 		//Subtract 10 more seconds as a precaution
@@ -364,6 +362,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 	var tstData = false;
 	var midSrvNm = '';
 	var midSrvSysID = '';
+	var timeoutMins = 0;
 	var user = '';
 	var url ='';
 	var srcRecSysID = '';
@@ -374,6 +373,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 	var prevTestData = false;
 	var prevMIDServerName = '';
 	var prevMIDServerSysID = '';
+	var prevTimeoutMins = 0;	
 	var prevURL = '';
 	var prevUser = '';
 
@@ -437,6 +437,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		
 		midSrvNm = gr2.getValue('ucontrol_mid_server_name') || '';
 		midSrvSysID = gr2.getValue('ucontrol_mid_server_sys_id') || '';	
+		timeoutMins = gr2.getValue('ucontrol_connection_timeout_minutes') || 0;
 		url = gr2.getValue('ucontrol_url') || '';
 		user = gr2.getValue('sys_created_by') || '';	
 		dt = gr2.getValue('sys_created_on') || '';
@@ -477,7 +478,13 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					deleteDataToFlushOut = true;		
 					brkRsn = 'midServerName NOT prevMIDServerName. midServerName: ' + midSrvNm + ' prevMIDServerName: ' + prevMIDServerName;
 				}	
-
+		
+				if (deleteDataToFlushOut == false && timeoutMins != prevTimeoutMins) {
+					// Delete data to be flushed out
+					deleteDataToFlushOut = true;		
+					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + str(timeoutMins) + ' prevTimeoutMins: ' + str(timeoutMins);
+				}	
+								
 				if (deleteDataToFlushOut == false && url != prevURL) {
 					// Delete data to be flushed out
 					deleteDataToFlushOut = true;		
@@ -555,6 +562,12 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					brkRsn = 'midServerName NOT prevMIDServerName. midServerName: ' + midSrvNm + ' prevMIDServerName: ' + prevMIDServerName;
 				}	
 
+				if (updateDataToFlushOut == false && timeoutMins != prevTimeoutMins) {
+					// Update data to be flushed out
+					updateDataToFlushOut = true;		
+					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + str(timeoutMins) + ' prevTimeoutMins: ' + str(timeoutMins);
+				}	
+				
 				if (updateDataToFlushOut == false && url != prevURL) {
 					// Update data to be flushed out
 					updateDataToFlushOut = true;	
@@ -630,9 +643,9 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			
 			// 1 Record
 			/* use createDataRecordWithEmptyJSON so we can get back the sys_id to include in the json
-			data_sys_id = createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,insertJsonRequestBody,1,logSysID);
+			data_sys_id = createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,insertJsonRequestBody,1,logSysID);
 			*/
-			data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,logSysID,jobSysID,pID);
+			data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,logSysID,jobSysID,pID);
 			dataRecordNo = getDataRecordNo(data_sys_id);			
 			
 			insertData = '\"insertedData\": ' + jsonRequestBody;
@@ -649,6 +662,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,trackingSysID,logSysID,jobSysID,pID);
 			
 			gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),data_sys_id);
+			//event x_tekso_twxapp01.outboundrestprocess triggers script action OutboundRESTProcess
+			//which execute SI processNoWait			
 		}
 
 		// If delete then store it up and process later
@@ -677,7 +692,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					//logSysID is the sys_id for the log record
 				}	
 				
-				delete_data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,logSysID,jobSysID,pID);
+				delete_data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,logSysID,jobSysID,pID);
 				dataRecordNo = getDataRecordNo(delete_data_sys_id);
 				
 				createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,delete_data_sys_id,trackingSysID,logSysID,jobSysID,pID);		
@@ -737,7 +752,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					logRecordCreated = true;
 					//logSysID is the sys_id for the log record
 				}					
-				update_data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,logSysID,jobSysID,pID);
+				update_data_sys_id = createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,logSysID,jobSysID,pID);
 				dataRecordNo = getDataRecordNo(update_data_sys_id);
 				
 				createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,update_data_sys_id,trackingSysID,logSysID,jobSysID,pID);		
@@ -777,6 +792,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		prevBaseTable = bsTbl;
 		prevMIDServerName = midSrvNm;
 		prevMIDServerSysID = midSrvSysID;
+		prevTimeoutMins = timeoutMins;
 		prevURL = url;
 		prevUser = user;
 		prevTestData = tstData;
@@ -932,7 +948,7 @@ function createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,tra
 
 
 // Called by processBlock
-function createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,logSysID,jobSysID,pID) {
+function createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,logSysID,jobSysID,pID) {
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.initialize();
@@ -942,6 +958,7 @@ function createDataRecordWithEmptyJSON(brkRsn,action,bsTbl,tstData,midSrvNm,midS
 	gr1.setValue('ucontrol_mid_server_name',midSrvNm);
 	gr1.setValue('ucontrol_mid_server_sys_id',midSrvSysID);		
 	gr1.setValue('ucontrol_url',url);
+	gr1.setValue('ucontrol_connection_timeout_minutes',timeoutMins);
 	gr1.setValue('json_request_body','');
 	gr1.setValue('json_request_body_first_1000_chars','');
 	gr1.setValue('total_length_of_json_request_body',0);	
@@ -1557,7 +1574,7 @@ function restDataRecordContentsSummaryLinkedToLog(logSysID) {
 
 /* Not used - would be used for INSERT
 // Called by processBlock
-function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,JSONRequestBody,noOfRecsInJSON,logSysID) {
+function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrvSysID,url,timeoutMins,JSONRequestBody,noOfRecsInJSON,logSysID) {
 	var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
 	gr1.initialize();
 	gr1.setValue('action',action); // insert
@@ -1565,7 +1582,8 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
 	gr1.setValue('test_data',tstData); // T/F
 	gr1.setValue('ucontrol_mid_server_name',midSrvNm);
 	gr1.setValue('ucontrol_mid_server_sys_id',midSrvSysID);		
-	gr1.setValue('ucontrol_url',url);						
+	gr1.setValue('ucontrol_url',url);		
+	gr1.setValue('ucontrol_connection_timeout_minutes',timeoutMins);	
 	gr1.setValue('json_request_body',JSONRequestBody);
 	if (jsonRequestBody.length > 1000) {
 		gr1.setValue('json_request_body_first_1000_chars',jsonRequestBody.substring(0,1000));		
@@ -1590,7 +1608,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>78</sys_mod_count>
+        <sys_mod_count>80</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1598,6 +1616,6 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 20:23:45</sys_updated_on>
+        <sys_updated_on>2020-07-10 12:12:41</sys_updated_on>
     </sysevent_script_action>
 </record_update>

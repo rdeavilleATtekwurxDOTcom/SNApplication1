@@ -23,7 +23,7 @@ ConnectionTestTimeout.prototype = {
     initialize: function() {
     },
 	
-	cleanup: function() {
+	cleanup_old_incomplete_connection_test_records: function() {
 		// Cleanup job to go through all records
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var setupTable = 'x_tekso_twxapp01_setup';	
@@ -32,13 +32,17 @@ ConnectionTestTimeout.prototype = {
 		gr1.query();
 		if (gr1.next()) {
 			//Got the Setup record
-			var setupSysID = gr1.getValue('sys_id');
+			var setupSysID = gr1.getValue('sys_id') || '';
+			var setupSysID2 = setupSysID.toString();
 			var gr2 = new GlideRecordSecure(connectionTestTable);
 			gr2.addQuery('status','Sent');
 			gr2.query();
 			while(gr2.next()) {
-				var connTestSysID = gr2.getValue('sys_id');
-				this.checkForTimeout(connTestSysID,setupSysID,timedOutBy);
+				var connTestSysID = gr2.getValue('sys_id') || '';
+				var connTestSysID2 = connTestSysID.toString();
+				if (connTestSysID2.length > 0) {
+					this.checkForTimeout(connTestSysID2,setupSysID2,timedOutBy);
+				}
 			}
 		}	
 	},
@@ -51,7 +55,6 @@ ConnectionTestTimeout.prototype = {
 
 		if (connTestSysID2.length > 0 && setupSysID2.length > 0) {
 			var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-			var setupTable = 'x_tekso_twxapp01_setup';		
 			var gr1 = new GlideRecordSecure(connectionTestTable);
 			gr1.addQuery('sys_id',connTestSysID2);
 			gr1.addQuery('status','Sent');
@@ -76,7 +79,8 @@ ConnectionTestTimeout.prototype = {
 						var abortedStatus = gr1.getValue('aborted') || false;						
 						// This may have already been aborted or timed out
 						if (abortedStatus == true && status != 'Aborted') {
-							// Because of timing between various async threads the status may not have been set to Aborted
+							// Because of timing between various async threads the status may not have 
+							// been set to Aborted
 							// or it was set to Aborted but then overwritten by another process
 							// Hence the need for a separated Aborted flag
 							// If Status is not Aborted - set it now			
@@ -86,7 +90,8 @@ ConnectionTestTimeout.prototype = {
 						}
 
 						if (timedOutStatus == true && status != 'Timed Out') {
-							// Because of timing between various async threads the status may not have been set to Timed Out
+							// Because of timing between various async threads the status may not have 
+							// been set to Timed Out
 							// or it was set to Timed Out but then overwritten by another process
 							// Hence the need for a separated Timed Out flag
 							// If Status is not Timed Out - set it now			
@@ -104,47 +109,66 @@ ConnectionTestTimeout.prototype = {
 								gr1.setValue('updated_by_script',script);	// Debug
 								gr1.update();
 
-								//Update Setup						
-								var gr2 = new GlideRecordSecure(setupTable);
-								gr2.addQuery('sys_id',setupSysID2);
-								//When a connection test is generated the sys_id of the connection test is 
-								//linked back to the Setup Record
-								//I.e. Setup has a link to the latest connection test
-								//We should only be updating Setup if the Connection Test that has Timed Out
-								//Only if this test connection record is the one that is currently linked to Setup
-								//I.e. only update Setup if connection_test_link = sysID
-								gr2.addQuery('connection_test_link',connTestSysID2);
-								gr2.query();
-								if (gr2.next()) {
-									var gdt = new GlideDateTime();
-									gr2.setValue('connection_status','Failed');				
-									gr2.setValue('connection_status_details','Connection Test Timed Out At: ' + gdt); 
-									gr2.setValue('start_sending_requested',false);
-									gr2.setValue('connection_test_requested',false);
-									gr2.setValue('connection_test_link','');
-									gr2.setValue('updated_by_script',script); // Debug
-									gr2.update();
-								} // if (gr2.next())																				
+								//Update Setup
+								this.updateSetup(setupSysID2,connTestSysID2,script);
+								
 							} //if (status == 'Pending' || status == 'Sent') {	
+							
 						} //if (abortedStatus == false && timedOutStatus == false) {
-					} //if (dur1secs2 < 0) {				
+						
+					} //if (dur1secs2 < 0) {		
+					
 				} //if (requestWillTimeOutAtHasValue == true) {
+				
 			} //if (gr1.next()) {
+			
 		} //if (connTestSysID2.length > 0 && setupSysID2.length > 0) {
+		
 	},
+	
+	updateSetup: function(setupSysID,connTestSysID,script) {
+		var setupTable = 'x_tekso_twxapp01_setup';				
+		var connTestSysID2 = connTestSysID.toString();
+		var setupSysID2 = setupSysID.toString();
+		
+		if (setupSysID2.length > 0 && connTestSysID2.length > 0) {
+			var gr1 = new GlideRecordSecure(setupTable);
+			gr1.addQuery('sys_id',setupSysID2);
+			//When a connection test is generated the sys_id of the connection test is 
+			//linked back to the Setup Record
+			//I.e. Setup has a link to the latest connection test
+			//We should only be updating Setup if the Connection Test that has Timed Out
+			//Only if this test connection record is the one that is currently 
+			//linked to Setup
+			//I.e. only update Setup if connection_test_link = sysID
+			gr1.addQuery('connection_test_link',connTestSysID2);
+			gr1.query();
+			if (gr1.next()) {
+				var gdt = new GlideDateTime();
+				gr1.setValue('connection_status','Failed');				
+				gr1.setValue('connection_status_details','Connection Test Timed Out At: ' + gdt); 
+				gr1.setValue('start_sending_requested',false);
+				gr1.setValue('connection_test_requested',false);
+				gr1.setValue('connection_test_link','');
+				gr1.setValue('updated_by_script',script); // Debug
+				gr1.update();
+			} // if (gr1.next())
+		}
+	},
+	
     type: 'ConnectionTestTimeout'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-25 15:33:46</sys_created_on>
         <sys_id>124ec9b2dbe9581041d08f381396191c</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>ConnectionTestTimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_124ec9b2dbe9581041d08f381396191c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 20:04:07</sys_updated_on>
+        <sys_updated_on>2020-07-10 10:00:23</sys_updated_on>
     </sys_script_include>
 </record_update>

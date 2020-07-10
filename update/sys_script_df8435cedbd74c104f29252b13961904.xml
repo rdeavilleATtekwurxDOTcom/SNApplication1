@@ -283,6 +283,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	var configMIDServerName = '';
 	var configMIDServerSysID = '';	
 	var configMaxRetries = 0;
+	var configTimeOutMins = 0;
 	var gotConfigUsr = false;
 	
 	// Read the Config Table
@@ -300,7 +301,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 		//Have to use getElement
 		configMIDServerName = gr1.getElement('ucontrol_mid_server.name').toString() || '';		
 		configMIDServerSysID = gr1.getValue('ucontrol_mid_server') || '';			
-		configMaxRetries = gr1.getValue('max_retries') || 0;	
+		configMaxRetries = gr1.getValue('max_retries') || 0;
+		configTimeOutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
 		criteria = gr1.getValue('update_criteria') || 0;
 		if (configUsrName.length > 0) {
 			gotConfigUsr = true;
@@ -790,7 +792,8 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 						gr3.setValue('ucontrol_mid_server_name',configMIDServerName);
 						gr3.setValue('ucontrol_mid_server_sys_id',configMIDServerSysID);		
 						gr3.setValue('ucontrol_integration_user_name',configUsrName);
-						gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);		
+						gr3.setValue('ucontrol_integration_user_sys_id',configUsrSysID);	
+						gr3.setValue('ucontrol_connection_timeout_minutes',configTimeOutMins);
 						gr3.setValue('max_retries',configMaxRetries);
 						gr3.setValue('json_request_body',jsonRequestBody);
 						gr3.setValue('total_length_of_json_request_body',jsonRequestBody.length);
@@ -906,7 +909,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>90</sys_mod_count>
+        <sys_mod_count>91</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -914,7 +917,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 10:40:29</sys_updated_on>
+        <sys_updated_on>2020-07-10 11:55:13</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -70,12 +70,30 @@ function runTestClientCode(){
 	}
 	
 	if (abort == false) {
+		var ga = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
+		ga.addParam("sysparm_name", "checkECCAgentStatus"); //this is the function within the script include
+		ga.addParam("sysparm_mid_server_name", mid_server);
+		ga.getXML(checkECCAgentStatusCallBackFunction);
+	}
+
+}
+
+//Call back function for checkECCAgentStatus
+function checkECCAgentStatusCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.	
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	if (answer == 'Down') {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','The MID Server is Down','error');
+		abort = true;	
+	}
+	else {
 		// Check the load on ecc_queue
 		var ga = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
 		ga.addParam('sysparm_name','checkECCQueueOutput');
 		ga.getXML(checkECCQueueOutputCallBackFunction);
 	}
-
 }
 
 //Call back function for checkECCQueueOutput
@@ -157,7 +175,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>145</sys_mod_count>
+        <sys_mod_count>151</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -165,7 +183,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 14:20:16</sys_updated_on>
+        <sys_updated_on>2020-07-10 15:41:28</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

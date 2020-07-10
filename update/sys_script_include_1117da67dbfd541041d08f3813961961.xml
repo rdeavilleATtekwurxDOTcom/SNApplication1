@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.ClientCheckECCAgent</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>ClientCheckECCAgent</name>
+        <script><![CDATA[/* Called like this from a client
+		var ga = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
+		ga.addParam("sysparm_name", "checkECCAgentStatus"); //this is the function within the script include
+		ga.addParam("sysparm_mid_server_name", mid_server);
+		ga.getXML(checkECCAgentStatusCallBackFunction);
+		
+		
+//Call back function for checkECCAgentStatus
+function checkECCAgentStatusCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.	
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	if (answer == 'Down') {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','The MID Server is Down','error');
+		abort = true;		
+	}
+}
+*/
+
+var ClientCheckECCAgent = Class.create();
+ClientCheckECCAgent.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+	checkECCAgentStatus: function() {
+
+		var rtn = '';
+		var name = this.getParameter('sysparm_mid_server_name');
+		var name2 = name.toString();
+		if (name2.length > 0) {
+			var gr1 = new GlideRecordSecure('ecc_agent');			
+			gr1.addQuery('name',name2);
+			gr1.query();
+			if (gr1.next()) {
+				var status = gr1.getValue('status') || '';
+				rtn = status.toString();
+			}
+		}
+		return rtn;
+	},
+	
+    type: 'ClientCheckECCAgent'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-10 15:27:08</sys_created_on>
+        <sys_id>1117da67dbfd541041d08f3813961961</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>ClientCheckECCAgent</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_1117da67dbfd541041d08f3813961961</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-10 15:43:35</sys_updated_on>
+    </sys_script_include>
+</record_update>

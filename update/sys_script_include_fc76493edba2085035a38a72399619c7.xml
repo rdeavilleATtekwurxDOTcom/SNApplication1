@@ -7,7 +7,12 @@
         <client_callable>false</client_callable>
         <description/>
         <name>OutboundREST</name>
-        <script><![CDATA[var OutboundREST = Class.create();
+        <script><![CDATA[/*
+var si = new x_tekso_twxapp01.OutboundREST();	
+si.processNoWait(data_sys_id2);
+*/
+
+var OutboundREST = Class.create();
 OutboundREST.prototype = {
     initialize: function() { 
     },
@@ -386,7 +391,7 @@ OutboundREST.prototype = {
 			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
 	
 			var response = sm.executeAsync(); 
-	
+			
 			responseBody = response.haveError() ? response.getErrorMessage() : response.getBody();
 			// {"result":{"statusCode":200,"statusMsg":"OK","connection":true}}
 			status = response.getStatusCode();
@@ -462,7 +467,7 @@ OutboundREST.prototype = {
 			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
 			//From there, if you need the response then you can set up a sensor business rule to listen to the ecc_queue 
 			//and listen for the response.
-			var response = sm.executeAsync(); 			
+			var response = sm.executeAsync(); 
 			//sm.executeAsync(); //RMD
 			
 			//response.getBody Get the content of the REST response body.
@@ -781,9 +786,9 @@ OutboundREST.prototype = {
 				}
 			}	
 			
-			var connTimeOutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
+			var connTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
 			var timeOutAt = new GlideDateTime();
-			var timeoutMinutes = connTimeOutMins;
+			var timeoutMinutes = connTimeoutMins;
 			var timeoutSeconds = timeoutMinutes * 60;
 			/* RMD - Set to 0 to cause a timeout */
 			//timeoutSeconds = 0; 
@@ -818,11 +823,18 @@ OutboundREST.prototype = {
 		gr1.addQuery('sys_id',data_sys_id);
 		gr1.query();
 		if (gr1.next()) {
-			var jsonRequestBody = gr1.getValue('json_request_body');
-			var midServerName = gr1.getValue('ucontrol_mid_server_name');
-			var url = gr1.getValue('ucontrol_url');
-			var action = gr1.getValue('action');
+			var jsonRequestBody = gr1.getValue('json_request_body') || '';
+			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
+			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
+			var url = gr1.getValue('ucontrol_url') || '';
+			var action = gr1.getValue('action') || '';
 			var dtSent = new GlideDateTime();
+			
+			var timeOutAt = new GlideDateTime();
+			var timeoutSeconds = timeoutMins * 60;
+			timeOutAt.addSeconds(timeoutSeconds);
+
+			
 			var rtnArr = [];
 			
 			// Remove any leading or trailing spaces from the URL
@@ -836,6 +848,8 @@ OutboundREST.prototype = {
 			}
 
 			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('sent_to_ucontrol',true);
+			gr1.setValue('sending_will_timeout_at',timeOutAt);			
 			gr1.setValue('updated_by_script','SI process'); // Debug
 			gr1.update();
 
@@ -844,6 +858,9 @@ OutboundREST.prototype = {
 			gr2.query();
 			while(gr2.next()) {
 				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('sent_to_ucontrol',true);				
+				gr2.setValue('sending_will_timeout_at',timeOutAt);
+				gr2.setValue('ucontrol_connection_timeout_minutes',timeoutMins);				
 				gr2.setValue('updated_by_script','SI process'); // Debug						
 				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
 				
@@ -858,6 +875,8 @@ OutboundREST.prototype = {
 					// There should only be 1 record
 					gr3.setValue('status','Sent'); // If success?????????????????????????????????
 					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					gr3.setValue('sent_to_ucontrol',true);
+					gr3.setValue('sending_will_timeout_at',timeOutAt);
 					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
 					no_of_times_sent_to_ucontrol++;
 					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
@@ -897,6 +916,9 @@ OutboundREST.prototype = {
 			
 		}	
 	},
+	//processNoWait is triggered by script action OutboundRESTProcess
+	//which is triggered by event x_tekso_twxapp01.outboundrestprocess
+	//which is triggered by function processBlock in script action SendDataTouControl
 	processNoWait: function (data_sys_id){
 		//Same as process but does not wait for a response or return a result	
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -907,11 +929,16 @@ OutboundREST.prototype = {
 		gr1.addQuery('sys_id',data_sys_id);
 		gr1.query();
 		if (gr1.next()) {
-			var jsonRequestBody = gr1.getValue('json_request_body');
-			var midServerName = gr1.getValue('ucontrol_mid_server_name');
-			var url = gr1.getValue('ucontrol_url');
-			var action = gr1.getValue('action');
+			var jsonRequestBody = gr1.getValue('json_request_body') || '';
+			var midServerName = gr1.getValue('ucontrol_mid_server_name')  || '';
+			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;			
+			var url = gr1.getValue('ucontrol_url')  || '';
+			var action = gr1.getValue('action')  || '';
 			var dtSent = new GlideDateTime();
+
+			var timeOutAt = new GlideDateTime();
+			var timeoutSeconds = timeoutMins * 60;
+			timeOutAt.addSeconds(timeoutSeconds);
 			
 			// Remove any leading or trailing spaces from the URL
 			url = url.replace(/^\s+|\s+$/g, '');
@@ -924,7 +951,9 @@ OutboundREST.prototype = {
 			}
 
 			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('sending_will_timeout_at',timeOutAt);
 			gr1.setValue('updated_by_script','SI process'); // Debug	
+			
 			gr1.update();
 
 			var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
@@ -932,6 +961,8 @@ OutboundREST.prototype = {
 			gr2.query();
 			while(gr2.next()) {
 				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('sending_will_timeout_at',timeOutAt);
+				gr2.setValue('ucontrol_connection_timeout_minutes',timeoutMins);
 				gr2.setValue('updated_by_script','SI process'); // Debug						
 				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
 				
@@ -946,6 +977,7 @@ OutboundREST.prototype = {
 					// There should only be 1 record
 					gr3.setValue('status','Sent'); // If success?????????????????????????????????
 					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					gr3.setValue('sending_will_timeout_at',timeOutAt);					
 					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
 					no_of_times_sent_to_ucontrol++;
 					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
@@ -986,13 +1018,13 @@ OutboundREST.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>268</sys_mod_count>
+        <sys_mod_count>273</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 15:57:03</sys_updated_on>
+        <sys_updated_on>2020-07-10 16:51:16</sys_updated_on>
     </sys_script_include>
 </record_update>

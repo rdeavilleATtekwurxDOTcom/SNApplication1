@@ -18,11 +18,14 @@
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
         <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
         <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
+        <element label="Sending Will Timeout At" max_length="40" name="sending_will_timeout_at" type="glide_date_time"/>
+        <element label="Sent To uControl" max_length="40" name="sent_to_ucontrol" type="boolean"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element label="Test Data" max_length="40" name="test_data" type="boolean"/>
         <element default="0" label="Time From Sending To Response (seconds)" max_length="40" name="time_from_sending_to_response_seconds" type="integer"/>
         <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
+        <element default="0" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="uControl MID Server Name" max_length="40" name="ucontrol_mid_server_name" type="string"/>
         <element label="uControl MID Server Sys ID" max_length="32" name="ucontrol_mid_server_sys_id" type="string"/>
         <element label="uControl URL" max_length="100" name="ucontrol_url" type="string"/>
