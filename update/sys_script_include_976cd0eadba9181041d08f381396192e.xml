@@ -38,82 +38,7 @@ ClientConnectionTestTimeout.prototype = Object.extendsObject(global.AbstractAjax
 					var timedOutBy = 'SI ClientConnectionTestTimeout';					
 					var si = new x_tekso_twxapp01.ConnectionTestTimeout();
 					si.checkForTimeout(connectionTestLink2,sysID,timedOutBy);
-				/* Now handled by the SI
-					// Got the connection test record linked to setup
-					var now = new GlideDateTime();
-					var requestWillTimeOutAtHasValue = gr2.getValue('request_will_time_out_at_has_value') || false;
-					var requestWillTimeOutAt = gr2.getValue('request_will_time_out_at');
-					var requestWillTimeOutAt2 = new GlideDateTime(requestWillTimeOutAt);
-					if (requestWillTimeOutAtHasValue == true) {
-						//Only do this if we have a timeout date/time
-						var dur1 = new GlideDuration();
-						dur1 = GlideDateTime.subtract(now,requestWillTimeOutAt2);// In Milliseconds
-						var dur1secs = dur1.getNumericValue() / 1000; 
-						var dur1secs2 = parseInt(dur1secs); 
-						//If -ve then this means that requestWillTimeOutAt is earlier than now
-						//i.e. the date is in the past
-						if (dur1secs2 < 0) {
-							// This is the same code as in -- Script Action - TestConnectionTimeOut
-							// Timeout has occurred
-							var status = gr2.getValue('status') || '';
-							var timedOutStatus = gr2.getValue('timed_out') || false;
-							var abortedStatus = gr2.getValue('aborted') || false;						
-							// This may have already been aborted or timed out
 
-							if (abortedStatus == true && status != 'Aborted') {
-								// Because of timing between various async threads the status may not have been set to Aborted
-								// or it was set to Aborted but then overwritten by another process
-								// Hence the need for a separated Aborted flag
-								// If Status is not Aborted - set it now			
-								gr2.setValue('status','Aborted');	
-								gr2.setValue('updated_by_script','SI ClientConnectionTestTimeout');	// Debug
-								gr2.update();
-							}
-
-							if (timedOutStatus == true && status != 'Timed Out') {
-								// Because of timing between various async threads the status may not have been set to Timed Out
-								// or it was set to Timed Out but then overwritten by another process
-								// Hence the need for a separated Timed Out flag
-								// If Status is not Timed Out - set it now			
-								gr2.setValue('status','Timed Out');	
-								gr2.setValue('updated_by_script','SI ClientConnectionTestTimeout');	// Debug			
-								gr2.update();
-							}
-						
-							if (abortedStatus == false && timedOutStatus == false) {
-								// Not alredy aborted or Processed
-								if (status == 'Pending' || status == 'Sent') {		
-									gr2.setValue('status','Timed Out');
-									gr2.setValue('timed_out_by','SI ClientConnectionTestTimeout');
-									gr2.setValue('timed_out',true);
-									gr2.setValue('updated_by_script','SI ClientConnectionTestTimeout');	// Debug
-									gr2.update();
-
-									var gr3 = new GlideRecordSecure(setupTable);
-									gr3.addQuery('sys_id',sysID);
-									//When a connection test is generated the sys_id of the connection test is 
-									//linked back to the Setup Record
-									//I.e. Setup has a link to the latest connection test
-									//We should only be updating Setup if the Connection Test that has Timed Out
-									//Only if this test connection record is the one that is currently linked to Setup
-									//I.e. only update Setup if connection_test_link = sysID
-									gr3.addQuery('connection_test_link',connectionTestLink2);
-									gr3.query();
-									if (gr3.next()) {
-										var gdt = new GlideDateTime();
-										gr3.setValue('connection_status','Failed');				
-										gr3.setValue('connection_status_details','Connection Test Timed Out At: ' + gdt); 
-										gr3.setValue('start_sending_requested',false);
-										gr3.setValue('connection_test_requested',false);
-										gr3.setValue('connection_test_link','');
-										gr3.setValue('updated_by_script','SI ClientConnectionTestTimeout'); // Debug
-										gr3.update();
-									} // if (gr3.next())								
-								} //if (status == 'Pending' || status == 'Sent') {	
-							} //if (abortedStatus == false && timedOutStatus == false) {
-						} // if (dur1secs2 < 0) {
-					} //if (requestWillTimeOutAtHasValue == true) {
-					*/
 				} // if (gr2.next()) {
 			} // if (connectionTestLink2.length > 0) {		
 		} // if (gr1.next())
@@ -125,13 +50,13 @@ ClientConnectionTestTimeout.prototype = Object.extendsObject(global.AbstractAjax
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-24 17:37:53</sys_created_on>
         <sys_id>976cd0eadba9181041d08f381396192e</sys_id>
-        <sys_mod_count>28</sys_mod_count>
+        <sys_mod_count>32</sys_mod_count>
         <sys_name>ClientConnectionTestTimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_976cd0eadba9181041d08f381396192e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 15:54:45</sys_updated_on>
+        <sys_updated_on>2020-07-14 11:40:03</sys_updated_on>
     </sys_script_include>
 </record_update>

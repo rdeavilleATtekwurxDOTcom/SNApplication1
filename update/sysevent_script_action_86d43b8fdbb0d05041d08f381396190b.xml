@@ -17,7 +17,7 @@ function SendDataToUControl() {
 	//gs DOT info('event.parm2: ' + event.parm2); 
 
 	var script = 'SA SendDataTouControl';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl - Started');
 	
 	var jobTable = 'x_tekso_twxapp01_scheduled_job_log';
@@ -102,7 +102,7 @@ function SendDataToUControl() {
 		gr1.update();
 	} // if (gr1.next()) {
 	
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl - Finished');	
 }	
 
@@ -350,9 +350,6 @@ function isFirstPendingRecordATestRecord(jobStartTime) {
 
 function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) { 
 	
-	//Remove the XX's to use	
-	//writeXXDebugXXLog('mainBit Start');
-	
 	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 	var recCnt = 0;
 	var trackingSysID = '';
@@ -482,7 +479,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (deleteDataToFlushOut == false && timeoutMins != prevTimeoutMins) {
 					// Delete data to be flushed out
 					deleteDataToFlushOut = true;		
-					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + str(timeoutMins) + ' prevTimeoutMins: ' + str(timeoutMins);
+					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + timeoutMins.toString() + ' prevTimeoutMins: ' + timeoutMins.toString();
 				}	
 								
 				if (deleteDataToFlushOut == false && url != prevURL) {
@@ -565,7 +562,7 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				if (updateDataToFlushOut == false && timeoutMins != prevTimeoutMins) {
 					// Update data to be flushed out
 					updateDataToFlushOut = true;		
-					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + str(timeoutMins) + ' prevTimeoutMins: ' + str(timeoutMins);
+					brkRsn = 'timeoutMins NOT prevTimeoutMins. timeoutMins: ' + timeoutMins.toString() + ' prevTimeoutMins: ' + timeoutMins.toString();
 				}	
 				
 				if (updateDataToFlushOut == false && url != prevURL) {
@@ -822,23 +819,9 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
 	} // if (updatesToProcess > 0)
 	
-	// processing_completed_at
 	if (logRecordCreated == true) {
 		updateProcessingLogStats(logSysID);
 	}
-	
-	//Remove the XX's to use	
-	//writeXXDebugXXLog('mainBit End');
-}
-
-
-function writeDebugLog(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecordSecure(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.setValue('inserted_by_script','SA SendDataTouControl');	
-	gr1.insert();
 }
 
 // Called by processBlock
@@ -1023,7 +1006,6 @@ function updateProcessingLogStats(logSysID) {
 	var deletesPerClass = getDeletesPerClassLinkedToLog(logSysID);
 	var dataSentSummary = sendSummary(noOfRecordsSent,noOfUpdatesSent,noOfDeletesSent);
 
-	var noOfRestRecordsSent = numberOfRestRecordsLinkedToLog(logSysID); 
 	var firstRestResponseSysID = firstRestResponseSysIDLinkedToLog(logSysID);
 	var lastRestResponseSysID = lastRestResponseSysIDLinkedToLog(logSysID);
 
@@ -1038,7 +1020,7 @@ function updateProcessingLogStats(logSysID) {
 	gr1.query();
 	if (gr1.next()) {
 
-		gr1.setValue('total_number_of_records_sent',noOfRecordsSent);
+		gr1.setValue('total_number_of_records_sent',noOfRecordsSent);			
 		gr1.setValue('records_sent',true);
 		gr1.setValue('number_of_updates_sent',noOfUpdatesSent);
 		gr1.setValue('number_of_deletes_sent',noOfDeletesSent);
@@ -1054,13 +1036,12 @@ function updateProcessingLogStats(logSysID) {
 		gr1.setValue('link_to_last_rest_response_record',lastRestResponseSysID);
 		gr1.setValue('first_rest_response_record_sys_id',firstRestResponseSysID);
 		gr1.setValue('last_rest_response_record_sys_id',lastRestResponseSysID);
-		gr1.setValue('number_of_rest_resonse_records',noOfRecordsSent);		// Duplicate
 
 		gr1.setValue('link_to_first_rest_data_record',firstRestSysID);
 		gr1.setValue('link_to_last_rest_data_record',lastRestSysID);
 		gr1.setValue('first_rest_data_record_sys_id',firstRestSysID);
 		gr1.setValue('last_rest_data_record_sys_id',lastRestSysID);
-		gr1.setValue('number_of_rest_data_records',noOfRestRecordsSent);		
+	
 		gr1.setValue('rest_data_record_contents_summary',restDataRecordContentSummary);
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug			
 		gr1.update();	
@@ -1119,6 +1100,7 @@ function numberOfRecordsLinkedToLog(logSysID) {
 	return rtn;
 }
 
+/*
 function numberOfRestRecordsLinkedToLog(logSysID) {
 	var rtn = 0;
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
@@ -1130,7 +1112,7 @@ function numberOfRestRecordsLinkedToLog(logSysID) {
 	rtn = gr1.getAggregate('COUNT');
 	return rtn;	
 }
-
+*/
 		
 function numberOfUpdatesLinkedToLog(logSysID) {
 	var rtn = 0;
@@ -1608,7 +1590,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>80</sys_mod_count>
+        <sys_mod_count>90</sys_mod_count>
         <sys_name>SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1616,6 +1598,6 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 12:12:41</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:29:50</sys_updated_on>
     </sysevent_script_action>
 </record_update>

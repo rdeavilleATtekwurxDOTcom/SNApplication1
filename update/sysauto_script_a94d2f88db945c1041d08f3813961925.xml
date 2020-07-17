@@ -12,40 +12,26 @@
         <run_start>2020-04-16 10:41:58</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
-        <script><![CDATA[//Remove the XX's to use
-//writeXXDebugXXLog('Set All Records To Pending - Start');
-
-var gr3 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_changes');
+        <script><![CDATA[var gr3 = new GlideRecordSecure('x_tekso_twxapp01_cmdb_changes');
 gr3.addQuery('status','!=','Pending');
 gr3.query();
 while(gr3.next()) {
 	gr3.setValue('status','Pending');
 	gr3.update();
 }
-
-//Remove the XX's to use
-//writeXXDebugXXLog('Set All Records To Pending - End');
-
-function writeDebugLog(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecordSecure(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.setValue('inserted_by_script','SJ Testing - Set All Records To Pending');	
-	gr1.insert();
-}]]></script>
+]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-16 10:43:57</sys_created_on>
         <sys_id>a94d2f88db945c1041d08f3813961925</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Testing - Set All Records To Pending</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a94d2f88db945c1041d08f3813961925</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:47:31</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:30:18</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

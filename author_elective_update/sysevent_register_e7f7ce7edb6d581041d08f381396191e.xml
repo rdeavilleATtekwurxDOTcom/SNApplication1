@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="DELETE">
+        <caller_access/>
+        <description>Called by SJ Send Data to uControl</description>
+        <event_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</event_name>
+        <fired_by/>
+        <queue/>
+        <suffix>OBSOLETE cleanuplooseends</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-25 19:41:29</sys_created_on>
+        <sys_id>e7f7ce7edb6d581041d08f381396191e</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_register_e7f7ce7edb6d581041d08f381396191e</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 20:25:54</sys_updated_on>
+        <table/>
+    </sysevent_register>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_register_e7f7ce7edb6d581041d08f381396191e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description>Called by SJ Send Data to uControl</description><event_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</event_name><fired_by/><queue/><suffix>OBSOLETE cleanuplooseends</suffix><sys_class_name>sysevent_register</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-06-25 19:41:29</sys_created_on><sys_id>e7f7ce7edb6d581041d08f381396191e</sys_id><sys_mod_count>2</sys_mod_count><sys_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sysevent_register_e7f7ce7edb6d581041d08f381396191e</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-15 20:25:54</sys_updated_on><table/></sysevent_register></record_update>]]></payload>
+        <payload_hash>34534253</payload_hash>
+        <record_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-15 20:25:54</sys_created_on>
+        <sys_id>b0025591dbc6d8104f29252b1396197c</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1735427b3d70000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 20:25:54</sys_updated_on>
+        <type>Event Registration</type>
+        <update_guid>f802559179c6d810657982e41c8b267b</update_guid>
+        <update_guid_history>f802559179c6d810657982e41c8b267b:34534253,4926af4d95ca9810b844ad768a1e1c9e:-1545384970,cf084ef24ead5810e121a3c950337a34:696750236</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-16 17:15:02</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_register">sysevent_register</sys_db_object>
+        <sys_id>29885e914e5c476cb6deb8da0933ee81</sys_id>
+        <sys_metadata>e7f7ce7edb6d581041d08f381396191e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE cleanuplooseen</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_register_e7f7ce7edb6d581041d08f381396191e</sys_update_name>
+        <sys_update_version display_value="sysevent_register_e7f7ce7edb6d581041d08f381396191e">b0025591dbc6d8104f29252b1396197c</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:15:02</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

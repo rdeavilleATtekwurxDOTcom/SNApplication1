@@ -17,10 +17,10 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
         <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
-        <element default="0" label="Number Of REST Data Records" max_length="40" name="number_of_rest_data_records" type="integer"/>
-        <element default="0" label="Number Of REST Resonse Records" max_length="40" name="number_of_rest_resonse_records" type="integer"/>
+        <element default="0" label="Number Of Deletes Timeout Expired" max_length="40" name="number_of_deletes_timeout_expired" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
+        <element default="0" label="Number Of Updates Timeout Expired" max_length="40" name="number_of_updates_timeout_expired" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
@@ -31,8 +31,10 @@
         <element label="REST Data Record Contents Summary" max_length="4000" name="rest_data_record_contents_summary" type="string"/>
         <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
         <element label="Scheduled Job Started At" max_length="40" name="scheduled_job_started_at" type="glide_date_time"/>
+        <element label="Timeout Expired" max_length="40" name="timeout_expired" type="boolean"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
+        <element default="0" label="Total Number Of Records Timeout Expired" max_length="40" name="total_number_of_records_timeout_expired" type="integer"/>
         <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
         <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>

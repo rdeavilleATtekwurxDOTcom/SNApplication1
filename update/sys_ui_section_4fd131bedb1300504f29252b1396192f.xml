@@ -4,13 +4,13 @@
             <element>x_tekso_twxapp01_ui_macro_tekwurx_logo1.xml</element>
             <position>0</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>0b213eafdb31941041d08f38139619a1</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>04885c19db42d8104f29252b13961941</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter display_value="CMDB Changes ui_formatter_tekwurx_logo1">0b01f13edb1300504f29252b139619a3</sys_ui_formatter>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>formatter</type>
         </sys_ui_element>
@@ -18,13 +18,13 @@
             <element>.begin_split</element>
             <position>1</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a1</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961941</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -32,13 +32,13 @@
             <element>number</element>
             <position>2</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a1</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961941</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -46,13 +46,13 @@
             <element>.split</element>
             <position>3</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961941</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -60,13 +60,13 @@
             <element>status</element>
             <position>4</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961941</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -74,13 +74,13 @@
             <element>.end_split</element>
             <position>5</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -88,13 +88,13 @@
             <element>.begin_split</element>
             <position>6</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -102,13 +102,13 @@
             <element>table</element>
             <position>7</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -116,13 +116,13 @@
             <element>action</element>
             <position>8</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -130,391 +130,391 @@
             <element>link_to_originating_delete_record</element>
             <position>9</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>originating_delete_record_sys_id</element>
+            <position>10</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961942</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>10</position>
+            <position>11</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a2</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>base_table</element>
-            <position>11</position>
+            <position>12</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961942</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>source_record_sys_id</element>
-            <position>12</position>
+            <position>13</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>link_to_originating_update_record</element>
-            <position>13</position>
+            <position>14</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>originating_update_record_sys_id</element>
+            <position>15</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961943</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>14</position>
+            <position>16</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>ucontrol_url</element>
-            <position>15</position>
+            <position>17</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>16</position>
+            <position>18</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>ucontrol_mid_server_name</element>
-            <position>17</position>
+            <position>19</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>ucontrol_integration_user_name</element>
-            <position>18</position>
+            <position>20</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a3</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961943</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>19</position>
+            <position>21</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>ucontrol_mid_server_sys_id</element>
-            <position>20</position>
+            <position>22</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>ucontrol_integration_user_sys_id</element>
-            <position>21</position>
+            <position>23</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>22</position>
+            <position>24</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>23</position>
+            <position>25</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>max_retries</element>
-            <position>24</position>
+            <position>26</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>ucontrol_connection_timeout_minutes</element>
-            <position>25</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a4</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>no_of_times_sent_to_ucontrol</element>
-            <position>26</position>
+            <position>27</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a4</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961944</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>ucontrol_connection_timeout_minutes</element>
+            <position>28</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961944</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>timeout_expired</element>
+            <position>29</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961945</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>timeout_triggered_by</element>
+            <position>30</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961945</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>27</position>
+            <position>31</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a5</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sent_to_ucontrol_at</element>
-            <position>28</position>
+            <position>32</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a5</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sent_to_ucontrol</element>
-            <position>29</position>
+            <position>33</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a5</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sending_will_timeout_at</element>
-            <position>30</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a5</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>.end_split</element>
-            <position>31</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a5</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
-            <sys_user/>
-            <type>.end_split</type>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>.begin_split</element>
-            <position>32</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a5</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
-            <sys_user/>
-            <type>.begin_split</type>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_originally_created_by</element>
-            <position>33</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a5</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_originally_created_on</element>
             <position>34</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a5</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>.split</element>
+            <element>timeout_triggered_at</element>
             <position>35</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
-            <type>.split</type>
+            <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_originally_created_by_sys_id</element>
+            <element>timeout_expired_count</element>
             <position>36</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961945</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -522,13 +522,13 @@
             <element>.end_split</element>
             <position>37</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -536,41 +536,41 @@
             <element>.begin_split</element>
             <position>38</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_deleted_by</element>
+            <element>record_originally_created_by</element>
             <position>39</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_deleted_on</element>
+            <element>record_originally_created_on</element>
             <position>40</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -578,27 +578,27 @@
             <element>.split</element>
             <position>41</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_deleted_by_sys_id</element>
+            <element>record_originally_created_by_sys_id</element>
             <position>42</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a6</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -606,13 +606,13 @@
             <element>.end_split</element>
             <position>43</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -620,41 +620,41 @@
             <element>.begin_split</element>
             <position>44</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>cc885c19db42d8104f29252b13961946</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_updated_by</element>
+            <element>record_deleted_by</element>
             <position>45</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>40885c19db42d8104f29252b13961947</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_updated_on</element>
+            <element>record_deleted_on</element>
             <position>46</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c0885c19db42d8104f29252b13961947</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -662,27 +662,27 @@
             <element>.split</element>
             <position>47</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>44885c19db42d8104f29252b13961947</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>record_updated_by_sys_id</element>
+            <element>record_deleted_by_sys_id</element>
             <position>48</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c4885c19db42d8104f29252b13961947</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -690,923 +690,1007 @@
             <element>.end_split</element>
             <position>49</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>48885c19db42d8104f29252b13961947</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type>.end_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>50</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>c8885c19db42d8104f29252b13961947</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>record_updated_by</element>
+            <position>51</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>4c885c19db42d8104f29252b13961947</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>record_updated_on</element>
+            <position>52</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>84885c19db42d8104f29252b13961954</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.split</element>
+            <position>53</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>08885c19db42d8104f29252b13961954</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type>.split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>record_updated_by_sys_id</element>
+            <position>54</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>88885c19db42d8104f29252b13961954</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.end_split</element>
+            <position>55</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>0c885c19db42d8104f29252b13961954</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>all_fields</element>
-            <position>50</position>
+            <position>56</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a7</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>8c885c19db42d8104f29252b13961954</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>no_of_fields</element>
-            <position>51</position>
+            <position>57</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>00885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_all_fields_list</element>
-            <position>52</position>
+            <position>58</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>80885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>fields_to_process</element>
-            <position>53</position>
+            <position>59</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>04885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>no_of_fields_to_process</element>
-            <position>54</position>
+            <position>60</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>84885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_fields_to_process_list</element>
-            <position>55</position>
+            <position>61</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>08885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>dropped_fields</element>
-            <position>56</position>
+            <position>62</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>88885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>no_of_dropped_fields</element>
-            <position>57</position>
+            <position>63</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>0c885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_dropped_fields_list</element>
-            <position>58</position>
+            <position>64</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a8</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>8c885c19db42d8104f29252b13961955</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>excluded_fields</element>
-            <position>59</position>
+            <position>65</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>00885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>no_of_excluded_fields</element>
-            <position>60</position>
+            <position>66</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>80885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_excluded_fields_list</element>
-            <position>61</position>
+            <position>67</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>04885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>data_to_process</element>
-            <position>62</position>
+            <position>68</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>84885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_data_to_process</element>
-            <position>63</position>
+            <position>69</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>08885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>64</position>
+            <position>70</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>88885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>discovery_source1</element>
-            <position>65</position>
+            <position>71</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>0c885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>correlation_id1</element>
-            <position>66</position>
+            <position>72</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619a9</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>8c885c19db42d8104f29252b13961956</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>rel_parent_sys_id</element>
-            <position>67</position>
+            <position>73</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>00885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>68</position>
+            <position>74</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>80885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>discovery_source2</element>
-            <position>69</position>
+            <position>75</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>04885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>correlation_id2</element>
-            <position>70</position>
+            <position>76</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>84885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>rel_child_sys_id</element>
-            <position>71</position>
+            <position>77</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>08885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>72</position>
+            <position>78</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>88885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>metadata</element>
-            <position>73</position>
+            <position>79</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>0c885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_metadata</element>
-            <position>74</position>
+            <position>80</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619aa</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>8c885c19db42d8104f29252b13961957</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>json_request_body</element>
-            <position>75</position>
+            <position>81</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>00885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_json_request_body</element>
-            <position>76</position>
+            <position>82</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>80885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>77</position>
+            <position>83</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>04885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>response_received</element>
-            <position>78</position>
+            <position>84</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>84885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>time_from_sending_to_response_seconds</element>
-            <position>79</position>
+            <position>85</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>08885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>80</position>
+            <position>86</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>88885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>response_received_at</element>
-            <position>81</position>
+            <position>87</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>0c885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>82</position>
+            <position>88</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619ab</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>8c885c19db42d8104f29252b13961958</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>response_from_ucontrol</element>
-            <position>83</position>
+            <position>89</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>10885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>total_length_of_response_from_ucontrol</element>
-            <position>84</position>
+            <position>90</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>90885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>response_status_code</element>
-            <position>85</position>
+            <position>91</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>14885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>response_status_message</element>
-            <position>86</position>
+            <position>92</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>94885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>rest_data_record_created</element>
-            <position>87</position>
+            <position>93</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>18885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>rest_response_record_created</element>
-            <position>88</position>
+            <position>94</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>98885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>inserted_by_script</element>
-            <position>89</position>
+            <position>95</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>1c885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>updated_by_script</element>
-            <position>90</position>
+            <position>96</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619ac</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>9c885c19db42d8104f29252b13961959</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>91</position>
+            <position>97</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>10885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>link_to_latest_rest_data_record</element>
-            <position>92</position>
+            <position>98</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>90885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>link_to_latest_rest_response_record</element>
-            <position>93</position>
+            <position>99</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>14885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>link_to_processing_log_record</element>
-            <position>94</position>
+            <position>100</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>94885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>link_to_scheduled_job_log_record</element>
-            <position>95</position>
+            <position>101</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>18885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>96</position>
+            <position>102</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>98885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>latest_rest_data_record_sys_id</element>
-            <position>97</position>
+            <position>103</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>1c885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>latest_rest_response_record_sys_id</element>
-            <position>98</position>
+            <position>104</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619ad</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>9c885c19db42d8104f29252b1396195a</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>processing_log_record_sys_id</element>
-            <position>99</position>
+            <position>105</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>10885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>scheduled_job_log_record_sys_id</element>
-            <position>100</position>
+            <position>106</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>90885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>101</position>
+            <position>107</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>14885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>102</position>
+            <position>108</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>94885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>test_data</element>
-            <position>103</position>
+            <position>109</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>18885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>generate_test_data_record_sys_id</element>
-            <position>104</position>
+            <position>110</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>98885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>105</position>
+            <position>111</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>1c885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>test_table_name</element>
-            <position>106</position>
+            <position>112</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619ae</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>9c885c19db42d8104f29252b1396195b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>processing_id</element>
-            <position>107</position>
+            <position>113</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>43213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>10885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>108</position>
+            <position>114</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c3213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>90885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>109</position>
+            <position>115</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>47213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>14885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sys_created_by</element>
-            <position>110</position>
+            <position>116</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>c7213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>94885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sys_updated_by</element>
-            <position>111</position>
+            <position>117</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4b213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>18885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>112</position>
+            <position>118</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cb213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>98885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sys_created_on</element>
-            <position>113</position>
+            <position>119</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>4f213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>1c885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>sys_updated_on</element>
-            <position>114</position>
+            <position>120</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-10 16:52:18</sys_created_on>
-            <sys_id>cf213eafdb31941041d08f38139619af</sys_id>
+            <sys_created_on>2020-07-15 16:14:39</sys_created_on>
+            <sys_id>9c885c19db42d8104f29252b1396195c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_cmdb_changes" sys_domain="global" view="Default view">4fd131bedb1300504f29252b1396192f</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-10 16:52:18</sys_updated_on>
+            <sys_updated_on>2020-07-15 16:14:39</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

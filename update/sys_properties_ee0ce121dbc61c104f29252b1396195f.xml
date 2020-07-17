@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Used to simulate mid server being down. 1 = Down. 0 = Up</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_tekso_twxapp01.testing.midserverdown</name>
+        <read_roles/>
+        <suffix>testing.midserverdown</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-16 16:59:09</sys_created_on>
+        <sys_id>ee0ce121dbc61c104f29252b1396195f</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.testing.midserverdown</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_properties_ee0ce121dbc61c104f29252b1396195f</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:10:59</sys_updated_on>
+        <type>integer</type>
+        <value>0</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=ee0ce121dbc61c104f29252b1396195f"/>
+</record_update>

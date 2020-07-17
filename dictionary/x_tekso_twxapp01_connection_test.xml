@@ -7,8 +7,6 @@
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="4000" name="json_request_body" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
-        <element label="Request Will Time Out At" max_length="40" name="request_will_time_out_at" type="glide_date_time"/>
-        <element label="Request Will Time Out At Has Value" max_length="40" name="request_will_time_out_at_has_value" type="boolean"/>
         <element label="Response Connection" max_length="40" name="response_connection" type="boolean"/>
         <element label="Response From uControl" max_length="4000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
@@ -27,11 +25,14 @@
                 <element inactive_on_update="false" label="Pending" value="Pending"/>
                 <element inactive_on_update="false" label="Processed" value="Processed"/>
                 <element inactive_on_update="false" label="Sent" value="Sent"/>
-                <element inactive_on_update="false" label="Timed Out" value="Timed Out"/>
+                <element inactive_on_update="false" label="Timeout Expired" value="Timeout Expired"/>
             </choice>
         </element>
-        <element label="Timed Out" max_length="40" name="timed_out" type="boolean"/>
-        <element label="Timed Out By" max_length="100" name="timed_out_by" type="string"/>
+        <element label="Timeout Expired" max_length="40" name="timeout_expired" type="boolean"/>
+        <element label="Timeout Has Been Calculated" max_length="40" name="timeout_has_been_calculated" type="boolean"/>
+        <element label="Timeout Triggered At" max_length="40" name="timeout_triggered_at" type="glide_date_time"/>
+        <element label="Timeout Triggered By" max_length="100" name="timeout_triggered_by" type="string"/>
+        <element label="Timeout Will Occur At" max_length="40" name="timeout_will_occur_at" type="glide_date_time"/>
         <element default="0" label="Total Length Of JSON Request Body" max_length="40" name="total_length_of_json_request_body" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
         <element default="0" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>

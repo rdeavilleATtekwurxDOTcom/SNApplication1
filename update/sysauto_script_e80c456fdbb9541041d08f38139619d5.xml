@@ -3,8 +3,8 @@
         <active>true</active>
         <condition/>
         <conditional>false</conditional>
-        <name>Test - GenerateTestData Cleanup</name>
-        <run_as display_value="Robin Deaville">536d0c591b6a8050f953ff72cd4bcbf1</run_as>
+        <name>Testing - GenerateTestData Cleanup</name>
+        <run_as/>
         <run_as_tz/>
         <run_dayofmonth>1</run_dayofmonth>
         <run_dayofweek>1</run_dayofweek>
@@ -26,14 +26,14 @@ new x_tekso_twxapp01.GenerateTestData().cleanup_old_incomplete_generate_test_dat
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-10 09:30:51</sys_created_on>
         <sys_id>e80c456fdbb9541041d08f38139619d5</sys_id>
-        <sys_mod_count>7</sys_mod_count>
-        <sys_name>Test - GenerateTestData Cleanup</sys_name>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Testing - GenerateTestData Cleanup</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_e80c456fdbb9541041d08f38139619d5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 09:50:06</sys_updated_on>
+        <sys_updated_on>2020-07-15 09:04:10</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

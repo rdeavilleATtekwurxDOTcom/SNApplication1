@@ -19,22 +19,29 @@ GenerateTestData.prototype = {
     },
 	
 	cleanup_old_incomplete_generate_test_data_records: function() {
+		//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+		var script = 'GenerateTestData cleanup_old_incomplete_generate_test_data_record';
+		var msg = script + ' - Started';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);	
+		
 		var genTable = 'x_tekso_twxapp01_generate_test_data';
 		var gr1 = new GlideRecordSecure(genTable);	
 		gr1.addQuery('status','Test Data Build In Progress');
-		//Anything older than one day is timed out
+		//Anything older than one day is se to Timeout Expired
 		gr1.addQuery('sys_created_on','<',gs.daysAgo(1));
 		gr1.query();
 		while(gr1.next()) {
 			var genSysID = gr1.getValue('sys_id') || '';
 			var genSysID2 = genSysID.toString();
 			if (genSysID2.length > 0) {		
-				this.set_record_to_timed_out(genSysID2);				
+				this.set_record_to_timeout_expired(genSysID2);				
 			}
 		}
+		msg = script + ' - Finished';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);					
 	},
 	
-	set_record_to_timed_out: function(gen_sys_id) {
+	set_record_to_timeout_expired: function(gen_sys_id) {
 		var gen_sys_id2 = gen_sys_id.toString();
 		if (gen_sys_id2.length > 0) {
 			var genTable = 'x_tekso_twxapp01_generate_test_data';
@@ -45,7 +52,7 @@ GenerateTestData.prototype = {
 			if (gr1.next()) {
 				gr1.setWorkflow(false);
 
-				gr1.setValue('status','Timed Out');
+				gr1.setValue('status','Timeout Expired');
 				gr1.setValue('number_of_build_test_data_options_started',0);
 				gr1.setValue('number_of_build_test_data_options_completed',0);
 
@@ -1669,13 +1676,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>40</sys_mod_count>
+        <sys_mod_count>42</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 09:49:58</sys_updated_on>
+        <sys_updated_on>2020-07-15 20:35:12</sys_updated_on>
     </sys_script_include>
 </record_update>

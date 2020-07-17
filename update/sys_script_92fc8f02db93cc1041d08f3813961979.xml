@@ -35,7 +35,7 @@
 	// BR uControl Track Updates
 
 	var script = 'BR uControl Track Upd cmdb_rel_ci';
-	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,1,'BR uControl Track Upd cmdb_rel_ci');
 	
 	var fieldsChanged = '';
@@ -107,7 +107,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>92fc8f02db93cc1041d08f3813961979</sys_id>
-        <sys_mod_count>20</sys_mod_count>
+        <sys_mod_count>21</sys_mod_count>
         <sys_name>uControl Track Upd cmdb_rel_ci</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -115,7 +115,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_92fc8f02db93cc1041d08f3813961979</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 10:35:37</sys_updated_on>
+        <sys_updated_on>2020-07-15 09:35:42</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

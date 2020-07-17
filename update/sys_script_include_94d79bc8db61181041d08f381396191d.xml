@@ -63,17 +63,18 @@ DebugLogging.prototype = {
 	
 	writeDebugLog: function(script,level,msg) {
 		var destination = this.getLoggingDestination();
+		var usr = gs.getUserName();
 		if (destination == 'db' || destination == 'both') {
 			var debugTable = 'x_tekso_twxapp01_debug_log';
 			var gr1 = new GlideRecordSecure(debugTable);
 			gr1.initialize();
-			gr1.setValue('message','Level: ' + level.toString() + ' Message: ' + msg);
+			gr1.setValue('message','Level: ' + level.toString() + ' User: ' + usr + ' Message: ' + msg);
 			gr1.setValue('inserted_by_script',script);			
 			gr1.insert();
 		}
 
 		if (destination == 'log' || destination == 'both') {
-			gs.info('x_tekso_twxapp01: Level: ' + level.toString() + ' Message: ' + msg);
+			gs.info('x_tekso_twxapp01: Level: ' + level.toString() + ' User: ' + usr + ' Message: ' + msg);
 		}
 	},	
     type: 'DebugLogging'
@@ -82,13 +83,13 @@ DebugLogging.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-17 12:37:38</sys_created_on>
         <sys_id>94d79bc8db61181041d08f381396191d</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>DebugLogging</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>read</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_94d79bc8db61181041d08f381396191d</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 13:55:20</sys_updated_on>
+        <sys_updated_on>2020-07-15 09:47:30</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.TimeoutExpired</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>TimeoutExpired</name>
+        <script><![CDATA[// new x_tekso_twxapp01.TimeoutExpired().checkForDataTimeout();
+// Called by SJ Process Responses From uControl
+
+var TimeoutExpired = Class.create();
+TimeoutExpired.prototype = {
+    initialize: function() {
+    },
+
+	checkForDataTimeout: function() {
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var timeoutBy = 'SI Timeout Expired';
+		var timeoutAt = new GlideDateTime();
+
+		var gr1 = new GlideRecordSecure(dataTable);
+		gr1.addQuery('sent_to_ucontrol','true');
+		gr1.addQuery('timeout_expired',false);
+		gr1.addQuery('response_received','false');
+		gr1.addQuery('timeout_has_been_calculated','true');
+		gr1.addQuery('sending_will_timeout_at','<',timeoutAt);
+		gr1.query();
+		while(gr1.next()) {
+
+			var sys_id = gr1.getValue('sys_id') || '';
+			var action = gr1.getValue('action');
+			var noOfRecords = gr1.getValue('no_of_cmdb_records_in_json_request_body') || 0;
+			var noOfRecords2 = parseInt(noOfRecords);
+
+			gr1.setValue('timeout_expired',true);
+			gr1.setValue('timeout_triggered_by',timeoutBy);	
+			gr1.setValue('timeout_triggered_at',timeoutAt);	
+			gr1.update();
+
+			var sys_id2 = sys_id.toString();
+			if (sys_id2.length > 0) {
+				this.linkTableTimeout(sys_id2,timeoutBy,timeoutAt);	
+			}
+			var link_to_processing_log_record = gr1.getValue('link_to_processing_log_record') || '';
+			var link_to_processing_log_record2 = link_to_processing_log_record.toString();
+			if (link_to_processing_log_record2.length > 0) {
+				this.logTableTimeout(link_to_processing_log_record2,timeoutBy,timeoutAt,action,noOfRecords2);	
+			}
+
+			var link_to_scheduled_job_log_record = gr1.getValue('link_to_scheduled_job_log_record') || '';
+			var link_to_scheduled_job_log_record2 = link_to_scheduled_job_log_record.toString();
+			if (link_to_scheduled_job_log_record2.length > 0) {
+				this.jobTableTimeout(link_to_scheduled_job_log_record2,timeoutBy,timeoutAt,action,noOfRecords2);
+			}
+
+		}
+	},
+
+	logTableTimeout: function(sys_id,timeoutBy,timeoutAt,action,noOfRecords) {
+		var logTable = 'x_tekso_twxapp01_processing_log';	
+		var sys_id2 = sys_id.toString();
+		var action2 = action.toString();
+		var noOfRecords2 = parseInt(noOfRecords);
+
+		if (sys_id2.length > 0 && action2.length > 0 && noOfRecords2 > 0) {
+			var gr1 = new GlideRecordSecure(logTable);
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			while(gr1.next()) {
+
+				var recCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
+				var delCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
+				var updCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
+				var recCnt2 = parseInt(recCnt);
+				var delCnt2 = parseInt(delCnt);
+				var updCnt2 = parseInt(updCnt);
+
+				recCnt2 = recCnt2 + noOfRecords2;
+				if (action2 == 'delete') {
+					delCnt2 = delCnt2 + noOfRecords2;
+				}
+				if (action2 == 'update') {
+					updCnt2 = updCnt2 + noOfRecords2;
+				}
+
+				gr1.setValue('number_of_updates_timeout_expired',updCnt2);
+				gr1.setValue('number_of_deletes_timeout_expired',delCnt2);
+				gr1.setValue('total_number_of_records_timeout_expired',recCnt2);
+				gr1.setValue('timeout_expired',true);
+				gr1.setValue('processing_completed_at',timeoutAt);
+				gr1.setValue('updated_by_script',timeoutBy); // Debug	
+				gr1.update();
+
+			}
+		}
+	},
+
+	jobTableTimeout: function(sys_id,timeoutBy,timeoutAt,action,noOfRecords) {
+		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
+		var sys_id2 = sys_id.toString();
+		var action2 = action.toString();
+		var noOfRecords2 = parseInt(noOfRecords);
+
+		if (sys_id2.length > 0 && action2.length > 0 && noOfRecords2 > 0) {	
+			var gr1 = new GlideRecordSecure(jobTable);
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			while(gr1.next()) {
+				var recCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
+				var delCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
+				var updCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
+				var recCnt2 = parseInt(recCnt);
+				var delCnt2 = parseInt(delCnt);
+				var updCnt2 = parseInt(updCnt);
+
+				recCnt2 = recCnt2 + noOfRecords2;
+				if (action2 == 'delete') {
+					delCnt2 = delCnt2 + noOfRecords2;
+				}
+				if (action2 == 'update') {
+					updCnt2 = updCnt2 + noOfRecords2;
+				}
+
+				gr1.setValue('number_of_updates_timeout_expired',updCnt2);
+				gr1.setValue('number_of_deletes_timeout_expired',delCnt2);
+				gr1.setValue('total_number_of_records_timeout_expired',recCnt2);
+				gr1.setValue('timeout_expired',true);
+				gr1.setValue('processing_completed_at',timeoutAt);
+				gr1.setValue('updated_by_script',timeoutBy); // Debug	
+				gr1.update();
+			}
+		}
+	},
+
+	linkTableTimeout: function(sys_id,timeoutBy,timeoutAt) {
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';	
+		var sys_id2 = sys_id.toString();
+		if (sys_id2.length > 0) {	
+			var gr1 = new GlideRecordSecure(linkTable);
+			gr1.addQuery('link_to_rest_data_record',sys_id2);
+			gr1.query();
+			while(gr1.next()) {
+				gr1.setValue('timeout_expired',true);
+				gr1.setValue('timeout_triggered_by',timeoutBy);	
+				gr1.setValue('timeout_triggered_at',timeoutAt);	
+				gr1.update();
+				var processing_record_sys_id = gr1.getValue('processing_record_sys_id') || '';
+				var processing_record_sys_id2 = processing_record_sys_id.toString();
+				if (processing_record_sys_id2.length > 0) {
+					this.trackingTableTimeout(processing_record_sys_id,timeoutBy,timeoutAt);
+				}
+			}
+		}
+	},
+
+	trackingTableTimeout: function(sys_id,timeoutBy,timeoutAt) {
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';	
+		var sys_id2 = sys_id.toString();
+		if (sys_id2.length > 0) {
+			var gr1 = new GlideRecordSecure(trackingTable);
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			while(gr1.next()) {
+				var no_of_times_sent = gr1.getValue('no_of_times_sent_to_ucontrol') || 0;
+				var max_retries = gr1.getValue('max_retries') || 0;
+				if (no_of_times_sent > max_retries) {
+					gr1.setValue('status','Timeout Expired');					
+				}
+				else {
+					gr1.setValue('status','Pending');
+					gr1.setValue('processing_id','');					
+				}
+				gr1.setValue('timeout_expired',true);
+				gr1.setValue('timeout_triggered_by',timeoutBy);	
+				gr1.setValue('timeout_triggered_at',timeoutAt);	
+				var cnt = gr1.getValue('timeout_expired_count') || 0;
+				var cnt2 = parseInt(cnt);
+				cnt2++;
+				gr1.setValue('timeout_expired_count',cnt2);
+				gr1.update();			
+			}
+		}
+	},
+	
+    type: 'TimeoutExpired'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-15 11:50:22</sys_created_on>
+        <sys_id>fa319b0ddb8a98104f29252b1396193c</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>TimeoutExpired</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_fa319b0ddb8a98104f29252b1396193c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 19:20:56</sys_updated_on>
+    </sys_script_include>
+</record_update>

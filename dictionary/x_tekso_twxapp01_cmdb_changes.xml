@@ -30,6 +30,8 @@
         <element label="No Of Fields To Process" max_length="40" name="no_of_fields_to_process" type="integer"/>
         <element label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Originating Delete Record Sys ID" max_length="32" name="originating_delete_record_sys_id" type="string"/>
+        <element label="Originating Update Record Sys ID" max_length="32" name="originating_update_record_sys_id" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
         <element label="Record Deleted By" max_length="40" name="record_deleted_by" type="string"/>
@@ -59,6 +61,10 @@
         <element label="Table" max_length="80" name="table" type="string"/>
         <element label="Test Data" max_length="40" name="test_data" type="boolean"/>
         <element label="Test Table Name" max_length="80" name="test_table_name" type="string"/>
+        <element label="Timeout Expired" max_length="40" name="timeout_expired" type="boolean"/>
+        <element default="0" label="Timeout Expired Count" max_length="40" name="timeout_expired_count" type="integer"/>
+        <element label="Timeout Triggered At" max_length="40" name="timeout_triggered_at" type="glide_date_time"/>
+        <element label="Timeout Triggered By" max_length="100" name="timeout_triggered_by" type="string"/>
         <element default="0" label="Time From Sending To Response (seconds)" max_length="40" name="time_from_sending_to_response_seconds" type="integer"/>
         <element default="0" label="Total Length Of All Fields List" max_length="40" name="total_length_of_all_fields_list" type="integer"/>
         <element default="0" label="Total Length Of Data To Process" max_length="40" name="total_length_of_data_to_process" type="integer"/>

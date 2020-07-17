@@ -17,6 +17,7 @@
         <element default="0" label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Number Of Fields Changed" max_length="40" name="number_of_fields_changed" type="integer"/>
+        <element label="Processing Record Sys ID" max_length="32" name="processing_record_sys_id" type="string"/>
         <element label="Record Originally Created By" max_length="40" name="record_originally_created_by" type="string"/>
         <element label="Record Originally Created By Sys ID" max_length="32" name="record_originally_created_by_sys_id" type="string"/>
         <element label="Record Originally Created On" max_length="40" name="record_originally_created_on" type="glide_date_time"/>

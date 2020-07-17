@@ -1,31 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
     <sysevent_script_action action="INSERT_OR_UPDATE">
-        <active>false</active>
+        <active>true</active>
         <condition_script/>
         <description/>
-        <event_name>x_tekso_twxapp01.cleanup</event_name>
-        <name>Cleanup</name>
+        <event_name>x_tekso_twxapp01.senddatatoucontrol2</event_name>
+        <name>SendDataTouControl2</name>
         <order>100</order>
-        <script><![CDATA[//	gs.eventQueue('x_tekso_twxapp01.cleanup', gr2, setupSysID2, jobSysID2);
+        <script><![CDATA[// Called by SJ Send Data to uControl
+//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol2', gr2, setupSysID2, jobSysID2);	
+SendDataToUControl2();
 
-cleanup();
+function SendDataToUControl2() {
 
-function cleanup() {
 	//Note: parm not param
 	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
 	//gs DOT info('event.parm2: ' + event.parm2); 	
 
-	var script = 'SA Cleanup';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
-	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA Cleanup - Started');
+	var setupSysID = event.parm1;
+	var jobSysID = event.parm2;
+	
+	var script = 'SA SendDataTouControl2';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl2 - Started');
 	
 	new x_tekso_twxapp01.ConnectionTestTimeout().cleanup_old_incomplete_connection_test_records();
 
 	new x_tekso_twxapp01.GenerateTestData().cleanup_old_incomplete_generate_test_data_records();
 	
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
-	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA Cleanup - Finished');
+	new x_tekso_twxapp01.IsConnectionTestDue().isConnectionTestDue(setupSysID,jobSysID);
 	
+	new x_tekso_twxapp01.BuildTestData().buildTestDataIfMissing();
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl2 - Finished');	
 }]]></script>
         <synchronous>false</synchronous>
         <sys_class_name>sysevent_script_action</sys_class_name>
@@ -34,14 +41,14 @@ function cleanup() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>57eb0272dbad581041d08f381396193b</sys_id>
-        <sys_mod_count>1</sys_mod_count>
-        <sys_name>Cleanup</sys_name>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>SendDataTouControl2</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_57eb0272dbad581041d08f381396193b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 09:51:55</sys_updated_on>
+        <sys_updated_on>2020-07-15 20:39:26</sys_updated_on>
     </sysevent_script_action>
 </record_update>

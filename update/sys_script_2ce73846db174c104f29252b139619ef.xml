@@ -113,7 +113,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 (function executeRule(current, previous) {
 
 	var script = 'BR uControl Track Deletes';
-	//This message will be output if property x_tekso_twxapp01.debug is 1 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,1,'BR uControl Track Deletes');	
 	
 	//0 = Created by uControl Integration User & deleted by another user
@@ -437,9 +437,11 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 			gr2.setValue('action',action);
 			if (action == 'update') {
 				gr2.setValue('link_to_originating_update_record',thisRecordSysID);
+				gr2.setValue('originating_update_record_sys_id',thisRecordSysID);
 			}
 			if (action == 'delete') {
 				gr2.setValue('link_to_originating_delete_record',thisRecordSysID);	
+				gr2.setValue('originating_delete_record_sys_id',thisRecordSysID);				
 			}			
 			gr2.setValue('table',tableName);
 			gr2.setValue('base_table',baseTable);
@@ -508,6 +510,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 					gr3.setValue('status','Matched Criteria For Processing');
 					gr3.setValue('status_details',statusDetails); //x_tekso_twxapp01_cmdb_deletes
 					gr3.setValue('link_to_processing_record',trackingSysID);
+					gr3.setValue('processing_record_sys_id',trackingSysID);					
 					gr3.setValue('cmdb_tracking_status',cmdbTrackingRunning);
 					gr3.setValue('is_in_the_list_of_ucontrol_supported_classes',supportedClass);
 					gr3.setValue('ucontrol_integration_user_is_valid',gotConfigUsr);
@@ -565,7 +568,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2ce73846db174c104f29252b139619ef</sys_id>
-        <sys_mod_count>72</sys_mod_count>
+        <sys_mod_count>75</sys_mod_count>
         <sys_name>uControl Track Deletes</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -573,7 +576,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2ce73846db174c104f29252b139619ef</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 11:54:53</sys_updated_on>
+        <sys_updated_on>2020-07-15 14:26:54</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

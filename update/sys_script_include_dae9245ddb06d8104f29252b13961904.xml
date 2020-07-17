@@ -1,0 +1,1006 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.DataCleanUp</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>DataCleanUp</name>
+        <script><![CDATA[/*
+new x_tekso_twxapp01.DataCleanUp().deleteRecordsOlderThanNDays(10);
+*/
+
+var DataCleanUp = Class.create();
+DataCleanUp.prototype = {
+    initialize: function() {
+    },
+
+	deleteRecordsOlderThanNDays: function(daysAgo) {
+		var script = 'deleteRecordsOlderThanNDays';
+		var msg = script + ' - Started';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+
+		this.deleteCMDBDeletes(daysAgo);
+		this.deleteCMDBUpdates(daysAgo);
+		this.deleteCMDBChanges(daysAgo);
+		this.deleteRestData(daysAgo); 
+		this.deleteProcessingLog(daysAgo);
+		this.deleteScheduledJobLog(daysAgo);
+		this.deleteSetupHistory(daysAgo);
+		this.deleteConnectionTest(daysAgo);
+		this.deleteGenerateTestData(daysAgo);
+		this.deleteDebugLog(daysAgo);
+
+		msg = script + ' - Finished';	
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
+	},
+
+	referenceCount: function(tbl,fld,sys_id) {
+		var tbl2 = tbl.toString();
+		var fld2 = fld.toString();
+		var sys_id2 = sys_id.toString();
+		var rowCnt = 0;
+
+		if (tbl2.length > 0 && fld2.length > 0 && sys_id2.length > 0) {
+
+			var gr1 = new GlideAggregate(tbl2);
+			gr1.addAggregate('COUNT');
+			gr1.addQuery(fld2,sys_id2);
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');
+		}
+		return rowCnt;
+	},
+
+	checkForSysID: function(tbl,sys_id) {
+		var rtn = false;
+		var tbl2 = tbl.toString();
+		var sys_id2 = sys_id.toString();	
+		if (tbl2.length > 0 && sys_id2.length > 0) {
+			var gr1 = new GlideRecordSecure(tbl2);
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				rtn = true;
+			}
+		}
+		return rtn;
+	},
+
+	getCMDBChangesStatus: function(sys_id) {
+		var rtn = '';
+		var tbl = 'x_tekso_twxapp01_cmdb_changes';
+		var sys_id2 = sys_id.toString();
+		if (sys_id2.length > 0) {
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				var status = gr1.getValue('status');
+				rtn = status.toString();
+			}
+		}
+		return rtn;
+	},
+
+	deleteCMDBDeletes: function(daysAgo) {
+		// Same as deleteCMDBUpdates
+		// Only if there is no x_tekso_twxapp01_cmdb_changes record
+		// or the status of x_tekso_twxapp01_cmdb_changes is Processed or Timeout Expired
+		var script = 'deleteCMDBDeletes';
+		var tbl = 'x_tekso_twxapp01_cmdb_deletes';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids				
+					// Only if there is no x_tekso_twxapp01_cmdb_changes record
+					// or the status of x_tekso_twxapp01_cmdb_changes is Processed or Timeout Expired
+					var link_to_processing_record = gr2.getValue('link_to_processing_record') || '';
+					var link_to_processing_record2 = link_to_processing_record.toString();
+					var got_cmdb_changes = false;	
+					var cmdb_status_ok = false;
+					if (link_to_processing_record2.length > 0) {
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
+						var chk = this.checkForSysID(refTbl1,link_to_processing_record2);
+						if (chk == true) {
+							got_cmdb_changes = true;
+							var cmdbStatus = this.getCMDBChangesStatus(link_to_processing_record2);
+							if (cmdbStatus == 'Processed' || cmdbStatus == 'Timeout Expired') {
+								cmdb_status_ok = true;
+							}
+						}
+					}
+
+					if (got_cmdb_changes == false || cmdb_status_ok == true) {	
+						// Either not got a cmdb_changes record
+						// or we have and the status is Processed or Timeout Expired
+
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();				
+					}			
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
+	},
+
+	deleteCMDBUpdates: function(daysAgo) {
+		// Same as deleteCMDBDeletes	
+		// Only if there is no x_tekso_twxapp01_cmdb_changes record
+		// or the status of x_tekso_twxapp01_cmdb_changes is Processed or Timeout Expired
+		var script = 'deleteCMDBUpdates';	
+		var tbl = 'x_tekso_twxapp01_cmdb_updates';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {				
+					//Not in the last 100 sys_ids	
+
+					// Only if there is no x_tekso_twxapp01_cmdb_changes record
+					// or the status of x_tekso_twxapp01_cmdb_changes is Processed or Timeout Expired
+					var link_to_processing_record = gr2.getValue('link_to_processing_record') || '';
+					var link_to_processing_record2 = link_to_processing_record.toString();
+					var got_cmdb_changes = false;	
+					var cmdb_status_ok = false;
+					if (link_to_processing_record2.length > 0) {
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
+						var chk = this.checkForSysID(refTbl1,link_to_processing_record2);
+						if (chk == true) {
+							got_cmdb_changes = true;
+							var cmdbStatus = this.getCMDBChangesStatus(link_to_processing_record2);
+							if (cmdbStatus == 'Processed' || cmdbStatus == 'Timeout Expired') {
+								cmdb_status_ok = true;
+							}
+						}
+					}
+
+					if (got_cmdb_changes == false || cmdb_status_ok == true) {	
+						// Either not got a cmdb_changes record
+						// or we have and the status is Processed or Timeout Expired
+
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();				
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+
+	deleteCMDBChanges: function(daysAgo) {
+		//Status = Processed or Timeout Expired
+		//Only delete if sys_id not in
+		//	x_tekso_twxapp01_cmdb_deletes.link_to_processing_record
+		//	x_tekso_twxapp01_cmdb_updates.link_to_processing_record		
+		var script = 'deleteCMDBChanges';	
+		var tbl = 'x_tekso_twxapp01_cmdb_changes';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {				
+					//Not in the last 100 sys_ids		
+					var status = gr2.getValue('status');
+					var status2 = status.toString();		
+					if (status2 == 'Processed' || status2 == 'Timeout Expired') {
+
+						//Only delete if sys_id not in
+						//	x_tekso_twxapp01_cmdb_deletes.link_to_processing_record
+						//	x_tekso_twxapp01_cmdb_updates.link_to_processing_record				
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_deletes';
+						var refTbl2 = 'x_tekso_twxapp01_cmdb_deletes';
+						var fld = 'link_to_processing_record';
+						var refCnt1 = this.referenceCount(refTbl1,fld,del_sys_id2);
+						var refCnt2 = this.referenceCount(refTbl2,fld,del_sys_id2);			
+						if (refCnt1 == 0 && refCnt2 == 0) {
+							if (cnt == 0) {
+								firstNum = gr2.getValue('number');
+								firstSysID = del_sys_id2;
+								firstDT = gr2.getValue('sys_created_on');
+							}		
+							lastNum = gr2.getValue('number');
+							lastSysID = del_sys_id2;
+							lastDT = gr2.getValue('sys_created_on');
+							cnt = cnt + 1;
+							gr2.setWorkflow(false);
+							gr2.deleteRecord();
+						}
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);			
+	},
+
+	deleteLinkData: function(daysAgo) {
+		//Status = Response Received or Timeout Expired = True
+		//And Sent To uControl = True
+		//Only delete if link_to_processing_record not in x_tekso_twxapp01_cmdb_changes
+		var script = 'deleteLinkData';	
+		var tbl = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids		
+					var sent = gr2.getValue('sent_to_ucontrol') || false;
+					var timeout = gr2.getValue('timeout_expired') || false;
+					var response = gr2.getValue('response_received') || false;		
+					if (sent == true && (timeout == true || response == true)) {
+						//Only delete if link_to_processing_record not in x_tekso_twxapp01_cmdb_changes
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
+						var link_to_processing_record = gr2.getValue('link_to_processing_record') || '';
+						var link_to_processing_record2 = link_to_processing_record.toString();
+						var got_cmdb_changes = false;
+						if (link_to_processing_record2.length > 0) {
+							var chk = this.checkForSysID(refTbl1,link_to_processing_record2);
+							if (chk == true) {
+								got_cmdb_changes = true;
+							}
+						}
+						if (got_cmdb_changes == false) {
+							if (cnt == 0) {
+								firstNum = gr2.getValue('number');
+								firstSysID = del_sys_id2;
+								firstDT = gr2.getValue('sys_created_on');
+							}		
+							lastNum = gr2.getValue('number');
+							lastSysID = del_sys_id2;
+							lastDT = gr2.getValue('sys_created_on');
+							cnt = cnt + 1;
+							gr2.setWorkflow(false);
+							gr2.deleteRecord();
+						}
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
+	},
+
+	deleteRestData: function(daysAgo) {
+		//Status = Response Received or Timeout Expired = True
+		//And Sent To uControl = True
+		//Only delete if sys_id not in
+		//	x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_rest_data_record
+		var script = 'deleteRestData';	
+		var tbl = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids		
+					var sent = gr2.getValue('sent_to_ucontrol') || false;
+					var timeout = gr2.getValue('timeout_expired') || false;
+					var response = gr2.getValue('response_received') || false;		
+					if (sent == true && (timeout == true || response == true)) {
+						//Only delete if sys_id not in
+						//x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_rest_data_record					
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+						var fld = 'link_to_rest_data_record';
+						var refCnt1 = this.referenceCount(refTbl1,fld,del_sys_id2);
+						if (refCnt1 == 0) {
+							if (cnt == 0) {
+								firstNum = gr2.getValue('number');
+								firstSysID = del_sys_id2;
+								firstDT = gr2.getValue('sys_created_on');
+							}		
+							lastNum = gr2.getValue('number');
+							lastSysID = del_sys_id2;
+							lastDT = gr2.getValue('sys_created_on');
+							cnt = cnt + 1;
+							gr2.setWorkflow(false);
+							gr2.deleteRecord();
+						}
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
+	},
+
+	deleteScheduledJobLog: function(daysAgo) {
+		//Only delete if sys_id is not in 
+		//	x_tekso_twxapp01_rest_data_to_ucontrol.link_to_scheduled_job_log_record
+		//	x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_scheduled_job_log_record
+		//	x_tekso_twxapp01_cmdb_changes.link_to_scheduled_job_log_record
+		//	x_tekso_twxapp01_processing_log.link_to_scheduled_job_log_record	
+		var script = 'deleteScheduledJobLog';	
+		var tbl = 'x_tekso_twxapp01_scheduled_job_log';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids				
+					//Only delete if sys_id is not in 
+					//	x_tekso_twxapp01_rest_data_to_ucontrol.link_to_scheduled_job_log_record
+					//	x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_scheduled_job_log_record
+					//	x_tekso_twxapp01_cmdb_changes.link_to_scheduled_job_log_record
+					//	x_tekso_twxapp01_processing_log.link_to_scheduled_job_log_record			
+					var refTbl1 = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+					var refTbl2 = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+					var refTbl3 = 'x_tekso_twxapp01_cmdb_changes';
+					var refTbl4 = 'x_tekso_twxapp01_processing_log';
+					var fld = 'link_to_scheduled_job_log_record';
+					var refCnt1 = this.referenceCount(refTbl1,fld,del_sys_id2);
+					var refCnt2 = this.referenceCount(refTbl2,fld,del_sys_id2);
+					var refCnt3 = this.referenceCount(refTbl3,fld,del_sys_id2);
+					var refCnt4 = this.referenceCount(refTbl4,fld,del_sys_id2);				
+					if (refCnt1 == 0 && refCnt2 == 0 && refCnt3 == 0 && refCnt4 == 0) {
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
+	},
+
+	deleteProcessingLog: function(daysAgo) {
+		//Only delete if sys_id is not in 
+		//	x_tekso_twxapp01_rest_data_to_ucontrol.link_to_processing_log_record 
+		//	x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_processing_log_record 
+		//	x_tekso_twxapp01_cmdb_changes.link_to_processing_log_record
+		var script = 'deleteProcessingLog';	
+		var tbl = 'x_tekso_twxapp01_processing_log';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids				
+					//Only delete if sys_id is not in 
+					//	x_tekso_twxapp01_rest_data_to_ucontrol.link_to_processing_log_record 
+					//	x_tekso_twxapp01_cmdb_link_to_rest_data.link_to_processing_log_record 
+					//	x_tekso_twxapp01_cmdb_changes.link_to_processing_log_record					
+					var refTbl1 = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+					var refTbl2 = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+					var refTbl3 = 'x_tekso_twxapp01_cmdb_changes';
+					var fld = 'link_to_processing_log_record';
+					var refCnt1 = this.referenceCount(refTbl1,fld,del_sys_id2);
+					var refCnt2 = this.referenceCount(refTbl2,fld,del_sys_id2);
+					var refCnt3 = this.referenceCount(refTbl3,fld,del_sys_id2);
+					if (refCnt1 == 0 && refCnt2 == 0 && refCnt3 == 0) {
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
+	},
+
+	deleteGenerateTestData: function(daysAgo) {
+		//Status = Test Data Build Complete or Timeout Expired
+		//Only delete if sys_id not in
+		//	x_tekso_twxapp01_cmdb_changes.generate_test_data_record_sys_id
+		//	x_tekso_twxapp01_cmdb_deletes.generate_test_data_record_sys_id
+		//	x_tekso_twxapp01_cmdb_updates.generate_test_data_record_sys_id	
+		var script = 'deleteGenerateTestData';	
+		var tbl = 'x_tekso_twxapp01_generate_test_data';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids				
+					var status = gr2.getValue('status');
+					var status2 = status.toString();		
+					if (status2 == 'Test Data Build Complete' || status2 == 'Timeout Expired') {
+						//Only delete if sys_id not in
+						//	x_tekso_twxapp01_cmdb_changes.generate_test_data_record_sys_id
+						//	x_tekso_twxapp01_cmdb_deletes.generate_test_data_record_sys_id
+						//	x_tekso_twxapp01_cmdb_updates.generate_test_data_record_sys_id						
+						var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
+						var refTbl2 = 'x_tekso_twxapp01_cmdb_deletes';
+						var refTbl3 = 'x_tekso_twxapp01_cmdb_updates';
+						var fld = 'generate_test_data_record_sys_id';
+						var refCnt1 = this.referenceCount(refTbl1,fld,del_sys_id2);
+						var refCnt2 = this.referenceCount(refTbl2,fld,del_sys_id2);
+						var refCnt3 = this.referenceCount(refTbl3,fld,del_sys_id2);
+						if (refCnt1 == 0 && refCnt2 == 0 && refCnt3 == 0) {
+							if (cnt == 0) {
+								firstNum = gr2.getValue('number');
+								firstSysID = del_sys_id2;
+								firstDT = gr2.getValue('sys_created_on');
+							}		
+							lastNum = gr2.getValue('number');
+							lastSysID = del_sys_id2;
+							lastDT = gr2.getValue('sys_created_on');
+							cnt = cnt + 1;
+							gr2.setWorkflow(false);
+							gr2.deleteRecord();
+						}
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);			
+	},
+
+	deleteConnectionTest: function(daysAgo) {
+		//Status = Timeout Expired or Processed
+		var script = 'deleteConnectionTest';	
+		var tbl = 'x_tekso_twxapp01_connection_test';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids				
+					var status = gr2.getValue('status');
+					var status2 = status.toString();
+					if (status2 == 'Processed' || status2 == 'Timeout Expired') {
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+
+	deleteSetupHistory: function (daysAgo) {
+		var script = 'deleteSetupHistory';	
+		var tbl = 'x_tekso_twxapp01_setup_history';
+		var daysAgo2 = parseInt(daysAgo);
+		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
+					if (cnt == 0) {
+						firstNum = gr2.getValue('number');
+						firstSysID = del_sys_id2;
+						firstDT = gr2.getValue('sys_created_on');
+					}		
+					lastNum = gr2.getValue('number');
+					lastSysID = del_sys_id2;
+					lastDT = gr2.getValue('sys_created_on');
+					cnt = cnt + 1;
+					gr2.setWorkflow(false);
+					gr2.deleteRecord();
+
+				}
+			}
+		}
+
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+	},
+
+	deleteDebugLog: function(daysAgo) {
+		var script = 'deleteDebugLog';	
+		var tbl = 'x_tekso_twxapp01_debug_log';
+		var daysAgo2 = parseInt(daysAgo);
+
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
+					if (cnt == 0) {
+						firstNum = gr2.getValue('number');
+						firstSysID = del_sys_id2;
+						firstDT = gr2.getValue('sys_created_on');
+					}		
+					lastNum = gr2.getValue('number');
+					lastSysID = del_sys_id2;
+					lastDT = gr2.getValue('sys_created_on');
+					cnt = cnt + 1;
+					gr2.setWorkflow(false);
+					gr2.deleteRecord();
+
+				}
+			}
+		}
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+		
+    type: 'DataCleanUp'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-15 17:47:34</sys_created_on>
+        <sys_id>dae9245ddb06d8104f29252b13961904</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>DataCleanUp</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_dae9245ddb06d8104f29252b13961904</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 17:47:34</sys_updated_on>
+    </sys_script_include>
+</record_update>

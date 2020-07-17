@@ -15,26 +15,26 @@ var HandleRESTResponse = Class.create();
 HandleRESTResponse.prototype = {
     initialize: function() {
     },
-	handleRESTResponse: function(resultRestResponse,dataSysID) {
+	
+	handleRESTResponse: function(resultRestResponse,dataSysID,dtReceived) {
 		// resultRestResponse e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		// dataSysID = sys_id for x_tekso_twxapp01_rest_data_to_ucontrol
-		
-		//Remove the XX's to use
-		//this.writeXXDebugXXLog('handleRESTResponse: ' + resultRestResponse + ' sysID: ' + dataSysID);
+			
+		var dataSysID2 = dataSysID.toString();
 		
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 		var setupTable = 'x_tekso_twxapp01_setup';
-		
+			
 		var resultStatusCode = 0;
 		var resultStatusMsg = '';
-
-		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
-		gr1.addQuery('sys_id',dataSysID);
+		
+		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol			
+		gr1.addQuery('sys_id',dataSysID2);
+		gr1.addQuery('timeout_expired',false);
 		gr1.query();
 		if (gr1.next()) {
-			
 			// Need to check if string contains 'result', 'statusCode'
 			if (resultRestResponse.indexOf('result') >= 0 && 
 				resultRestResponse.indexOf('statusCode') >= 0) {				
@@ -47,7 +47,7 @@ HandleRESTResponse.prototype = {
 				resultStatusMsg = resultRestResponse;
 			}
 			
-			var dtBack = new GlideDateTime();	
+			//var dtBack = new GlideDateTime();	
 
 			// sys_id for the corresponsing processing_log record
 			var logSysID = gr1.getValue('link_to_processing_log_record');
@@ -59,7 +59,7 @@ HandleRESTResponse.prototype = {
 			var dtSent = gr1.getValue('sent_to_ucontrol_at');
 
 			var gdt1 = new GlideDateTime(dtSent); //Need to convert into a GlideDateTime
-			var gdt2 = new GlideDateTime(dtBack); //Need to convert into a GlideDateTime
+			var gdt2 = new GlideDateTime(dtReceived); //Need to convert into a GlideDateTime
 			var dur = GlideDateTime.subtract(gdt1, gdt2);
 			var duration = dur.getNumericValue();
 			var durationSeconds = parseInt((duration/1000));
@@ -69,7 +69,7 @@ HandleRESTResponse.prototype = {
 			
 			gr1.setValue('response_from_ucontrol',resultRestResponse); 
 			gr1.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-			gr1.setValue('response_received_at',dtBack);
+			gr1.setValue('response_received_at',dtReceived);
 			gr1.setValue('time_from_sending_to_response_seconds',durationSeconds);
 			
 			gr1.setValue('response_received',true);
@@ -88,7 +88,7 @@ HandleRESTResponse.prototype = {
 				// Update the REST response on the link record
 				gr2.setValue('response_from_ucontrol',resultRestResponse); 
 				gr2.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-				gr2.setValue('response_received_at',dtBack);
+				gr2.setValue('response_received_at',dtReceived);
 				gr2.setValue('time_from_sending_to_response_seconds',durationSeconds);
 				gr2.setValue('response_received',true);
 				gr2.setValue('response_status_code',resultStatusCode);
@@ -105,7 +105,7 @@ HandleRESTResponse.prototype = {
 					gr3.setValue('status','Processed'); // If success?????????????????????????????????
 					gr3.setValue('response_from_ucontrol',resultRestResponse); 
 					gr3.setValue('total_length_of_response_from_ucontrol',resultRestResponse.length);
-					gr3.setValue('response_received_at',dtBack);	
+					gr3.setValue('response_received_at',dtReceived);	
 					gr3.setValue('time_from_sending_to_response_seconds',durationSeconds);
 					gr3.setValue('response_received',true);
 					gr3.setValue('response_status_code',resultStatusCode);
@@ -150,7 +150,7 @@ HandleRESTResponse.prototype = {
 				gr6.update();
 			} //if (gr6.next()) 			
 					
-		} //if (gr1.next()) 		
+		} //if (gr1.next()) 	
 	},
 	updateProcessingLog: function(logSysID,action,noOfRecords2,completedAt) {
 		var logTable = 'x_tekso_twxapp01_processing_log';
@@ -248,14 +248,7 @@ HandleRESTResponse.prototype = {
 
 		return rtn;
 	},	
-	writeDebugLog: function(msg) {
-		var debugTable = 'x_tekso_twxapp01_debug_log';
-		var gr1 = new GlideRecordSecure(debugTable);
-		gr1.initialize();
-		gr1.setValue('message',msg);
-		gr1.setValue('inserted_by_script','SI HandleRESTResponse');		
-		gr1.insert();
-	},	
+	
     type: 'HandleRESTResponse'
 };
 
@@ -267,13 +260,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>29</sys_mod_count>
+        <sys_mod_count>51</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:22:31</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:32:15</sys_updated_on>
     </sys_script_include>
 </record_update>

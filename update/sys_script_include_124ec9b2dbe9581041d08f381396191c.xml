@@ -13,9 +13,6 @@
 var si = new x_tekso_twxapp01.ConnectionTestTimeout();
 si.checkForTimeout(connTestSysID,setupSysID,timedOutBy);
 
-var si = new x_tekso_twxapp01.ConnectionTestTimeout();
-si.cleanup();
-
 */
 	
 var ConnectionTestTimeout = Class.create();
@@ -24,6 +21,11 @@ ConnectionTestTimeout.prototype = {
     },
 	
 	cleanup_old_incomplete_connection_test_records: function() {
+		//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+		var script = 'SI ConnectionTestTimeout cleanup_old_incomplete_connection_test_record';	
+		var msg = script + ' - Started';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);	
+		
 		// Cleanup job to go through all records
 		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 		var setupTable = 'x_tekso_twxapp01_setup';	
@@ -45,6 +47,8 @@ ConnectionTestTimeout.prototype = {
 				}
 			}
 		}	
+		msg = script + ' - Finished';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);			
 	},
 	
 	checkForTimeout: function(connTestSysID,setupSysID,timedOutBy) {
@@ -61,8 +65,8 @@ ConnectionTestTimeout.prototype = {
 			gr1.query();
 			if (gr1.next()) {
 				var now = new GlideDateTime();
-				var requestWillTimeOutAtHasValue = gr1.getValue('request_will_time_out_at_has_value') || false;
-				var requestWillTimeOutAt = gr1.getValue('request_will_time_out_at');
+				var requestWillTimeOutAtHasValue = gr1.getValue('timeout_has_been_calculated') || false;
+				var requestWillTimeOutAt = gr1.getValue('timeout_will_occur_at');
 				var requestWillTimeOutAt2 = new GlideDateTime(requestWillTimeOutAt);
 				if (requestWillTimeOutAtHasValue == true) {
 					//Only do this if we have a timeout date/time
@@ -75,7 +79,7 @@ ConnectionTestTimeout.prototype = {
 					if (dur1secs2 < 0) {
 						// Timeout has occurred
 						var status = gr1.getValue('status') || '';
-						var timedOutStatus = gr1.getValue('timed_out') || false;
+						var timedOutStatus = gr1.getValue('timeout_expired') || false;
 						var abortedStatus = gr1.getValue('aborted') || false;						
 						// This may have already been aborted or timed out
 						if (abortedStatus == true && status != 'Aborted') {
@@ -89,13 +93,13 @@ ConnectionTestTimeout.prototype = {
 							gr1.update();
 						}
 
-						if (timedOutStatus == true && status != 'Timed Out') {
+						if (timedOutStatus == true && status != 'Timeout Expired') {
 							// Because of timing between various async threads the status may not have 
-							// been set to Timed Out
-							// or it was set to Timed Out but then overwritten by another process
-							// Hence the need for a separated Timed Out flag
-							// If Status is not Timed Out - set it now			
-							gr1.setValue('status','Timed Out');	
+							// been set to Timeout Expired
+							// or it was set to Timeout Expired but then overwritten by another process
+							// Hence the need for a separated Timeout Expired flag
+							// If Status is not Timeout Expired - set it now			
+							gr1.setValue('status','Timeout Expired');	
 							gr1.setValue('updated_by_script',script);	// Debug			
 							gr1.update();
 						}
@@ -103,9 +107,10 @@ ConnectionTestTimeout.prototype = {
 						if (abortedStatus == false && timedOutStatus == false) {
 							// Not alredy aborted or Processed
 							if (status == 'Pending' || status == 'Sent') {		
-								gr1.setValue('status','Timed Out');
-								gr1.setValue('timed_out_by',timedOutBy);
-								gr1.setValue('timed_out',true);
+								gr1.setValue('status','Timeout Expired');
+								gr1.setValue('timeout_triggered_by',timedOutBy);
+								gr1.setValue('timeout_triggered_at',now);							
+								gr1.setValue('timeout_expired',true);
 								gr1.setValue('updated_by_script',script);	// Debug
 								gr1.update();
 
@@ -137,7 +142,7 @@ ConnectionTestTimeout.prototype = {
 			//When a connection test is generated the sys_id of the connection test is 
 			//linked back to the Setup Record
 			//I.e. Setup has a link to the latest connection test
-			//We should only be updating Setup if the Connection Test that has Timed Out
+			//We should only be updating Setup if the Connection Test that has Timeout Expired
 			//Only if this test connection record is the one that is currently 
 			//linked to Setup
 			//I.e. only update Setup if connection_test_link = sysID
@@ -162,13 +167,13 @@ ConnectionTestTimeout.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-25 15:33:46</sys_created_on>
         <sys_id>124ec9b2dbe9581041d08f381396191c</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>16</sys_mod_count>
         <sys_name>ConnectionTestTimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_124ec9b2dbe9581041d08f381396191c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 10:00:23</sys_updated_on>
+        <sys_updated_on>2020-07-15 20:45:35</sys_updated_on>
     </sys_script_include>
 </record_update>

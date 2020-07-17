@@ -980,6 +980,62 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>timeout_expired</element>
+            <position>70</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-14 16:47:41</sys_created_on>
+            <sys_id>5a765374db8e58104f29252b13961954</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">244047f2db70905041d08f38139619f3</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-14 16:47:41</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>total_number_of_records_timeout_expired</element>
+            <position>71</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-14 16:48:11</sys_created_on>
+            <sys_id>31965334db8e58104f29252b1396190b</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">244047f2db70905041d08f38139619f3</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-14 16:48:11</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>number_of_deletes_timeout_expired</element>
+            <position>72</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-14 16:48:42</sys_created_on>
+            <sys_id>99b69774db8e58104f29252b139619e7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">244047f2db70905041d08f38139619f3</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-14 16:48:42</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>number_of_updates_timeout_expired</element>
+            <position>73</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-14 16:49:36</sys_created_on>
+            <sys_id>eee69774db8e58104f29252b13961993</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">244047f2db70905041d08f38139619f3</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-14 16:49:36</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

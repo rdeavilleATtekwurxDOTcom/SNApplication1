@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.IsConnectionTestDue</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>IsConnectionTestDue</name>
+        <script><![CDATA[/*
+new x_tekso_twxapp01.IsConnectionTestDue().isConnectionTestDue(setupSysID,jobSysID);
+*/
+
+var IsConnectionTestDue = Class.create();
+IsConnectionTestDue.prototype = {
+    initialize: function() {
+    },
+
+	isConnectionTestDue: function(setupSysID,jobSysID) {
+
+		var script = 'SI IsConnectionTestDue isConnectionTestDue';
+		var msg = script + ' - Started';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);
+
+		var setupTable = 'x_tekso_twxapp01_setup';
+
+		var testRequired = false;
+		var setupURL = '';
+		var setupMIDSrvrSysID = '';
+		var setupMIDSrvrSysID2 = '';
+		var setupMIDSrvrName = '';
+		var setupMIDSrvrName2 = '';	
+		var setupConnTimeoutMins = 0;
+
+		var gr1 = new GlideRecordSecure(setupTable);
+		gr1.addQuery('sys_id',setupSysID);
+		gr1.query();
+		if (gr1.next()) {
+			//Got the setup record
+			var setupStatus = gr1.getValue('status') || '';
+			var wasSending = gr1.getValue('status_was_sending_when_connection_failed');
+
+			setupConnTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
+
+			setupURL = gr1.getValue('ucontrol_url') || ''; 
+
+			// Need to use getElement to do dot walking.
+			setupMIDSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
+			setupMIDSrvrSysID2 = setupMIDSrvrSysID.toString(); 
+
+			var midSrvrStatus = this.getMidServerStatus(setupMIDSrvrSysID2);
+			if (midSrvrStatus == 'Up') {
+				//If the mid server is not Up then there is no point trying
+				setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+				setupMIDSrvrName2 = setupMIDSrvrName.toString();	
+
+				msg = 'setupMIDSrvrName2 = ' + setupMIDSrvrName2.toString();
+				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+				
+				var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
+				var now = new GlideDateTime();
+				//Need to put this through GlideDateTime()
+				var lastTestedAt = new GlideDateTime(setupConnTestedAt);
+				
+				msg = 'lastTestedAt = ' + lastTestedAt;
+				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+				
+				var dur = new GlideDuration();
+				dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
+
+				// Seconds - will be floating point e.g. 4,152.345
+				//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+
+				// Minutes - will be floating point e.g. 69.206
+				var minutesSinceLastTest = dur.getNumericValue() / 1000 / 60;  
+				var minutesSinceLastTest2 = parseInt(minutesSinceLastTest); // e.g. 69
+
+				msg = 'minutesSinceLastTest2 = ' + minutesSinceLastTest2.toString();
+				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+				
+				testRequired = this.isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest2,setupStatus,wasSending);
+
+			} //if (midSrvrStatus == 'Up') {
+		} // if (gr1.next()) {
+
+		if (testRequired == true) {		
+			var trggrdBy = 'SA IsConnectionTestDue';
+			var usrNm = 'Scheduled Job';
+
+			var si = new x_tekso_twxapp01.ConnectionTest();
+			si.buildRequestRecord(setupSysID,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
+		}
+
+		msg = script + ' - Finished';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);
+	},
+
+	getNumberOfAllPendingRecords: function() {
+		var script = 'SI IsConnectionTestDue getNumberOfAllPendingRecords';
+		var msg = script + ' - Started';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		// Get the number of all Pending Records - this is used to determine if the queue is empty
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+		var rtnCnt = 0;
+		var gr1 = new GlideAggregate(trackingTable); //x_tekso_twxapp01_cmdb_changes
+		gr1.addQuery('status','Pending');
+		gr1.addQuery('processing_id','');	
+		gr1.addAggregate('COUNT');	
+		gr1.query();
+		gr1.next(); // GlideAggregate needs the .next()
+		rtnCnt = gr1.getAggregate('COUNT');	
+
+		msg = 'rtnCnt = ' + rtnCnt.toString();
+		//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+		
+		msg = script + ' - Finished';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		return rtnCnt;
+	},
+
+
+	getMidServerStatus: function(sys_id) {
+		
+		var script = 'SI IsConnectionTestDue getMidServerStatus';
+		var msg = script + ' - Started';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		var rtn = '';
+		var sys_id2 = sys_id.toString();
+		if (sys_id2.length > 0) {
+			var gr1 = new GlideRecordSecure('ecc_agent');
+			gr1.addQuery('sys_id',sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				var status = gr1.getValue('status');
+				rtn = status.toString();
+				
+				// Used for testing to simulate mid server being down
+				var midserverdown = gs.getProperty('x_tekso_twxapp01.testing.midserverdown') || 0;
+				if (parseInt(midserverdown) == 1) {
+					rtn = 'Down';
+				}
+			}
+		}
+		
+		msg = 'rtn = ' + rtn;
+		//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+		
+		msg = script + ' - Finished';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+		
+		return rtn;
+	},
+
+	isTestRequired: function(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest,setupStatus,wasSending) {
+		var script = 'SI IsConnectionTestDue isTestRequired';
+		var msg = script + ' - Started';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		var rtn = false;
+		var jobSysID2 = jobSysID.toString();
+		if (jobSysID2.length > 0) {
+			var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
+			var gr1 = new GlideRecordSecure(jobTable);
+			gr1.addQuery('sys_id',jobSysID);
+			gr1.query();
+			if (gr1.next()) {
+				// For the Scheduled Job Record
+				gr1.setValue('time_elapsed_since_last_connection_test',dur);		
+				gr1.setValue('connection_tested_at',setupConnTestedAt);
+
+				if (minutesSinceLastTest > 30) {
+					//Last Connection Test was more than 30 minutes ago
+					if (setupStatus == 'Sending') {
+						var noOfPendingRecs = this.getNumberOfAllPendingRecords();	
+						if (noOfPendingRecs == 0) {
+							// Status is Sending and there is nothing in the queue - Do a connection test
+							rtn = true;
+							gr1.setValue('connection_test_requested_by_job',true);
+						}
+					}
+					else {
+						if (wasSending == true) {
+							rtn = true;
+							gr1.setValue('connection_test_requested_by_job',true);
+						}				
+					}				
+				} // if (minutesSinceLastTest > 30)		
+				gr1.setValue('updated_by_script','SA IsConnectionTestDue');
+				gr1.update();
+
+			} //if (gr1.next()) {	
+		} // if (jobSysID2.length > 0) {	
+		
+		msg = 'rtn = ' + rtn;
+		//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+		
+		msg = script + ' - Finished';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		return rtn;
+	},
+
+    type: 'IsConnectionTestDue'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-15 20:13:18</sys_created_on>
+        <sys_id>7ebd4d9ddb86d8104f29252b139619ab</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>IsConnectionTestDue</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_7ebd4d9ddb86d8104f29252b139619ab</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:04:09</sys_updated_on>
+    </sys_script_include>
+</record_update>

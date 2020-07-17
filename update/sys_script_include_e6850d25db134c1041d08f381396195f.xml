@@ -7,98 +7,59 @@
         <client_callable>false</client_callable>
         <description/>
         <name>UpdateScheduledJob</name>
-        <script><![CDATA[var UpdateScheduledJob = Class.create();
+        <script><![CDATA[/* Example calling
+var si = new x_tekso_twxapp01.UpdateScheduledJob();
+si.activateScheduledJob('Process Responses From uControl',1);
+*/
+
+var UpdateScheduledJob = Class.create();
 UpdateScheduledJob.prototype = {
     initialize: function() {
     },
-    updateScheduledJob: function(setupSysID) {
-		
-		var setupTable = 'x_tekso_twxapp01_setup';
-		var setupSysID2 = setupSysID.toString();
-		
-		var gr1 = new GlideRecordSecure(setupTable);
-		gr1.addQuery('sys_id',setupSysID2);
-		gr1.query();
-		if (gr1.next()) {
-			var interval = gr1.getValue('ucontrol_polling_interval_minutes');
-			
+	
+	activateScheduledJob: function(name,intervalMins) {
+		//'Process Responses From uControl'
+		var name2 = name.toString();
+		var intervalMins2 = parseInt(intervalMins);
+		if (name2.length > 0 && intervalMins2 > 0) {
 			var intervalStr = '';
-			if (interval < 10) {
-				intervalStr = '0' + interval.toString();
+			if (intervalMins2 < 10) {
+				intervalStr = '0' + intervalMins2.toString();
 			}
 			else {
-				intervalStr = interval.toString();	
+				intervalStr = intervalMins2.toString();	
 			}
 
 			// D HH:MM:SS
 			var durationStr = '0 00:' + intervalStr + ':00';
-
 			var duration = new GlideDuration(durationStr);
-		
-			var scheduledJobSysID = gr1.getValue('scheduled_job_sys_id').toString();
-			var gotGoodScheduledJobSysID = false;
 			
-			if (scheduledJobSysID.length > 31) {
-				// Check if the sysID is still valid
-				var gr2 = new GlideRecordSecure('sysauto');
-				gr2.addQuery('sys_id',scheduledJobSysID);
-				gr2.addQuery('name','Send Data to uControl');
-				gr2.query();
-				if (gr2.next()) {
-					//Still valid
-					gotGoodScheduledJobSysID = true;
-				}
-			}
-			
-			if (scheduledJobSysID.length < 32 || gotGoodScheduledJobSysID == false) {
-				// Not got a sysid of the one we had was not valid
-				var gr3 = new GlideRecordSecure('sysauto');
-				gr3.addQuery('name','Send Data to uControl');
-				gr3.query();
-				if (gr3.next()) {
-					//Now we have got the sys_id for the scheduled job
-					scheduledJobSysID = gr3.getValue('sys_id').toString();
-					gr1.setValue('scheduled_job_sys_id',scheduledJobSysID);
-					gr1.setValue('updated_by_script','SI updateScheduledJob'); // Debug	
-					gr1.update();	
-					gotGoodScheduledJobSysID = true;
-				}
-			} 
-
-
-			//If we have got a sys_id for the scheduled job - either because we always had it
-			//or beceause we have just got it in the previous block
-			if (scheduledJobSysID.length >= 32 && gotGoodScheduledJobSysID == true) {
-				var gr4 = new GlideRecordSecure('sysauto');
-				gr4.addQuery('sys_id',scheduledJobSysID);
-				gr4.query();	
-				if (gr4.next()) {
-					gr4.setValue('active',true);
-					gr4.setValue('run_type','periodically');
-					gr4.setValue('run_period',duration);
-					gr4.update();			
-				}
-			}
-		}//	if (gr1.next()) {
+			var gr1 = new GlideRecordSecure('sysauto');
+			gr1.addQuery('name',name2);
+			gr1.query();	
+			if (gr1.next()) {
+				gr1.setValue('active',true);
+				gr1.setValue('run_type','periodically');
+				gr1.setValue('run_period',duration);
+				gr1.update();			
+			}	
+		}
 	},
+
     type: 'UpdateScheduledJob'
 };
-
-/* Example calling
-var si = new x_tekso_twxapp01.UpdateScheduledJob();
-si.updateScheduledJob(setupSysID);
-*/]]></script>
+]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-01 21:35:55</sys_created_on>
         <sys_id>e6850d25db134c1041d08f381396195f</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>11</sys_mod_count>
         <sys_name>UpdateScheduledJob</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e6850d25db134c1041d08f381396195f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:43:13</sys_updated_on>
+        <sys_updated_on>2020-07-16 12:36:55</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -30,11 +30,13 @@
         <script><![CDATA[(function executeRule(current, previous) {
 	
 		// Script Include
-		var setupSysID = current.sys_id;
+		var interval = current.ucontrol_polling_interval_minutes;
+		var interval2 = parseInt(interval);
+
 		// This will ensure that the scheduled job is active, set to running periodically 
-		// and also set the repeat interval
+		// and also set the repeat interval	
 		var si = new x_tekso_twxapp01.UpdateScheduledJob();
-		si.updateScheduledJob(setupSysID);
+		si.activateScheduledJob('Send Data to uControl',interval2);
 	
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
@@ -43,7 +45,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>2c851d09dbfa441041d08f3813961955</sys_id>
-        <sys_mod_count>21</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>Setup - When Polling Interval Is Changed</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -51,7 +53,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_2c851d09dbfa441041d08f3813961955</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-04-18 20:20:18</sys_updated_on>
+        <sys_updated_on>2020-07-16 10:02:07</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

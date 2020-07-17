@@ -6,8 +6,12 @@
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
-        <comments>Need to check that the record exists</comments>
-        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().tableAndSysID(current.table_name,current.source_record_sys_id)</condition>
+        <comments>Need to check that the record exists&#13;
+tableAndTestTableAndSysID(table,testTable,testData,sys_id)&#13;
+Pass in 2 table names, the flag to say whether this is test data and the sys_id&#13;
+If testData = false use table If testData = true use testTable		&#13;
+Returns true if the sys_id exists in the table</comments>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().tableAndTestTableAndSysID(current.table_name,current.test_table_name,current.test_data,current.source_record_sys_id)</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -29,7 +33,7 @@
         <onclick/>
         <order>100</order>
         <script><![CDATA[var script = 'UI Action Copy CMDB Update';
-//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Update - Started');
 
 var hasBeenCopied = false;
@@ -84,7 +88,7 @@ if (hasBeenCopied == true && current.has_been_copied_by_another_record != true) 
 	current.update();
 }
 
-//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Update - Finished');]]></script>
         <show_insert>false</show_insert>
         <show_multiple_update>false</show_multiple_update>
@@ -96,7 +100,7 @@ new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Update
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6fe0ccb2dbe4d0104f29252b139619ce</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>Copy CMDB Update</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -104,7 +108,7 @@ new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Copy CMDB Update
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_6fe0ccb2dbe4d0104f29252b139619ce</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 14:11:31</sys_updated_on>
+        <sys_updated_on>2020-07-15 12:01:47</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_updates</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

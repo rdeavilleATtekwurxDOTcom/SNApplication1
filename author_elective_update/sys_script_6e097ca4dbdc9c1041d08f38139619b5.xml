@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>ecc_queue</collection>
+        <condition>current.queue == "input" &amp;&amp; current.state == "ready" &amp;&amp; current.source.indexOf("uControl") &gt; -1</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>OBSOLET ECC Queue - uControl Response I</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+		
+	var payload = current.payload;
+	// Large payload bodies will create an attachment on the ECC Queue record.
+	if(payload == "<see_attachment/>"){		
+		var gr1 = new GlideRecordSecure("sys_attachment");
+		gr1.addQuery( "table_name", "=", "ecc_queue");
+		gr1.addQuery( "table_sys_id", "=" , current.sys_id + "");
+		gr1.query();
+		if (gr1.next()) {
+			var sa = new GlideSysAttachment();
+			payload = sa.getContent(gr1);
+		}
+	}
+	var xmlDoc = new XMLDocument2();
+	xmlDoc.parseXML(payload.toString());
+	var response = xmlDoc.getNodeText('//result/output');
+	//{"result":{"statusCode":200,"statusMsg":"OK"}}
+	
+	if (response.indexOf('result') >= 0 && 
+		response.indexOf('statusCode') >= 0) {				
+		var parser = new global.JSON();
+		var jsonBack = parser.decode(response);	
+		var resultStatusCode = parseInt(jsonBack.result.statusCode);
+		var resultStatusMsg = jsonBack.result.statusMsg;			
+	}
+	
+	var node = xmlDoc.getNode("//parameters");
+	var childNodes = node.getChildNodeIterator();
+	while(childNodes.hasNext()){
+		var n = childNodes.next();
+		var nStr = n.toString();
+		if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('data_sys_id') > 0) {
+			/*
+<parameter name="content" value="{&quot;operation&quot;:&quot;delete&quot;,&quot;base_table&quot;:&quot;cmdb_ci&quot;,&quot;source&quot;:&quot;ServiceNow&quot;,&quot;source_name&quot;:&quot;ven03409&quot;,&quot;source_url&quot;:&quot;https://ven03409.service-now.com/&quot;,&quot;data_sys_id&quot;:&quot;cf99416cdb5c5c104f29252b13961912&quot;,&quot;deletedData&quot;: [{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961940&quot;},{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961946&quot;}]}"/>
+			*/
+				
+			var unescaped = nStr.replace(/&quot;/g,'');
+			var pos = unescaped.indexOf('data_sys_id:');
+			pos = pos + 12; // length of 'data_sys_id:'	
+			var dataSysID = unescaped.substring(pos,pos+32);
+			
+			/*
+			var pos2 = unescaped.indexOf('data_record_no:');
+			pos2 = pos2 + 15;
+			var recordNo = unescaped.substring(pos2,pos2+20);
+			var recordNo2 = getCharactersBeforeDelimiter(recordNo,',');	
+			*/
+			
+			//When the incoming data hits the mid server it will go in under the credentials of the mid server user
+			//need to check that this user has the permissions to write to the tables
+			if (checkUserCanAccessRecords() == true) {
+				current.state = 'processed';
+				var si = new x_tekso_twxapp01.HandleRESTResponse();
+				si.handleRESTResponse(response,dataSysID);
+			}
+		}
+	}	
+
+})(current, previous);
+
+//When the incoming data hits the mid server it will go in under the credentials of the mid server user
+//need to check that this user has the permissions to write to the tables
+function checkUserCanAccessRecords() {
+	var rtn = true;
+
+	// gets user name
+	var user = gs.getUserName();
+
+	// Don't think gs.hasRole works in a scoped application?
+	/*
+	if (!gs.hasRole('x_tekso_twxapp01.admin')) {
+		gs.info('User: ' + user + ' does not have the role x_tekso_twxapp01.admin');
+	}
+	*/
+	var gr1 = new GlideRecordSecure('sys_user');
+	gr1.addQuery('user_name',user);
+	gr1.query();
+	if (gr1.next()) {
+		var gr2 = new GlideRecordSecure('sys_user_role');
+		gr2.addQuery('name','x_tekso_twxapp01.admin');
+		gr2.query();
+		if (gr2.next()) {
+			var gr3 = new GlideRecordSecure('sys_user_has_role');
+			gr3.addQuery('user',gr1.sys_id);
+			gr3.addQuery('role',gr2.sys_id);
+			gr3.query();
+			if (gr3.next()) {
+				rtn = true;
+			}
+		}
+	}
+
+	if (rtn == false) {
+		gs.info('User: ' + user + ' does not have the role x_tekso_twxapp01.admin');		
+	}
+	return rtn;
+}
+		
+/*
+function getCharactersBeforeDelimiter(strIn,delim) {
+	var rtn = '';
+	// Check got a string and a delimiter and the string contains the delimiter
+	if (strIn.length > 0 && delim.length > 0 && strIn.indexOf(delim) > -1) {
+		rtn = strIn.split(delim)[0];
+	}
+	return rtn;
+}
+*/
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-04-17 10:52:30</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6e097ca4dbdc9c1041d08f38139619b5</sys_id>
+        <sys_mod_count>30</sys_mod_count>
+        <sys_name>OBSOLET ECC Queue - uControl Response I</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-14 08:19:23</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=6e097ca4dbdc9c1041d08f38139619b5"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;ecc_queue&lt;/collection&gt;&lt;condition&gt;current.queue == "input" &amp;amp;&amp;amp; current.state == "ready" &amp;amp;&amp;amp; current.source.indexOf("uControl") &amp;gt; -1&lt;/condition&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;OBSOLET ECC Queue - uControl Response I&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+		
+	var payload = current.payload;
+	// Large payload bodies will create an attachment on the ECC Queue record.
+	if(payload == "&lt;see_attachment/&gt;"){		
+		var gr1 = new GlideRecordSecure("sys_attachment");
+		gr1.addQuery( "table_name", "=", "ecc_queue");
+		gr1.addQuery( "table_sys_id", "=" , current.sys_id + "");
+		gr1.query();
+		if (gr1.next()) {
+			var sa = new GlideSysAttachment();
+			payload = sa.getContent(gr1);
+		}
+	}
+	var xmlDoc = new XMLDocument2();
+	xmlDoc.parseXML(payload.toString());
+	var response = xmlDoc.getNodeText('//result/output');
+	//{"result":{"statusCode":200,"statusMsg":"OK"}}
+	
+	if (response.indexOf('result') &gt;= 0 &amp;&amp; 
+		response.indexOf('statusCode') &gt;= 0) {				
+		var parser = new global.JSON();
+		var jsonBack = parser.decode(response);	
+		var resultStatusCode = parseInt(jsonBack.result.statusCode);
+		var resultStatusMsg = jsonBack.result.statusMsg;			
+	}
+	
+	var node = xmlDoc.getNode("//parameters");
+	var childNodes = node.getChildNodeIterator();
+	while(childNodes.hasNext()){
+		var n = childNodes.next();
+		var nStr = n.toString();
+		if (nStr.indexOf('parameter') &gt;= 0 &amp;&amp; nStr.indexOf('content') &gt; 0 &amp;&amp; nStr.indexOf('data_sys_id') &gt; 0) {
+			/*
+&lt;parameter name="content" value="{&amp;quot;operation&amp;quot;:&amp;quot;delete&amp;quot;,&amp;quot;base_table&amp;quot;:&amp;quot;cmdb_ci&amp;quot;,&amp;quot;source&amp;quot;:&amp;quot;ServiceNow&amp;quot;,&amp;quot;source_name&amp;quot;:&amp;quot;ven03409&amp;quot;,&amp;quot;source_url&amp;quot;:&amp;quot;https://ven03409.service-now.com/&amp;quot;,&amp;quot;data_sys_id&amp;quot;:&amp;quot;cf99416cdb5c5c104f29252b13961912&amp;quot;,&amp;quot;deletedData&amp;quot;: [{&amp;quot;sys_updated_on&amp;quot;:&amp;quot;2020-04-15 15:20:06&amp;quot;,&amp;quot;sys_class_name&amp;quot;:&amp;quot;cmdb_ci_appl&amp;quot;,&amp;quot;sys_updated_by&amp;quot;:&amp;quot;robin&amp;quot;,&amp;quot;sys_id&amp;quot;:&amp;quot;126be3bddb8814104f29252b13961940&amp;quot;},{&amp;quot;sys_updated_on&amp;quot;:&amp;quot;2020-04-15 15:20:06&amp;quot;,&amp;quot;sys_class_name&amp;quot;:&amp;quot;cmdb_ci_appl&amp;quot;,&amp;quot;sys_updated_by&amp;quot;:&amp;quot;robin&amp;quot;,&amp;quot;sys_id&amp;quot;:&amp;quot;126be3bddb8814104f29252b13961946&amp;quot;}]}"/&gt;
+			*/
+				
+			var unescaped = nStr.replace(/&amp;quot;/g,'');
+			var pos = unescaped.indexOf('data_sys_id:');
+			pos = pos + 12; // length of 'data_sys_id:'	
+			var dataSysID = unescaped.substring(pos,pos+32);
+			
+			/*
+			var pos2 = unescaped.indexOf('data_record_no:');
+			pos2 = pos2 + 15;
+			var recordNo = unescaped.substring(pos2,pos2+20);
+			var recordNo2 = getCharactersBeforeDelimiter(recordNo,',');	
+			*/
+			
+			//When the incoming data hits the mid server it will go in under the credentials of the mid server user
+			//need to check that this user has the permissions to write to the tables
+			if (checkUserCanAccessRecords() == true) {
+				current.state = 'processed';
+				var si = new x_tekso_twxapp01.HandleRESTResponse();
+				si.handleRESTResponse(response,dataSysID);
+			}
+		}
+	}	
+
+})(current, previous);
+
+//When the incoming data hits the mid server it will go in under the credentials of the mid server user
+//need to check that this user has the permissions to write to the tables
+function checkUserCanAccessRecords() {
+	var rtn = true;
+
+	// gets user name
+	var user = gs.getUserName();
+
+	// Don't think gs.hasRole works in a scoped application?
+	/*
+	if (!gs.hasRole('x_tekso_twxapp01.admin')) {
+		gs.info('User: ' + user + ' does not have the role x_tekso_twxapp01.admin');
+	}
+	*/
+	var gr1 = new GlideRecordSecure('sys_user');
+	gr1.addQuery('user_name',user);
+	gr1.query();
+	if (gr1.next()) {
+		var gr2 = new GlideRecordSecure('sys_user_role');
+		gr2.addQuery('name','x_tekso_twxapp01.admin');
+		gr2.query();
+		if (gr2.next()) {
+			var gr3 = new GlideRecordSecure('sys_user_has_role');
+			gr3.addQuery('user',gr1.sys_id);
+			gr3.addQuery('role',gr2.sys_id);
+			gr3.query();
+			if (gr3.next()) {
+				rtn = true;
+			}
+		}
+	}
+
+	if (rtn == false) {
+		gs.info('User: ' + user + ' does not have the role x_tekso_twxapp01.admin');		
+	}
+	return rtn;
+}
+		
+/*
+function getCharactersBeforeDelimiter(strIn,delim) {
+	var rtn = '';
+	// Check got a string and a delimiter and the string contains the delimiter
+	if (strIn.length &gt; 0 &amp;&amp; delim.length &gt; 0 &amp;&amp; strIn.indexOf(delim) &gt; -1) {
+		rtn = strIn.split(delim)[0];
+	}
+	return rtn;
+}
+*/
+]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-04-17 10:52:30&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;6e097ca4dbdc9c1041d08f38139619b5&lt;/sys_id&gt;&lt;sys_mod_count&gt;30&lt;/sys_mod_count&gt;&lt;sys_name&gt;OBSOLET ECC Queue - uControl Response I&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_6e097ca4dbdc9c1041d08f38139619b5&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-14 08:19:23&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;after&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=6e097ca4dbdc9c1041d08f38139619b5"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>871403685</payload_hash>
+        <record_name>OBSOLET ECC Queue - uControl Response I</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-14 08:19:23</sys_created_on>
+        <sys_id>e42229bcdbc658104f29252b139619d1</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1734c6830820000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-14 08:19:23</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>ac2229bc2ac65810ab6d02a7a60ab4d0</update_guid>
+        <update_guid_history>ac2229bc2ac65810ab6d02a7a60ab4d0:871403685,b202e5bc7ac65810dda0c1656565d943:-1360646250,2a2a43e4b402581077cefc7329b47dd6:-407717714,1157cb2499025810ebb12de71d360f2a:-1781770633,eea44fa0350258102f881c7a278e43b2:-274755144,20425e681f4e18106569e28bb53db14a:-1834239857,0dceb5e4430e1810ee4f18f7c09c031c:-828959747,a3386da41aca1810b543b7b304321fb0:493793615,af8c516c078a1810d97e2d066db6a1b7:-309595459,559a59e8cb8a18102b7484ff32bb5e74:-1334633567,3460cb1609651810655341e617f88cc1:-1079662629,4e53bea3288514906f3347ecc520c872:-1046982469,6d1f45a6b8b81050fe16cddd7ceac6e3:-1356548616,7514636a8f64d010fbc201b6c4b0d84a:-694371451,a11241e1e39c505080990d2a9f1afc41:-491573483,82f738a9a75c50500f07e76b5f9b5a22:-240728924,2b857429865c5050a53be740a0e16ea5:-975635147,0dc3fce1505c5050fafd77bed09d6c22:-1395239049,202074e1755c5050852d1f765dde3dbc:2003595329,276faca13a5c50509f2c249c431fa0d4:-967695670,e48ac9e4c610dc10146c08c353ce8bb5:694651026,158905e46a10dc103871493ef6906e06:-163757811,5d6801a4d310dc105c57104147354fa3:-1260753089,c4d7c564a510dc102befaf078b6ff612:-1067272217,18278164fb10dc10249450bc0e591b31:104913787,82164124a010dc10a454beb5bf59f826:2133235442,581541e05f10dc10d839d017f7024e42:2145628885,b4834120a310dc10212dcf34cbaab03d:-1048744555,62d101e8ffdc9c10da0681fa59e0df19:499303314,c83b70a8bbdc9c10b6b05e06293425cb:-2093400075,a949342882dc9c10c9ee45a59ea86a8b:1966050950</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-16 17:16:25</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>1cb7b403ccac41428a66ff5dc3c4f221</sys_id>
+        <sys_metadata>6e097ca4dbdc9c1041d08f38139619b5</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>OBSOLET ECC Queue - uControl Response I</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="ECC Queue">58a6d681db21001035a38a72399619b9</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_6e097ca4dbdc9c1041d08f38139619b5</sys_update_name>
+        <sys_update_version display_value="sys_script_6e097ca4dbdc9c1041d08f38139619b5">e42229bcdbc658104f29252b139619d1</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:16:25</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

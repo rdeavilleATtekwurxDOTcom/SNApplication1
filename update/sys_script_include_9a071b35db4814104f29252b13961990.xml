@@ -9,18 +9,35 @@
         <name>BuildTestData</name>
         <script><![CDATA[// new x_tekso_twxapp01.BuildTestData().deleteAllTestDataSilently();
 // new x_tekso_twxapp01.BuildTestData().buildTestData();
-
+// new x_tekso_twxapp01.BuildTestData().checkAllTestTablesContainTestData();
 
 var BuildTestData = Class.create();
 BuildTestData.prototype = {
     initialize: function() {
     },
+	
+	buildTestDataIfMissing: function() {
+		//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+		var script = 'SI BuildTestData buildTestDataIfMissing';	
+		var msg = script + ' - Started';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);	
+		
+		var ok = this.checkAllTestTablesContainTestData();
+		if (ok == false) {
+			this.buildTestData();
+		}
+		
+		msg = script + ' - Finished';
+		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);			
+	},
+	
 	buildTestData: function() {
 
 		var num = 1;
 		var zeroPaddedNumStr1 = this.zeroPad(num,6); // e.g. '000001'
 		var ciName1 = '[' + zeroPaddedNumStr1 + '] srvr name';
-		// Will create if it does not exist
+		// Will create if it does not exist 
+		// also handles the secondary stuff e.g. manufacturer, model etc
 		var ci1 = this.newCMDBServer(ciName1,true,zeroPaddedNumStr1);
 
 		num = num + 1;
@@ -28,6 +45,7 @@ BuildTestData.prototype = {
 		var zeroPaddedNumStr2 = this.zeroPad(num,6); // e.g. '000001'
 		var ciName2 = '[' + zeroPaddedNumStr2 + '] appl name';
 		// Will create if it does not exist
+		// also handles the secondary stuff e.g. manufacturer, model etc		
 		var ci2 = this.newCMDBApplication(ciName2,true,zeroPaddedNumStr2);	
 
 		var typeSysID = this.findOrInsertTestRelType('Runs on','Runs','Runs on::Runs');
@@ -37,6 +55,46 @@ BuildTestData.prototype = {
 		this.newRelation(ci1,ci2,typeSysID,checkIfAlreadyExists);
 	},
 
+	checkAllTestTablesContainTestData: function() {
+		var rtn = true;
+		var tableArr = [];
+		tableArr.push('x_tekso_twxapp01_test_application');	
+		tableArr.push('x_tekso_twxapp01_test_configuration_item');	
+		tableArr.push('x_tekso_twxapp01_test_ci_relationship');
+		tableArr.push('x_tekso_twxapp01_test_server');
+		tableArr.push('x_tekso_twxapp01_test_asset');
+		tableArr.push('x_tekso_twxapp01_test_ci_relationship_type');
+		tableArr.push('x_tekso_twxapp01_test_company');
+		tableArr.push('x_tekso_twxapp01_test_cost_center');
+		tableArr.push('x_tekso_twxapp01_test_department');
+		tableArr.push('x_tekso_twxapp01_test_group');
+		tableArr.push('x_tekso_twxapp01_test_location');
+		tableArr.push('x_tekso_twxapp01_test_product_model');
+		tableArr.push('x_tekso_twxapp01_test_schedule');
+		tableArr.push('x_tekso_twxapp01_test_user');
+	
+		for (var i=0;i<tableArr.length;i++) {
+			var cnt = this.countRecords(tableArr[i]);
+			if (cnt < 1) {
+				rtn = false;
+			}
+		}
+		return rtn;
+	},
+	
+	countRecords: function(table) {
+		var rowCnt = 0;
+		var table2 = table.toString();
+		if (table2.length > 0) {
+			var gr1 = new GlideAggregate(table2);
+			gr1.addAggregate('COUNT');
+			gr1.query();
+			gr1.next(); // GlideAggregate needs the .next()
+			rowCnt = gr1.getAggregate('COUNT');
+		}
+		return rowCnt;		
+	},
+		
 	deleteAllTestDataSilently: function() {
 		this.deleteAllTestCIReferenceDataSilently();
 		this.deleteAllTestCIRelationshipsSilently();
@@ -68,11 +126,7 @@ BuildTestData.prototype = {
 	
 	deleteAllSilently: function(table) {
 
-		var gr1 = new GlideAggregate(table);
-		gr1.addAggregate('COUNT');
-		gr1.query();
-		gr1.next(); // GlideAggregate needs the .next()
-		var rowCnt = gr1.getAggregate('COUNT');
+		var rowCnt = this.countRecords(table);
 		while (rowCnt > 0) {
 			// Delete in blocks of 1000
 			this.deleteChunkSilently(table,1000);
@@ -942,14 +996,6 @@ BuildTestData.prototype = {
 		return rtnStr;
 	},
 
-	writeDebugLog: function(msg) {
-		var debugTable = 'x_tekso_twxapp01_debug_log';
-		var gr1 = new GlideRecordSecure(debugTable);
-		gr1.initialize();
-		gr1.setValue('updated_by_script','SI BuildTestData');
-		gr1.setValue('message',msg);
-		gr1.insert();
-	},
     type: 'BuildTestData'
 };
 
@@ -970,13 +1016,13 @@ new x_tekso_twxapp01.BuildTestData().buildTestData();
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-09 10:01:50</sys_created_on>
         <sys_id>9a071b35db4814104f29252b13961990</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>22</sys_mod_count>
         <sys_name>BuildTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_9a071b35db4814104f29252b13961990</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:20:10</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:31:00</sys_updated_on>
     </sys_script_include>
 </record_update>

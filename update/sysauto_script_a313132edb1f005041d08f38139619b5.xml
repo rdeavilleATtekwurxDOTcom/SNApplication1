@@ -14,9 +14,6 @@
         <run_type>on_demand</run_type>
         <script><![CDATA[deleteData('x_tekso_twxapp01_debug_log');
 
-//Remove the XX's to use
-//writeXXDebugXXLog('Clear Data - Start');
-
 deleteData('x_tekso_twxapp01_generate_test_data');
 deleteData('x_tekso_twxapp01_rest_data_to_ucontrol');
 deleteData('x_tekso_twxapp01_cmdb_link_to_rest_data');
@@ -27,41 +24,25 @@ deleteData('x_tekso_twxapp01_connection_test');
 deleteData('x_tekso_twxapp01_processing_log');
 deleteData('x_tekso_twxapp01_scheduled_job_log');
 
-//Remove the XX's to use
-//writeXXDebugXXLog('Clear Data - End');
-
 function deleteData(tbl) {
-	//Remove the XX's to use
-	//writeXXDebugXXLog('deleteData ' + tbl + ' - Start');
 	var gr1 = new GlideRecordSecure(tbl);
 	gr1.query();
 	gr1.setWorkflow(false);
-	gr1.deleteMultiple();
-	//Remove the XX's to use
-	//writeXXDebugXXLog('deleteData ' + tbl + ' - End');	
-}
-
-function writeDebugLog(msg) {
-	var debugTable = 'x_tekso_twxapp01_debug_log';
-	var gr1 = new GlideRecordSecure(debugTable);
-	gr1.initialize();
-	gr1.setValue('message',msg);
-	gr1.setValue('inserted_by_script','SJ Testing - Clear Data Tables');
-	gr1.insert();
+	gr1.deleteMultiple();	
 }
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 10:10:58</sys_created_on>
         <sys_id>a313132edb1f005041d08f38139619b5</sys_id>
-        <sys_mod_count>24</sys_mod_count>
+        <sys_mod_count>25</sys_mod_count>
         <sys_name>Testing - Clear Data Tables</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a313132edb1f005041d08f38139619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 11:23:01</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:31:49</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

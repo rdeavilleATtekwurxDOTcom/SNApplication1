@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Process Responses From uControl</name>
+        <run_as/>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period>1970-01-01 00:01:00</run_period>
+        <run_start>2020-07-13 22:09:52</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>periodically</run_type>
+        <script><![CDATA[processResponsesFromuControl();
+
+function processResponsesFromuControl() {
+
+	var script = 'SJ Process Responses From uControl';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'SJ Process Responses From uControl - Started');
+	
+	var gr1 = new GlideRecordSecure('ecc_queue');
+	gr1.addQuery('queue','input');
+	gr1.addQuery('state','ready');
+	gr1.orderByDesc('sys_created_on'); //Descending Order
+	gr1.query();
+	while(gr1.next()) {
+		var source = gr1.getValue('source') || '';
+		var source2 = source.toString();
+	
+		var dtReceived = gr1.getValue('sys_created_on');
+		if (source2.length > 0) {
+			if (source2.indexOf('uControl') > -1) {
+
+				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect
+				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/update/ci
+				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/delete/ci
+
+				var dataType = '';
+				if (source2.indexOf('/uControl/rest/servicenow/update/ci') > -1) {
+					dataType = 'update';
+				}
+
+				if (source2.indexOf('/uControl/rest/servicenow/delete/ci') > -1) {
+					dataType = 'delete';
+				}		
+
+				if (source2.indexOf('/uControl/rest/servicenow/connect') > -1) {
+					dataType = 'connect';
+				}
+
+				if (dataType == 'update' || dataType == 'delete') {
+					var payload = gr1.getValue('payload');
+					var sys_id = gr1.getValue('sys_id');
+					var sys_id2 = sys_id.toString();
+					// Large payload bodies will create an attachment on the ECC Queue record.
+					if(payload == "<see_attachment/>"){		
+						payload = getPayloadAttachment(sys_id2);
+					}
+
+					var gotResponse = false;
+					var gotDataSysID = false;			
+					var xmlDoc = new XMLDocument2();
+					xmlDoc.parseXML(payload.toString());
+					var response = xmlDoc.getNodeText('//result/output');
+					//{"result":{"statusCode":200,"statusMsg":"OK"}}
+
+					if (response.indexOf('result') >= 0 && response.indexOf('statusCode') >= 0) {		
+						gotResponse = true;
+						/*
+						var parser = new global.JSON();
+						var jsonBack = parser.decode(response);	
+						var resultStatusCode = parseInt(jsonBack.result.statusCode);
+						var resultStatusMsg = jsonBack.result.statusMsg;	
+						*/
+					}
+
+					var node = xmlDoc.getNode("//parameters");
+					var childNodes = node.getChildNodeIterator();
+					var dataSysID = '';
+
+					while(childNodes.hasNext() && gotDataSysID == false && gotResponse == true){
+						var n = childNodes.next();
+						var nStr = n.toString();
+						if (nStr.indexOf('parameter') >= 0 && nStr.indexOf('content') > 0 && nStr.indexOf('data_sys_id') > 0) {
+							/*
+				<parameter name="content" value="{&quot;operation&quot;:&quot;delete&quot;,&quot;base_table&quot;:&quot;cmdb_ci&quot;,&quot;source&quot;:&quot;ServiceNow&quot;,&quot;source_name&quot;:&quot;ven03409&quot;,&quot;source_url&quot;:&quot;https://ven03409.service-now.com/&quot;,&quot;data_sys_id&quot;:&quot;cf99416cdb5c5c104f29252b13961912&quot;,&quot;deletedData&quot;: [{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961940&quot;},{&quot;sys_updated_on&quot;:&quot;2020-04-15 15:20:06&quot;,&quot;sys_class_name&quot;:&quot;cmdb_ci_appl&quot;,&quot;sys_updated_by&quot;:&quot;robin&quot;,&quot;sys_id&quot;:&quot;126be3bddb8814104f29252b13961946&quot;}]}"/>
+							*/
+
+							var unescaped = nStr.replace(/&quot;/g,'');
+							var pos = unescaped.indexOf('data_sys_id:');
+							pos = pos + 12; // length of 'data_sys_id:'	
+							dataSysID = unescaped.substring(pos,pos+32);
+							gotDataSysID = true;
+							/*
+							var pos2 = unescaped.indexOf('data_record_no:');
+							pos2 = pos2 + 15;
+							var recordNo = unescaped.substring(pos2,pos2+20);
+							var recordNo2 = getCharactersBeforeDelimiter(recordNo,',');	
+							*/
+						} // if (nStr.indexOf('parameter') >= 0
+					} // while(childNodes.hasNext()
+
+					if (gotDataSysID == true && gotResponse == true) {
+
+						gr1.setWorkflow(false);
+						gr1.setValue('state','processed');
+						gr1.update();
+
+						var jsonObj = {};
+						jsonObj.response = response;
+						jsonObj.dataSysID = dataSysID;
+						jsonObj.dtReceived = dtReceived;
+
+						var evnt = 'x_tekso_twxapp01.inboundresponse';
+						gs.eventQueue(evnt, gr1, gs.getUserID(),JSON.stringify(jsonObj));
+
+					} // if (gotDataSysID == true) {
+				} // if (dataType == 'update' || dataType == 'delete') {
+				if (dataType == 'connect') {
+					gr1.setWorkflow(false);
+					gr1.setValue('state','processed');
+					gr1.update();				
+				} //if (dataType == 'connect') {
+			} // if (source.indexOf('uControl') > -1) {
+		} // if (source2.length > 0) {
+	} // while(gr1.next()) {
+
+	new x_tekso_twxapp01.TimeoutExpired().checkForDataTimeout();
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,1,'SJ Process Responses From uControl - Finished');	
+}
+
+
+function getPayloadAttachment(sys_id) {
+	var payload = '';
+	var sys_id2 = sys_id.toString();
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure("sys_attachment");
+		gr1.addQuery( "table_name", "=", "ecc_queue");
+		gr1.addQuery( "table_sys_id", "=" , sys_id2);
+		gr1.query();
+		if (gr1.next()) {
+			var sa = new GlideSysAttachment();
+			payload = sa.getContent(gr1);
+		}
+	}
+	return payload;
+}
+
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-13 22:14:49</sys_created_on>
+        <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
+        <sys_mod_count>26</sys_mod_count>
+        <sys_name>Process Responses From uControl</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 12:26:23</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

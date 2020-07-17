@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="DELETE">
+        <active>false</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.isconnectiontestdue</event_name>
+        <name>IsConnectionTestDue OBSOLETE</name>
+        <order>100</order>
+        <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.isconnectiontestdue', gr2, setupSysID2, jobSysID2);
+//Event is triggered by scheduled job - Send Data to uControl
+
+isConnectionTestDue();
+
+function isConnectionTestDue() {
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 	
+	
+	var script = 'SA IsConnectionTestDue';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA IsConnectionTestDue - Started');
+	
+	var setupSysID = event.parm1;
+	var jobSysID = event.parm2;
+	
+	var setupTable = 'x_tekso_twxapp01_setup';
+	
+	var testRequired = false;
+	var setupURL = '';
+	var setupMIDSrvrSysID = '';
+	var setupMIDSrvrSysID2 = '';
+	var setupMIDSrvrName = '';
+	var setupMIDSrvrName2 = '';	
+	var setupConnTimeoutMins = 0;
+	
+	var gr1 = new GlideRecordSecure(setupTable);
+	gr1.addQuery('sys_id',setupSysID);
+	gr1.query();
+	if (gr1.next()) {
+		//Got the setup record
+		var setupStatus = gr1.getValue('status') || '';
+		var wasSending = gr1.getValue('status_was_sending_when_connection_failed');
+		
+		setupConnTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
+		
+		setupURL = gr1.getValue('ucontrol_url') || ''; 
+
+		// Need to use getElement to do dot walking.
+		setupMIDSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
+		setupMIDSrvrSysID2 = setupMIDSrvrSysID.toString(); 
+
+		var midSrvrStatus = getMidServerStatus(setupMIDSrvrSysID2);
+		if (midSrvrStatus == 'Up') {
+			//If the mid server is not Up then there is no point trying
+			setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+			setupMIDSrvrName2 = setupMIDSrvrName.toString();	
+
+			var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
+			var now = new GlideDateTime();
+			//Need to put this through GlideDateTime()
+			var lastTestedAt = new GlideDateTime(setupConnTestedAt);
+			var dur = new GlideDuration();
+			dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
+
+			// Seconds - will be floating point e.g. 4,152.345
+			//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+
+			// Minutes - will be floating point e.g. 69.206
+			var minutesSinceLastTest = dur.getNumericValue() / 1000 / 60;  
+			var minutesSinceLastTest2 = parseInt(minutesSinceLastTest); // e.g. 69
+
+			testRequired = isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest2,setupStatus,wasSending);
+
+		} //if (midSrvrStatus == 'Up') {
+	} // if (gr1.next()) {
+	
+	if (testRequired == true) {		
+		var trggrdBy = 'SA IsConnectionTestDue';
+		var usrNm = 'Scheduled Job';
+		
+		var si = new x_tekso_twxapp01.ConnectionTest();
+		si.buildRequestRecord(setupSysID,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
+	}
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA IsConnectionTestDue - Finished');	
+}
+
+function getNumberOfAllPendingRecords() {
+	// Get the number of all Pending Records - this is used to determine if the queue is empty
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var rtnCnt = 0;
+	var gr1 = new GlideAggregate(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	gr1.addQuery('status','Pending');
+	gr1.addQuery('processing_id','');	
+	gr1.addAggregate('COUNT');	
+	gr1.query();
+	gr1.next(); // GlideAggregate needs the .next()
+	rtnCnt = gr1.getAggregate('COUNT');	
+	return rtnCnt;
+}
+
+
+function getMidServerStatus(sys_id) {
+	var rtn = '';
+	var sys_id2 = sys_id.toString();
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure('ecc_agent');
+		gr1.addQuery('sys_id',sys_id2);
+		gr1.query();
+		if (gr1.next()) {
+			var status = gr1.getValue('status');
+			rtn = status.toString();
+		}
+	}
+}
+
+
+function isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest,setupStatus,wasSending) {
+	var rtn = false;
+	var jobSysID2 = jobSysID.toString();
+	if (jobSysID2.length > 0) {
+		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
+		var gr1 = new GlideRecordSecure(jobTable);
+		gr1.addQuery('sys_id',jobSysID);
+		gr1.query();
+		if (gr1.next()) {
+			// For the Scheduled Job Record
+			gr1.setValue('time_elapsed_since_last_connection_test',dur);		
+			gr1.setValue('connection_tested_at',setupConnTestedAt);
+
+			if (minutesSinceLastTest > 30) {
+				//Last Connection Test was more than 30 minutes ago
+				if (setupStatus == 'Sending') {
+					var noOfPendingRecs = getNumberOfAllPendingRecords();	
+					if (noOfPendingRecs == 0) {
+						// Status is Sending and there is nothing in the queue - Do a connection test
+						rtn = true;
+						gr1.setValue('connection_test_requested_by_job',true);
+					}
+				}
+				else {
+					if (wasSending == true) {
+						rtn = true;
+						gr1.setValue('connection_test_requested_by_job',true);
+					}				
+				}				
+			} // if (minutesSinceLastTest > 30)		
+			gr1.setValue('updated_by_script','SA IsConnectionTestDue');
+			gr1.update();
+
+		} //if (gr1.next()) {	
+	} // if (jobSysID2.length > 0) {		
+	return rtn;
+}]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-06-25 17:04:30</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5ecfd9fedbe9581041d08f38139619f2</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>IsConnectionTestDue OBSOLETE</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 20:25:30</sys_updated_on>
+    </sysevent_script_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;x_tekso_twxapp01.isconnectiontestdue&lt;/event_name&gt;&lt;name&gt;IsConnectionTestDue OBSOLETE&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[//gs.eventQueue('x_tekso_twxapp01.isconnectiontestdue', gr2, setupSysID2, jobSysID2);
+//Event is triggered by scheduled job - Send Data to uControl
+
+isConnectionTestDue();
+
+function isConnectionTestDue() {
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 	
+	
+	var script = 'SA IsConnectionTestDue';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA IsConnectionTestDue - Started');
+	
+	var setupSysID = event.parm1;
+	var jobSysID = event.parm2;
+	
+	var setupTable = 'x_tekso_twxapp01_setup';
+	
+	var testRequired = false;
+	var setupURL = '';
+	var setupMIDSrvrSysID = '';
+	var setupMIDSrvrSysID2 = '';
+	var setupMIDSrvrName = '';
+	var setupMIDSrvrName2 = '';	
+	var setupConnTimeoutMins = 0;
+	
+	var gr1 = new GlideRecordSecure(setupTable);
+	gr1.addQuery('sys_id',setupSysID);
+	gr1.query();
+	if (gr1.next()) {
+		//Got the setup record
+		var setupStatus = gr1.getValue('status') || '';
+		var wasSending = gr1.getValue('status_was_sending_when_connection_failed');
+		
+		setupConnTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
+		
+		setupURL = gr1.getValue('ucontrol_url') || ''; 
+
+		// Need to use getElement to do dot walking.
+		setupMIDSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
+		setupMIDSrvrSysID2 = setupMIDSrvrSysID.toString(); 
+
+		var midSrvrStatus = getMidServerStatus(setupMIDSrvrSysID2);
+		if (midSrvrStatus == 'Up') {
+			//If the mid server is not Up then there is no point trying
+			setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+			setupMIDSrvrName2 = setupMIDSrvrName.toString();	
+
+			var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
+			var now = new GlideDateTime();
+			//Need to put this through GlideDateTime()
+			var lastTestedAt = new GlideDateTime(setupConnTestedAt);
+			var dur = new GlideDuration();
+			dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
+
+			// Seconds - will be floating point e.g. 4,152.345
+			//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+
+			// Minutes - will be floating point e.g. 69.206
+			var minutesSinceLastTest = dur.getNumericValue() / 1000 / 60;  
+			var minutesSinceLastTest2 = parseInt(minutesSinceLastTest); // e.g. 69
+
+			testRequired = isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest2,setupStatus,wasSending);
+
+		} //if (midSrvrStatus == 'Up') {
+	} // if (gr1.next()) {
+	
+	if (testRequired == true) {		
+		var trggrdBy = 'SA IsConnectionTestDue';
+		var usrNm = 'Scheduled Job';
+		
+		var si = new x_tekso_twxapp01.ConnectionTest();
+		si.buildRequestRecord(setupSysID,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
+	}
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA IsConnectionTestDue - Finished');	
+}
+
+function getNumberOfAllPendingRecords() {
+	// Get the number of all Pending Records - this is used to determine if the queue is empty
+	var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+	var rtnCnt = 0;
+	var gr1 = new GlideAggregate(trackingTable); //x_tekso_twxapp01_cmdb_changes
+	gr1.addQuery('status','Pending');
+	gr1.addQuery('processing_id','');	
+	gr1.addAggregate('COUNT');	
+	gr1.query();
+	gr1.next(); // GlideAggregate needs the .next()
+	rtnCnt = gr1.getAggregate('COUNT');	
+	return rtnCnt;
+}
+
+
+function getMidServerStatus(sys_id) {
+	var rtn = '';
+	var sys_id2 = sys_id.toString();
+	if (sys_id2.length &gt; 0) {
+		var gr1 = new GlideRecordSecure('ecc_agent');
+		gr1.addQuery('sys_id',sys_id2);
+		gr1.query();
+		if (gr1.next()) {
+			var status = gr1.getValue('status');
+			rtn = status.toString();
+		}
+	}
+}
+
+
+function isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest,setupStatus,wasSending) {
+	var rtn = false;
+	var jobSysID2 = jobSysID.toString();
+	if (jobSysID2.length &gt; 0) {
+		var jobTable = 'x_tekso_twxapp01_scheduled_job_log';	
+		var gr1 = new GlideRecordSecure(jobTable);
+		gr1.addQuery('sys_id',jobSysID);
+		gr1.query();
+		if (gr1.next()) {
+			// For the Scheduled Job Record
+			gr1.setValue('time_elapsed_since_last_connection_test',dur);		
+			gr1.setValue('connection_tested_at',setupConnTestedAt);
+
+			if (minutesSinceLastTest &gt; 30) {
+				//Last Connection Test was more than 30 minutes ago
+				if (setupStatus == 'Sending') {
+					var noOfPendingRecs = getNumberOfAllPendingRecords();	
+					if (noOfPendingRecs == 0) {
+						// Status is Sending and there is nothing in the queue - Do a connection test
+						rtn = true;
+						gr1.setValue('connection_test_requested_by_job',true);
+					}
+				}
+				else {
+					if (wasSending == true) {
+						rtn = true;
+						gr1.setValue('connection_test_requested_by_job',true);
+					}				
+				}				
+			} // if (minutesSinceLastTest &gt; 30)		
+			gr1.setValue('updated_by_script','SA IsConnectionTestDue');
+			gr1.update();
+
+		} //if (gr1.next()) {	
+	} // if (jobSysID2.length &gt; 0) {		
+	return rtn;
+}]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-06-25 17:04:30&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;5ecfd9fedbe9581041d08f38139619f2&lt;/sys_id&gt;&lt;sys_mod_count&gt;9&lt;/sys_mod_count&gt;&lt;sys_name&gt;IsConnectionTestDue OBSOLETE&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-15 20:25:30&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>480002259</payload_hash>
+        <record_name>IsConnectionTestDue OBSOLETE</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-15 20:25:30</sys_created_on>
+        <sys_id>f6e19991dbc6d8104f29252b13961903</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1735427560f0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 20:25:30</sys_updated_on>
+        <type>Script Action</type>
+        <update_guid>32e19991a8c6d81086569138d2176d03</update_guid>
+        <update_guid_history>32e19991a8c6d81086569138d2176d03:480002259,b0dfe8559546d810b4435dfe3948f803:-1785939094,a0bd32c9754a9810033d412581074f4b:-1512377612,dbcd85ec554a1810283ff3fc63894cbf:-1412094412,be186ea3843194107e73a24ef8842ede:1937443016,dde13972916d58108f49e62ae01fc61f:-1033899395,affe61fa1e2d58108004c8ba0d77ccf2:-1487162526,125e217ac22d5810d02899284e7b9a9c:965578204,7af9257a642d5810c4e84e24e870aa3a:-1785717155,af1461f28a2d581033ef53b941e76978:-1398233329</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-16 17:15:53</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_script_action">sysevent_script_action</sys_db_object>
+        <sys_id>5ec6168597524eaa993cd2024838d404</sys_id>
+        <sys_metadata>5ecfd9fedbe9581041d08f38139619f2</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>IsConnectionTestDue OBSOLETE</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2</sys_update_name>
+        <sys_update_version display_value="sysevent_script_action_5ecfd9fedbe9581041d08f38139619f2">f6e19991dbc6d8104f29252b13961903</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-16 17:15:53</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

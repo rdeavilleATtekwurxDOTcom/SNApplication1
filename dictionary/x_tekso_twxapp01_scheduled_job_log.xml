@@ -18,9 +18,11 @@
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Deletes Processed" max_length="40" name="number_of_deletes_processed" type="integer"/>
         <element default="0" label="Number Of Deletes Sent" max_length="40" name="number_of_deletes_sent" type="integer"/>
+        <element default="0" label="Number Of Deletes Timeout Expired" max_length="40" name="number_of_deletes_timeout_expired" type="integer"/>
         <element default="0" label="Number Of Processing Log Records" max_length="40" name="number_of_processing_log_records" type="integer"/>
         <element default="0" label="Number Of Updates Processed" max_length="40" name="number_of_updates_processed" type="integer"/>
         <element default="0" label="Number Of Updates Sent" max_length="40" name="number_of_updates_sent" type="integer"/>
+        <element default="0" label="Number Of Updates Timeout Expired" max_length="40" name="number_of_updates_timeout_expired" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
         <element label="Processing Log Contents Summary" max_length="4000" name="processing_log_contents_summary" type="string"/>
         <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
@@ -29,10 +31,12 @@
         <element label="Records Selected At" max_length="40" name="records_selected_at" type="glide_date_time"/>
         <element label="Records Sent" max_length="40" name="records_sent" type="boolean"/>
         <element label="Setup Status" max_length="40" name="setup_status" type="string"/>
+        <element label="Timeout Expired" max_length="40" name="timeout_expired" type="boolean"/>
         <element label="Time Elapsed Since Last Connection Test" max_length="40" name="time_elapsed_since_last_connection_test" type="glide_duration"/>
         <element default="0" label="Total Number Of Records Processed" max_length="40" name="total_number_of_records_processed" type="integer"/>
         <element default="0" label="Total Number Of Records Selected" max_length="40" name="total_number_of_records_selected" type="integer"/>
         <element default="0" label="Total Number Of Records Sent" max_length="40" name="total_number_of_records_sent" type="integer"/>
+        <element default="0" label="Total Number Of Records Timeout Expired" max_length="40" name="total_number_of_records_timeout_expired" type="integer"/>
         <element label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer"/>
         <element label="uControl Integration User Name" max_length="40" name="ucontrol_integration_user_name" type="string"/>
         <element label="uControl Integration User Sys ID" max_length="32" name="ucontrol_integration_user_sys_id" type="string"/>

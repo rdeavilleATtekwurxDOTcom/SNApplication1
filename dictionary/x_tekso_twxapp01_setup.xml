@@ -52,7 +52,6 @@
         </element>
         <element default="0" label="Number Of Pending Records" max_length="40" name="number_of_pending_records" type="integer"/>
         <element default="0" hint="Will be calculated automatically when the system connects to uControl" label="Number Of Supported Classes" max_length="40" name="number_of_supported_classes" type="integer"/>
-        <element label="Scheduled Job Sys ID" max_length="32" name="scheduled_job_sys_id" type="string"/>
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>
         <element label="Start Sending Requested At" max_length="40" name="start_sending_requested_at" type="glide_date_time"/>

@@ -70,30 +70,113 @@ function runTestClientCode(){
 	}
 	
 	if (abort == false) {
+		// Check that the MID Server is UP
 		var ga = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
-		ga.addParam("sysparm_name", "checkECCAgentStatus"); //this is the function within the script include
+		ga.addParam("sysparm_name", "getECCAgentStatus"); //this is the function within the script include
 		ga.addParam("sysparm_mid_server_name", mid_server);
-		ga.getXML(checkECCAgentStatusCallBackFunction);
+		ga.getXML(getECCAgentStatusCallBackFunction);
 	}
 
 }
 
-//Call back function for checkECCAgentStatus
-function checkECCAgentStatusCallBackFunction(response) {
+//Call back function for getECCAgentStatus
+function getECCAgentStatusCallBackFunction(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.	
 	var answer = response.responseXML.documentElement.getAttribute("answer");
-	if (answer == 'Down') {
+	if (answer != 'Up') {
 		g_form.hideFieldMsg('ucontrol_mid_server');
-		g_form.showFieldMsg('ucontrol_mid_server','The MID Server is Down','error');
-		abort = true;	
+		g_form.showFieldMsg('ucontrol_mid_server','The MID Server is ' + answer.toString(),'error');
 	}
 	else {
-		// Check the load on ecc_queue
-		var ga = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
-		ga.addParam('sysparm_name','checkECCQueueOutput');
-		ga.getXML(checkECCQueueOutputCallBackFunction);
+		// Get the mid server user
+		var mid_server_sys_id = g_form.getValue('ucontrol_mid_server');
+		var ga2 = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
+		ga2.addParam("sysparm_name", "getECCAgentUser"); //this is the function within the script include
+		ga2.addParam("sysparm_mid_server_sys_id", mid_server_sys_id);
+		ga2.getXML(getECCAgentUserCallBackFunction);		
 	}
+}
+
+//Call back function for getECCAgentUser
+function getECCAgentUserCallBackFunction(response) {
+	var answer = response.responseXML.documentElement.getAttribute("answer");	
+	var mid_server_user_name = answer.toString();
+	if (answer.length < 1) {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','Unable to get MID Server user','error');
+	}
+	else {
+		// Check if the midserver user has the role mid_server
+		var role = 'mid_server';
+		var ga3 = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
+		ga3.addParam("sysparm_name", "checkUserHasRole"); //this is the function within the script include
+		ga3.addParam("sysparm_mid_server_user", mid_server_user_name);
+		ga3.addParam("sysparm_role",role);
+		//ga3.getXML(checkUserHasRoleCallBackFunction);	
+		ga3.getXML( function (response) { checkUserHasRoleCallBackFunction (response, mid_server_user_name, role); });
+	}
+}
+
+//Call back function for checkUserHasRole
+function checkUserHasRoleCallBackFunction(response, mid_server_user_name,role) {
+	var answer = response.responseXML.documentElement.getAttribute("answer");	
+	if (answer.length > 0 && answer == 'yes') {
+		
+		var ga4 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
+		ga4.addParam("sysparm_name", "checkScheduledJob"); //this is the function within the script include
+		ga4.addParam("sysparm_job_name", "Send Data to uControl");
+		var interval = g_form.getValue('ucontrol_polling_interval_minutes');
+		var interval2 = parseInt(interval);
+		ga4.addParam("sysparm_job_interval_mins",interval2);	
+		ga4.getXML(checkScheduledJobCallBackFunction);
+	}
+	else {
+		g_form.hideFieldMsg('ucontrol_mid_server');
+		g_form.showFieldMsg('ucontrol_mid_server','MID Server user ' + mid_server_user_name + ' does not have the role ' + role,'error');
+	}
+}
+
+//Call back function for checkScheduledJobExists
+function checkScheduledJobCallBackFunction(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	var answer2 = answer.toString();
+	if (answer2 == 'ok') {
+		// Got the scheduled job
+		
+		// Check the 2nd scheduled job
+		var ga5 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
+		ga5.addParam("sysparm_name", "checkScheduledJob"); //this is the function within the script include
+		ga5.addParam("sysparm_job_name", "Process Responses From uControl");
+		ga5.addParam("sysparm_job_interval_mins",1);	
+		ga5.getXML(checkScheduledJobCallBackFunction2);
+	}
+	else {
+		g_form.hideFieldMsg('status');
+		g_form.showFieldMsg('status',answer2,'error');		
+	}
+}
+
+//Call back function for checkScheduledJobExists - No 2
+function checkScheduledJobCallBackFunction2(response) {
+	// The server will always return an xml object that you will need to parse. 
+	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
+	var answer = response.responseXML.documentElement.getAttribute("answer");
+	var answer2 = answer.toString();
+	if (answer2 == 'ok') {
+		// Got the scheduled job
+		
+		// Check the load on ecc_queue
+		var ga6 = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
+		ga6.addParam('sysparm_name','checkECCQueueOutput');
+		ga6.getXML(checkECCQueueOutputCallBackFunction);
+	}
+	else {
+		g_form.hideFieldMsg('status');
+		g_form.showFieldMsg('status',answer2,'error');		
+	}	
 }
 
 //Call back function for checkECCQueueOutput
@@ -101,7 +184,8 @@ function checkECCQueueOutputCallBackFunction(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
-	if (answer < 3) {
+	var answer2 = parseInt(answer);
+	if (answer2 < 3) {
 		gsftSubmit(null, g_form.getFormElement(), 'test_connection_action'); //MUST call the 'Action name' set in this UI Action	
 	}
 	else {
@@ -136,10 +220,12 @@ if(typeof window == 'undefined')
 function runTestBusRuleCode(){
 
 	var script = 'UI Action Test Connection';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Test Connection - Started');
 	
-	var setupSysID = current.sys_id;
+	var interval = current.ucontrol_polling_interval_minutes;
+	var interval2 = parseInt(interval);
 	
 	current.last_button_clicked = 'Test Connection';
 	// This will trigger the BR - Setup When Connection Test Req Changes	
@@ -154,13 +240,19 @@ function runTestBusRuleCode(){
 	current.updated_by_script = 'UI Action Test Connection';
 	current.update();
 
-	// Script Include
+	// Script Include	
+	// This will ensure that the scheduled job is active, set to running periodically 
+	// and also set the repeat interval	
+	// (This should have already been handled by the client side)
 	var si = new x_tekso_twxapp01.UpdateScheduledJob();
-	si.updateScheduledJob(setupSysID);
+	si.activateScheduledJob('Send Data to uControl',interval2);
+	
+	var si2 = new x_tekso_twxapp01.UpdateScheduledJob();
+	si2.activateScheduledJob('Process Responses From uControl',1);
 	
 	action.setRedirectURL(current);	
 
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Test Connection - Finished');
 }
 
@@ -175,7 +267,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>151</sys_mod_count>
+        <sys_mod_count>184</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -183,7 +275,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 15:41:28</sys_updated_on>
+        <sys_updated_on>2020-07-16 12:29:02</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

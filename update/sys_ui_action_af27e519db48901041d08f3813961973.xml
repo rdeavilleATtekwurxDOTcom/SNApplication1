@@ -76,12 +76,13 @@ if(typeof window == 'undefined')
 //Server-side function
 function runSaveWithoutBuildingTestDataBusRuleCode(){
 	var script = 'UI Action Save (without building test data)';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher		
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher		
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Save (without building test data) - Started');
 	
 	current.status = 'Unsubmitted';
 	current.update();
 
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Save (without building test data) - Finished');
 }
 
@@ -97,7 +98,7 @@ function runSaveWithoutBuildingTestDataBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>af27e519db48901041d08f3813961973</sys_id>
-        <sys_mod_count>18</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>Save (without building test data)</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -105,7 +106,7 @@ function runSaveWithoutBuildingTestDataBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_af27e519db48901041d08f3813961973</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 14:44:02</sys_updated_on>
+        <sys_updated_on>2020-07-15 12:07:32</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

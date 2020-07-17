@@ -14,7 +14,7 @@ TestConnectionScriptAction();
 function TestConnectionScriptAction() {
 
 	var script = 'SA TestConnection';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnection - Started');
 	
 	//Note: parm not param
@@ -26,7 +26,7 @@ function TestConnectionScriptAction() {
 	var si = new x_tekso_twxapp01.OutboundREST();
 	si.processTestConnection(sysID);
 
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnection - Finished');	
 }
 ]]></script>
@@ -37,7 +37,7 @@ function TestConnectionScriptAction() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>c48dcf7adb2fc81041d08f381396192a</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>TestConnection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -45,6 +45,6 @@ function TestConnectionScriptAction() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_c48dcf7adb2fc81041d08f381396192a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 09:35:12</sys_updated_on>
+        <sys_updated_on>2020-07-15 09:40:19</sys_updated_on>
     </sysevent_script_action>
 </record_update>

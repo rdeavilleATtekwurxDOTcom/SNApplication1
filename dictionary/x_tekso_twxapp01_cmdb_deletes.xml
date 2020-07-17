@@ -23,6 +23,7 @@
         <element label="Name" max_length="255" name="name" type="string"/>
         <element default="0" label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
+        <element label="Processing Record Sys ID" max_length="32" name="processing_record_sys_id" type="string"/>
         <element label="Record Deleted By" max_length="40" name="record_deleted_by" type="string"/>
         <element label="Record Deleted By Sys ID" max_length="32" name="record_deleted_by_sys_id" type="string"/>
         <element label="Record Deleted On" max_length="40" name="record_deleted_on" type="glide_date_time"/>

@@ -156,9 +156,15 @@ OutboundREST.prototype = {
 
 		// Update x_tekso_twxapp01_connection_test with the results of the connection test	
 		var connectionOK = false;
-		/* RMD comment out to simulate a connection fail */
+
 		connectionOK = this.updateConnectionTestRecord(connSysID2,successFail,restResponse,dtBack,staCode,staMsg,conn,usrAcc);
-		
+
+		// Used to simulate a connection fail
+		var connectionFail = gs.getProperty('x_tekso_twxapp01.testing.connectionfail') || 0;
+		if (parseInt(connectionFail) == 1) {
+			connectionOK = false;
+		}
+			
 		if (connectionOK == true) {
 			//Check if user returned is valid and update x_tekso_twxapp01_setup
 			//testConnUsr - Could be a real user or the scheduled job	
@@ -352,12 +358,12 @@ OutboundREST.prototype = {
 		gr1.query();
 		if (gr1.next()) {
 			var status = gr1.getValue('status') || '';
-			var timedOutStatus =  gr1.getValue('timed_out') || false;
+			var timedOutStatus =  gr1.getValue('timeout_expired') || false;
 			var abortedStatus =  gr1.getValue('aborted') || false;		
 			if (status == 'Aborted') {
 				abort = true;
 			}
-			if (status == 'Timed Out') {
+			if (status == 'Timeout Expired') {
 				abort = true;
 			}
 			if (timedOutStatus == true) {
@@ -790,11 +796,16 @@ OutboundREST.prototype = {
 			var timeOutAt = new GlideDateTime();
 			var timeoutMinutes = connTimeoutMins;
 			var timeoutSeconds = timeoutMinutes * 60;
-			/* RMD - Set to 0 to cause a timeout */
-			//timeoutSeconds = 0; 
+			
+			// For testing - to force a failure
+			var forceConnectionTimeout = gs.getProperty('x_tekso_twxapp01.testing.forceconnectiontimeout') || 0;	
+			if (parseInt(forceConnectionTimeout) == 1) {
+				timeoutSeconds = 1; 				
+			}
+
 			timeOutAt.addSeconds(timeoutSeconds);
-			gr1.setValue('request_will_time_out_at',timeOutAt);	
-			gr1.setValue('request_will_time_out_at_has_value',true);
+			gr1.setValue('timeout_will_occur_at',timeOutAt);	
+			gr1.setValue('timeout_has_been_calculated',true);
 			gr1.setValue('status','Sent');
 			gr1.setValue('sent_to_ucontrol_at',dtSent);
 			gr1.setValue('updated_by_script','SI processTestConnection'); // Debug				
@@ -814,113 +825,9 @@ OutboundREST.prototype = {
 			
 		} // if (gr1.next()) 
 	},
-	process: function (data_sys_id){
-		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
-		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
-		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+	
+	processData: function(data_sys_id,wait) {
 		
-		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
-		gr1.addQuery('sys_id',data_sys_id);
-		gr1.query();
-		if (gr1.next()) {
-			var jsonRequestBody = gr1.getValue('json_request_body') || '';
-			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
-			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;
-			var url = gr1.getValue('ucontrol_url') || '';
-			var action = gr1.getValue('action') || '';
-			var dtSent = new GlideDateTime();
-			
-			var timeOutAt = new GlideDateTime();
-			var timeoutSeconds = timeoutMins * 60;
-			timeOutAt.addSeconds(timeoutSeconds);
-
-			
-			var rtnArr = [];
-			
-			// Remove any leading or trailing spaces from the URL
-			url = url.replace(/^\s+|\s+$/g, '');
-
-			if (url.length > 0) {
-				// Remove the last character if it is a /
-				if (url.charAt(url.length - 1) == '/') {
-					url = url.substr(0, url.length - 1);
-				}
-			}
-
-			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
-			gr1.setValue('sent_to_ucontrol',true);
-			gr1.setValue('sending_will_timeout_at',timeOutAt);			
-			gr1.setValue('updated_by_script','SI process'); // Debug
-			gr1.update();
-
-			var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
-			gr2.addQuery('link_to_rest_data_record',data_sys_id);
-			gr2.query();
-			while(gr2.next()) {
-				gr2.setValue('sent_to_ucontrol_at',dtSent);
-				gr2.setValue('sent_to_ucontrol',true);				
-				gr2.setValue('sending_will_timeout_at',timeOutAt);
-				gr2.setValue('ucontrol_connection_timeout_minutes',timeoutMins);				
-				gr2.setValue('updated_by_script','SI process'); // Debug						
-				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
-				
-				var link_sys_id = gr2.sys_id;
-				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
-				// Get the change record
-				var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
-				gr3.addQuery('sys_id',cmdb_changes_sys_id);
-				gr3.query();
-				while(gr3.next()) {
-					// Update the REST response on the change record
-					// There should only be 1 record
-					gr3.setValue('status','Sent'); // If success?????????????????????????????????
-					gr3.setValue('sent_to_ucontrol_at',dtSent); 
-					gr3.setValue('sent_to_ucontrol',true);
-					gr3.setValue('sending_will_timeout_at',timeOutAt);
-					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
-					no_of_times_sent_to_ucontrol++;
-					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
-					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
-					gr3.setValue('latest_rest_data_record_sys_id',data_sys_id);					
-					gr3.setValue('rest_data_record_created',true);
-					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
-					gr3.setValue('latest_rest_response_record_sys_id',link_sys_id);					
-					gr3.update();
-				} //while(gr3.next())	
-			} //while(gr2.next())
-			
-			if (action == 'update') {
-				rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
-			}
-			
-			if (action == 'delete') {
-				rtnArr = this.deleteCI(midServerName,url,jsonRequestBody);	
-			}		
-			
-			if (action == 'insert') {
-				rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
-			}	
-
-			//var resultStatusCode = 0;
-			var resultRestResponse = '';
-			//var resultStatusMsg = '';
-			
-			// Handle the result
-			if (rtnArr.length > 2) {
-				//resultStatusCode = parseInt(rtnArr[1]); // e.g. 200
-				resultRestResponse = rtnArr[2]; // e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
-			}
-				
-			var si = new x_tekso_twxapp01.HandleRESTResponse();
-			si.handleRESTResponse(resultRestResponse,data_sys_id);
-			
-		}	
-	},
-	//processNoWait is triggered by script action OutboundRESTProcess
-	//which is triggered by event x_tekso_twxapp01.outboundrestprocess
-	//which is triggered by function processBlock in script action SendDataTouControl
-	processNoWait: function (data_sys_id){
-		//Same as process but does not wait for a response or return a result	
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
@@ -951,7 +858,9 @@ OutboundREST.prototype = {
 			}
 
 			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.setValue('sent_to_ucontrol',true);
 			gr1.setValue('sending_will_timeout_at',timeOutAt);
+			gr1.setValue('timeout_has_been_calculated',true);				
 			gr1.setValue('updated_by_script','SI process'); // Debug	
 			
 			gr1.update();
@@ -961,6 +870,7 @@ OutboundREST.prototype = {
 			gr2.query();
 			while(gr2.next()) {
 				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('sent_to_ucontrol',true);
 				gr2.setValue('sending_will_timeout_at',timeOutAt);
 				gr2.setValue('ucontrol_connection_timeout_minutes',timeoutMins);
 				gr2.setValue('updated_by_script','SI process'); // Debug						
@@ -977,6 +887,7 @@ OutboundREST.prototype = {
 					// There should only be 1 record
 					gr3.setValue('status','Sent'); // If success?????????????????????????????????
 					gr3.setValue('sent_to_ucontrol_at',dtSent); 
+					gr3.setValue('sent_to_ucontrol',true);
 					gr3.setValue('sending_will_timeout_at',timeOutAt);					
 					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
 					no_of_times_sent_to_ucontrol++;
@@ -991,40 +902,79 @@ OutboundREST.prototype = {
 				} //while(gr3.next())	
 			} //while(gr2.next())
 			
-			if (action == 'update') {
-				this.updateCINoWait(midServerName,url,jsonRequestBody);	
+			if (wait == false) {
+				if (action == 'update') {
+					this.updateCINoWait(midServerName,url,jsonRequestBody);	
+				}
+
+				if (action == 'delete') {
+					this.deleteCINoWait(midServerName,url,jsonRequestBody);	
+				}		
+
+				if (action == 'insert') {
+					this.createCINoWait(midServerName,url,jsonRequestBody);	
+				}
 			}
-			
-			if (action == 'delete') {
-				this.deleteCINoWait(midServerName,url,jsonRequestBody);	
-			}		
-			
-			if (action == 'insert') {
-				this.createCINoWait(midServerName,url,jsonRequestBody);	
-			}	
-		}	
-	},	
-	writeDebugLog: function(msg) {
-		var debugTable = 'x_tekso_twxapp01_debug_log';
-		var gr1 = new GlideRecordSecure(debugTable);
-		gr1.initialize();
-		gr1.setValue('message',msg);
-		gr1.setValue('inserted_by_script','SI OutboundREST');				
-		gr1.insert();
+			else {
+				// wait
+				var rtnArr = [];
+				if (action == 'update') {
+					rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
+				}
+
+				if (action == 'delete') {
+					rtnArr = this.deleteCI(midServerName,url,jsonRequestBody);	
+				}		
+
+				if (action == 'insert') {
+					rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
+				}
+				
+				//var resultStatusCode = 0;
+				var resultRestResponse = '';
+				//var resultStatusMsg = '';
+
+				// Handle the result
+				if (rtnArr.length > 2) {
+					//resultStatusCode = parseInt(rtnArr[1]); // e.g. 200
+					resultRestResponse = rtnArr[2]; // e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
+				}
+
+				var dtReceived = new GlideDateTime();			
+				var si = new x_tekso_twxapp01.HandleRESTResponse();
+				si.handleRESTResponse(resultRestResponse,data_sys_id,dtReceived);
+				
+			}
+		}			
 	},
+	
+	process: function (data_sys_id){
+		//wait = true
+		this.processData(data_sys_id,true);
+	},
+	
+	//processNoWait is triggered by script action OutboundRESTProcess
+	//which is triggered by event x_tekso_twxapp01.outboundrestprocess
+	//which is triggered by function processBlock in script action SendDataTouControl
+	processNoWait: function (data_sys_id){
+		//Same as process but does not wait for a response or return a result	
+		//wait = false
+		this.processData(data_sys_id,false);
+	},	
+	
     type: 'OutboundREST'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>273</sys_mod_count>
+        <sys_mod_count>292</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-10 16:51:16</sys_updated_on>
+        <sys_updated_on>2020-07-16 17:25:30</sys_updated_on>
     </sys_script_include>
 </record_update>

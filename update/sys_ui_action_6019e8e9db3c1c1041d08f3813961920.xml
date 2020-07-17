@@ -139,7 +139,7 @@ if(typeof window == 'undefined')
 //Server-side function
 function runSaveAndBuildTestDataBusRuleCode() {
 	var script = 'UI Action Save & Build Test Data';
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Save & Build Test Data - Started');
 	
 	if (current.delete_relations_qty > 0 || current.update_relations_qty > 0 || current.delete_server_qty > 0 || current.update_server_qty > 0 || current.delete_application_qty > 0 || current.update_application_qty > 0) {
@@ -149,7 +149,7 @@ function runSaveAndBuildTestDataBusRuleCode() {
 		action.setRedirectURL(current);			
 	}
 	
-	//This message will be output if property x_tekso_twxapp01.debug is 2 or higher	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action Save & Build Test Data - Finished');	
 }]]></script>
         <show_insert>true</show_insert>
@@ -162,7 +162,7 @@ function runSaveAndBuildTestDataBusRuleCode() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>6019e8e9db3c1c1041d08f3813961920</sys_id>
-        <sys_mod_count>50</sys_mod_count>
+        <sys_mod_count>51</sys_mod_count>
         <sys_name>Save &amp; Build Test Data</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -170,7 +170,7 @@ function runSaveAndBuildTestDataBusRuleCode() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_6019e8e9db3c1c1041d08f3813961920</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-24 14:44:51</sys_updated_on>
+        <sys_updated_on>2020-07-15 12:07:59</sys_updated_on>
         <table>x_tekso_twxapp01_generate_test_data</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Testing -  Has Roles</name>
+        <run_as/>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-07-13 17:58:43</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[var userObject = gs.getUser().getUserByID('midserver');
+/*
+if (userObject.hasRole('itil')) {
+	gs.info('itil');
+}
+else {
+	gs.info('no itil');
+}
+*/
+]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-13 17:59:56</sys_created_on>
+        <sys_id>4d2d9ea0db8e18104f29252b13961968</sys_id>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Testing -  Has Roles</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_4d2d9ea0db8e18104f29252b13961968</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-15 09:03:32</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>
