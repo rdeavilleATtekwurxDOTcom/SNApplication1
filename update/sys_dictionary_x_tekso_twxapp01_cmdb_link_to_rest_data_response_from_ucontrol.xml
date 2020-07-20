@@ -34,7 +34,7 @@
         <function_field>false</function_field>
         <internal_type display_value="String">string</internal_type>
         <mandatory>false</mandatory>
-        <max_length>100</max_length>
+        <max_length>1000</max_length>
         <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
         <next_element/>
         <primary>false</primary>
@@ -54,14 +54,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-30 16:54:00</sys_created_on>
         <sys_id>7befdc27db6a001041d08f38139619a1</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Response From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_link_to_rest_data_response_from_ucontrol</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-01-30 16:54:00</sys_updated_on>
+        <sys_updated_on>2020-07-20 15:00:04</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

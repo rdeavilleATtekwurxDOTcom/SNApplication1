@@ -163,10 +163,18 @@ HandleRESTResponse.prototype = {
 			var recCnt = gr1.getValue('total_number_of_records_processed') || 0;
 			var delCnt = gr1.getValue('number_of_deletes_processed') || 0;
 			var updCnt = gr1.getValue('number_of_updates_processed') || 0;
+			
+			var timeoutRecCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
+			var timeoutDelCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
+			var timeoutUpdCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
+
 			var recCnt2 = parseInt(recCnt);
 			var delCnt2 = parseInt(delCnt);
 			var updCnt2 = parseInt(updCnt);
-
+			var timeoutRecCnt2 = parseInt(timeoutRecCnt);
+			var timeoutDelCnt2 = parseInt(timeoutDelCnt);
+			var timeoutUpdCnt2 = parseInt(timeoutUpdCnt);
+			
 			recCnt2 = recCnt2 + noOfRecords2;
 			if (action == 'delete') {
 				delCnt2 = delCnt2 + noOfRecords2;
@@ -175,7 +183,15 @@ HandleRESTResponse.prototype = {
 				updCnt2 = updCnt2 + noOfRecords2;
 			}
 
-			summary = this.processSummary(recCnt2,updCnt2,delCnt2);
+			var pSummary = this.processSummary(recCnt2,updCnt2,delCnt2);
+			var tSummary = 	this.timeoutExpiredSummary(timeoutRecCnt2,timeoutUpdCnt2,timeoutDelCnt2);		
+			var total = recCnt2 + timeoutRecCnt2;
+			if (total == 1) {
+				summary = total.toString() + ' record, ' + pSummary + ', ' + tSummary;
+			}
+			else {		
+				summary = total.toString() + ' records, ' + pSummary + ', ' + tSummary;		
+			}
 			gr1.setValue('number_of_updates_processed',updCnt2);
 			gr1.setValue('number_of_deletes_processed',delCnt2);
 			gr1.setValue('total_number_of_records_processed',recCnt2);
@@ -198,10 +214,18 @@ HandleRESTResponse.prototype = {
 			var recCnt = gr1.getValue('total_number_of_records_processed') || 0;
 			var delCnt = gr1.getValue('number_of_deletes_processed') || 0;
 			var updCnt = gr1.getValue('number_of_updates_processed') || 0;
+			
+			var timeoutRecCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
+			var timeoutDelCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
+			var timeoutUpdCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
+			
 			var recCnt2 = parseInt(recCnt);
 			var delCnt2 = parseInt(delCnt);
 			var updCnt2 = parseInt(updCnt);
-
+			var timeoutRecCnt2 = parseInt(timeoutRecCnt);
+			var timeoutDelCnt2 = parseInt(timeoutDelCnt);
+			var timeoutUpdCnt2 = parseInt(timeoutUpdCnt);
+			
 			recCnt2 = recCnt2 + noOfRecords2;
 			if (action == 'delete') {
 				delCnt2 = delCnt2 + noOfRecords2;
@@ -209,8 +233,17 @@ HandleRESTResponse.prototype = {
 			if (action == 'update') {
 				updCnt2 = updCnt2 + noOfRecords2;
 			}
-
-			summary = this.processSummary(recCnt2,updCnt2,delCnt2);
+			
+			var pSummary = this.processSummary(recCnt2,updCnt2,delCnt2);
+			var tSummary = 	this.timeoutExpiredSummary(timeoutRecCnt2,timeoutUpdCnt2,timeoutDelCnt2);		
+			var total = recCnt2 + timeoutRecCnt2;
+			if (total == 1) {
+				summary = total.toString() + ' record, ' + pSummary + ', ' + tSummary;
+			}
+			else {		
+				summary = total.toString() + ' records, ' + pSummary + ', ' + tSummary;		
+			}		
+			
 			gr1.setValue('number_of_updates_processed',updCnt2);
 			gr1.setValue('number_of_deletes_processed',delCnt2);
 			gr1.setValue('records_processed',true);
@@ -223,29 +256,64 @@ HandleRESTResponse.prototype = {
 		return summary;
 	},
 	processSummary: function(recCnt,updCnt,delCnt) {
-		// Builds a string like this: 3 records (3 updates , 0 deletes)
+		// Builds a string like this: 3 processed (3 updates , 0 deletes)
 		var rtn = '';
-		if (recCnt == 1) {
-			rtn = '1 record';
+		if (recCnt < 1) {
+			rtn = '0 processed';			
 		}
 		else {
-			rtn = recCnt.toString() + ' records';
-		}	
+			if (recCnt == 1) {
+				rtn = '1 processed';
+			}
+			else {
+				rtn = recCnt.toString() + ' processed';
+			}	
 
-		if (updCnt == 1) {
-			rtn = rtn + ' (1 update';
+			if (updCnt == 1) {
+				rtn = rtn + ' (1 update';
+			}
+			else {
+				rtn = rtn + ' (' + updCnt.toString() + ' updates';
+			}
+
+			if (delCnt == 1) {
+				rtn = rtn + ' , 1 delete)';
+			}
+			else {
+				rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+			}
+		}
+		return rtn;
+	},	
+
+	timeoutExpiredSummary: function(recCnt,updCnt,delCnt) {
+		// Builds a string like this: 3 timeout expired (3 updates , 0 deletes)
+		var rtn = '';
+		if (recCnt < 1) {
+			rtn = '0 timeout expired';			
 		}
 		else {
-			rtn = rtn + ' (' + updCnt.toString() + ' updates';
-		}
+			if (recCnt == 1) {
+				rtn = '1 timeout expired';
+			}
+			else {
+				rtn = recCnt.toString() + ' timeout expired';
+			}	
 
-		if (delCnt == 1) {
-			rtn = rtn + ' , 1 delete)';
-		}
-		else {
-			rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
-		}
+			if (updCnt == 1) {
+				rtn = rtn + ' (1 update';
+			}
+			else {
+				rtn = rtn + ' (' + updCnt.toString() + ' updates';
+			}
 
+			if (delCnt == 1) {
+				rtn = rtn + ' , 1 delete)';
+			}
+			else {
+				rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+			}
+		}
 		return rtn;
 	},	
 	
@@ -260,13 +328,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>51</sys_mod_count>
+        <sys_mod_count>55</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 17:32:15</sys_updated_on>
+        <sys_updated_on>2020-07-20 09:42:23</sys_updated_on>
     </sys_script_include>
 </record_update>

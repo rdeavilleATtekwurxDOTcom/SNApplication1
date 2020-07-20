@@ -15,16 +15,77 @@ TimeoutExpired.prototype = {
     initialize: function() {
     },
 
+	fixAnyRecordsWithNoTimeOut: function() {
+		// In theory this should never happen
+		// But will ensure that a timeout date is set
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';	
+		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
+		
+		var gr1 = new GlideRecordSecure(dataTable);		
+		gr1.addQuery('sent_to_ucontrol',true);
+		gr1.addQuery('timeout_expired',false);
+		gr1.addQuery('response_received',false);
+		gr1.addQuery('timeout_has_been_calculated',false);	
+		gr1.query();
+		while(gr1.next()) {
+			var data_sys_id = gr1.getValue('sys_id') || '';
+			var data_sys_id2 = data_sys_id.toString();
+			
+			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;		
+			if (timeoutMins == 0) {
+				//Default to 3 mins if no timeout
+				timeoutMins = 3;
+			}
+			
+			var timeOutAt = new GlideDateTime();
+			var timeoutSeconds = timeoutMins * 60;
+			timeOutAt.addSeconds(timeoutSeconds);
+			
+			gr1.setValue('sending_will_timeout_at',timeOutAt);
+			gr1.setValue('timeout_has_been_calculated',true);	
+			gr1.update();
+			
+			if (data_sys_id2.length > 0) {
+				var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+				gr2.addQuery('link_to_rest_data_record',data_sys_id2);
+				gr2.query();
+				while(gr2.next()) {
+					gr2.setValue('sending_will_timeout_at',timeOutAt);
+					gr2.update();
+					
+					var link_sys_id = gr2.getValue('sys_id') || '';
+					var link_sys_id2 = link_sys_id.toString();
+					var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
+					var cmdb_changes_sys_id2 = cmdb_changes_sys_id.toString();
+					if (cmdb_changes_sys_id2.length > 0 && link_sys_id2.length > 0) {
+						var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
+						gr3.addQuery('sys_id',cmdb_changes_sys_id2);
+						// Only update cmdb_changes IF this is the latest data
+						gr3.addQuery('link_to_latest_rest_response_record',link_sys_id2);
+						gr3.query();
+						while(gr3.next()) {
+							gr3.setValue('sending_will_timeout_at',timeOutAt);
+							gr3.update();
+						}
+					} //if (cmdb_changes_sys_id2.length > 0) {
+				} //while(gr2.next()) {
+			} //if (data_sys_id2.length > 0) {
+		} //while(gr1.next()) {
+	},
+	
 	checkForDataTimeout: function() {
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var timeoutBy = 'SI Timeout Expired';
 		var timeoutAt = new GlideDateTime();
-
+		
+		this.fixAnyRecordsWithNoTimeOut();
+		
 		var gr1 = new GlideRecordSecure(dataTable);
-		gr1.addQuery('sent_to_ucontrol','true');
+		gr1.addQuery('sent_to_ucontrol',true);
 		gr1.addQuery('timeout_expired',false);
-		gr1.addQuery('response_received','false');
-		gr1.addQuery('timeout_has_been_calculated','true');
+		gr1.addQuery('response_received',false);
+		gr1.addQuery('timeout_has_been_calculated',true);
 		gr1.addQuery('sending_will_timeout_at','<',timeoutAt);
 		gr1.query();
 		while(gr1.next()) {
@@ -70,6 +131,10 @@ TimeoutExpired.prototype = {
 			gr1.query();
 			while(gr1.next()) {
 
+				var processedRecCnt = gr1.getValue('total_number_of_records_processed') || 0;
+				var processedDelCnt = gr1.getValue('number_of_deletes_processed') || 0;
+				var processedUpdCnt = gr1.getValue('number_of_updates_processed') || 0;
+				
 				var recCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
 				var delCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
 				var updCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
@@ -77,6 +142,10 @@ TimeoutExpired.prototype = {
 				var delCnt2 = parseInt(delCnt);
 				var updCnt2 = parseInt(updCnt);
 
+				var processedRecCnt2 = parseInt(processedRecCnt);
+				var processedDelCnt2 = parseInt(processedDelCnt);
+				var processedUpdCnt2 = parseInt(processedUpdCnt);
+				
 				recCnt2 = recCnt2 + noOfRecords2;
 				if (action2 == 'delete') {
 					delCnt2 = delCnt2 + noOfRecords2;
@@ -85,14 +154,25 @@ TimeoutExpired.prototype = {
 					updCnt2 = updCnt2 + noOfRecords2;
 				}
 
+				var summary = '';
+				var pSummary = this.processSummary(processedRecCnt2,processedUpdCnt2,processedDelCnt2);
+				var tSummary = 	this.timeoutExpiredSummary(recCnt2,updCnt2,delCnt2);		
+				var total = recCnt2 + processedRecCnt2;
+				if (total == 1) {
+					summary = total.toString() + ' record, ' + pSummary + ', ' + tSummary;
+				}
+				else {		
+					summary = total.toString() + ' records, ' + pSummary + ', ' + tSummary;		
+				}
+				
 				gr1.setValue('number_of_updates_timeout_expired',updCnt2);
 				gr1.setValue('number_of_deletes_timeout_expired',delCnt2);
 				gr1.setValue('total_number_of_records_timeout_expired',recCnt2);
+				gr1.setValue('processing_summary',summary);				
 				gr1.setValue('timeout_expired',true);
 				gr1.setValue('processing_completed_at',timeoutAt);
 				gr1.setValue('updated_by_script',timeoutBy); // Debug	
 				gr1.update();
-
 			}
 		}
 	},
@@ -108,6 +188,10 @@ TimeoutExpired.prototype = {
 			gr1.addQuery('sys_id',sys_id2);
 			gr1.query();
 			while(gr1.next()) {
+				var processedRecCnt = gr1.getValue('total_number_of_records_processed') || 0;
+				var processedDelCnt = gr1.getValue('number_of_deletes_processed') || 0;
+				var processedUpdCnt = gr1.getValue('number_of_updates_processed') || 0;
+				
 				var recCnt = gr1.getValue('total_number_of_records_timeout_expired') || 0;
 				var delCnt = gr1.getValue('number_of_deletes_timeout_expired') || 0;
 				var updCnt = gr1.getValue('number_of_updates_timeout_expired') || 0;
@@ -115,6 +199,10 @@ TimeoutExpired.prototype = {
 				var delCnt2 = parseInt(delCnt);
 				var updCnt2 = parseInt(updCnt);
 
+				var processedRecCnt2 = parseInt(processedRecCnt);
+				var processedDelCnt2 = parseInt(processedDelCnt);
+				var processedUpdCnt2 = parseInt(processedUpdCnt);
+				
 				recCnt2 = recCnt2 + noOfRecords2;
 				if (action2 == 'delete') {
 					delCnt2 = delCnt2 + noOfRecords2;
@@ -123,9 +211,21 @@ TimeoutExpired.prototype = {
 					updCnt2 = updCnt2 + noOfRecords2;
 				}
 
+				var summary = '';
+				var pSummary = this.processSummary(processedRecCnt2,processedUpdCnt2,processedDelCnt2);
+				var tSummary = 	this.timeoutExpiredSummary(recCnt2,updCnt2,delCnt2);		
+				var total = recCnt2 + processedRecCnt2;
+				if (total == 1) {
+					summary = total.toString() + ' record, ' + pSummary + ', ' + tSummary;
+				}
+				else {		
+					summary = total.toString() + ' records, ' + pSummary + ', ' + tSummary;		
+				}
+				
 				gr1.setValue('number_of_updates_timeout_expired',updCnt2);
 				gr1.setValue('number_of_deletes_timeout_expired',delCnt2);
 				gr1.setValue('total_number_of_records_timeout_expired',recCnt2);
+				gr1.setValue('processing_summary',summary);				
 				gr1.setValue('timeout_expired',true);
 				gr1.setValue('processing_completed_at',timeoutAt);
 				gr1.setValue('updated_by_script',timeoutBy); // Debug	
@@ -183,6 +283,68 @@ TimeoutExpired.prototype = {
 			}
 		}
 	},
+
+	processSummary: function(recCnt,updCnt,delCnt) {
+		// Builds a string like this: 3 processed (3 updates , 0 deletes)
+		var rtn = '';
+		if (recCnt < 1) {
+			rtn = '0 processed';			
+		}
+		else {
+			if (recCnt == 1) {
+				rtn = '1 processed';
+			}
+			else {
+				rtn = recCnt.toString() + ' processed';
+			}	
+
+			if (updCnt == 1) {
+				rtn = rtn + ' (1 update';
+			}
+			else {
+				rtn = rtn + ' (' + updCnt.toString() + ' updates';
+			}
+
+			if (delCnt == 1) {
+				rtn = rtn + ' , 1 delete)';
+			}
+			else {
+				rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+			}
+		}
+		return rtn;
+	},	
+
+	timeoutExpiredSummary: function(recCnt,updCnt,delCnt) {
+		// Builds a string like this: 3 timeout expired (3 updates , 0 deletes)
+		var rtn = '';
+		if (recCnt < 1) {
+			rtn = '0 timeout expired';			
+		}
+		else {
+			if (recCnt == 1) {
+				rtn = '1 timeout expired';
+			}
+			else {
+				rtn = recCnt.toString() + ' timeout expired';
+			}	
+
+			if (updCnt == 1) {
+				rtn = rtn + ' (1 update';
+			}
+			else {
+				rtn = rtn + ' (' + updCnt.toString() + ' updates';
+			}
+
+			if (delCnt == 1) {
+				rtn = rtn + ' , 1 delete)';
+			}
+			else {
+				rtn = rtn + ' , ' + delCnt.toString() + ' deletes)';
+			}
+		}
+		return rtn;
+	},	
 	
     type: 'TimeoutExpired'
 };]]></script>
@@ -190,13 +352,13 @@ TimeoutExpired.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 11:50:22</sys_created_on>
         <sys_id>fa319b0ddb8a98104f29252b1396193c</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>TimeoutExpired</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fa319b0ddb8a98104f29252b1396193c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 19:20:56</sys_updated_on>
+        <sys_updated_on>2020-07-20 09:42:17</sys_updated_on>
     </sys_script_include>
 </record_update>

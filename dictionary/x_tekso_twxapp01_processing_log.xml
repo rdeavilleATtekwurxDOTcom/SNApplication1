@@ -23,7 +23,7 @@
         <element default="0" label="Number Of Updates Timeout Expired" max_length="40" name="number_of_updates_timeout_expired" type="integer"/>
         <element label="Processing Completed At" max_length="40" name="processing_completed_at" type="glide_date_time"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
-        <element label="Processing Summary" max_length="40" name="processing_summary" type="string"/>
+        <element label="Processing Summary" max_length="200" name="processing_summary" type="string"/>
         <element default="0" label="Process No" max_length="40" name="process_no" type="integer"/>
         <element label="Records Processed" max_length="40" name="records_processed" type="boolean"/>
         <element label="Records Sent" max_length="40" name="records_sent" type="boolean"/>

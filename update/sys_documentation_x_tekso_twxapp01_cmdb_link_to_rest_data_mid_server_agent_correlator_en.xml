@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="mid_server_agent_correlator" label="MID Server Agent Correlator" language="en" table="x_tekso_twxapp01_cmdb_link_to_rest_data">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>mid_server_agent_correlator</element>
+            <help/>
+            <hint/>
+            <label>MID Server Agent Correlator</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_cmdb_link_to_rest_data</name>
+            <plural>MID Server Agent Correlators</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-17 12:56:33</sys_created_on>
+            <sys_id>795e3131db029c1041d08f38139619f0</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>MID Server Agent Correlator</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_link_to_rest_data_mid_server_agent_correlator_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-17 12:56:33</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>

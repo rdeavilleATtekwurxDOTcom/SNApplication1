@@ -13,7 +13,6 @@
         <run_time>1970-01-01 00:00:00</run_time>
         <run_type>on_demand</run_type>
         <script><![CDATA[deleteData('x_tekso_twxapp01_debug_log');
-
 deleteData('x_tekso_twxapp01_generate_test_data');
 deleteData('x_tekso_twxapp01_rest_data_to_ucontrol');
 deleteData('x_tekso_twxapp01_cmdb_link_to_rest_data');
@@ -23,7 +22,8 @@ deleteData('x_tekso_twxapp01_cmdb_updates');
 deleteData('x_tekso_twxapp01_connection_test');
 deleteData('x_tekso_twxapp01_processing_log');
 deleteData('x_tekso_twxapp01_scheduled_job_log');
-
+deleteData('x_tekso_twxapp01_cmdb_changes_history');
+   
 function deleteData(tbl) {
 	var gr1 = new GlideRecordSecure(tbl);
 	gr1.query();
@@ -35,14 +35,14 @@ function deleteData(tbl) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 10:10:58</sys_created_on>
         <sys_id>a313132edb1f005041d08f38139619b5</sys_id>
-        <sys_mod_count>25</sys_mod_count>
+        <sys_mod_count>27</sys_mod_count>
         <sys_name>Testing - Clear Data Tables</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a313132edb1f005041d08f38139619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 17:31:49</sys_updated_on>
+        <sys_updated_on>2020-07-20 14:24:09</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

@@ -50,7 +50,7 @@ OutboundREST.prototype = {
 				gr1.setValue('response_status_message',staMsg);
 				gr1.setValue('response_connection',connection); // T/F
 				gr1.setValue('response_user_account',usrAcc);
-
+				
 				if (successFail == 'SUCCESS' && staCode == 200 && connection == true) {
 					gr1.setValue('connection_status','OK');
 					rtnConnectionOK  = true;
@@ -166,6 +166,9 @@ OutboundREST.prototype = {
 		}
 			
 		if (connectionOK == true) {
+			
+			this.saveURL(setupSysID2);
+			
 			//Check if user returned is valid and update x_tekso_twxapp01_setup
 			//testConnUsr - Could be a real user or the scheduled job	
 			this.checkIfUserReturnedIsValid(setupSysID2,connSysID2,usrAcc,startIfOK,testConnUsr,dtBack,clsArr);		
@@ -376,7 +379,7 @@ OutboundREST.prototype = {
 		return abort;
 	},	
 	// Not currently used
-	sendRESTRequest: function(midServerName,httpMethod,endPoint) {
+	sendRESTRequest: function(midSrvrName,httpMthd,endPnt) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number
@@ -390,11 +393,11 @@ OutboundREST.prototype = {
 		try{
 			sm = new sn_ws.RESTMessageV2();
 
-			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setMIDServer(midSrvrName); // e.g. 'steveserver03409'
 			sm.setRequestHeader('Content-Type','application/json');
 			sm.setRequestHeader('Accept','application/json');
-			sm.setHttpMethod(httpMethod); // e.g. get / post				
-			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+			sm.setHttpMethod(httpMthd); // e.g. get / post				
+			sm.setEndpoint(endPnt); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
 	
 			var response = sm.executeAsync(); 
 			
@@ -448,7 +451,7 @@ OutboundREST.prototype = {
 		}	
 	},	
 	// Called by updateCI(), deleteCI(), createCI()
-	sendRESTRequestWithBody: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
+	sendRESTRequestWithBody: function(midSrvrName,httpMthd,endPnt,requestBody,successCode) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number e.g. 200
@@ -462,12 +465,12 @@ OutboundREST.prototype = {
 		try{
 			sm = new sn_ws.RESTMessageV2();
 
-			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setMIDServer(midSrvrName); // e.g. 'steveserver03409'
 			sm.setRequestHeader('Content-Type','application/json');
 			sm.setRequestHeader('Accept','application/json');
-			sm.setHttpMethod(httpMethod); // e.g. get / post		
+			sm.setHttpMethod(httpMthd); // e.g. get / post		
 			sm.setRequestBody(requestBody);
-			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+			sm.setEndpoint(endPnt); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
 	
 			//When you don't care about the response it is better to use executeAsync (fire and forget)
 			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
@@ -546,36 +549,45 @@ OutboundREST.prototype = {
 	},
 	
 	// Called by updateCINoWait(), deleteCINoWait(), createCINoWait()
-	sendRESTRequestWithBodyNoWait: function(midServerName,httpMethod,endPoint,requestBody,successCode) {
+	sendRESTRequestWithBodyNoWait: function(midSrvrName,httpMthd,endPnt,requestBody) {
+		var midServerAgentCorrelator = '';
+		
 		// Same as sendRESTRequestWithBody but does not wait for a response
+		// does not need successCode
 		// does sm.executeAsync(); 
 		// instead of response = sm.executeAsync(); 
-		// Need to check the ecc_queue for the response - this is done via a business rule
+		// Need to check the ecc_queue for the response - this is done via a scheduled job
 		var sm;		
 		try{
 			sm = new sn_ws.RESTMessageV2();
 
-			sm.setMIDServer(midServerName); // e.g. 'steveserver03409'
+			sm.setMIDServer(midSrvrName); // e.g. 'steveserver03409'
 			sm.setRequestHeader('Content-Type','application/json');
 			sm.setRequestHeader('Accept','application/json');
-			sm.setHttpMethod(httpMethod); // e.g. get / post		
+			sm.setHttpMethod(httpMthd); // e.g. get / post		
 			sm.setRequestBody(requestBody);
-			sm.setEndpoint(endPoint); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
-	
+			sm.setEndpoint(endPnt); // e.g. 'https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect'
+			midServerAgentCorrelator = gs.generateGUID();	
+			
+			//setEccCorrelator only applies to REST messages sent through a MID Server.
+			sm.setEccCorrelator(midServerAgentCorrelator); // String 100
+			
 			//When you don't care about the response it is better to use executeAsync (fire and forget)
 			//When your request is very large or has the potential to take a long time it is better to use executeAsync. 
 			//From there, if you need the response then you can set up a sensor business rule to listen to the ecc_queue 
 			//and listen for the response.
-			sm.executeAsync(); 				
+			sm.executeAsync(); 		
 		} catch(ex) {
 			var a = 1; //Fake statement - do nothing
 		} finally {
 			var b = 2; //Fake statement - do nothing
-		}	
+		}
+		// Only relevant for REST messages sent through a MID Server.
+		return midServerAgentCorrelator;
 	},
 	
 	// Called by process()
-	updateCI: function(midServerName,url,requestBody) {
+	updateCI: function(midSrvrName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number e.g. 200
@@ -583,13 +595,13 @@ OutboundREST.prototype = {
 		
 		var rtnArr = [];
 		
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/update/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/update/ci';
 
 				// 200 = Success for update
-				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+				rtnArr = this.sendRESTRequestWithBody(midSrvrName,httpMthd,endPnt,requestBody,200);
 			}
 			else {
 				// No URL
@@ -607,21 +619,23 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},
-	// Called by processNoWait()
-	updateCINoWait: function(midServerName,url,requestBody) {
+	// Called by processData when wait = false
+	updateCINoWait: function(midSrvrName,url,requestBody) {
+		var midServerAgentCorrelator = '';
 		// Same as updateCI but does not wait for a response or return a result
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/update/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/update/ci';
 
-				// 200 = Success for update
-				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,200);
+				midServerAgentCorrelator = this.sendRESTRequestWithBodyNoWait(midSrvrName,httpMthd,endPnt,requestBody);
 			}
 		}
+		// Only relevant for REST messages sent through a MID Server.
+		return midServerAgentCorrelator;		
 	},	
 	// Called by process()	
-	deleteCI: function(midServerName,url,requestBody) {
+	deleteCI: function(midSrvrName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number e.g. 200
@@ -629,13 +643,13 @@ OutboundREST.prototype = {
 		
 		var rtnArr = [];
 		
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/delete/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/delete/ci';
 
 				// 200 = Success for delete
-				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+				rtnArr = this.sendRESTRequestWithBody(midSrvrName,httpMthd,endPnt,requestBody,200);
 			}
 			else {
 				// No URL
@@ -653,21 +667,23 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},	
-	// Called by processNoWait()
-	deleteCINoWait: function(midServerName,url,requestBody) {
+	// Called by processData when wait = false
+	deleteCINoWait: function(midSrvrName,url,requestBody) {
+		var midServerAgentCorrelator = '';
 		// Same as deleteCI but does not wait for a response or return a result		
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/delete/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/delete/ci';
 
-				// 200 = Success for delete
-				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,200);
+				midServerAgentCorrelator = this.sendRESTRequestWithBodyNoWait(midSrvrName,httpMthd,endPnt,requestBody);
 			}
 		}		
+		// Only relevant for REST messages sent through a MID Server.
+		return midServerAgentCorrelator;
 	},		
 	// Called by process()	
-	createCI: function(midServerName,url,requestBody) {
+	createCI: function(midSrvrName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number e.g. 200
@@ -675,13 +691,13 @@ OutboundREST.prototype = {
 		
 		var rtnArr = [];
 		
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/create/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/create/ci';
 
 				// 201 = Success for create
-				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,201);
+				rtnArr = this.sendRESTRequestWithBody(midSrvrName,httpMthd,endPnt,requestBody,201);
 			}
 			else {
 				// No URL
@@ -699,20 +715,22 @@ OutboundREST.prototype = {
 		
 		return rtnArr;		
 	},		
-	// Called by processNoWait()
-	createCINoWait: function(midServerName,url,requestBody) {
+	// Called by processData when wait = false
+	createCINoWait: function(midSrvrName,url,requestBody) {
+		var midServerAgentCorrelator = '';
 		// Same as createCI but does not wait for a response or return a result	
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/create/ci';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/create/ci';
 
-				// 201 = Success for create
-				this.sendRESTRequestWithBodyNoWait(midServerName,httpMethod,endPoint,requestBody,201);
+				midServerAgentCorrelator = this.sendRESTRequestWithBodyNoWait(midSrvrName,httpMthd,endPnt,requestBody);
 			}
-		}	
+		}
+		// Only relevant for REST messages sent through a MID Server.
+		return midServerAgentCorrelator;
 	},	
-	testConnection: function(midServerName,url,requestBody) {
+	testConnection: function(midSrvrName,url,requestBody) {
 		// Returns an array 
 		// [0] = SUCCESS \ FAIL
 		// [1] = REST Status Number
@@ -730,12 +748,12 @@ OutboundREST.prototype = {
 		*/
 		var rtnArr = [];
 				
-		if (midServerName.length > 0) {
+		if (midSrvrName.length > 0) {
 			if (url.length > 0) {
-				var httpMethod = 'post';
-				var endPoint = url + '/uControl/rest/servicenow/connect';
+				var httpMthd = 'post';
+				var endPnt = url + '/uControl/rest/servicenow/connect';
 
-				rtnArr = this.sendRESTRequestWithBody(midServerName,httpMethod,endPoint,requestBody,200);
+				rtnArr = this.sendRESTRequestWithBody(midSrvrName,httpMthd,endPnt,requestBody,200);
 			}
 			else {
 				// No URL
@@ -773,7 +791,7 @@ OutboundREST.prototype = {
 			testConnUsr = gr1.getValue('connection_test_requested_by') || '';
 			
 			var jsonRequestBody = gr1.getValue('json_request_body') || '';
-			var midServerName = gr1.getValue('ucontrol_mid_server_name') || '';
+			var midSrvrName = gr1.getValue('ucontrol_mid_server_name') || '';
 			
 			// If this is true then if the test connection is successful the status should be set to Sending
 			var startIfOK = gr1.getValue('start_sending_requested') || false;	
@@ -808,6 +826,7 @@ OutboundREST.prototype = {
 			gr1.setValue('timeout_has_been_calculated',true);
 			gr1.setValue('status','Sent');
 			gr1.setValue('sent_to_ucontrol_at',dtSent);
+			gr1.setValue('sent_to_ucontrol',true);
 			gr1.setValue('updated_by_script','SI processTestConnection'); // Debug				
 			gr1.update();
 			
@@ -815,7 +834,7 @@ OutboundREST.prototype = {
 			var evnt = 'x_tekso_twxapp01.testconnectiontimeout';
 			gs.eventQueueScheduled(evnt, gr1, gs.getUserID(), gs.getUserName(),timeOutAt);
 
-			rtnArr = this.testConnection(midServerName,url,jsonRequestBody);
+			rtnArr = this.testConnection(midSrvrName,url,jsonRequestBody);
 			
 			var abort = this.checkForAbortedOrTimedOut(connection_sys_id2);
 			if (abort == false) {
@@ -826,6 +845,7 @@ OutboundREST.prototype = {
 		} // if (gr1.next()) 
 	},
 	
+	// Called by process and processNoWait
 	processData: function(data_sys_id,wait) {
 		
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
@@ -837,8 +857,12 @@ OutboundREST.prototype = {
 		gr1.query();
 		if (gr1.next()) {
 			var jsonRequestBody = gr1.getValue('json_request_body') || '';
-			var midServerName = gr1.getValue('ucontrol_mid_server_name')  || '';
-			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;			
+			var midSrvrName = gr1.getValue('ucontrol_mid_server_name')  || '';
+			var timeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0;		
+			if (timeoutMins == 0) {
+				//Default to 3 mins if no timeout
+				timeoutMins = 3;
+			}			
 			var url = gr1.getValue('ucontrol_url')  || '';
 			var action = gr1.getValue('action')  || '';
 			var dtSent = new GlideDateTime();
@@ -857,6 +881,8 @@ OutboundREST.prototype = {
 				}
 			}
 
+			var queueSize = this.eccQueueSize();
+			gr1.setValue('no_of_records_in_mid_server_queue',queueSize);			
 			gr1.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_rest_data_to_ucontrol
 			gr1.setValue('sent_to_ucontrol',true);
 			gr1.setValue('sending_will_timeout_at',timeOutAt);
@@ -869,65 +895,77 @@ OutboundREST.prototype = {
 			gr2.addQuery('link_to_rest_data_record',data_sys_id);
 			gr2.query();
 			while(gr2.next()) {
-				gr2.setValue('sent_to_ucontrol_at',dtSent);
+				gr2.setValue('no_of_records_in_mid_server_queue',queueSize);				
+				gr2.setValue('sent_to_ucontrol_at',dtSent); //x_tekso_twxapp01_cmdb_link_to_rest_data
 				gr2.setValue('sent_to_ucontrol',true);
 				gr2.setValue('sending_will_timeout_at',timeOutAt);
 				gr2.setValue('ucontrol_connection_timeout_minutes',timeoutMins);
 				gr2.setValue('updated_by_script','SI process'); // Debug						
 				gr2.update(); //x_tekso_twxapp01_cmdb_link_to_rest_data			
 				
-				var link_sys_id = gr2.sys_id;
+				var link_sys_id = gr2.getValue('sys_id') || '';
+				var link_sys_id2 = link_sys_id.toString();
+				
 				var cmdb_changes_sys_id = gr2.getValue('link_to_processing_record');
-				// Get the change record
-				var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
-				gr3.addQuery('sys_id',cmdb_changes_sys_id);
-				gr3.query();
-				while(gr3.next()) {
-					// Update the REST response on the change record
-					// There should only be 1 record
-					gr3.setValue('status','Sent'); // If success?????????????????????????????????
-					gr3.setValue('sent_to_ucontrol_at',dtSent); 
-					gr3.setValue('sent_to_ucontrol',true);
-					gr3.setValue('sending_will_timeout_at',timeOutAt);					
-					var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
-					no_of_times_sent_to_ucontrol++;
-					gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
-					gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
-					gr3.setValue('latest_rest_data_record_sys_id',data_sys_id);						
-					gr3.setValue('rest_data_record_created',true);
-					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
-					gr3.setValue('link_to_latest_rest_response_record',link_sys_id);
-					gr3.setValue('latest_rest_response_record_sys_id',link_sys_id);					
-					gr3.update();
-				} //while(gr3.next())	
+				var cmdb_changes_sys_id2 = cmdb_changes_sys_id.toString();
+				
+				if (cmdb_changes_sys_id2.length > 0 && link_sys_id2.length > 0) {
+					// Get the change record
+					var gr3 = new GlideRecordSecure(trackingTable); //x_tekso_twxapp01_cmdb_changes
+					gr3.addQuery('sys_id',cmdb_changes_sys_id2);
+					gr3.query();
+					while(gr3.next()) {
+						// Update the REST response on the change record
+						// There should only be 1 record
+						gr3.setValue('no_of_records_in_mid_server_queue',queueSize);						
+						gr3.setValue('status','Sent'); // If success?????????????????????????????????
+						gr3.setValue('sent_to_ucontrol_at',dtSent);  //x_tekso_twxapp01_cmdb_changes
+						gr3.setValue('sent_to_ucontrol',true);
+						gr3.setValue('sending_will_timeout_at',timeOutAt);					
+						var no_of_times_sent_to_ucontrol = gr3.getValue('no_of_times_sent_to_ucontrol') || 0;
+						no_of_times_sent_to_ucontrol++;
+						gr3.setValue('no_of_times_sent_to_ucontrol',no_of_times_sent_to_ucontrol);	
+						gr3.setValue('link_to_latest_rest_data_record',data_sys_id);
+						gr3.setValue('latest_rest_data_record_sys_id',data_sys_id);						
+						gr3.setValue('rest_data_record_created',true);
+						gr3.setValue('link_to_latest_rest_response_record',link_sys_id2);
+						gr3.setValue('latest_rest_response_record_sys_id',link_sys_id2);					
+						gr3.update();
+					} //while(gr3.next())	
+				} //if (cmdb_changes_sys_id2.length > 0 && link_sys_id2.length > 0) {
 			} //while(gr2.next())
 			
 			if (wait == false) {
+				var midServerAgentCorrelator = '';
 				if (action == 'update') {
-					this.updateCINoWait(midServerName,url,jsonRequestBody);	
+					midServerAgentCorrelator = this.updateCINoWait(midSrvrName,url,jsonRequestBody);	
 				}
 
 				if (action == 'delete') {
-					this.deleteCINoWait(midServerName,url,jsonRequestBody);	
+					midServerAgentCorrelator = this.deleteCINoWait(midSrvrName,url,jsonRequestBody);	
 				}		
 
 				if (action == 'insert') {
-					this.createCINoWait(midServerName,url,jsonRequestBody);	
+					midServerAgentCorrelator = this.createCINoWait(midSrvrName,url,jsonRequestBody);	
+				}
+				
+				if (midServerAgentCorrelator.length > 0) {
+					this.addMIDServerAgentCorrelator(data_sys_id,midServerAgentCorrelator);			
 				}
 			}
 			else {
 				// wait
 				var rtnArr = [];
 				if (action == 'update') {
-					rtnArr = this.updateCI(midServerName,url,jsonRequestBody);	
+					rtnArr = this.updateCI(midSrvrName,url,jsonRequestBody);	
 				}
 
 				if (action == 'delete') {
-					rtnArr = this.deleteCI(midServerName,url,jsonRequestBody);	
+					rtnArr = this.deleteCI(midSrvrName,url,jsonRequestBody);	
 				}		
 
 				if (action == 'insert') {
-					rtnArr = this.createCI(midServerName,url,jsonRequestBody);	
+					rtnArr = this.createCI(midSrvrName,url,jsonRequestBody);	
 				}
 				
 				//var resultStatusCode = 0;
@@ -948,9 +986,44 @@ OutboundREST.prototype = {
 		}			
 	},
 	
+	addMIDServerAgentCorrelator: function(data_sys_id,midServerAgentCorrelator) {
+		
+		var script = 'SI OutboundRest addMIDServerAgentCorrelator';
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		var msg = script + ' - Started';
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
+		
+		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';		
+		
+		var data_sys_id2 = data_sys_id.toString();
+		var midServerAgentCorrelator2 = midServerAgentCorrelator.toString();
+		
+		if (data_sys_id2.length > 0 && midServerAgentCorrelator2.length > 0) {
+			var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol
+			gr1.addQuery('sys_id',data_sys_id2);
+			gr1.query();
+			if (gr1.next()) {
+				gr1.setValue('mid_server_agent_correlator',midServerAgentCorrelator2);
+				gr1.update();
+
+				var gr2 = new GlideRecordSecure(linkTable); //x_tekso_twxapp01_cmdb_link_to_rest_data
+				gr2.addQuery('link_to_rest_data_record',data_sys_id2);
+				gr2.query();
+				while(gr2.next()) {
+					gr2.setValue('mid_server_agent_correlator',midServerAgentCorrelator2);
+					gr2.update();
+				}
+			}
+		}
+		
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
+		msg = script + ' - Finished';
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
+	},
 	process: function (data_sys_id){
 		//wait = true
-		this.processData(data_sys_id,true);
+		this.processData(data_sys_id,true);	
 	},
 	
 	//processNoWait is triggered by script action OutboundRESTProcess
@@ -962,19 +1035,48 @@ OutboundREST.prototype = {
 		this.processData(data_sys_id,false);
 	},	
 	
+	eccQueueSize: function() {
+		var rowCnt = 0;
+	
+		var gr1 = new GlideAggregate('ecc_queue');
+		
+		var qry = 'queue=output^sourceLIKEuControl^stateINready,processing';
+		gr1.addEncodedQuery(qry);
+		gr1.addAggregate('COUNT');
+		gr1.query();
+		gr1.next(); // GlideAggregate needs the .next()
+		rowCnt = gr1.getAggregate('COUNT');
+		
+		return rowCnt;
+	},
+	
+	saveURL: function(setupSysID) {
+		var setupSysID2 = setupSysID.toString();		
+
+		var setupTable = 'x_tekso_twxapp01_setup';	
+		var gr1 = new GlideRecordSecure(setupTable);
+		
+		gr1.addQuery('sys_id',setupSysID2);
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('most_recent_valid_ucontrol_url',gr1.ucontrol_url);
+			gr1.update();
+		}
+	},
+					
     type: 'OutboundREST'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 12:16:56</sys_created_on>
         <sys_id>fc76493edba2085035a38a72399619c7</sys_id>
-        <sys_mod_count>292</sys_mod_count>
+        <sys_mod_count>304</sys_mod_count>
         <sys_name>OutboundREST</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_fc76493edba2085035a38a72399619c7</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 17:25:30</sys_updated_on>
+        <sys_updated_on>2020-07-20 17:06:56</sys_updated_on>
     </sys_script_include>
 </record_update>

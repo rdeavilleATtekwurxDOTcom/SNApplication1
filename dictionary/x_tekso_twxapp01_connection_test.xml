@@ -11,11 +11,12 @@
         <element label="Response From uControl" max_length="4000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
-        <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element label="Response Status Message" max_length="100" name="response_status_message" type="string"/>
         <element label="Response User Account" max_length="40" name="response_user_account" type="string"/>
         <element label="Response User Account Matched" max_length="40" name="response_user_account_matched" type="boolean"/>
         <element label="Response User Account Record" max_length="32" name="response_user_account_record" reference="sys_user" type="reference"/>
         <element label="Response User Account Sys ID" max_length="32" name="response_user_account_sys_id" type="string"/>
+        <element label="Sent To uControl" max_length="40" name="sent_to_ucontrol" type="boolean"/>
         <element label="Sent To uControl At" max_length="40" name="sent_to_ucontrol_at" type="glide_date_time"/>
         <element label="Setup Record" max_length="32" name="setup_record" reference="x_tekso_twxapp01_setup" type="reference"/>
         <element label="Start Sending Requested" max_length="40" name="start_sending_requested" type="boolean"/>

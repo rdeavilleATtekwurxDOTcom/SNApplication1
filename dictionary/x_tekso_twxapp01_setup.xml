@@ -50,6 +50,7 @@
                 <element inactive_on_update="false" label="5" sequence="6" value="5"/>
             </choice>
         </element>
+        <element label="Most Recent Valid uControl URL" max_length="100" name="most_recent_valid_ucontrol_url" type="string"/>
         <element default="0" label="Number Of Pending Records" max_length="40" name="number_of_pending_records" type="integer"/>
         <element default="0" hint="Will be calculated automatically when the system connects to uControl" label="Number Of Supported Classes" max_length="40" name="number_of_supported_classes" type="integer"/>
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>
@@ -70,7 +71,7 @@
         <element label="Status Set To Sending By" max_length="40" name="status_set_to_sending_by" type="string"/>
         <element label="Status Was Sending When Connection Failed" max_length="40" name="status_was_sending_when_connection_failed" type="boolean"/>
         <element label="Status Was Sending When Connection Failed At" max_length="40" name="status_was_sending_when_connection_failed_at" type="glide_date_time"/>
-        <element choice="3" default="2" hint="When a connection request is sent to uControl - the number of minutes the system will wait for a reply before marking it as 'Timed Out'" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer">
+        <element choice="3" default="3" hint="When a connection request is sent to uControl - the number of minutes the system will wait for a reply before marking it as 'Timed Out'" label="uControl Connection Timeout (minutes)" max_length="40" name="ucontrol_connection_timeout_minutes" type="integer">
             <choice>
                 <element inactive_on_update="false" label="1" sequence="1" value="1"/>
                 <element inactive_on_update="false" label="2" sequence="2" value="2"/>

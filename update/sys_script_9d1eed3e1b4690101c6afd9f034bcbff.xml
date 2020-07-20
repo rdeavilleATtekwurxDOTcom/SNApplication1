@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>true</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_cmdb_changes</collection>
+        <condition>current.status.changes()</condition>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>CMDB Changes Tracking</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var tbl = 'x_tekso_twxapp01_cmdb_changes_history';
+	var gr1 = new GlideRecordSecure(tbl);
+	gr1.initialize();
+	gr1.setValue('cmdb_changes_number',current.number);
+	gr1.setValue('link_to_cmdb_changes_record',current.sys_id);
+	gr1.setValue('status',current.status);
+	
+	gr1.setValue('sent_to_ucontrol_at',current.sent_to_ucontrol_at);
+	gr1.setValue('sent_to_ucontrol',current.sent_to_ucontrol);
+	gr1.setValue('sending_will_timeout_at',current.sending_will_timeout_at);
+	gr1.setValue('timeout_triggered_at',current.timeout_triggered_at);
+	gr1.setValue('timeout_expired',current.timeout_expired);
+	gr1.setValue('timeout_triggered_by',current.timeout_triggered_by);
+	gr1.setValue('no_of_times_sent_to_ucontrol',current.no_of_times_sent_to_ucontrol);
+	gr1.setValue('timeout_expired_count',current.timeout_expired_count);
+	gr1.setValue('response_received',current.response_received);
+	gr1.setValue('response_received_at',current.response_received_at);
+	gr1.setValue('time_from_sending_to_response_seconds',current.time_from_sending_to_response_seconds);
+	gr1.setValue('response_from_ucontrol',current.response_from_ucontrol);
+	gr1.setValue('total_length_of_response_from_ucontrol',current.total_length_of_response_from_ucontrol);
+	gr1.setValue('response_status_code',current.response_status_code);
+	gr1.setValue('response_status_message',current.response_status_message);
+	gr1.setValue('rest_data_record_created',current.rest_data_record_created);
+	gr1.setValue('rest_response_record_created',current.rest_response_record_created);
+
+	gr1.setValue('link_to_latest_rest_data_record',current.link_to_latest_rest_data_record);
+	gr1.setValue('link_to_latest_rest_response_record',current.link_to_latest_rest_response_record);
+	gr1.setValue('link_to_processing_log_record',current.link_to_processing_log_record);
+	gr1.setValue('link_to_scheduled_job_log_record',current.link_to_scheduled_job_log_record);
+
+	gr1.setValue('latest_rest_data_record_sys_id',current.latest_rest_data_record_sys_id);
+	gr1.setValue('latest_rest_response_record_sys_id',current.latest_rest_response_record_sys_id);	
+	gr1.setValue('processing_log_record_sys_id',current.processing_log_record_sys_id);
+	gr1.setValue('scheduled_job_log_record_sys_id',current.scheduled_job_log_record_sys_id);
+	
+	gr1.setValue('no_of_records_in_mid_server_queue',current.no_of_records_in_mid_server_queue);
+	
+	gr1.insert();
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-20 14:23:23</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>9d1eed3e1b4690101c6afd9f034bcbff</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>CMDB Changes Tracking</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_9d1eed3e1b4690101c6afd9f034bcbff</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-20 15:22:42</sys_updated_on>
+        <template/>
+        <when>after</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=9d1eed3e1b4690101c6afd9f034bcbff"/>
+</record_update>

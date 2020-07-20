@@ -28,6 +28,7 @@
         <element label="No Of Excluded Fields" max_length="40" name="no_of_excluded_fields" type="integer"/>
         <element label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element label="No Of Fields To Process" max_length="40" name="no_of_fields_to_process" type="integer"/>
+        <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
         <element label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Originating Delete Record Sys ID" max_length="32" name="originating_delete_record_sys_id" type="string"/>
@@ -45,11 +46,11 @@
         <element label="Record Updated On" max_length="40" name="record_updated_on" type="glide_date_time"/>
         <element label="Rel Child Sys ID" max_length="32" name="rel_child_sys_id" type="string"/>
         <element label="Rel Parent Sys ID" max_length="32" name="rel_parent_sys_id" type="string"/>
-        <element label="Response From uControl" max_length="100" name="response_from_ucontrol" type="string"/>
+        <element label="Response From uControl" max_length="1000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
-        <element label="Response Status Message" max_length="1000" name="response_status_message" type="string"/>
+        <element label="Response Status Message" max_length="100" name="response_status_message" type="string"/>
         <element label="REST Data Record Created" max_length="40" name="rest_data_record_created" type="boolean"/>
         <element label="REST Response Record Created" max_length="40" name="rest_response_record_created" type="boolean"/>
         <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>

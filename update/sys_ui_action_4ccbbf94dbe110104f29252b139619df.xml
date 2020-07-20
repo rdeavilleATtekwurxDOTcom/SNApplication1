@@ -6,8 +6,8 @@
         <client_script_v2><![CDATA[function onClick(g_form) {
 
 }]]></client_script_v2>
-        <comments>new x_tekso_twxapp01.CheckRecordExists().listAllRESTResponseRecordsForThisOnREST(current.sys_id);</comments>
-        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.response_received == true &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().listAllRESTResponseRecordsForThisOnREST(current.sys_id)</condition>
+        <comments>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.response_received == true &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().listAllRESTResponseRecordsForThisOnREST(current.sys_id)</comments>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; new x_tekso_twxapp01.CheckRecordExists().listAllRESTResponseRecordsForThisOnREST(current.sys_id)</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -51,7 +51,7 @@ new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action List All REST Re
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>4ccbbf94dbe110104f29252b139619df</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>List All REST Response Records For This</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -59,7 +59,7 @@ new x_tekso_twxapp01.DebugLogging().message(script,2,'UI Action List All REST Re
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_4ccbbf94dbe110104f29252b139619df</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 12:20:19</sys_updated_on>
+        <sys_updated_on>2020-07-17 09:06:43</sys_updated_on>
         <table>x_tekso_twxapp01_rest_data_to_ucontrol</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

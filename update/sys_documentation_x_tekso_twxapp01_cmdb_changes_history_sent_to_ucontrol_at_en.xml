@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_documentation element="sent_to_ucontrol_at" label="Sent To uControl At" language="en" table="x_tekso_twxapp01_cmdb_changes_history">
+        <sys_documentation action="INSERT_OR_UPDATE">
+            <element>sent_to_ucontrol_at</element>
+            <help/>
+            <hint/>
+            <label>Sent To uControl At</label>
+            <language>en</language>
+            <name>x_tekso_twxapp01_cmdb_changes_history</name>
+            <plural>Sent To uControl Ats</plural>
+            <sys_class_name>sys_documentation</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-20 14:28:04</sys_created_on>
+            <sys_id>b700f1721b8690101c6afd9f034bcbf9</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>Sent To uControl At</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_documentation_x_tekso_twxapp01_cmdb_changes_history_sent_to_ucontrol_at_en</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-20 14:28:04</sys_updated_on>
+            <url/>
+            <url_target/>
+        </sys_documentation>
+    </sys_documentation>
+</record_update>
