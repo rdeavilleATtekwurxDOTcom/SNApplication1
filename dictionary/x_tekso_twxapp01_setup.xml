@@ -18,6 +18,7 @@
         </element>
         <element default="A uControl URL and MID Server are required" label="Connection Status Details" max_length="200" name="connection_status_details" type="string"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
+        <element default="30" label="Connection Test Interval (minutes)" max_length="40" name="connection_test_interval_minutes" type="integer"/>
         <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
@@ -34,7 +35,7 @@
         <element label="Last Button Clicked" max_length="40" name="last_button_clicked" type="string"/>
         <element label="Last Processing At" max_length="40" name="last_processing_at" type="glide_date_time"/>
         <element label="Last Processing Data Sent Summary" max_length="100" name="last_processing_data_sent_summary" type="string"/>
-        <element label="Last Processing Results Summary" max_length="100" name="last_processing_results_summary" type="string"/>
+        <element label="Last Processing Results Summary" max_length="200" name="last_processing_results_summary" type="string"/>
         <element label="Last Scan Performed At" max_length="40" name="last_scan_performed_at" type="glide_date_time"/>
         <element label="Last Scheduled Job Data Sent Summary" max_length="100" name="last_scheduled_job_data_sent_summary" type="string"/>
         <element label="Last Scheduled Job Results Summary" max_length="100" name="last_scheduled_job_results_summary" type="string"/>

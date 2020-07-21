@@ -16,25 +16,33 @@ HandleRESTResponse.prototype = {
     initialize: function() {
     },
 	
-	handleRESTResponse: function(resultRestResponse,dataSysID,dtReceived) {
+	handleRESTResponse: function(resultRestResponse,dataSysID,dtReceived,job2sysID,gotJob2) {
 		// resultRestResponse e.g. {"result":{"statusCode":200,"statusMsg":"OK"}}
 		// dataSysID = sys_id for x_tekso_twxapp01_rest_data_to_ucontrol
-			
+		// job2sysID = sys_id for x_tekso_twxapp01_scheduled_job2_log
+		// gotJob2 = True if called form InboundResponse, False if called from OutboundREST
+		
 		var dataSysID2 = dataSysID.toString();
 		
 		var trackingTable = 'x_tekso_twxapp01_cmdb_changes';
 		var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var linkTable = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 		var setupTable = 'x_tekso_twxapp01_setup';
-			
+		var jobTable2 = 'x_tekso_twxapp01_scheduled_job2_log';
+		
 		var resultStatusCode = 0;
 		var resultStatusMsg = '';
+		
+		var startedAt = new GlideDateTime();
+		var noOfCMDBRecordsUpdated = 0;
+		var gotRESTDataRecord = false;
 		
 		var gr1 = new GlideRecordSecure(dataTable); //x_tekso_twxapp01_rest_data_to_ucontrol			
 		gr1.addQuery('sys_id',dataSysID2);
 		gr1.addQuery('timeout_expired',false);
 		gr1.query();
 		if (gr1.next()) {
+			gotRESTDataRecord = true;
 			// Need to check if string contains 'result', 'statusCode'
 			if (resultRestResponse.indexOf('result') >= 0 && 
 				resultRestResponse.indexOf('statusCode') >= 0) {				
@@ -116,7 +124,8 @@ HandleRESTResponse.prototype = {
 					gr3.setValue('link_to_scheduled_job_log_record',jobSysID);
 					gr3.setValue('scheduled_job_log_record_sys_id',jobSysID);
 					gr3.setValue('updated_by_script','SI HandleRESTResponse'); // Debug	
-					gr3.update(); //x_tekso_twxapp01_cmdb_changes					
+					gr3.update(); //x_tekso_twxapp01_cmdb_changes
+					noOfCMDBRecordsUpdated++;
 				} // while(gr3.next())
 			} //while(gr2.next())
 			
@@ -151,6 +160,41 @@ HandleRESTResponse.prototype = {
 			} //if (gr6.next()) 			
 					
 		} //if (gr1.next()) 	
+		
+		if (gotJob2 == true) {			
+			// Set to true if HandleResponse is called from InboundResponse
+			// in which case there should be a x_tekso_twxapp01_scheduled_job2_log record
+			// If HandleResponse is called from OutboundRest there will not be a log record
+			var job2sysID2 = job2sysID.toString();
+			if (job2sysID2.length > 0) {
+				var gr7 = new GlideRecordSecure(jobTable2);
+				gr7.addQuery('sys_id',job2sysID2);
+				gr7.query();
+				if (gr7.next()) {
+					var noOfTimesCalled = gr7.getValue('number_of_times_handlerestresponse_called') || 0;
+					var noOfTimesCalled2 = parseInt(noOfTimesCalled);
+					if (noOfTimesCalled2 == 0) {
+						gr7.setValue('background_job_handlerestresponse_started_at',startedAt);							
+					}
+					noOfTimesCalled2++;
+					var noOfRESTRecords = gr7.getValue('number_of_rest_records_matched') || 0;
+					var noOfRESTRecords2 = parseInt(noOfRESTRecords);
+					if (gotRESTDataRecord == true) {
+						noOfRESTRecords2++;
+					}
+					
+					var noOfCMDB = gr7.getValue('number_of_cmdb_records_updated') || 0;
+					var noOfCMDB2 = parseInt(noOfCMDB);
+					noOfCMDB2 = noOfCMDB2 + noOfCMDBRecordsUpdated;		 
+					gr7.setValue('number_of_cmdb_records_updated',noOfCMDB2);
+					gr7.setValue('number_of_times_handlerestresponse_called',noOfTimesCalled2);
+					gr7.setValue('number_of_rest_records_matched',noOfRESTRecords2);
+					var finishedAt = new GlideDateTime();
+					gr7.setValue('background_job_handlerestresponse_finished_at',finishedAt);	
+					gr7.update();
+				}
+			}
+		}
 	},
 	updateProcessingLog: function(logSysID,action,noOfRecords2,completedAt) {
 		var logTable = 'x_tekso_twxapp01_processing_log';
@@ -328,13 +372,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>55</sys_mod_count>
+        <sys_mod_count>58</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-20 09:42:23</sys_updated_on>
+        <sys_updated_on>2020-07-21 14:15:40</sys_updated_on>
     </sys_script_include>
 </record_update>

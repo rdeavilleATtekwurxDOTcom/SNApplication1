@@ -62,7 +62,7 @@ function main() {
 		setupSysID2 = setupSysID.toString();
 		
 		// Get the sys_id for this script
-		var sysIDForThisScript = current.sys_id;
+		//var sysIDForThisScript = current.sys_id;
 		
 		setupStatus = gr2.getValue('status') || '';
 		
@@ -78,7 +78,9 @@ function main() {
 	if (setupStatus == 'Sending') {
 		// Trigger an event to do the background processing -- seems to be about a 10 sec delay
 		// this will trigger a script action
-		gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, jobSysID2, calculatedNextJobStartTime);
+		//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, jobSysID2, calculatedNextJobStartTime);
+		queue_send_data_to_ucontrol(jobSysID2, calculatedNextJobStartTime);
+		//Will trigger BR - Queue Send Data To uControl - Async
 	} // if (setupStatus == 'Sending')
 	else {
 		gr1.setValue('setup_status',setupStatus);
@@ -88,7 +90,8 @@ function main() {
 	
 	// --Finished ------------------------------------------------------------
 	if (gotSetupRecord == true) {
-		gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol2', gr2, setupSysID2, jobSysID2);		
+		//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol2', gr2, setupSysID2, jobSysID2);	
+		queue_send_data_to_ucontrol2(setupSysID2, jobSysID2);
 	}
 	
 	var finishedAt = new GlideDateTime();
@@ -101,19 +104,49 @@ function main() {
 }
 
 
-]]></script>
+function queue_send_data_to_ucontrol(jobSysID,next_run_at) {
+	
+	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol';
+	var jobSysID2 = jobSysID.toString();
+	
+	if (jobSysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job_log_record_sys_id',jobSysID2),
+		gr1.setValue('next_run_at',next_run_at);
+		gr1.insert();
+		//Will trigger BR - Queue Send Data To uControl - Async
+	}
+}
+
+
+function queue_send_data_to_ucontrol2(setupSysID,jobSysID) {
+	
+	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol2';
+	var jobSysID2 = jobSysID.toString();
+	var setupSysID2 = setupSysID.toString();
+	
+	if (jobSysID2.length > 0 && setupSysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job_log_record_sys_id',jobSysID2),
+		gr1.setValue('setup_record_sys_id',setupSysID2);
+		gr1.insert();
+		//Will trigger BR - Queue Send Data To uControl2 - Async
+	}
+}]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>105</sys_mod_count>
+        <sys_mod_count>107</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 12:36:25</sys_updated_on>
+        <sys_updated_on>2020-07-21 20:23:29</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

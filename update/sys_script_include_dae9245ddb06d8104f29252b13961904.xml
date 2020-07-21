@@ -25,6 +25,7 @@ DataCleanUp.prototype = {
 		this.deleteCMDBDeletes(daysAgo);
 		this.deleteCMDBUpdates(daysAgo);
 		this.deleteCMDBChanges(daysAgo);
+		this.deleteCMDBChangesHistory(daysAgo);		
 		this.deleteRestData(daysAgo); 
 		this.deleteProcessingLog(daysAgo);
 		this.deleteScheduledJobLog(daysAgo);
@@ -987,20 +988,102 @@ DataCleanUp.prototype = {
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
 	},
+
+	deleteCMDBChangesHistory: function(daysAgo) {
 		
+		//Only delete if link_to_processing_record not in x_tekso_twxapp01_cmdb_changes
+		var script = 'deleteCMDBChangesHistory';	
+		var tbl = 'x_tekso_twxapp01_cmdb_changes_history';
+		var daysAgo2 = parseInt(daysAgo);
+
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					
+					//Only delete if link_to_processing_record not in x_tekso_twxapp01_cmdb_changes
+					var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
+					var link_to_processing_record = gr2.getValue('link_to_processing_record') || '';
+					var link_to_processing_record2 = link_to_processing_record.toString();
+					var got_cmdb_changes = false;
+					if (link_to_processing_record2.length > 0) {
+						var chk = this.checkForSysID(refTbl1,link_to_processing_record2);
+						if (chk == true) {
+							got_cmdb_changes = true;
+						}
+					}
+					
+					if (got_cmdb_changes == false) {
+						//Not in the last 100 sys_ids
+						if (cnt == 0) {
+							firstNum = gr2.getValue('number');
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastNum = gr2.getValue('number');
+						lastSysID = del_sys_id2;
+						lastDT = gr2.getValue('sys_created_on');
+						cnt = cnt + 1;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+	
     type: 'DataCleanUp'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 17:47:34</sys_created_on>
         <sys_id>dae9245ddb06d8104f29252b13961904</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>DataCleanUp</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_dae9245ddb06d8104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 17:47:34</sys_updated_on>
+        <sys_updated_on>2020-07-21 08:40:28</sys_updated_on>
     </sys_script_include>
 </record_update>

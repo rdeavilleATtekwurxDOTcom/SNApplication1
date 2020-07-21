@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_outbound_rest</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Outbound REST - Async</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+
+	var sysID = current.sys_id;
+
+	var outboundTable = 'x_tekso_twxapp01_outbound_rest';
+	
+	var gr1 = new GlideRecordSecure(outboundTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {
+		var dataSysID = gr1.getValue('rest_data_record_sys_id') || '';
+		var dataSysID2 = dataSysID.toString();
+
+		if (dataSysID2.length > 0) {
+			
+			var calledAt = new GlideDateTime();
+			gr1.setValue('process_no_wait_called_at',calledAt);
+			
+			var si = new x_tekso_twxapp01.OutboundREST();	
+			//processNoWait does not get a result - need to query ecc_queue to get the response
+			//this is handled by a business rule
+			si.processNoWait(dataSysID2);
+			
+			var completedAt = new GlideDateTime();
+			gr1.setValue('process_no_wait_completed_at',completedAt);
+			
+			gr1.setValue('processed',true);
+			gr1.setWorkflow(false);
+			gr1.update();	
+			
+		}
+	}
+	
+})(current, previous);]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-21 18:01:53</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>6879ab871b0614101c6afd9f034bcb0d</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>Outbound REST - Async</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_6879ab871b0614101c6afd9f034bcb0d</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-21 20:13:03</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=6879ab871b0614101c6afd9f034bcb0d"/>
+</record_update>

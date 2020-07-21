@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
     <sysevent_script_action action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition_script/>
         <description/>
         <event_name>x_tekso_twxapp01.senddatatoucontrol</event_name>
-        <name>SendDataTouControl</name>
+        <name>OBSOLETE -- SendDataTouControl</name>
         <order>100</order>
         <script><![CDATA[//gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol', gr1, jobSysID2, calculatedNextJobStartTime);
 //gr1 = x_tekso_twxapp01_scheduled_job_log record
@@ -105,6 +105,19 @@ function SendDataToUControl() {
 	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
 	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA SendDataTouControl - Finished');	
 }	
+
+function outboundRest(data_sys_id) {
+
+	var outboundTable = 'x_tekso_twxapp01_outbound_rest';
+	var data_sys_id2 = data_sys_id.toString();
+	if (data_sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure(outboundTable);
+		gr1.initialize();
+		gr1.setValue('rest_data_record_sys_id',data_sys_id2);
+		gr1.insert();
+		// Will trigger BR - Outbound REST - Async
+	}
+}
 
 function updateScheduledJobLogStats(jobSysID) {
 
@@ -515,7 +528,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					
 					addJSONToDataRecord(delete_data_sys_id,deleteJsonRequestBody,deletesToProcess);
 					
-					gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
+					//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
+					outboundRest(delete_data_sys_id);
 					
 					deletesToProcess = 0;
 					deleteDataList = '';
@@ -598,7 +612,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 						
 					addJSONToDataRecord(update_data_sys_id,updateJsonRequestBody,updatesToProcess);
 					
-					gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
+					//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
+					outboundRest(update_data_sys_id);
 					
 					updatesToProcess = 0;
 					updateDataList = '';
@@ -658,7 +673,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			addJSONToDataRecord(data_sys_id,insertJsonRequestBody,1);			
 			createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,trackingSysID,logSysID,jobSysID,pID);
 			
-			gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),data_sys_id);
+			//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),data_sys_id);
+			outboundRest(data_sys_id);
 			//event x_tekso_twxapp01.outboundrestprocess triggers script action OutboundRESTProcess
 			//which execute SI processNoWait			
 		}
@@ -805,7 +821,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		
 		addJSONToDataRecord(delete_data_sys_id,jsonRequestBody,deletesToProcess);
 
-		gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
+		//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
+		outboundRest(delete_data_sys_id);
 		
 	} // if (deletesToProcess > 0) 
 
@@ -816,7 +833,8 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				
 		addJSONToDataRecord(update_data_sys_id,jsonRequestBody,updatesToProcess);
 				
-		gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
+		//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
+		outboundRest(update_data_sys_id);
 	} // if (updatesToProcess > 0)
 	
 	if (logRecordCreated == true) {
@@ -1590,14 +1608,14 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>86d43b8fdbb0d05041d08f381396190b</sys_id>
-        <sys_mod_count>90</sys_mod_count>
-        <sys_name>SendDataTouControl</sys_name>
+        <sys_mod_count>93</sys_mod_count>
+        <sys_name>OBSOLETE -- SendDataTouControl</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_86d43b8fdbb0d05041d08f381396190b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 17:29:50</sys_updated_on>
+        <sys_updated_on>2020-07-21 19:50:13</sys_updated_on>
     </sysevent_script_action>
 </record_update>

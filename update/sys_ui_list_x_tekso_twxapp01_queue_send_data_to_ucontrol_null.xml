@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list parent="" relationship="" sys_domain="global" table="x_tekso_twxapp01_queue_send_data_to_ucontrol" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>next_run_at</element>
+            <list_id display_value="x_tekso_twxapp01_queue_send_data_to_ucontrol" element="NULL" name="x_tekso_twxapp01_queue_send_data_to_ucontrol" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">cf050c1b1bc614101c6afd9f034bcb4d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 19:57:29</sys_created_on>
+            <sys_id>8305885b1bc614101c6afd9f034bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 19:57:29</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>processed</element>
+            <list_id display_value="x_tekso_twxapp01_queue_send_data_to_ucontrol" element="NULL" name="x_tekso_twxapp01_queue_send_data_to_ucontrol" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">cf050c1b1bc614101c6afd9f034bcb4d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>1</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 19:57:29</sys_created_on>
+            <sys_id>0b05885b1bc614101c6afd9f034bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 19:57:29</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>scheduled_job_log_record_sys_id</element>
+            <list_id display_value="x_tekso_twxapp01_queue_send_data_to_ucontrol" element="NULL" name="x_tekso_twxapp01_queue_send_data_to_ucontrol" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">cf050c1b1bc614101c6afd9f034bcb4d</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>2</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 19:57:29</sys_created_on>
+            <sys_id>8b05885b1bc614101c6afd9f034bcbd6</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 19:57:29</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_tekso_twxapp01_queue_send_data_to_ucontrol</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 19:57:29</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>cf050c1b1bc614101c6afd9f034bcb4d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_queue_send_data_to_ucontrol</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_list_x_tekso_twxapp01_queue_send_data_to_ucontrol_null</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 19:57:29</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+</record_update>

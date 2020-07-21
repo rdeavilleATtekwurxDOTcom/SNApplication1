@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Scheduled Job2 Log" max_length="40" name="x_tekso_twxapp01_scheduled_job2_log" type="collection">
+        <element label="Background Job CheckForTimeout Finished At" max_length="40" name="background_job_checkfortimeout_finished_at" type="glide_date_time"/>
+        <element label="Background Job CheckForTimeout Started At" max_length="40" name="background_job_checkfortimeout_started_at" type="glide_date_time"/>
+        <element label="Background Job HandleRESTResponse Finished At" max_length="40" name="background_job_handlerestresponse_finished_at" type="glide_date_time"/>
+        <element label="Background Job HandleRESTResponse Started At" max_length="40" name="background_job_handlerestresponse_started_at" type="glide_date_time"/>
+        <element label="Finished At" max_length="40" name="finished_at" type="glide_date_time"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
+        <element default="0" label="Number Of CMDB Records Timeout Expired" max_length="40" name="number_of_cmdb_records_timeout_expired" type="integer"/>
+        <element default="0" label="Number Of CMDB Records Updated" max_length="40" name="number_of_cmdb_records_updated" type="integer"/>
+        <element default="0" label="Number Of Responses For Deletes" max_length="40" name="number_of_responses_for_deletes" type="integer"/>
+        <element default="0" label="Number Of Responses For Updates" max_length="40" name="number_of_responses_for_updates" type="integer"/>
+        <element default="0" label="Number Of Responses With Attachments" max_length="40" name="number_of_responses_with_attachments" type="integer"/>
+        <element default="0" label="Number Of Responses With Status Code" max_length="40" name="number_of_responses_with_status_code" type="integer"/>
+        <element default="0" label="Number Of Responses With Sys IDs" max_length="40" name="number_of_responses_with_sys_ids" type="integer"/>
+        <element default="0" label="Number Of REST Records Matched" max_length="40" name="number_of_rest_records_matched" type="integer"/>
+        <element default="0" label="Number Of REST Records Timeout Expired" max_length="40" name="number_of_rest_records_timeout_expired" type="integer"/>
+        <element default="0" label="Number Of Times HandleRESTResponse Called" max_length="40" name="number_of_times_handlerestresponse_called" type="integer"/>
+    </element>
+</database>

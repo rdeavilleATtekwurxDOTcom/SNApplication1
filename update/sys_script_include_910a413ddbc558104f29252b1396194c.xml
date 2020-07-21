@@ -341,14 +341,14 @@ GenerateTestData.prototype = {
 		}
 	},
 	
-	generate_data: function(qty,gen_sys_id,data,includeAllFields,completelyFillStrings) {
+	generate_data: function(qty,gen_sys_id,testDataType,includeAllFields,completelyFillStrings) {
 
 		var gen_sys_id2 = gen_sys_id.toString();
 		if (gen_sys_id2.length > 0) {
 			
 			// includeAllFields only needed for update server/appl
 			// completelyFillStrings only needed for update server/appl
-			var alreadyStarted = this.generate_already_started(gen_sys_id,data);
+			var alreadyStarted = this.generate_already_started(gen_sys_id,testDataType);
 			// Checks to see if the flag build_delete_XXXXXX_test_data_started etc
 			// has already been set to true
 			// This is a safety check to see if the data has already been generated
@@ -359,7 +359,7 @@ GenerateTestData.prototype = {
 				this.build_test_data_if_it_does_not_exist();
 
 				// Set the flag start time
-				this.generate_started(gen_sys_id,data);
+				this.generate_started(gen_sys_id,testDataType);
 				if (qty < 1) {
 					qty = 1;
 				}
@@ -367,28 +367,28 @@ GenerateTestData.prototype = {
 				var cnt = 0;
 				while (cnt < qty) {
 					cnt = cnt + 1;
-					if (data == 'delete_cmdb_ci_appl') {
+					if (testDataType == 'delete_cmdb_ci_appl') {
 						this.delete_cmdb_ci_appl(cnt,gen_sys_id);
 					}
-					if (data == 'delete_cmdb_ci_server') {
+					if (testDataType == 'delete_cmdb_ci_server') {
 						this.delete_cmdb_ci_server(cnt,gen_sys_id);
 					}			
-					if (data == 'delete_cmdb_rel_ci') {
+					if (testDataType == 'delete_cmdb_rel_ci') {
 						this.delete_cmdb_rel_ci(cnt,gen_sys_id);
 					}	
 
-					if (data == 'update_cmdb_ci_appl') {
+					if (testDataType == 'update_cmdb_ci_appl') {
 						this.update_cmdb_ci_appl(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
 					}
-					if (data == 'update_cmdb_ci_server') {
+					if (testDataType == 'update_cmdb_ci_server') {
 						this.update_cmdb_ci_server(cnt,gen_sys_id,includeAllFields,completelyFillStrings);
 					}			
-					if (data == 'update_cmdb_rel_ci') {
+					if (testDataType == 'update_cmdb_rel_ci') {
 						this.update_cmdb_rel_ci(cnt,gen_sys_id);
 					}				
 				}
 				// Set the completed flag and the end date\time
-				this.generate_completed(gen_sys_id,data);
+				this.generate_completed(gen_sys_id,testDataType);
 			}
 		}
 	},
@@ -1676,13 +1676,13 @@ GenerateTestData.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-28 16:36:38</sys_created_on>
         <sys_id>910a413ddbc558104f29252b1396194c</sys_id>
-        <sys_mod_count>42</sys_mod_count>
+        <sys_mod_count>43</sys_mod_count>
         <sys_name>GenerateTestData</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_910a413ddbc558104f29252b1396194c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 20:35:12</sys_updated_on>
+        <sys_updated_on>2020-07-21 14:41:01</sys_updated_on>
     </sys_script_include>
 </record_update>

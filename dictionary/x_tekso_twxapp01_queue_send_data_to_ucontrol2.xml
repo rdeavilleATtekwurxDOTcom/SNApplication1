@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Queue Send Data To uControl2" max_length="40" name="x_tekso_twxapp01_queue_send_data_to_ucontrol2" type="collection">
+        <element label="Processed" max_length="40" name="processed" type="boolean"/>
+        <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
+        <element label="Setup Record Sys ID" max_length="32" name="setup_record_sys_id" type="string"/>
+    </element>
+</database>

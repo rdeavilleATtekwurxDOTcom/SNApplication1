@@ -3,15 +3,16 @@
         <element label="CMDB Changes Number" max_length="40" name="cmdb_changes_number" type="string"/>
         <element label="Latest REST Data Record Sys ID" max_length="32" name="latest_rest_data_record_sys_id" type="string"/>
         <element label="Latest REST Response Record Sys ID" max_length="32" name="latest_rest_response_record_sys_id" type="string"/>
-        <element label="Link To CMDB Changes Record" max_length="32" name="link_to_cmdb_changes_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Link To Latest REST Data Record" max_length="32" name="link_to_latest_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
         <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
         <element default="0" label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>
+        <element label="Processing Record Sys ID" max_length="32" name="processing_record_sys_id" type="string"/>
         <element label="Response From uControl" max_length="1000" name="response_from_ucontrol" type="string"/>
         <element label="Response Received" max_length="40" name="response_received" type="boolean"/>
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
@@ -31,7 +32,7 @@
         <element default="0" label="Time From Sending To Response (seconds)" max_length="40" name="time_from_sending_to_response_seconds" type="integer"/>
         <element default="0" label="Total Length Of Response From uControl" max_length="40" name="total_length_of_response_from_ucontrol" type="integer"/>
         <index name="index">
-            <element name="link_to_cmdb_changes_record"/>
+            <element name="link_to_processing_record"/>
         </index>
         <index name="index2">
             <element name="link_to_processing_log_record"/>

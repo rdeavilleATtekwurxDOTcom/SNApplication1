@@ -25,44 +25,52 @@ IsConnectionTestDue.prototype = {
 
 		var setupTable = 'x_tekso_twxapp01_setup';
 
-		var testRequired = false;
-		var setupURL = '';
-		var setupMIDSrvrSysID = '';
-		var setupMIDSrvrSysID2 = '';
-		var setupMIDSrvrName = '';
-		var setupMIDSrvrName2 = '';	
-		var setupConnTimeoutMins = 0;
-
+		var tstRqurd = false;
+		var url = '';
+		var midSrvrSysID = '';
+		var midSrvrSysID2 = '';
+		var midSrvrName = '';
+		var midSrvrName2 = '';	
+		var connTimeoutMins = 0;
+		var tstIntrvlMins = 30;
+		var tstIntrvlMins2 = 30;
+		
 		var gr1 = new GlideRecordSecure(setupTable);
 		gr1.addQuery('sys_id',setupSysID);
 		gr1.query();
 		if (gr1.next()) {
 			//Got the setup record
 			var setupStatus = gr1.getValue('status') || '';
-			var wasSending = gr1.getValue('status_was_sending_when_connection_failed');
+			var wasSndng = gr1.getValue('status_was_sending_when_connection_failed');
+			tstIntrvlMins = gr1.getValue('connection_test_interval_minutes') || 30;
+			tstIntrvlMins2 = parseInt(tstIntrvlMins);
+			if (tstIntrvlMins2 < 0) {
+				tstIntrvlMins2 = 30;
+			}
+			
+			// Number of minutes to wait for a response after sending a connection test
+			connTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
 
-			setupConnTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
-
-			setupURL = gr1.getValue('ucontrol_url') || ''; 
+			url = gr1.getValue('ucontrol_url') || ''; 
 
 			// Need to use getElement to do dot walking.
-			setupMIDSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
-			setupMIDSrvrSysID2 = setupMIDSrvrSysID.toString(); 
+			midSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
+			midSrvrSysID2 = midSrvrSysID.toString(); 
 
-			var midSrvrStatus = this.getMidServerStatus(setupMIDSrvrSysID2);
+			var midSrvrStatus = this.getMidServerStatus(midSrvrSysID2);
 			if (midSrvrStatus == 'Up') {
 				//If the mid server is not Up then there is no point trying
-				setupMIDSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
-				setupMIDSrvrName2 = setupMIDSrvrName.toString();	
+				midSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+				midSrvrName2 = midSrvrName.toString();	
 
-				msg = 'setupMIDSrvrName2 = ' + setupMIDSrvrName2.toString();
+				msg = 'midSrvrName2 = ' + midSrvrName2.toString();
 				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
 				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
 				
-				var setupConnTestedAt = gr1.getValue('connection_tested_at'); //Setup
+				var connTstdAt = gr1.getValue('connection_tested_at'); //Setup
 				var now = new GlideDateTime();
 				//Need to put this through GlideDateTime()
-				var lastTestedAt = new GlideDateTime(setupConnTestedAt);
+				var lastTestedAt = new GlideDateTime(connTstdAt);
 				
 				msg = 'lastTestedAt = ' + lastTestedAt;
 				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
@@ -75,24 +83,27 @@ IsConnectionTestDue.prototype = {
 				//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
 
 				// Minutes - will be floating point e.g. 69.206
-				var minutesSinceLastTest = dur.getNumericValue() / 1000 / 60;  
-				var minutesSinceLastTest2 = parseInt(minutesSinceLastTest); // e.g. 69
+				var minsSinceLstTst = dur.getNumericValue() / 1000 / 60;  
+				var minsSinceLstTst2 = parseInt(minsSinceLstTst); // e.g. 69
 
-				msg = 'minutesSinceLastTest2 = ' + minutesSinceLastTest2.toString();
+				msg = 'minsSinceLstTst2 = ' + minsSinceLstTst2.toString();
 				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
 				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
 				
-				testRequired = this.isTestRequired(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest2,setupStatus,wasSending);
+				//Test Required
+				//dur = time_elapsed_since_last_connection_test
+				//connTstdAt = connection_tested_at				
+				tstRqurd = this.testRequired(jobSysID,dur,connTstdAt,minsSinceLstTst2,tstIntrvlMins2,setupStatus,wasSndng);
 
 			} //if (midSrvrStatus == 'Up') {
 		} // if (gr1.next()) {
 
-		if (testRequired == true) {		
+		if (tstRqurd == true) {		
 			var trggrdBy = 'SA IsConnectionTestDue';
 			var usrNm = 'Scheduled Job';
 
 			var si = new x_tekso_twxapp01.ConnectionTest();
-			si.buildRequestRecord(setupSysID,setupURL,setupMIDSrvrName2,setupMIDSrvrSysID2,usrNm,true,trggrdBy,setupConnTimeoutMins);
+			si.buildRequestRecord(setupSysID,url,midSrvrName2,midSrvrSysID2,usrNm,true,trggrdBy,connTimeoutMins);
 		}
 
 		msg = script + ' - Finished';
@@ -165,7 +176,10 @@ IsConnectionTestDue.prototype = {
 		return rtn;
 	},
 
-	isTestRequired: function(jobSysID,dur,setupConnTestedAt,minutesSinceLastTest,setupStatus,wasSending) {
+	testRequired: function(jobSysID,dur,connTstdAt,minsSinceLstTst,tstIntrvlMins,setupStatus,wasSndng) {
+		//dur = time_elapsed_since_last_connection_test
+		//connTstdAt = connection_tested_at
+		//tstIntrvlMins = connection_test_interval_minutes
 		var script = 'SI IsConnectionTestDue isTestRequired';
 		var msg = script + ' - Started';
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher	
@@ -181,10 +195,9 @@ IsConnectionTestDue.prototype = {
 			if (gr1.next()) {
 				// For the Scheduled Job Record
 				gr1.setValue('time_elapsed_since_last_connection_test',dur);		
-				gr1.setValue('connection_tested_at',setupConnTestedAt);
+				gr1.setValue('connection_tested_at',connTstdAt);
 
-				if (minutesSinceLastTest > 30) {
-					//Last Connection Test was more than 30 minutes ago
+				if (minsSinceLstTst > tstIntrvlMins) {
 					if (setupStatus == 'Sending') {
 						var noOfPendingRecs = this.getNumberOfAllPendingRecords();	
 						if (noOfPendingRecs == 0) {
@@ -194,12 +207,12 @@ IsConnectionTestDue.prototype = {
 						}
 					}
 					else {
-						if (wasSending == true) {
+						if (wasSndng == true) {
 							rtn = true;
 							gr1.setValue('connection_test_requested_by_job',true);
 						}				
 					}				
-				} // if (minutesSinceLastTest > 30)		
+				} // if (minsSinceLstTst > tstIntrvlMins)		
 				gr1.setValue('updated_by_script','SA IsConnectionTestDue');
 				gr1.update();
 
@@ -223,13 +236,13 @@ IsConnectionTestDue.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 20:13:18</sys_created_on>
         <sys_id>7ebd4d9ddb86d8104f29252b139619ab</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>5</sys_mod_count>
         <sys_name>IsConnectionTestDue</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_7ebd4d9ddb86d8104f29252b139619ab</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 17:04:09</sys_updated_on>
+        <sys_updated_on>2020-07-21 10:09:06</sys_updated_on>
     </sys_script_include>
 </record_update>

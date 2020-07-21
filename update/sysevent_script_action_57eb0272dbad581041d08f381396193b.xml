@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
     <sysevent_script_action action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition_script/>
         <description/>
         <event_name>x_tekso_twxapp01.senddatatoucontrol2</event_name>
-        <name>SendDataTouControl2</name>
+        <name>OBSOLETE - SendDataTouControl2</name>
         <order>100</order>
         <script><![CDATA[// Called by SJ Send Data to uControl
 //gs.eventQueue('x_tekso_twxapp01.senddatatoucontrol2', gr2, setupSysID2, jobSysID2);	
@@ -41,14 +41,14 @@ function SendDataToUControl2() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>57eb0272dbad581041d08f381396193b</sys_id>
-        <sys_mod_count>11</sys_mod_count>
-        <sys_name>SendDataTouControl2</sys_name>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>OBSOLETE - SendDataTouControl2</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_57eb0272dbad581041d08f381396193b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 20:39:26</sys_updated_on>
+        <sys_updated_on>2020-07-21 20:27:46</sys_updated_on>
     </sysevent_script_action>
 </record_update>

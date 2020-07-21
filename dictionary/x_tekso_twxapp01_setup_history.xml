@@ -11,6 +11,7 @@
         <element label="SH Connection Status" max_length="40" name="sh_connection_status" type="string"/>
         <element label="SH Connection Status Details" max_length="200" name="sh_connection_status_details" type="string"/>
         <element label="SH Connection Tested At" max_length="40" name="sh_connection_tested_at" type="glide_date_time"/>
+        <element label="SH Connection Test Interval (minutes)" max_length="40" name="sh_connection_test_interval_minutes" type="integer"/>
         <element label="SH Connection Test Requested" max_length="40" name="sh_connection_test_requested" type="boolean"/>
         <element label="SH Connection Test Requested At" max_length="40" name="sh_connection_test_requested_at" type="glide_date_time"/>
         <element label="SH Connection Test Requested By" max_length="40" name="sh_connection_test_requested_by" type="string"/>
@@ -29,6 +30,7 @@
         <element label="SH Previous Connection Status" max_length="40" name="sh_previous_connection_status" type="string"/>
         <element label="SH Previous Connection Status Details" max_length="200" name="sh_previous_connection_status_details" type="string"/>
         <element label="SH Previous Connection Tested At" max_length="40" name="sh_previous_connection_tested_at" type="glide_date_time"/>
+        <element label="SH Previous Connection Test Interval (minutes)" max_length="40" name="sh_previous_connection_test_interval_minutes" type="integer"/>
         <element label="SH Previous Connection Test Requested" max_length="40" name="sh_previous_connection_test_requested" type="boolean"/>
         <element label="SH Previous Connection Test Requested At" max_length="40" name="sh_previous_connection_test_requested_at" type="glide_date_time"/>
         <element label="SH Previous Connection Test Requested By" max_length="40" name="sh_previous_connection_test_requested_by" type="string"/>

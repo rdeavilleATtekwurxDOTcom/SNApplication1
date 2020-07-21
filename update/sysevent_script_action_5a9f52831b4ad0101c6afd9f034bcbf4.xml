@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="INSERT_OR_UPDATE">
+        <active>false</active>
+        <condition_script/>
+        <description/>
+        <event_name>x_tekso_twxapp01.checkfortimeoutexpired</event_name>
+        <name>OBSOLETE - CheckForTimeoutExpired</name>
+        <order>100</order>
+        <script><![CDATA[/*
+Event triggered by SJ Process Responses From uControl
+
+	var evnt2 = 'x_tekso_twxapp01.checkfortimeoutexpired';
+	gs.eventQueue(evnt2, gr1, gs.getUserID(),job2sysID);	
+*/
+
+CheckForTimeoutExpired();
+
+function CheckForTimeoutExpired() {
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); 
+
+	var script = 'SA CheckForTimeoutExpired';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	var msg = script + ' - Started';
+	new x_tekso_twxapp01.DebugLogging().message(script,2,msg);	
+	
+	// sys_id for x_tekso_twxapp01_scheduled_job2_log
+	// Log file for the scheduled job Process Responses From uControl
+	var job2sysid = event.parm2;
+	
+	new x_tekso_twxapp01.TimeoutExpired().checkForDataTimeout(job2sysid);
+	
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	msg = script + ' - Finished';
+	new x_tekso_twxapp01.DebugLogging().message(script,2,msg);		
+}
+]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-21 12:56:42</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>5a9f52831b4ad0101c6afd9f034bcbf4</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>OBSOLETE - CheckForTimeoutExpired</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_5a9f52831b4ad0101c6afd9f034bcbf4</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-21 21:01:34</sys_updated_on>
+    </sysevent_script_action>
+</record_update>

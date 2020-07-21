@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Queue Check For Timeout Expired" max_length="40" name="x_tekso_twxapp01_queue_check_for_timeout_expired" type="collection">
+        <element label="Processed" max_length="40" name="processed" type="boolean"/>
+        <element label="Scheduled Job2 Log Record Sys ID" max_length="32" name="scheduled_job2_log_record_sys_id" type="string"/>
+    </element>
+</database>

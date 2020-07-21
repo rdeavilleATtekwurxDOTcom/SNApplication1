@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
     <sysevent_script_action action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition_script/>
         <description/>
         <event_name>x_tekso_twxapp01.outboundrestprocess</event_name>
-        <name>OutboundRESTProcess</name>
+        <name>OBSOLETE - OutboundRESTProcess</name>
         <order>100</order>
         <script><![CDATA[/*
 x_tekso_twxapp01.outboundrestprocess
@@ -42,14 +42,14 @@ function OutboundRESTProcess() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>5f94ad5cdb909c1041d08f38139619e2</sys_id>
-        <sys_mod_count>7</sys_mod_count>
-        <sys_name>OutboundRESTProcess</sys_name>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>OBSOLETE - OutboundRESTProcess</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysevent_script_action_5f94ad5cdb909c1041d08f38139619e2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-17 10:28:11</sys_updated_on>
+        <sys_updated_on>2020-07-21 20:14:10</sys_updated_on>
     </sysevent_script_action>
 </record_update>

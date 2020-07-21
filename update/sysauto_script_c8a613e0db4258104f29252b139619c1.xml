@@ -23,16 +23,35 @@ function processResponsesFromuControl() {
 	
 	var dataSysID = '';
 	
-	var gr1 = new GlideRecordSecure('ecc_queue');
-	gr1.addQuery('queue','input');
-	gr1.addQuery('state','ready');
-	gr1.orderByDesc('sys_created_on'); //Descending Order
-	gr1.query();
-	while(gr1.next()) {
-		var source = gr1.getValue('source') || '';
+	var updateCnt = 0;
+	var deleteCnt = 0;
+	var attachmentCnt = 0;
+	var responseCnt = 0;
+	var sysidCnt = 0;
+	
+	var jobTable2 = 'x_tekso_twxapp01_scheduled_job2_log';
+	var inboundTable = 'x_tekso_twxapp01_inbound_response';
+	
+	var gr1 = new GlideRecordSecure(jobTable2);
+	gr1.initialize();
+	gr1.setValue('number_of_responses_for_deletes',0);
+	gr1.setValue('number_of_responses_for_updates',0);
+	gr1.setValue('number_of_responses_with_attachments',0);
+	gr1.setValue('number_of_responses_with_status_code',0);
+	gr1.setValue('number_of_responses_with_sys_ids',0);	
+	var job2sysID = gr1.insert();
+	
+	var gr2 = new GlideRecordSecure('ecc_queue');
+	gr2.addQuery('queue','input');
+	gr2.addQuery('state','ready');
+	gr2.orderByDesc('sys_created_on'); //Descending Order
+	gr2.query();
+	while(gr2.next()) {
+		var ecc_queue_sys_id = gr2.getValue('sys_id') || '';
+		var source = gr2.getValue('source') || '';
 		var source2 = source.toString();
 	
-		var dtReceived = gr1.getValue('sys_created_on');
+		var dtReceived = gr2.getValue('sys_created_on');
 		if (source2.length > 0) {
 			if (source2.indexOf('uControl') > -1) {
 
@@ -43,10 +62,12 @@ function processResponsesFromuControl() {
 				var dataType = '';
 				if (source2.indexOf('/uControl/rest/servicenow/update/ci') > -1) {
 					dataType = 'update';
+					updateCnt++;
 				}
 
 				if (source2.indexOf('/uControl/rest/servicenow/delete/ci') > -1) {
 					dataType = 'delete';
+					deleteCnt++;
 				}		
 
 				if (source2.indexOf('/uControl/rest/servicenow/connect') > -1) {
@@ -54,14 +75,15 @@ function processResponsesFromuControl() {
 				}
 
 				if (dataType == 'update' || dataType == 'delete') {
-					var agent_correlator = gr1.getValue('agent_correlator') || '';
+					var agent_correlator = gr2.getValue('agent_correlator') || '';
 					var agent_correlator2 = agent_correlator.toString();
-					var payload = gr1.getValue('payload');
-					var sys_id = gr1.getValue('sys_id');
+					var payload = gr2.getValue('payload');
+					var sys_id = gr2.getValue('sys_id');
 					var sys_id2 = sys_id.toString();
 					// Large payload bodies will create an attachment on the ECC Queue record.
 					if(payload == "<see_attachment/>"){		
 						payload = getPayloadAttachment(sys_id2);
+						attachmentCnt++;
 					}
 
 					var gotResponse = false;
@@ -73,6 +95,7 @@ function processResponsesFromuControl() {
 
 					if (response.indexOf('result') >= 0 && response.indexOf('statusCode') >= 0) {		
 						gotResponse = true;
+						responseCnt++;
 						/*
 						var parser = new global.JSON();
 						var jsonBack = parser.decode(response);	
@@ -85,6 +108,7 @@ function processResponsesFromuControl() {
 						dataSysID = tryToFindUsingMIDServerAgentCorrelator(agent_correlator2);
 						if (dataSysID.length > 0) {
 							gotDataSysID = true;
+							sysidCnt++;
 							msg = script + ' - Matched Using Agent Correlator';
 							new x_tekso_twxapp01.DebugLogging().message(script,3,msg);								
 						}
@@ -108,6 +132,7 @@ function processResponsesFromuControl() {
 								pos = pos + 12; // length of 'data_sys_id:'	
 								dataSysID = unescaped.substring(pos,pos+32);
 								gotDataSysID = true;
+								sysidCnt++;
 								/*
 								var pos2 = unescaped.indexOf('data_record_no:');
 								pos2 = pos2 + 15;
@@ -120,35 +145,55 @@ function processResponsesFromuControl() {
 					
 					if (gotDataSysID == true && gotResponse == true) {
 
-						gr1.setWorkflow(false);
-						gr1.setValue('state','processed');
-						gr1.update();
-
-						var jsonObj = {};
-						jsonObj.response = response;
-						jsonObj.dataSysID = dataSysID;
-						jsonObj.dtReceived = dtReceived;
-
-						var evnt = 'x_tekso_twxapp01.inboundresponse';
-						gs.eventQueue(evnt, gr1, gs.getUserID(),JSON.stringify(jsonObj));
-
+						gr2.setWorkflow(false);
+						gr2.setValue('state','processed');
+						gr2.update();
+						
+						var gr3 = new GlideRecordSecure(inboundTable);
+						gr3.initialize();
+						gr3.setValue('rest_data_record_sys_id',dataSysID);
+						gr3.setValue('response_received_at',dtReceived);
+						gr3.setValue('response_from_ucontrol',response);
+						gr3.setValue('ecc_queue_record_sys_id',ecc_queue_sys_id);
+						gr3.setValue('scheduled_job2_log_record_sys_id',job2sysID);
+						gr3.insert();						
+						// Will trigger Async BR - Inbound Response - Async
+						
 					} // if (gotDataSysID == true) {
 				} // if (dataType == 'update' || dataType == 'delete') {
 				if (dataType == 'connect') {
-					gr1.setWorkflow(false);
-					gr1.setValue('state','processed');
-					gr1.update();				
+					gr2.setWorkflow(false);
+					gr2.setValue('state','processed');
+					gr2.update();				
 				} //if (dataType == 'connect') {
 			} // if (source.indexOf('uControl') > -1) {
 		} // if (source2.length > 0) {
-	} // while(gr1.next()) {
-
-	new x_tekso_twxapp01.TimeoutExpired().checkForDataTimeout();
+	} // while(gr2.next()) {
+	
+	//var evnt2 = 'x_tekso_twxapp01.checkfortimeoutexpired';
+	//gs.eventQueue(evnt2, gr1, gs.getUserID(),job2sysID);	
+	checkfortimeoutexpired(job2sysID);
+	// Will trigger Async BR - Queue Check For Timeout Expired - Async
+	
+	var gr4 = new GlideRecordSecure(jobTable2);
+	gr4.addQuery('sys_id',job2sysID);
+	gr4.query();
+	if (gr4.next()) {
+		gr4.setValue('number_of_responses_for_deletes',deleteCnt);
+		gr4.setValue('number_of_responses_for_updates',updateCnt);
+		gr4.setValue('number_of_responses_with_attachments',attachmentCnt);
+		gr4.setValue('number_of_responses_with_status_code',responseCnt);
+		gr4.setValue('number_of_responses_with_sys_ids',sysidCnt);		
+		var finishedAt = new GlideDateTime();	
+		gr4.setValue('finished_at',finishedAt);
+		gr4.update();
+	}
 	
 	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher		
 	msg = script + ' - Finished';
 	new x_tekso_twxapp01.DebugLogging().message(script,1,msg);	
 }
+
 
 function tryToFindUsingMIDServerAgentCorrelator(midServerAgentCorrelator) {
 
@@ -183,19 +228,30 @@ function getPayloadAttachment(sys_id) {
 	}
 	return payload;
 }
-]]></script>
+
+function checkfortimeoutexpired(job2sysID) {
+	var job2sysID2 = job2sysID.toString();
+	if (job2sysID2.length > 0) {
+		var queueTable = 'x_tekso_twxapp01_queue_check_for_timeout_expired';
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job2_log_record_sys_id',job2sysID2);
+		gr1.insert();
+		// Will trigger Async BR - Queue Check For Timeout Expired - Async
+	}
+}]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>29</sys_mod_count>
+        <sys_mod_count>41</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-17 14:18:34</sys_updated_on>
+        <sys_updated_on>2020-07-21 20:57:17</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

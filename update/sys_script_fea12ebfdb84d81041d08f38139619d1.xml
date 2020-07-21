@@ -79,12 +79,14 @@
 		upd_rel_qty = 0;
 	}
 	
+	var testDataType = '';
 	if (del_srv_qty > 0) {
 		// Cap at 2000
 		if (del_srv_qty > 2000) {
 			del_srv_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_srv_qty,sys_id,'delete_cmdb_ci_server',true,true);	
+		testDataType = 'delete_cmdb_ci_server';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_srv_qty,sys_id,testDataType,true,true);	
 	}
 	
 	if (del_appl_qty > 0) {
@@ -92,7 +94,8 @@
 		if (del_appl_qty > 2000) {
 			del_appl_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'delete_cmdb_ci_appl',true,true);	
+		testDataType = 'delete_cmdb_ci_appl';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,testDataType,true,true);	
 	}
 	
 	if (del_rel_qty > 0) {
@@ -100,7 +103,8 @@
 		if (del_rel_qty > 2000) {
 			del_rel_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_rel_qty,sys_id,'delete_cmdb_rel_ci',true,true);	
+		testDataType = 'delete_cmdb_rel_ci';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(del_rel_qty,sys_id,testDataType,true,true);	
 	}
 	
 	if (upd_srv_qty > 0) {
@@ -108,7 +112,8 @@
 		if (upd_srv_qty > 2000) {
 			upd_srv_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_srv_qty,sys_id,'update_cmdb_ci_server',upd_srv_inc,upd_srv_fill);	
+		testDataType = 'update_cmdb_ci_server';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_srv_qty,sys_id,testDataType,upd_srv_inc,upd_srv_fill);	
 	}
 	
 	if (upd_appl_qty > 0) {
@@ -116,7 +121,8 @@
 		if (upd_appl_qty > 2000) {
 			upd_appl_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(del_appl_qty,sys_id,'update_cmdb_ci_appl',upd_appl_inc,upd_appl_fill);	
+		testDataType = 'update_cmdb_ci_appl';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_appl_qty,sys_id,testDataType,upd_appl_inc,upd_appl_fill);	
 	}
 	
 	if (upd_rel_qty > 0) {
@@ -124,7 +130,8 @@
 		if (upd_rel_qty > 2000) {
 			upd_rel_qty = 2000;
 		}
-		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_rel_qty,sys_id,'update_cmdb_rel_ci',true,true);	
+		testDataType = 'update_cmdb_rel_ci';
+		new x_tekso_twxapp01.GenerateTestData().generate_data(upd_rel_qty,sys_id,testDataType,true,true);	
 	}	
 	// Finished	
 })(current, previous);
@@ -137,7 +144,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>fea12ebfdb84d81041d08f38139619d1</sys_id>
-        <sys_mod_count>59</sys_mod_count>
+        <sys_mod_count>60</sys_mod_count>
         <sys_name>Generate Test Data - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -145,7 +152,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_fea12ebfdb84d81041d08f38139619d1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-22 11:49:54</sys_updated_on>
+        <sys_updated_on>2020-07-21 14:40:10</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>
