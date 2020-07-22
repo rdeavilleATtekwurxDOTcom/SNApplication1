@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="CMDB Changes History" max_length="40" name="x_tekso_twxapp01_cmdb_changes_history" type="collection">
+    <element label="CMDB Changes History" max_length="40" name="x_tekso_twxapp01_cmdb_changes_history" sizeclass="48840" type="collection">
         <element label="CMDB Changes Number" max_length="40" name="cmdb_changes_number" type="string"/>
         <element label="Latest REST Data Record Sys ID" max_length="32" name="latest_rest_data_record_sys_id" type="string"/>
         <element label="Latest REST Response Record Sys ID" max_length="32" name="latest_rest_response_record_sys_id" type="string"/>

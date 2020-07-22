@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <condition/>
+        <conditional>false</conditional>
+        <name>Testing - Timer</name>
+        <run_as/>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-07-22 14:46:04</run_start>
+        <run_time>1970-01-01 00:00:00</run_time>
+        <run_type>on_demand</run_type>
+        <script><![CDATA[gs.info('Testing - Start');
+
+//Need to include global.
+var so = new global.ScheduleOnce();
+var script = 'myfunction();';
+script += 'function myfunction() {';
+script += 'gs.info("Hello");';
+script += '}';
+so.script = script;
+so.setAsSeconds(10);
+so.schedule();
+gs.info('Testing - Finish');
+
+
+/*
+gs.info('Testing - Timer');
+
+var sec = 1000;
+var min = sec * 60;
+sleep(min); 
+
+gs.info('Testing - Timer2');
+
+function sleep(ms) {
+	// 1000ms = 1 second 
+	// 10000ms = 10 seconds
+	var unixtime_ms = new Date().getTime();
+	while(new Date().getTime() < unixtime_ms + ms) 
+	{
+		var a = 1;
+	}
+}
+*/]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-22 14:49:35</sys_created_on>
+        <sys_id>475788e7db4614504f29252b13961937</sys_id>
+        <sys_mod_count>11</sys_mod_count>
+        <sys_name>Testing - Timer</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysauto_script_475788e7db4614504f29252b13961937</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-22 21:28:51</sys_updated_on>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>

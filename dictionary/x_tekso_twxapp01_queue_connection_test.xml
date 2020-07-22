@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Queue Connection Test" max_length="40" name="x_tekso_twxapp01_queue_connection_test" type="collection">
+        <element label="Completed At" max_length="40" name="completed_at" type="glide_date_time"/>
+        <element label="Connection Test Record Sys ID" max_length="32" name="connection_test_record_sys_id" type="string"/>
+        <element label="Processed" max_length="40" name="processed" type="boolean"/>
+        <element label="Started At" max_length="40" name="started_at" type="glide_date_time"/>
+    </element>
+</database>

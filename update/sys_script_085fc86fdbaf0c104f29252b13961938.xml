@@ -29,25 +29,36 @@
         <role_conditions/>
         <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
 	// Only if status is Pending	
-	
+
+	var setupTable = 'x_tekso_twxapp01_setup';
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test';	
 	// Put the sys_id for the x_tekso_twxapp01_connection_test record
 	// back on to the x_tekso_twxapp01_setup
 	var connectionTestSysID = current.sys_id; // sys_id for this record x_tekso_twxapp01_connection_test
+	var connectionTestSysID2 = connectionTestSysID.toString();
 	var setupSysID = current.setup_record; // sys_id for the setup reocrd x_tekso_twxapp01_setup
+	var setupSysID2 = setupSysID.toString();
 	
-	var setupTable = 'x_tekso_twxapp01_setup';
-	var gr1 = new GlideRecordSecure(setupTable);	
-	gr1.addQuery('sys_id',setupSysID); // sys_id for the setup record
-	gr1.query();
-	if (gr1.next()) {
-		gr1.setValue('connection_test_link',connectionTestSysID);
-		gr1.setValue('updated_by_script','BR Connection Test - Insert'); // Debug
-		gr1.update();
-	}	
+	if (setupSysID2.length > 0 && connectionTestSysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(setupTable);	
+		gr1.addQuery('sys_id',setupSysID2); // sys_id for the setup record
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('connection_test_link',connectionTestSysID2);
+			gr1.setValue('updated_by_script','BR Connection Test - Insert'); // Debug
+			gr1.update();
+		}	
+
+		// Script Action to perform the test
+		//gs.eventQueue('x_tekso_twxapp01.testconnection', current, gs.getUserID(), gs.getUserName());
+
+		var gr2 = new GlideRecordSecure(queueTable);
+		gr2.initialize();
+		gr2.setValue('connection_test_record_sys_id',connectionTestSysID2);		
+		gr2.insert();
+		//Will trigger BR - Queue Connection Test - Async
+	}
 	
-	// Script Action to perform the test
-	gs.eventQueue('x_tekso_twxapp01.testconnection', current, gs.getUserID(), gs.getUserName());
-		
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -55,7 +66,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>085fc86fdbaf0c104f29252b13961938</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>37</sys_mod_count>
         <sys_name>Connection Test - Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -63,7 +74,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_085fc86fdbaf0c104f29252b13961938</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 09:30:57</sys_updated_on>
+        <sys_updated_on>2020-07-22 12:27:25</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_list action="DELETE" parent="" relationship="" sys_domain="global" table="x_tekso_twxapp01_outbound_rest" version="2" view="">
+        <sys_ui_list_element action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element>rest_data_record_sys_id</element>
+            <list_id display_value="x_tekso_twxapp01_outbound_rest" element="NULL" name="x_tekso_twxapp01_outbound_rest" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd6be70b1b0614101c6afd9f034bcb30</list_id>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <position>0</position>
+            <sum>false</sum>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 18:05:27</sys_created_on>
+            <sys_id>f96be70b1b0614101c6afd9f034bcb31</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 18:05:27</sys_updated_on>
+        </sys_ui_list_element>
+        <sys_ui_list action="INSERT_OR_UPDATE">
+            <average_value>false</average_value>
+            <element/>
+            <max_value>false</max_value>
+            <min_value>false</min_value>
+            <name>x_tekso_twxapp01_outbound_rest</name>
+            <parent/>
+            <position/>
+            <relationship/>
+            <sum>false</sum>
+            <sys_class_name>sys_ui_list</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-21 18:05:27</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>bd6be70b1b0614101c6afd9f034bcb30</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_outbound_rest</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_list_x_tekso_twxapp01_outbound_rest_null</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-21 18:05:27</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_list>
+    </sys_ui_list>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_list_x_tekso_twxapp01_outbound_rest_null</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update><sys_ui_list parent="" relationship="" sys_domain="global" table="x_tekso_twxapp01_outbound_rest" version="2" view=""><sys_ui_list_element action="INSERT_OR_UPDATE"><average_value>false</average_value><element>rest_data_record_sys_id</element><list_id display_value="x_tekso_twxapp01_outbound_rest" element="NULL" name="x_tekso_twxapp01_outbound_rest" parent="NULL" relationship="NULL" sys_domain="global" view="Default view">bd6be70b1b0614101c6afd9f034bcb30</list_id><max_value>false</max_value><min_value>false</min_value><position>0</position><sum>false</sum><sys_created_by>robin</sys_created_by><sys_created_on>2020-07-21 18:05:27</sys_created_on><sys_id>f96be70b1b0614101c6afd9f034bcb31</sys_id><sys_mod_count>0</sys_mod_count><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-21 18:05:27</sys_updated_on></sys_ui_list_element><sys_ui_list action="INSERT_OR_UPDATE"><average_value>false</average_value><element/><max_value>false</max_value><min_value>false</min_value><name>x_tekso_twxapp01_outbound_rest</name><parent/><position/><relationship/><sum>false</sum><sys_class_name>sys_ui_list</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-07-21 18:05:27</sys_created_on><sys_domain>global</sys_domain><sys_domain_path>/</sys_domain_path><sys_id>bd6be70b1b0614101c6afd9f034bcb30</sys_id><sys_mod_count>0</sys_mod_count><sys_name>x_tekso_twxapp01_outbound_rest</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_list_x_tekso_twxapp01_outbound_rest_null</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-21 18:05:27</sys_updated_on><sys_user/><view display_value="Default view" name="NULL">Default view</view><view_name/></sys_ui_list></sys_ui_list></record_update>]]></payload>
+        <payload_hash>-1640382743</payload_hash>
+        <record_name>Outbound REST</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-21 18:05:27</sys_created_on>
+        <sys_id>396be70b1b0614101c6afd9f034bcb33</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173728d42e90000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-21 18:05:27</sys_updated_on>
+        <type>List Layout</type>
+        <update_guid>f56be70ba7061410ac6df62b718e1d33</update_guid>
+        <update_guid_history>f56be70ba7061410ac6df62b718e1d33:-1640382743</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-22 10:44:20</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_list">sys_ui_list</sys_db_object>
+        <sys_id>1475207613cc4d68a452332cdbdc4440</sys_id>
+        <sys_metadata>bd6be70b1b0614101c6afd9f034bcb30</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01_outbound_rest</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="">7567eb071b0614101c6afd9f034bcb07</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_list_x_tekso_twxapp01_outbound_rest_null</sys_update_name>
+        <sys_update_version display_value="sys_ui_list_x_tekso_twxapp01_outbound_rest_null">396be70b1b0614101c6afd9f034bcb33</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-22 10:44:20</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

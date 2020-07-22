@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Outbound REST" max_length="40" name="x_tekso_twxapp01_outbound_rest" type="collection">
-        <element label="Processed" max_length="40" name="processed" type="boolean"/>
-        <element label="Process No Wait Called At" max_length="40" name="process_no_wait_called_at" type="glide_date_time"/>
-        <element label="Process No Wait Completed At" max_length="40" name="process_no_wait_completed_at" type="glide_date_time"/>
-        <element label="REST Data Record Sys ID" max_length="32" name="rest_data_record_sys_id" type="string"/>
-    </element>
-</database>

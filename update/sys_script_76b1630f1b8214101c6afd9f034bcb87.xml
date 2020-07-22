@@ -11,14 +11,14 @@
         <advanced>true</advanced>
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
-        <collection>x_tekso_twxapp01_inbound_response</collection>
+        <collection>x_tekso_twxapp01_queue_inbound_response</collection>
         <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Inbound Response - Async</name>
+        <name>Queue Inbound Response - Async</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -31,7 +31,7 @@
 
 	var sysID = current.sys_id;
 
-	var inboundTable = 'x_tekso_twxapp01_inbound_response';
+	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response';
 	
 	var gr1 = new GlideRecordSecure(inboundTable);
 	gr1.addQuery('sys_id',sysID);
@@ -46,21 +46,21 @@
 		var job2sysID = gr1.getValue('scheduled_job2_log_record_sys_id') || '';
 		var job2sysID2 = job2sysID.toString();
 		
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+		
 		if (dataSysID2.length > 0) {
-			var calledAt = new GlideDateTime();
-			gr1.setValue('handle_rest_response_called_at',calledAt);
-			
 			var si = new x_tekso_twxapp01.HandleRESTResponse();
 			si.handleRESTResponse(response2,dataSysID2,dtReceived,job2sysID2,true);	
-			
-			var completedAt = new GlideDateTime();
-			gr1.setValue('handle_rest_response_completed_at',completedAt);
-			
-			gr1.setValue('processed',true);
-			
-			gr1.setWorkflow(false);
-			gr1.update();	
 		}
+		var completedAt = new GlideDateTime();
+		gr1.setValue('completed_at',completedAt);
+		gr1.setValue('processed',true);
+		gr1.setWorkflow(false);
+		gr1.update();		
+		
 	}
 	
 })(current, previous);]]></script>
@@ -70,15 +70,15 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>76b1630f1b8214101c6afd9f034bcb87</sys_id>
-        <sys_mod_count>5</sys_mod_count>
-        <sys_name>Inbound Response - Async</sys_name>
+        <sys_mod_count>8</sys_mod_count>
+        <sys_name>Queue Inbound Response - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_76b1630f1b8214101c6afd9f034bcb87</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-21 20:33:57</sys_updated_on>
+        <sys_updated_on>2020-07-22 11:45:03</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

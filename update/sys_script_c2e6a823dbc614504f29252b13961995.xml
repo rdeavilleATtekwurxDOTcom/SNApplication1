@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_queue_connection_test_timeout</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Queue Connection Test Timeout - Aync</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var sysID = current.sys_id;
+	
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	
+	var timeoutExpired = false;
+	var timeoutEndedEarly = false;
+	
+	var gr1 = new GlideRecordSecure(queueTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {
+		var connectionTestSysID = gr1.getValue('connection_test_record_sys_id') || '';	
+		var connectionTestSysID2 = connectionTestSysID.toString();
+
+		var setupSysID = gr1.getValue('setup_record_sys_id') || '';			
+		var setupSysID2 = setupSysID.toString();			
+		var timeoutAt = gr1.getValue('timeout_will_occur_at');
+	
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+
+		var gotConnectionTest = checkConnectionTestRecordExists(connectionTestSysID);
+		if (gotConnectionTest == true) {
+			
+			var connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID);
+			gr1.setValue('got_connection_test_record',true);			
+			gr1.setValue('connection_test_status_at_start',connectionTestStatus);
+			gr1.setWorkflow(false);
+			gr1.update();	
+				
+			if (connectionTestStatus == 'Sent' && setupSysID2.length > 0 && timeoutAt.length > 0) {
+				var timeoutAt2 = new GlideDateTime(timeoutAt);
+				var inPast = dateTimeIsInThePast(timeoutAt2);
+				if (inPast == false) {				
+					var cnt = 0;
+					while(inPast == false && timeoutEndedEarly == false) {
+						sleep(1000); // Sleep for 1 second		
+						inPast = dateTimeIsInThePast(timeoutAt2);
+						if (inPast == false) {
+							connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID);
+							if (connectionTestStatus != 'Sent') {
+								timeoutEndedEarly = true;				
+							}		
+							cnt++;
+						}
+						else {
+							timeoutExpired = true;
+						}
+					}
+				}
+			}
+			
+
+
+			connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID);
+			gr1.setValue('connection_test_status_at_end',connectionTestStatus);
+			gr1.setValue('timeout_expired',timeoutExpired);
+			gr1.setValue('timeout_ended_early',timeoutEndedEarly);		
+			var endedAt = new GlideDateTime();
+			gr1.setValue('timeout_ended_at',endedAt);
+			gr1.setWorkflow(false);
+			gr1.update();			
+			
+			if (timeoutEndedEarly == false && timeoutExpired) {
+				//TIMED OUT
+				var a = 1;
+			}
+		} //if (gotConnectionTest == true) {
+
+		var completedAt = new GlideDateTime();
+		gr1.setValue('completed_at',completedAt);
+		gr1.setValue('processed',true);
+		gr1.setWorkflow(false);
+		gr1.update();		
+	}
+	
+})(current, previous);
+
+function dateTimeIsInTheFuture(timeoutAt) {
+	var rtn = false;
+	var now = new GlideDateTime();
+	var dur1 = new GlideDuration();
+	dur1 = GlideDateTime.subtract(now, timeoutAt); // In Milliseconds
+	var dur1secs = dur1.getNumericValue() / 1000;
+	var dur1secs2 = parseInt(dur1secs);
+	//If -ve then this means that timeOutAt is earlier than now
+	//i.e. the date is in the past
+	//If +ve then this means that timeoutAt is later than now
+	//i.e. the date is in the future
+	if (dur1secs2 > 0) {
+		rtn = true;
+	}
+	
+	return rtn;
+}
+
+
+function dateTimeIsInThePast(timeoutAt) {
+	var rtn = false;
+	var now = new GlideDateTime();
+	var dur1 = new GlideDuration();
+	dur1 = GlideDateTime.subtract(now, timeoutAt); // In Milliseconds
+	var dur1secs = dur1.getNumericValue() / 1000;
+	var dur1secs2 = parseInt(dur1secs);
+	//If -ve then this means that timeOutAt is earlier than now
+	//i.e. the date is in the past
+	//If +ve then this means that timeoutAt is later than now
+	//i.e. the date is in the future
+	if (dur1secs2 < 0) {
+		rtn = true;
+	}
+	
+	return rtn;
+}
+
+function sleep(ms) {
+	// 1000ms = 1 second 
+	// 10000ms = 10 seconds
+	var unixtime_ms = new Date().getTime();
+	while(new Date().getTime() < unixtime_ms + ms) 
+	{
+		var a = 1;
+	}
+}
+
+function checkConnectionTestRecordExists(connectionTestSysID) {
+	var rtn = false;
+	var testTable = 'x_tekso_twxapp01_connection_test';
+	var connectionTestSysID2 = connectionTestSysID.toString();
+	if (connectionTestSysID2.length > 0) {
+		var gr1 = new GlideRecord(testTable);	
+		gr1.addQuery('sys_id',connectionTestSysID2);
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			rtn = true;
+		}
+	}
+	return rtn;
+}
+
+
+function getConnectionTestRecordStatus(connectionTestSysID) {	
+	var rtn = '';
+	var testTable = 'x_tekso_twxapp01_connection_test';
+	var connectionTestSysID2 = connectionTestSysID.toString();
+	if (connectionTestSysID2.length > 0) {
+		var gr1 = new GlideRecord(testTable);	
+		gr1.addQuery('sys_id',connectionTestSysID2);
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			var status = gr1.getValue('status') || '';
+			var status2 = status.toString();
+			var aborted = gr1.getValue('aborted') || false;
+			var timeout = gr1.getValue('timeout_expired') || false;
+			
+			if (aborted == true) {
+				if (status2 != 'Aborted') {
+					// Because of timing between various async threads the status may not have 
+					// been set to Aborted
+					// or it was set to Aborted but then overwritten by another process
+					// Hence the need for a separated Aborted flag
+					// If Status is not Aborted - set it now			
+					gr1.setValue('status','Aborted');	
+					gr1.setValue('updated_by_script',script);	// Debug
+					gr1.update();	
+					status2 = 'Aborted';
+				}
+			} //if (aborted == true) {
+			if (timeout == true) {
+				if (status2 != 'Timeout Expired') {
+					// Because of timing between various async threads the status may not have 
+					// been set to Timeout Expired
+					// or it was set to Timeout Expired but then overwritten by another process
+					// Hence the need for a separated Timeout Expired flag
+					// If Status is not Timeout Expired - set it now			
+					gr1.setValue('status','Timeout Expired');	
+					gr1.setValue('updated_by_script',script);	// Debug			
+					gr1.update();	
+					status2 = 'Timeout Expired';
+				}
+			} //if (timeout == true) {
+			rtn = status2;
+		}//if (gr1.next()) {
+	}
+	return rtn;
+}
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-22 17:14:59</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c2e6a823dbc614504f29252b13961995</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>Queue Connection Test Timeout - Aync</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_c2e6a823dbc614504f29252b13961995</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-22 21:27:36</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=c2e6a823dbc614504f29252b13961995"/>
+</record_update>
