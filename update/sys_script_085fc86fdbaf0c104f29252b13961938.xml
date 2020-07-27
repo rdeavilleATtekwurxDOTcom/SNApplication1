@@ -49,9 +49,6 @@
 			gr1.update();
 		}	
 
-		// Script Action to perform the test
-		//gs.eventQueue('x_tekso_twxapp01.testconnection', current, gs.getUserID(), gs.getUserName());
-
 		var gr2 = new GlideRecordSecure(queueTable);
 		gr2.initialize();
 		gr2.setValue('connection_test_record_sys_id',connectionTestSysID2);		
@@ -66,7 +63,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>085fc86fdbaf0c104f29252b13961938</sys_id>
-        <sys_mod_count>37</sys_mod_count>
+        <sys_mod_count>38</sys_mod_count>
         <sys_name>Connection Test - Insert</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -74,7 +71,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_085fc86fdbaf0c104f29252b13961938</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 12:27:25</sys_updated_on>
+        <sys_updated_on>2020-07-24 08:42:17</sys_updated_on>
         <template/>
         <when>after</when>
     </sys_script>

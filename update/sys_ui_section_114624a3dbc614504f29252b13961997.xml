@@ -4,13 +4,13 @@
             <element>connection_test_record_sys_id</element>
             <position>0</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e99f5da3db8a14504f29252b1396195b</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>ff59d2b31b02d4101c6afd9f034bcb0e</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -18,55 +18,55 @@
             <element>timeout_will_occur_at</element>
             <position>1</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>619f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>b759d2b31b02d4101c6afd9f034bcb0f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>connection_test_status_at_start</element>
+            <element>woke_up_at</element>
             <position>2</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e19f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3b59d2b31b02d4101c6afd9f034bcb0f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_received_at</element>
+            <position>3</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>bb59d2b31b02d4101c6afd9f034bcb0f</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>timeout_ended_early</element>
-            <position>3</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>659f5da3db8a14504f29252b1396195c</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>timeout_ended_at</element>
             <position>4</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e59f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3f59d2b31b02d4101c6afd9f034bcb0f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -74,13 +74,13 @@
             <element>.split</element>
             <position>5</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>699f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>bf59d2b31b02d4101c6afd9f034bcb0f</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -88,139 +88,153 @@
             <element>setup_record_sys_id</element>
             <position>6</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e99f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3359d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>got_connection_test_record</element>
+            <element>timeout_expired_reached_before_start</element>
             <position>7</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>6d9f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>b359d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>number_of_seconds_before_timeout_expired</element>
+            <position>8</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3759d2b31b02d4101c6afd9f034bcb10</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>response_received</element>
+            <position>9</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>b759d2b31b02d4101c6afd9f034bcb10</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>timeout_expired</element>
-            <position>8</position>
+            <position>10</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>ed9f5da3db8a14504f29252b1396195c</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3b59d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
-            <sys_user/>
-            <type/>
-        </sys_ui_element>
-        <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>connection_test_status_at_end</element>
-            <position>9</position>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>619f5da3db8a14504f29252b1396195d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter/>
-            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>10</position>
+            <position>11</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e19f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>bb59d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>11</position>
+            <position>12</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>659f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3f59d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>started_at</element>
-            <position>12</position>
+            <position>13</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e59f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>bf59d2b31b02d4101c6afd9f034bcb10</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>processed</element>
-            <position>13</position>
+            <position>14</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>699f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3359d2b31b02d4101c6afd9f034bcb11</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>14</position>
+            <position>15</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>e99f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>b359d2b31b02d4101c6afd9f034bcb11</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>completed_at</element>
-            <position>15</position>
+            <position>16</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 21:11:33</sys_created_on>
-            <sys_id>6d9f5da3db8a14504f29252b1396195d</sys_id>
+            <sys_created_on>2020-07-23 20:02:29</sys_created_on>
+            <sys_id>3759d2b31b02d4101c6afd9f034bcb11</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test_timeout" sys_domain="global" view="Default view">114624a3dbc614504f29252b13961997</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 21:11:33</sys_updated_on>
+            <sys_updated_on>2020-07-23 20:02:29</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

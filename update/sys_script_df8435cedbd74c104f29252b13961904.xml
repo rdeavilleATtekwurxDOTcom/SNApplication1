@@ -326,6 +326,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	
 	if (cmdbTrackingRunning == 'Running') {
 		if (gotConfigUsr == false) {
+			//If it is running but now we don't have a user - then switch if off			
 			statusMsg = 'No uControl Integration User';
 			statusDetails = buildStatusDetails(statusDetails,statusMsg);			
 			cmdbTrackingRunning = 'Error';
@@ -337,6 +338,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
 	}
 	else if (cmdbTrackingRunning == 'Error') {
 		if (gotConfigUsr == true) {
+			//If it is not running but now we have got a user - then switch it on			
 			cmdbTrackingRunning = 'Running';
 			gr1.setValue('cmdb_tracking','Running');
 			gr1.setValue('cmdb_tracking_error_details','');	
@@ -912,7 +914,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>df8435cedbd74c104f29252b13961904</sys_id>
-        <sys_mod_count>94</sys_mod_count>
+        <sys_mod_count>95</sys_mod_count>
         <sys_name>uControl Track Updates</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -920,7 +922,7 @@ function isTableInSupportedClasses(tblName,supportedClassesTable) {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_df8435cedbd74c104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 14:28:02</sys_updated_on>
+        <sys_updated_on>2020-07-24 14:08:59</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_page">
     <sys_ui_page action="INSERT_OR_UPDATE">
         <category>general</category>
-        <client_script><![CDATA[function onAbort() {
+        <client_script><![CDATA[// There are two process which are checking for a connection timeout - this ui page which is using a timer
+// to check if a connection is overdue. The other method is the BR Queue Connection Test Timeout - Async
+
+// Same client script code in testing_connection_please_wait and sending_starting_please_wait
+
+// Trigger myTimer every 1 second
+// This will check to see if the connetion_status is now OK or Failed
+// If so - it will call g_form.save
+var myVar = setInterval(myTimer ,1000);
+
+function onAbort() {
 	// Don't need to do anything here - really
 	// as this will trigger the processing script
 	
@@ -20,36 +30,60 @@ function myTimer() {
 	var sysID = gel("sysID").value;
 	
 	// Use a script include to check the current connnection_status
+	// gets connection_status from x_tekso_twxapp01_setup
 	var ga = new GlideAjax('x_tekso_twxapp01.ClientReadSetupRecord');
 	ga.addParam('sysparm_name','getConnectionStatus');
 	ga.addParam("sysparm_sys_id", sysID);
-	ga.getXML(callBack);
+	ga.getXML(getConnectionStatusCallBack);
 
 }
 
 // This is the return from the script include
-function callBack(response){
+function getConnectionStatusCallBack(response){
+
+	//connection_status from x_tekso_twxapp01_setup
 	var connectionStatus = response.responseXML.documentElement.getAttribute("answer");
 	if (connectionStatus == 'OK' || connectionStatus == 'Failed') { // Failed = Timed Out
 		g_form.save();
 	}
-	
-	//If we have not aborted we need to check if the test connection has timed out
-	// Get the value from <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
-	var sysID = gel("sysID").value;
-	// Use a script include to check the current connnection_status
-	var ga = new GlideAjax('x_tekso_twxapp01.ClientConnectionTestTimeout');
-	ga.addParam('sysparm_name','checkForTimeout');
-	ga.addParam("sysparm_sys_id", sysID);
-	ga.getXML(); //This does not require a call back
 
+	/* Get the value from
+	<input type="hidden" id="checkforconnectiontimeout" name="checkforconnectiontimeout" value="${sysparm_checkforconnectiontimeout}"/>	
+	*/
+	
+	//Testing
+	//value from x_tekso_twxapp01.testing.checkforconnectiontimeout default is 0
+	//0 = BR Queue Connection Test Timeout - Async and UI Page code getConnectionStatusCallBack are both active,
+	//1 = BR only, 2 = UI Page only, 3 = BR and UI Page both switched off. Default = 0
+	var checkforconnectiontimeout = gel("checkforconnectiontimeout").value;
+	var checkforconnectiontimeout2 = parseInt(checkforconnectiontimeout);
+	if (checkforconnectiontimeout2 < 0 || checkforconnectiontimeout2 > 3) {
+		checkforconnectiontimeout2 = 0;
+	}
+	//clientLog('checkforconnectiontimeout2 ' + checkforconnectiontimeout.toString());	
+	
+	if (checkforconnectiontimeout2 == 0 || checkforconnectiontimeout2 == 2) {	
+		//If we have not aborted we need to check if the test connection has timed out
+		// Get the value from <input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+		var sysID = gel("sysID").value;
+		// Use a script include to check the current connnection_status
+		var ga = new GlideAjax('x_tekso_twxapp01.ClientConnectionTestTimeout');
+		ga.addParam('sysparm_name','clientCheckForTimeout');
+		ga.addParam("sysparm_sys_id", sysID);
+		ga.getXML(); //This does not require a call back
+		//If it has timed out this will set the connectionStatus to Failed in x_tekso_twxapp01_setup
+		//
+		//That will be then picked up by the next loop of myTimer() and the code will drop into the g_form.save block
+		//above
+	}
 }
 
-// Trigger myTimer every 1 second
-// This will check to see if the connetion_status is now OK
-// If so - it will call g_form.save
-var myVar = setInterval(myTimer ,1000);
-]]></client_script>
+function clientLog(msg) {
+	var ga = new GlideAjax('x_tekso_twxapp01.clientWriteToGSInfo');//this is the script include
+	ga.addParam("sysparm_name", "gsInfo"); //this is the function within the script include
+	ga.addParam("sysparm_msg",msg);
+	ga.getXML();	
+}]]></client_script>
         <description/>
         <direct>false</direct>
         <endpoint>x_tekso_twxapp01_testing_connection_please_wait.do</endpoint>
@@ -67,7 +101,8 @@ var myVar = setInterval(myTimer ,1000);
 }
 </style>
 <g:ui_form>	
-	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
+	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 
+	<input type="hidden" id="checkforconnectiontimeout" name="checkforconnectiontimeout" value="${sysparm_checkforconnectiontimeout}"/>
 	<img src="logo1.jpg"/>
 	<table border="0">		
 	<tr>
@@ -101,7 +136,11 @@ var myVar = setInterval(myTimer ,1000);
 </g:ui_form>	
 </j:jelly>]]></html>
         <name>testing_connection_please_wait</name>
-        <processing_script><![CDATA[// This is only triggered by the Abort button - Submit
+        <processing_script><![CDATA[// Same processing script code in testing_connection_please_wait and sending_starting_please_wait
+// EXCEPT FOR var script =
+
+// This is only triggered by the Abort button - Submit
+var script = 'UI Page testing_connection_please_wait';
 var setupTable = 'x_tekso_twxapp01_setup';
 var gr1 = new GlideRecordSecure(setupTable);
 gr1.addQuery('sys_id',sysID);
@@ -115,7 +154,7 @@ if (gr1.next()) {
 	gr1.setValue('connection_status_details','Connection Test Aborted At: ' + gdt.getDisplayValue() + ' By: ' + usr);
 	gr1.setValue('start_sending_requested',false);
 	gr1.setValue('connection_test_requested',false);	
-	gr1.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug
+	gr1.setValue('updated_by_script',script);	// Debug
 	gr1.update();
 	
 	// Set the status of the connection test record to Aborted
@@ -127,28 +166,29 @@ if (gr1.next()) {
 	if (gr2.next()) {
 		gr2.setValue('status','Aborted');
 		gr2.setValue('aborted',true);
-		gr2.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug		
+		gr2.setValue('updated_by_script',script);	// Debug		
 		gr2.update();
 	}
 	
 	gr1.setValue('connection_test_link','');
-	gr1.setValue('updated_by_script','UI Page testing_connection_please_wait');	// Debug	
+	gr1.setValue('updated_by_script',script);	// Debug	
 	gr1.update();
 	
 	var url = '/x_tekso_twxapp01_setup.do?sys_id=' + sysID;
 	response.sendRedirect(url);	
-}]]></processing_script>
+}
+]]></processing_script>
         <sys_class_name>sys_ui_page</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 17:56:41</sys_created_on>
         <sys_id>207ab7b2dbefc81041d08f3813961980</sys_id>
-        <sys_mod_count>114</sys_mod_count>
+        <sys_mod_count>130</sys_mod_count>
         <sys_name>testing_connection_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_207ab7b2dbefc81041d08f3813961980</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-25 14:27:08</sys_updated_on>
+        <sys_updated_on>2020-07-27 20:16:22</sys_updated_on>
     </sys_ui_page>
 </record_update>

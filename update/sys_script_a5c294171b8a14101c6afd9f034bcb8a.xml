@@ -27,7 +27,24 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+        <script><![CDATA[/*
+BR is triggered by SJ Process Responses From uControl
+
+function checkfortimeoutexpired(job2sysID) {
+	var job2sysID2 = job2sysID.toString();
+	if (job2sysID2.length > 0) {
+		var queueTable = 'x_tekso_twxapp01_queue_check_for_timeout_expired';
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job2_log_record_sys_id',job2sysID2);
+		gr1.insert();
+		// Will trigger Async BR - Queue Check For Timeout Expired - Async
+	}
+}
+
+*/
+
+(function executeRule(current, previous /*null when async*/) {
 
 	var sysID = current.sys_id;
 	var queueTable = 'x_tekso_twxapp01_queue_check_for_timeout_expired';
@@ -62,7 +79,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a5c294171b8a14101c6afd9f034bcb8a</sys_id>
-        <sys_mod_count>1</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>Queue Check For Timeout Expired - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -70,7 +87,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_a5c294171b8a14101c6afd9f034bcb8a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 11:42:54</sys_updated_on>
+        <sys_updated_on>2020-07-27 10:09:06</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

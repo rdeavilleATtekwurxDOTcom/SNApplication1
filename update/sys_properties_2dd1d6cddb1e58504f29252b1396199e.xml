@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
+    <sys_properties action="INSERT_OR_UPDATE">
+        <choices/>
+        <description>Used with testing.forceconnectiontimeout. &#13;
+0 = BR Queue Connection Test Timeout - Async and UI Page code getConnectionStatusCallBack are both active,&#13;
+1 = BR only, 2 = UI Page only, 3 = BR and UI Page both switched off. Default = 0</description>
+        <ignore_cache>false</ignore_cache>
+        <is_private>false</is_private>
+        <name>x_tekso_twxapp01.testing.checkforconnectiontimeout</name>
+        <read_roles/>
+        <suffix>testing.checkforconnectiontimeout</suffix>
+        <sys_class_name>sys_properties</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-27 16:43:02</sys_created_on>
+        <sys_id>2dd1d6cddb1e58504f29252b1396199e</sys_id>
+        <sys_mod_count>9</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.testing.checkforconnectiontimeout</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_properties_2dd1d6cddb1e58504f29252b1396199e</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-27 20:16:31</sys_updated_on>
+        <type>integer</type>
+        <value>0</value>
+        <write_roles/>
+    </sys_properties>
+    <sys_translated_text action="delete_multiple" query="documentkey=2dd1d6cddb1e58504f29252b1396199e"/>
+</record_update>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.clientWriteToGSInfo</api_name>
+        <caller_access/>
+        <client_callable>true</client_callable>
+        <description/>
+        <name>clientWriteToGSInfo</name>
+        <script><![CDATA[/* Called like this
+
+function clientLog(msg) {
+	var ga = new GlideAjax('x_tekso_twxapp01.clientWriteToGSInfo');//this is the script include
+	ga.addParam("sysparm_name", "gsInfo"); //this is the function within the script include
+	ga.addParam("sysparm_msg",msg);
+	ga.getXML();	
+}
+
+*/
+
+var clientWriteToGSInfo = Class.create();
+clientWriteToGSInfo.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
+
+	gsInfo: function() {
+		var msg = this.getParameter('sysparm_msg');
+		gs.info(msg);
+	},
+	
+    type: 'clientWriteToGSInfo'
+});]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-27 17:35:59</sys_created_on>
+        <sys_id>e93c56c9db5e58504f29252b1396193c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>clientWriteToGSInfo</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>protected</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_e93c56c9db5e58504f29252b1396193c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-27 18:32:12</sys_updated_on>
+    </sys_script_include>
+</record_update>

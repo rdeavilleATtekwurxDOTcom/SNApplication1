@@ -23,22 +23,45 @@ function processResponsesFromuControl() {
 	
 	var dataSysID = '';
 	
+	var ucontrolCnt = 0;
 	var updateCnt = 0;
 	var deleteCnt = 0;
+	var connectCnt = 0;
 	var attachmentCnt = 0;
 	var responseCnt = 0;
 	var sysidCnt = 0;
+	var dataProcessed = false;
 	
 	var jobTable2 = 'x_tekso_twxapp01_scheduled_job2_log';
 	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response';
+
+	var calculatedNextJobStartTime = new GlideDateTime();
+
+	// --Work out when the scheduled job is going to run next -----------------
+	// Number of seconds till the next run of the job
+	var gdt1 = new GlideDateTime('1970-01-01 00:00:00');
+	var gdt2 = new GlideDateTime(current.run_period); //Need to convert current.run_period into a GlideDateTime
+	var jobIntervalDuration = GlideDateTime.subtract(gdt1, gdt2);
+	var jobIntervalDurationMS = jobIntervalDuration.getNumericValue();
+	var jobIntervalDurationSeconds = parseInt(jobIntervalDurationMS/1000);
+
+	// Two ways of calculating the next time
+	// 1: Get the current time and add on the run_period
+	// 2: Get the next_action from sys_trigger -- unfortunately this won't work because it is 
+	//    updated after the job ends
+	//    The time retrieved is the time of the current run
+	calculatedNextJobStartTime.addSeconds(jobIntervalDurationSeconds);
 	
 	var gr1 = new GlideRecordSecure(jobTable2);
 	gr1.initialize();
 	gr1.setValue('number_of_responses_for_deletes',0);
 	gr1.setValue('number_of_responses_for_updates',0);
+	gr1.setValue('number_of_responses_for_connect',0);
+	gr1.setValue('number_of_responses_from_ucontrol',0);
 	gr1.setValue('number_of_responses_with_attachments',0);
 	gr1.setValue('number_of_responses_with_status_code',0);
 	gr1.setValue('number_of_responses_with_sys_ids',0);	
+	gr1.setValue('next_run_at',calculatedNextJobStartTime);	
 	var job2sysID = gr1.insert();
 	
 	var gr2 = new GlideRecordSecure('ecc_queue');
@@ -54,7 +77,8 @@ function processResponsesFromuControl() {
 		var dtReceived = gr2.getValue('sys_created_on');
 		if (source2.length > 0) {
 			if (source2.indexOf('uControl') > -1) {
-
+				ucontrolCnt++;
+				dataProcessed = true;
 				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/connect
 				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/update/ci
 				//https://tekucontroldemo3.tekwurx.com/uControl/rest/servicenow/delete/ci
@@ -72,6 +96,7 @@ function processResponsesFromuControl() {
 
 				if (source2.indexOf('/uControl/rest/servicenow/connect') > -1) {
 					dataType = 'connect';
+					connectCnt++;
 				}
 
 				if (dataType == 'update' || dataType == 'delete') {
@@ -144,10 +169,7 @@ function processResponsesFromuControl() {
 					}
 					
 					if (gotDataSysID == true && gotResponse == true) {
-
-						gr2.setWorkflow(false);
-						gr2.setValue('state','processed');
-						gr2.update();
+						updateECCQueue(ecc_queue_sys_id);
 						
 						var gr3 = new GlideRecordSecure(inboundTable);
 						gr3.initialize();
@@ -158,20 +180,23 @@ function processResponsesFromuControl() {
 						gr3.setValue('scheduled_job2_log_record_sys_id',job2sysID);
 						gr3.insert();						
 						// Will trigger Async BR - Queue Inbound Response - Async
+
+						//This will update the fields:
+						//background_job_handlerestresponse_started_at							 
+						//number_of_cmdb_records_updated
+						//number_of_times_handlerestresponse_called
+						//number_of_rest_records_matched
+						//background_job_handlerestresponse_finished_at													
 						
 					} // if (gotDataSysID == true) {
 				} // if (dataType == 'update' || dataType == 'delete') {
 				if (dataType == 'connect') {
-					gr2.setWorkflow(false);
-					gr2.setValue('state','processed');
-					gr2.update();				
+					updateECCQueue(ecc_queue_sys_id);			
 				} //if (dataType == 'connect') {
 			} // if (source.indexOf('uControl') > -1) {
 		} // if (source2.length > 0) {
 	} // while(gr2.next()) {
 	
-	//var evnt2 = 'x_tekso_twxapp01.checkfortimeoutexpired';
-	//gs.eventQueue(evnt2, gr1, gs.getUserID(),job2sysID);	
 	checkfortimeoutexpired(job2sysID);
 	// Will trigger Async BR - Queue Check For Timeout Expired - Async
 	
@@ -179,11 +204,14 @@ function processResponsesFromuControl() {
 	gr4.addQuery('sys_id',job2sysID);
 	gr4.query();
 	if (gr4.next()) {
+		gr4.setValue('number_of_responses_from_ucontrol',ucontrolCnt);
 		gr4.setValue('number_of_responses_for_deletes',deleteCnt);
 		gr4.setValue('number_of_responses_for_updates',updateCnt);
+		gr4.setValue('number_of_responses_for_connect',connectCnt);
 		gr4.setValue('number_of_responses_with_attachments',attachmentCnt);
 		gr4.setValue('number_of_responses_with_status_code',responseCnt);
-		gr4.setValue('number_of_responses_with_sys_ids',sysidCnt);		
+		gr4.setValue('number_of_responses_with_sys_ids',sysidCnt);	
+		gr4.setValue('data_processed',dataProcessed); // Set to true if something has happened
 		var finishedAt = new GlideDateTime();	
 		gr4.setValue('finished_at',finishedAt);
 		gr4.update();
@@ -238,20 +266,45 @@ function checkfortimeoutexpired(job2sysID) {
 		gr1.setValue('scheduled_job2_log_record_sys_id',job2sysID2);
 		gr1.insert();
 		// Will trigger Async BR - Queue Check For Timeout Expired - Async
+		
+		//This will update the fields:
+		//background_job_checkfortimeout_started_at
+		//number_of_cmdb_records_timeout_expired
+		//number_of_rest_records_timeout_expired
+		//background_job_checkfortimeout_finished_at				
 	}
-}]]></script>
+}
+
+// Set to processed
+function updateECCQueue(sys_id) {
+	var sys_id2 = sys_id.toString();
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure('ecc_queue');
+		gr1.addQuery('sys_id',sys_id);
+		gr1.addQuery('queue','input');
+		gr1.addQuery('state','ready');
+		gr1.orderByDesc('sys_created_on'); //Descending Order
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setWorkflow(false);
+			gr1.setValue('state','processed');
+			gr1.update();				
+		}
+	}
+}
+]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>42</sys_mod_count>
+        <sys_mod_count>47</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 10:41:11</sys_updated_on>
+        <sys_updated_on>2020-07-27 10:41:52</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

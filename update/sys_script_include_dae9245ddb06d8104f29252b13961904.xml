@@ -9,6 +9,10 @@
         <name>DataCleanUp</name>
         <script><![CDATA[/*
 new x_tekso_twxapp01.DataCleanUp().deleteRecordsOlderThanNDays(10);
+
+//Empty log records - where no processing occurred can be deleted more frequently
+//e.g. after 1 day
+new x_tekso_twxapp01.DataCleanUp().deleteEmptyLogRecordsOlderThanNDays(1);
 */
 
 var DataCleanUp = Class.create();
@@ -33,12 +37,93 @@ DataCleanUp.prototype = {
 		this.deleteConnectionTest(daysAgo);
 		this.deleteGenerateTestData(daysAgo);
 		this.deleteDebugLog(daysAgo);
-
+		this.deleteScheduledJob2Log(daysAgo);
+		
+		//Queue records do not have number field
+		this.deleteQueueRecords(daysAgo);
+				
 		msg = script + ' - Finished';	
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
 	},
 
+	//Empty log records - where no processing occurred can be deleted more frequently
+	//e.g. after 1 day
+	deleteEmptyLogRecordsOlderThanNDays: function(daysAgo) {
+		var script = 'deleteEmptyLogRecordsOlderThanNDays';
+		var msg = script + ' - Started';
+		
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
+		//Scheduled job record where nothing happened
+		//can be deleted more frequently - e.g. after 1 day
+		this.deleteEmptyScheduledJobRecords(1);
+		this.deleteEmptyScheduledJob2Records(1);
+
+		msg = script + ' - Finished';	
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
+	},
+	
+	deleteQueueRecords: function(daysAgo) {
+		//processed = true
+		
+		//x_tekso_twxapp01_queue_check_for_timeout_expired
+		//Only delete if scheduled_job2_log_record_sys_id not in x_tekso_twxapp01_scheduled_job2_log	
+		var tbl = 'x_tekso_twxapp01_queue_check_for_timeout_expired';
+		var ref1Tbl = 'x_tekso_twxapp01_scheduled_job2_log';
+		var ref1Field = 'scheduled_job2_log_record_sys_id';	
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+		
+		//x_tekso_twxapp01_queue_connection_test	
+		//connection_test_record_sys_id -> x_tekso_twxapp01_connection_test
+		tbl = 'x_tekso_twxapp01_queue_connection_test';	
+		ref1Tbl = 'x_tekso_twxapp01_connection_test';
+		ref1Field = 'connection_test_record_sys_id';
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+		
+		//x_tekso_twxapp01_queue_connection_test_timeout	
+		//connection_test_record_sys_id -> x_tekso_twxapp01_connection_test
+		tbl = 'x_tekso_twxapp01_queue_connection_test_timeout';	
+		ref1Tbl = 'x_tekso_twxapp01_connection_test';
+		ref1Field = 'connection_test_record_sys_id';
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+		
+		//x_tekso_twxapp01_queue_outbound_rest
+		//rest_data_record_sys_id -> x_tekso_twxapp01_rest_data_to_ucontrol
+		tbl = 'x_tekso_twxapp01_queue_outbound_rest';	
+		ref1Tbl = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		ref1Field = 'rest_data_record_sys_id';
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+		
+		//x_tekso_twxapp01_queue_send_data_to_ucontrol	
+		//scheduled_job_log_record_sys_id -> x_tekso_twxapp01_scheduled_job_log
+		tbl = 'x_tekso_twxapp01_queue_send_data_to_ucontrol';	
+		ref1Tbl = 'x_tekso_twxapp01_scheduled_job_log';
+		ref1Field = 'scheduled_job_log_record_sys_id';
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+
+		//x_tekso_twxapp01_queue_send_data_to_ucontrol2	
+		//scheduled_job_log_record_sys_id -> x_tekso_twxapp01_scheduled_job_log		
+		tbl = 'x_tekso_twxapp01_queue_send_data_to_ucontrol2';	
+		ref1Tbl = 'x_tekso_twxapp01_scheduled_job_log';
+		ref1Field = 'scheduled_job_log_record_sys_id';		
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field);
+		
+		
+		//x_tekso_twxapp01_queue_inbound_response	
+		//rest_data_record_sys_id -> x_tekso_twxapp01_rest_data_to_ucontrol
+		//scheduled_job2_log_record_sys_id -> x_tekso_twxapp01_scheduled_job2_log
+		
+		tbl = 'x_tekso_twxapp01_queue_inbound_response';
+		ref1Tbl = 'x_tekso_twxapp01_rest_data_to_ucontrol';
+		ref1Field = 'rest_data_record_sys_id';
+		var ref2Tbl = 'x_tekso_twxapp01_scheduled_job2_log';
+		var ref2Field = 'scheduled_job2_log_record_sys_id';
+		//Two references
+		this.deleteQueueRecord(daysAgo,tbl,ref1Tbl,ref1Field,ref2Tbl,ref2Field);
+	},
+	
 	referenceCount: function(tbl,fld,sys_id) {
 		var tbl2 = tbl.toString();
 		var fld2 = fld.toString();
@@ -96,6 +181,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_cmdb_deletes';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -159,7 +245,7 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();				
 					}			
@@ -167,14 +253,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();		
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);		
@@ -188,6 +276,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_cmdb_updates';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -252,7 +341,7 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();				
 					}
@@ -260,14 +349,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
-			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;	
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
@@ -282,6 +373,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_cmdb_changes';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -336,7 +428,7 @@ DataCleanUp.prototype = {
 							lastNum = gr2.getValue('number');
 							lastSysID = del_sys_id2;
 							lastDT = gr2.getValue('sys_created_on');
-							cnt = cnt + 1;
+							cnt++;
 							gr2.setWorkflow(false);
 							gr2.deleteRecord();
 						}
@@ -345,14 +437,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);			
@@ -366,6 +460,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_cmdb_link_to_rest_data';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -423,7 +518,7 @@ DataCleanUp.prototype = {
 							lastNum = gr2.getValue('number');
 							lastSysID = del_sys_id2;
 							lastDT = gr2.getValue('sys_created_on');
-							cnt = cnt + 1;
+							cnt++;
 							gr2.setWorkflow(false);
 							gr2.deleteRecord();
 						}
@@ -432,14 +527,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
-			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;	
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
@@ -454,6 +551,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -505,7 +603,7 @@ DataCleanUp.prototype = {
 							lastNum = gr2.getValue('number');
 							lastSysID = del_sys_id2;
 							lastDT = gr2.getValue('sys_created_on');
-							cnt = cnt + 1;
+							cnt++;
 							gr2.setWorkflow(false);
 							gr2.deleteRecord();
 						}
@@ -514,14 +612,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
@@ -537,6 +637,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_scheduled_job_log';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -593,7 +694,7 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();
 					}
@@ -601,14 +702,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
@@ -622,7 +725,8 @@ DataCleanUp.prototype = {
 		var script = 'deleteProcessingLog';	
 		var tbl = 'x_tekso_twxapp01_processing_log';
 		var daysAgo2 = parseInt(daysAgo);
-		
+
+		var startedAt = new GlideDateTime();
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -676,7 +780,7 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();
 					}
@@ -684,14 +788,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);				
@@ -707,6 +813,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_generate_test_data';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -763,7 +870,7 @@ DataCleanUp.prototype = {
 							lastNum = gr2.getValue('number');
 							lastSysID = del_sys_id2;
 							lastDT = gr2.getValue('sys_created_on');
-							cnt = cnt + 1;
+							cnt++;
 							gr2.setWorkflow(false);
 							gr2.deleteRecord();
 						}
@@ -772,14 +879,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);			
@@ -791,6 +900,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_connection_test';
 		var daysAgo2 = parseInt(daysAgo);
 		
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -835,7 +945,7 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();
 					}
@@ -843,14 +953,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
@@ -860,7 +972,8 @@ DataCleanUp.prototype = {
 		var script = 'deleteSetupHistory';	
 		var tbl = 'x_tekso_twxapp01_setup_history';
 		var daysAgo2 = parseInt(daysAgo);
-		
+
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -902,7 +1015,7 @@ DataCleanUp.prototype = {
 					lastNum = gr2.getValue('number');
 					lastSysID = del_sys_id2;
 					lastDT = gr2.getValue('sys_created_on');
-					cnt = cnt + 1;
+					cnt++;
 					gr2.setWorkflow(false);
 					gr2.deleteRecord();
 
@@ -910,14 +1023,16 @@ DataCleanUp.prototype = {
 			}
 		}
 
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);
@@ -928,6 +1043,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_debug_log';
 		var daysAgo2 = parseInt(daysAgo);
 
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -969,21 +1085,24 @@ DataCleanUp.prototype = {
 					lastNum = gr2.getValue('number');
 					lastSysID = del_sys_id2;
 					lastDT = gr2.getValue('sys_created_on');
-					cnt = cnt + 1;
+					cnt++;
 					gr2.setWorkflow(false);
 					gr2.deleteRecord();
 
 				}
 			}
 		}
+		
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
-			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;	
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
@@ -996,6 +1115,7 @@ DataCleanUp.prototype = {
 		var tbl = 'x_tekso_twxapp01_cmdb_changes_history';
 		var daysAgo2 = parseInt(daysAgo);
 
+		var startedAt = new GlideDateTime();		
 		var cnt = 0;
 		var firstSysID = '';
 		var firstNum = '';
@@ -1028,6 +1148,7 @@ DataCleanUp.prototype = {
 				var del_sys_id = gr2.getValue('sys_id') || '';
 				var del_sys_id2 = del_sys_id.toString();
 				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
 					
 					//Only delete if link_to_processing_record not in x_tekso_twxapp01_cmdb_changes
 					var refTbl1 = 'x_tekso_twxapp01_cmdb_changes';
@@ -1042,7 +1163,6 @@ DataCleanUp.prototype = {
 					}
 					
 					if (got_cmdb_changes == false) {
-						//Not in the last 100 sys_ids
 						if (cnt == 0) {
 							firstNum = gr2.getValue('number');
 							firstSysID = del_sys_id2;
@@ -1051,39 +1171,438 @@ DataCleanUp.prototype = {
 						lastNum = gr2.getValue('number');
 						lastSysID = del_sys_id2;
 						lastDT = gr2.getValue('sys_created_on');
-						cnt = cnt + 1;
+						cnt++;
 						gr2.setWorkflow(false);
 						gr2.deleteRecord();
 					}
 				}
 			}
 		}
+		
+		var finishedAt = new GlideDateTime();			
 		var msg = '';
 		if (cnt > 0) {
 			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
 			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
 			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
 		}
 		else {
-			msg = 'No records deleted from table: ' + tbl;
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
 		}
 		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
 		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
 	},
 	
+	deleteScheduledJob2Log: function(daysAgo) {
+		var script = 'deleteScheduledJob2Log';	
+		var tbl = 'x_tekso_twxapp01_scheduled_job2_log';
+		var daysAgo2 = parseInt(daysAgo);
+
+		var startedAt = new GlideDateTime();		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
+					if (cnt == 0) {
+						firstNum = gr2.getValue('number');
+						firstSysID = del_sys_id2;
+						firstDT = gr2.getValue('sys_created_on');
+					}		
+					lastNum = gr2.getValue('number');
+					lastSysID = del_sys_id2;
+					lastDT = gr2.getValue('sys_created_on');
+					cnt++;
+					gr2.setWorkflow(false);
+					gr2.deleteRecord();
+
+				}
+			}
+		}
+		
+		var finishedAt = new GlideDateTime();			
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+	
+
+	// Queue tables do not have number fields	
+	deleteQueueRecord: function(daysAgo,tbl,ref1Tbl,ref1Field) {
+		//Only delete if processed = true
+		var script = 'deleteQueueRecord';			
+		var daysAgo2 = parseInt(daysAgo);
+
+		var startedAt = new GlideDateTime();		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('sys_created_on'); // Queue tables do not have number fields	
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.addQuery('processed',true);
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
+					
+					//Ref check 1
+					var ref1val = gr2.getValue(ref1Field) || '';
+					var ref1val2 = ref1val.toString();
+					var got_ref1 = false;
+					if (ref1val2.length > 0) {
+						var chk1 = this.checkForSysID(ref1Tbl,ref1val2);
+						if (chk1 == true) {
+							got_ref1 = true;
+						}
+					}
+					
+					if (got_ref1 == false) {
+						
+						if (cnt == 0) {
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastDT = gr2.getValue('sys_created_on');
+						lastSysID = del_sys_id2;
+						cnt++;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+		
+		var finishedAt = new GlideDateTime();			
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstSysID; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastSysID + ' created at ' + lastDT;
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+
+	// same as deleteQueueRecord except this has 2 references
+	// Queue tables do not have number fields
+	deleteQueueRecord2: function(daysAgo,tbl,ref1Tbl,ref1Field,ref2Tbl,ref2Field) {
+		//Only delete if processed = true
+		var script = 'deleteQueueRecord';			
+		var daysAgo2 = parseInt(daysAgo);
+
+		var startedAt = new GlideDateTime();		
+		var cnt = 0;
+		var firstSysID = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastDT = new GlideDateTime();
+		
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('sys_created_on'); // Queue tables do not have number fields	
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.addQuery('processed',true);
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids
+					
+					//Ref check1
+					var ref1val = gr2.getValue(ref1Field) || '';
+					var ref1val2 = ref1val.toString();
+					var got_ref1 = false;
+					if (ref1val2.length > 0) {
+						var chk1 = this.checkForSysID(ref1Tbl,ref1val2);
+						if (chk1 == true) {
+							got_ref1 = true;
+						}
+					}
+
+					//Ref check2
+					var ref2val = gr2.getValue(ref2Field) || '';
+					var ref2val2 = ref2val.toString();
+					var got_ref2 = false;
+					if (ref1val2.length > 0) {
+						var chk2 = this.checkForSysID(ref2Tbl,ref2val2);
+						if (chk2 == true) {
+							got_ref2 = true;
+						}
+					}
+					
+					if (got_ref1 == false && got_ref2 == false) {
+						
+						if (cnt == 0) {
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastDT = gr2.getValue('sys_created_on');
+						lastSysID = del_sys_id2;
+						cnt++;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();
+					}
+				}
+			}
+		}
+		
+		var finishedAt = new GlideDateTime();			
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstSysID; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastSysID + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},	
+	
+	deleteEmptyScheduledJobRecords: function(daysAgo) {
+
+		var script = 'deleteEmptyScheduledJobRecords';
+		var tbl = 'x_tekso_twxapp01_scheduled_job_log';
+		var tbl2 = 'x_tekso_twxapp01_processing_log';	
+		var daysAgo2 = parseInt(daysAgo);
+
+		var startedAt = new GlideDateTime();
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('data_processed',false);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids	
+
+					//Double check that there is no link
+					var gr3 = new GlideRecordSecure(tbl2);
+					gr3.addQuery('link_to_scheduled_job_log_record',del_sys_id2);
+					gr3.query();
+					if (!gr3.next()) {
+						gr2.deleteRecord();
+						if (cnt == 0) {
+							firstSysID = del_sys_id2;
+							firstDT = gr2.getValue('sys_created_on');
+						}		
+						lastDT = gr2.getValue('sys_created_on');
+						lastSysID = del_sys_id2;
+						cnt++;
+						gr2.setWorkflow(false);
+						gr2.deleteRecord();						
+					}
+				}
+			} //while(gr2.next()) {
+		} //if (daysAgo2 > -1) {
+
+		var finishedAt = new GlideDateTime();		
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}	
+
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);	
+	},
+
+	deleteEmptyScheduledJob2Records: function(daysAgo) {
+
+		var script = 'deleteEmptyScheduledJobRecords';
+		var tbl = 'x_tekso_twxapp01_scheduled_job2_log';	
+		var daysAgo2 = parseInt(daysAgo);
+
+		var startedAt = new GlideDateTime();
+		var cnt = 0;
+		var firstSysID = '';
+		var firstNum = '';
+		var firstDT = new GlideDateTime();
+		var lastSysID = '';
+		var lastNum = '';
+		var lastDT = new GlideDateTime();
+
+		if (daysAgo2 > -1) {
+
+			// Get the most recent 100 records
+			var sysIDArr = [];
+			var gr1 = new GlideRecordSecure(tbl);
+			gr1.orderByDesc('number');
+			gr1.setLimit(100);
+			gr1.query();
+			while(gr1.next()) {
+				var sys_id = gr1.getValue('sys_id') || '';
+				var sys_id2 = sys_id.toString();
+				if (sys_id2.length > 0) {
+					sysIDArr.push(sys_id2);
+				}
+			}
+
+			var gr2 = new GlideRecordSecure(tbl);
+			gr2.addQuery('data_processed',false);
+			gr2.addQuery('sys_created_on','<',gs.daysAgo(daysAgo2));
+			gr2.orderBy('sys_created_on'); //Ascending Order
+			gr2.query();
+			while(gr2.next()) {
+				var del_sys_id = gr2.getValue('sys_id') || '';
+				var del_sys_id2 = del_sys_id.toString();
+				if (sysIDArr.indexOf(del_sys_id2) == -1) {
+					//Not in the last 100 sys_ids	
+					if (cnt == 0) {
+						firstSysID = del_sys_id2;
+						firstDT = gr2.getValue('sys_created_on');
+					}		
+					lastDT = gr2.getValue('sys_created_on');
+					lastSysID = del_sys_id2;
+					cnt++;
+					gr2.setWorkflow(false);
+					gr2.deleteRecord();					
+				}
+			} //while(gr2.next()) {
+		} //if (daysAgo2 > -1) {
+
+		var finishedAt = new GlideDateTime();		
+		var msg = '';
+		if (cnt > 0) {
+			msg = 'Deleted ' + cnt.toString() + ' records from table: ' + tbl; 
+			msg = msg + ' created before: ' + gs.daysAgo(daysAgo2) + ' ranging from: ' + firstNum; 
+			msg = msg + ' created at ' + firstDT + ' to: ' + lastNum + ' created at ' + lastDT;		
+			msg = msg + ' started at: ' + startedAt + ' finished at: ' + finishedAt;			
+		}
+		else {
+			msg = 'No records deleted from table: ' + tbl + ' started at: ' + startedAt + ' finished at: ' + finishedAt;
+		}	
+
+		//This message will be output if property x_tekso_twxapp01.logging.level is 3 or higher		
+		new x_tekso_twxapp01.DebugLogging().message(script,3,msg);			
+	},
+
     type: 'DataCleanUp'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 17:47:34</sys_created_on>
         <sys_id>dae9245ddb06d8104f29252b13961904</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>DataCleanUp</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_dae9245ddb06d8104f29252b13961904</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-21 08:40:28</sys_updated_on>
+        <sys_updated_on>2020-07-27 14:41:07</sys_updated_on>
     </sys_script_include>
 </record_update>

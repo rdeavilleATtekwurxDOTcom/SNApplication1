@@ -204,12 +204,14 @@ IsConnectionTestDue.prototype = {
 							// Status is Sending and there is nothing in the queue - Do a connection test
 							rtn = true;
 							gr1.setValue('connection_test_requested_by_job',true);
+							gr1.setValue('data_processed',true);
 						}
 					}
 					else {
 						if (wasSndng == true) {
 							rtn = true;
 							gr1.setValue('connection_test_requested_by_job',true);
+							gr1.setValue('data_processed',true);
 						}				
 					}				
 				} // if (minsSinceLstTst > tstIntrvlMins)		
@@ -236,13 +238,13 @@ IsConnectionTestDue.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 20:13:18</sys_created_on>
         <sys_id>7ebd4d9ddb86d8104f29252b139619ab</sys_id>
-        <sys_mod_count>5</sys_mod_count>
+        <sys_mod_count>7</sys_mod_count>
         <sys_name>IsConnectionTestDue</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_7ebd4d9ddb86d8104f29252b139619ab</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-21 10:09:06</sys_updated_on>
+        <sys_updated_on>2020-07-27 10:50:08</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -27,7 +27,16 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+        <script><![CDATA[/* 
+Triggered By SJ - Send Data to uControl
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job_log_record_sys_id',jobSysID2),
+		gr1.setValue('next_run_at',next_run_at);
+		gr1.insert();
+*/
+
+(function executeRule(current, previous /*null when async*/) {
 
 	var sysID = current.sys_id;
 	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol';
@@ -37,28 +46,62 @@
 	gr1.setLimit(1);
 	gr1.query();
 	if (gr1.next()) {
+		var sys_id = gr1.getValue('sys_id') || '';
+		var sys_id2 = sys_id.toString();
+		
 		var jobSysID = gr1.getValue('scheduled_job_log_record_sys_id');
 		var jobSysID2 = jobSysID.toString();
 		var next_run_at = gr1.getValue('next_run_at');	
-
-		var startedAt = new GlideDateTime();
-		gr1.setValue('started_at',startedAt);
-		gr1.setWorkflow(false);
-		gr1.update();
+		
+		startedAt(sys_id2);
 		
 		if (jobSysID2.length > 0) {	
 			SendDataToUControl(jobSysID2,next_run_at);
 		}
+
 		
-		var completedAt = new GlideDateTime();
-		gr1.setValue('completed_at',completedAt);
-		gr1.setValue('processed',true);
-		gr1.setWorkflow(false);
-		gr1.update();
+		completedAt(sys_id2);
 	}
 	
 })(current, previous);
 
+
+function startedAt(sys_id) {
+	var sys_id2 = sys_id.toString();
+	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol';	
+	
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.addQuery('sys_id',sys_id2);
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			var startedAt = new GlideDateTime();
+			gr1.setValue('started_at',startedAt);
+			gr1.setWorkflow(false);
+			gr1.update();			
+		}
+	}
+}
+
+function completedAt(sys_id) {
+	var sys_id2 = sys_id.toString();
+	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol';	
+	
+	if (sys_id2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.addQuery('sys_id',sys_id2);
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			var completedAt = new GlideDateTime();
+			gr1.setValue('completed_at',completedAt);
+			gr1.setValue('processed',true);
+			gr1.setWorkflow(false);
+			gr1.update();			
+		}
+	}
+}
 
 function SendDataToUControl(jobSysID,next_run_at) {
 	
@@ -350,6 +393,7 @@ function process(jobStartTime,nextRunAt,jobSysID) {
 		var now = new GlideDateTime();
 		gr3.setValue('records_selected_at',now);
 		gr3.setValue('updated_by_script','SA SendDataTouControl'); // Debug		
+		gr3.setValue('data_processed',true);
 		gr3.update();
 	}
 	
@@ -564,7 +608,6 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 					
 					addJSONToDataRecord(delete_data_sys_id,deleteJsonRequestBody,deletesToProcess);
 					
-					//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
 					outboundRest(delete_data_sys_id);
 					
 					deletesToProcess = 0;
@@ -648,7 +691,6 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 						
 					addJSONToDataRecord(update_data_sys_id,updateJsonRequestBody,updatesToProcess);
 					
-					//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
 					outboundRest(update_data_sys_id);
 					
 					updatesToProcess = 0;
@@ -709,7 +751,6 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 			addJSONToDataRecord(data_sys_id,insertJsonRequestBody,1);			
 			createLinkRecord(action,table,bsTbl,tstData,srcRecSysID,data_sys_id,trackingSysID,logSysID,jobSysID,pID);
 			
-			//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),data_sys_id);
 			outboundRest(data_sys_id);
 			//event x_tekso_twxapp01.outboundrestprocess triggers script action OutboundRESTProcess
 			//which execute SI processNoWait			
@@ -857,7 +898,6 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 		
 		addJSONToDataRecord(delete_data_sys_id,jsonRequestBody,deletesToProcess);
 
-		//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),delete_data_sys_id);
 		outboundRest(delete_data_sys_id);
 		
 	} // if (deletesToProcess > 0) 
@@ -869,7 +909,6 @@ function processBlock(pID,sysIDsInBlockAreUnique,jobSysID,processCnt) {
 				
 		addJSONToDataRecord(update_data_sys_id,jsonRequestBody,updatesToProcess);
 				
-		//gs.eventQueue('x_tekso_twxapp01.outboundrestprocess', gr2, gs.getUserID(),update_data_sys_id);
 		outboundRest(update_data_sys_id);
 	} // if (updatesToProcess > 0)
 	
@@ -1643,7 +1682,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>28c0841f1b8614101c6afd9f034bcb31</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>Queue Send Data To uControl - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1651,7 +1690,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_28c0841f1b8614101c6afd9f034bcb31</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 11:47:37</sys_updated_on>
+        <sys_updated_on>2020-07-27 11:42:49</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

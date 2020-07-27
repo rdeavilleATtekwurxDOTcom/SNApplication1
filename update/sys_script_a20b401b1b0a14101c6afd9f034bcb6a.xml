@@ -27,7 +27,16 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+        <script><![CDATA[/* 
+Triggered By SJ - Send Data to uControl
+		var gr1 = new GlideRecordSecure(queueTable);
+		gr1.initialize();
+		gr1.setValue('scheduled_job_log_record_sys_id',jobSysID2),
+		gr1.setValue('setup_record_sys_id',setupSysID2);
+		gr1.insert();
+*/
+
+(function executeRule(current, previous /*null when async*/) {
 
 	var sysID = current.sys_id;
 	var queueTable = 'x_tekso_twxapp01_queue_send_data_to_ucontrol2';
@@ -73,7 +82,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a20b401b1b0a14101c6afd9f034bcb6a</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>Queue Send Data To uControl2 - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -81,7 +90,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_a20b401b1b0a14101c6afd9f034bcb6a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 11:39:58</sys_updated_on>
+        <sys_updated_on>2020-07-27 10:35:21</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

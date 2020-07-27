@@ -1,0 +1,409 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="DELETE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>false</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_queue_connection_test_timeout</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Queue Connection Test Timeout - Aync</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var sysID = current.sys_id;
+	
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	var script = 'BR Queue Connection Test Timeout - Aync';
+	
+	var timeoutExpired = false;
+	var timeoutEndedEarly = false;
+	
+	var gr1 = new GlideRecordSecure(queueTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {
+		var connectionTestSysID = gr1.getValue('connection_test_record_sys_id') || '';	
+		var connectionTestSysID2 = connectionTestSysID.toString();
+
+		var setupSysID = gr1.getValue('setup_record_sys_id') || '';			
+		var setupSysID2 = setupSysID.toString();			
+		var timeoutAt = gr1.getValue('timeout_will_occur_at');
+	
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+
+		var gotConnectionTest = checkConnectionTestRecordExists(connectionTestSysID2);
+		if (gotConnectionTest == true) {
+			
+			var connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2);
+			
+			//Wip up a new gr2 - this is because we have multiple streams running at the same time 
+			//One process to perform the test and this process to abort it. Need to ensure that we 
+			//do not have stale data.
+			var gr2 = new GlideRecord(queueTable);
+			gr2.addQuery('sys_id',sysID);
+			gr2.query();
+			if (gr2.next()) {				
+				gr2.setValue('got_connection_test_record',true);			
+				gr2.setValue('connection_test_status_at_start',connectionTestStatus);
+				gr2.setWorkflow(false);
+				gr2.update();	
+			}
+/*			
+			if (connectionTestStatus == 'Sent' && setupSysID2.length > 0 && timeoutAt.length > 0) {
+				var timeoutAt2 = new GlideDateTime(timeoutAt);
+				var inPast = dateTimeIsInThePast(timeoutAt2);
+				if (inPast == false) {				
+					var cnt = 0;
+					while(inPast == false && timeoutEndedEarly == false) {
+						sleep(1000); // Sleep for 1 second		
+						inPast = dateTimeIsInThePast(timeoutAt2);
+						if (inPast == false) {
+							connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2);
+							if (connectionTestStatus != 'Sent') {
+								timeoutEndedEarly = true;				
+							}		
+							cnt++;
+						}
+						else {
+							timeoutExpired = true;
+						}
+					} // while
+				}
+			} //if (connectionTestStatus == 'Sent'
+			
+			connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2,script);
+*/
+			
+			//Wip up a new gr3 - this is because we have multiple streams running at the same time 
+			//One process to perform the test and this process to abort it. Need to ensure that we 
+			//do not have stale data.
+/*			
+			var gr3 = new GlideRecord(queueTable);
+			gr3.addQuery('sys_id',sysID);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('connection_test_status_at_end',connectionTestStatus);
+				gr3.setValue('timeout_expired',timeoutExpired);
+				gr3.setValue('timeout_ended_early',timeoutEndedEarly);		
+				var endedAt = new GlideDateTime();
+				gr3.setValue('timeout_ended_at',endedAt);
+				gr3.setWorkflow(false);
+				gr3.update();			
+			}
+*/			
+			if (timeoutEndedEarly == false && timeoutExpired) {
+				//TIMED OUT
+				setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID2,script);
+				
+				//Re-read the record to double check that timeout_expired was updated in the record.
+				/*
+				var gr2 = new GlideRecord(queueTable);
+				gr2.addQuery('sys_id',sysID);
+				gr2.addQuery('timeout_expired',true);
+				gr2.setLimit(1);	
+				gr2.query();
+				if (gr2.next()) {
+					setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID2,script);
+				}
+				*/
+			}
+		} //if (gotConnectionTest == true) {
+
+		var completedAt = new GlideDateTime();
+		
+		//Wip up a new gr4 - this is because we have multiple streams running at the same time 
+		//One process to perform the test and this process to abort it. Need to ensure that we 
+		//do not have stale data.
+		var gr4 = new GlideRecord(queueTable);
+		gr4.addQuery('sys_id',sysID);
+		gr4.query();
+		if (gr4.next()) {				
+			gr4.setValue('completed_at',completedAt);
+			gr4.setValue('processed',true);
+			gr4.setWorkflow(false);
+			gr4.update();	
+		}
+	}
+	
+})(current, previous);
+
+function sleep(ms) {
+	// 1000ms = 1 second 
+	// 10000ms = 10 seconds
+	var unixtime_ms = new Date().getTime();
+	while(new Date().getTime() < unixtime_ms + ms) 
+	{
+		var a = 1;
+	}
+}
+
+function dateTimeIsInThePast(timeoutAt) {
+	rtn = false;
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.dateTimeIsInThePast(timeoutAt);
+	return rtn;
+}
+
+function checkConnectionTestRecordExists(connectionTestSysID) {
+	rtn = false;
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.checkConnectionTestRecordExists(connectionTestSysID);
+	return rtn;	
+}
+
+function getConnectionTestRecordStatus(connectionTestSysID,script) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var status = si.getConnectionTestRecordStatus(connectionTestSysID,script);
+	return status;		
+}
+
+function setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	si.setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script);	
+}
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-22 17:14:59</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>c2e6a823dbc614504f29252b13961995</sys_id>
+        <sys_mod_count>23</sys_mod_count>
+        <sys_name>Queue Connection Test Timeout - Aync</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_c2e6a823dbc614504f29252b13961995</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-23 15:37:20</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="DELETE" query="documentkey=c2e6a823dbc614504f29252b13961995"/>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_c2e6a823dbc614504f29252b13961995</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script"&gt;&lt;sys_script action="INSERT_OR_UPDATE"&gt;&lt;abort_action&gt;false&lt;/abort_action&gt;&lt;access&gt;package_private&lt;/access&gt;&lt;action_delete&gt;false&lt;/action_delete&gt;&lt;action_insert&gt;true&lt;/action_insert&gt;&lt;action_query&gt;false&lt;/action_query&gt;&lt;action_update&gt;false&lt;/action_update&gt;&lt;active&gt;false&lt;/active&gt;&lt;add_message&gt;false&lt;/add_message&gt;&lt;advanced&gt;true&lt;/advanced&gt;&lt;change_fields&gt;false&lt;/change_fields&gt;&lt;client_callable&gt;false&lt;/client_callable&gt;&lt;collection&gt;x_tekso_twxapp01_queue_connection_test_timeout&lt;/collection&gt;&lt;condition/&gt;&lt;description/&gt;&lt;execute_function&gt;false&lt;/execute_function&gt;&lt;filter_condition/&gt;&lt;is_rest&gt;false&lt;/is_rest&gt;&lt;message/&gt;&lt;name&gt;Queue Connection Test Timeout - Aync&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;priority&gt;100&lt;/priority&gt;&lt;rest_method/&gt;&lt;rest_method_text/&gt;&lt;rest_service/&gt;&lt;rest_service_text/&gt;&lt;rest_variables/&gt;&lt;role_conditions/&gt;&lt;script&gt;&lt;![CDATA[(function executeRule(current, previous /*null when async*/) {
+	
+	var sysID = current.sys_id;
+	
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	var script = 'BR Queue Connection Test Timeout - Aync';
+	
+	var timeoutExpired = false;
+	var timeoutEndedEarly = false;
+	
+	var gr1 = new GlideRecordSecure(queueTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {
+		var connectionTestSysID = gr1.getValue('connection_test_record_sys_id') || '';	
+		var connectionTestSysID2 = connectionTestSysID.toString();
+
+		var setupSysID = gr1.getValue('setup_record_sys_id') || '';			
+		var setupSysID2 = setupSysID.toString();			
+		var timeoutAt = gr1.getValue('timeout_will_occur_at');
+	
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+
+		var gotConnectionTest = checkConnectionTestRecordExists(connectionTestSysID2);
+		if (gotConnectionTest == true) {
+			
+			var connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2);
+			
+			//Wip up a new gr2 - this is because we have multiple streams running at the same time 
+			//One process to perform the test and this process to abort it. Need to ensure that we 
+			//do not have stale data.
+			var gr2 = new GlideRecord(queueTable);
+			gr2.addQuery('sys_id',sysID);
+			gr2.query();
+			if (gr2.next()) {				
+				gr2.setValue('got_connection_test_record',true);			
+				gr2.setValue('connection_test_status_at_start',connectionTestStatus);
+				gr2.setWorkflow(false);
+				gr2.update();	
+			}
+/*			
+			if (connectionTestStatus == 'Sent' &amp;&amp; setupSysID2.length &gt; 0 &amp;&amp; timeoutAt.length &gt; 0) {
+				var timeoutAt2 = new GlideDateTime(timeoutAt);
+				var inPast = dateTimeIsInThePast(timeoutAt2);
+				if (inPast == false) {				
+					var cnt = 0;
+					while(inPast == false &amp;&amp; timeoutEndedEarly == false) {
+						sleep(1000); // Sleep for 1 second		
+						inPast = dateTimeIsInThePast(timeoutAt2);
+						if (inPast == false) {
+							connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2);
+							if (connectionTestStatus != 'Sent') {
+								timeoutEndedEarly = true;				
+							}		
+							cnt++;
+						}
+						else {
+							timeoutExpired = true;
+						}
+					} // while
+				}
+			} //if (connectionTestStatus == 'Sent'
+			
+			connectionTestStatus = getConnectionTestRecordStatus(connectionTestSysID2,script);
+*/
+			
+			//Wip up a new gr3 - this is because we have multiple streams running at the same time 
+			//One process to perform the test and this process to abort it. Need to ensure that we 
+			//do not have stale data.
+/*			
+			var gr3 = new GlideRecord(queueTable);
+			gr3.addQuery('sys_id',sysID);
+			gr3.query();
+			if (gr3.next()) {
+				gr3.setValue('connection_test_status_at_end',connectionTestStatus);
+				gr3.setValue('timeout_expired',timeoutExpired);
+				gr3.setValue('timeout_ended_early',timeoutEndedEarly);		
+				var endedAt = new GlideDateTime();
+				gr3.setValue('timeout_ended_at',endedAt);
+				gr3.setWorkflow(false);
+				gr3.update();			
+			}
+*/			
+			if (timeoutEndedEarly == false &amp;&amp; timeoutExpired) {
+				//TIMED OUT
+				setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID2,script);
+				
+				//Re-read the record to double check that timeout_expired was updated in the record.
+				/*
+				var gr2 = new GlideRecord(queueTable);
+				gr2.addQuery('sys_id',sysID);
+				gr2.addQuery('timeout_expired',true);
+				gr2.setLimit(1);	
+				gr2.query();
+				if (gr2.next()) {
+					setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID2,script);
+				}
+				*/
+			}
+		} //if (gotConnectionTest == true) {
+
+		var completedAt = new GlideDateTime();
+		
+		//Wip up a new gr4 - this is because we have multiple streams running at the same time 
+		//One process to perform the test and this process to abort it. Need to ensure that we 
+		//do not have stale data.
+		var gr4 = new GlideRecord(queueTable);
+		gr4.addQuery('sys_id',sysID);
+		gr4.query();
+		if (gr4.next()) {				
+			gr4.setValue('completed_at',completedAt);
+			gr4.setValue('processed',true);
+			gr4.setWorkflow(false);
+			gr4.update();	
+		}
+	}
+	
+})(current, previous);
+
+function sleep(ms) {
+	// 1000ms = 1 second 
+	// 10000ms = 10 seconds
+	var unixtime_ms = new Date().getTime();
+	while(new Date().getTime() &lt; unixtime_ms + ms) 
+	{
+		var a = 1;
+	}
+}
+
+function dateTimeIsInThePast(timeoutAt) {
+	rtn = false;
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.dateTimeIsInThePast(timeoutAt);
+	return rtn;
+}
+
+function checkConnectionTestRecordExists(connectionTestSysID) {
+	rtn = false;
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.checkConnectionTestRecordExists(connectionTestSysID);
+	return rtn;	
+}
+
+function getConnectionTestRecordStatus(connectionTestSysID,script) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var status = si.getConnectionTestRecordStatus(connectionTestSysID,script);
+	return status;		
+}
+
+function setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	si.setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script);	
+}
+]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-07-22 17:14:59&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;c2e6a823dbc614504f29252b13961995&lt;/sys_id&gt;&lt;sys_mod_count&gt;23&lt;/sys_mod_count&gt;&lt;sys_name&gt;Queue Connection Test Timeout - Aync&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_c2e6a823dbc614504f29252b13961995&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-23 15:37:20&lt;/sys_updated_on&gt;&lt;template/&gt;&lt;when&gt;async&lt;/when&gt;&lt;/sys_script&gt;&lt;sys_translated_text action="delete_multiple" query="documentkey=c2e6a823dbc614504f29252b13961995"/&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>814948245</payload_hash>
+        <record_name>Queue Connection Test Timeout - Aync</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-23 15:37:20</sys_created_on>
+        <sys_id>77acddfb1b0e94101c6afd9f034bcb74</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1737c5262090000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-23 15:37:20</sys_updated_on>
+        <type>Business Rule</type>
+        <update_guid>3facddfbcd0e94106a58cc76e92d6d73</update_guid>
+        <update_guid_history>3facddfbcd0e94106a58cc76e92d6d73:814948245,f2a4c5779bca94103ef84fdefc3b7a8f:1336067974,706f7c3386ca9410950591bda040b9d2:-1324967194,7c5eb4331aca94109d41b297c4a2edff:1336067974,59aa7cfbe18a94102ce71aa855a4f2b6:1764062141,4b497cfbd38a9410cd46bb23fae7257b:-790786533,93c078f3078a94109229533a2b884d5f:-440111987,0d8a9c33024a94108213382d4a32619c:1065424559,69a6943f9c0a94108e456e2035e31c3d:1622833539,1665143f360a94105ce7205f950e008e:1539484960,2762d07b130a941010b49a84935343ec:-182189825,754c48f31e0a9410d7748a37129083e6:-1089913724,7e7808bbfbc694101f6ebb8e60c6525d:-1847005820,2ecfbf2b0cc69410612bfdc364e8ed25:1229608429,a843ad27058a1450c858d86f03a77dd8:-150550395,f60f5563b58a1450c90faa54c2fbcdd4:1283334442,7e22fc2f85c61450e6b0730a7b3b8313:1589930693,0230f0ebaac61450b42062f3e50d6096:-397126124,84dc642baac61450daf245bead45e1d3:-2110150517,73cb64e7f9c61450ab075d50a9fdf05b:953218788,4dca60a786c6145047c51add35ed7dd6:1371954192,2b6a60a75fc6145037c2da364252d17b:-207297796,181a2467a0c61450d799e04ab4c006b6:-563216875,d079e8a339c614505a72ef6fb0892d93:348918151</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-23 17:32:35</sys_created_on>
+        <sys_db_object display_value="" name="sys_script">sys_script</sys_db_object>
+        <sys_id>254f3f011b324870ae777e80f31f3900</sys_id>
+        <sys_metadata>c2e6a823dbc614504f29252b13961995</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Queue Connection Test Timeout - Aync</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Queue Connection Test Timeout">39f3282fdb8614504f29252b139619a8</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_c2e6a823dbc614504f29252b13961995</sys_update_name>
+        <sys_update_version display_value="sys_script_c2e6a823dbc614504f29252b13961995">77acddfb1b0e94101c6afd9f034bcb74</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-23 17:32:35</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

@@ -52,6 +52,8 @@
             </choice>
         </element>
         <element label="Most Recent Valid uControl URL" max_length="100" name="most_recent_valid_ucontrol_url" type="string"/>
+        <element default="14" label="Number Of Days To Retain Data" max_length="40" name="number_of_days_to_retain_data" type="integer"/>
+        <element default="2" label="Number Of Days To Retain Empty Logs" max_length="40" name="number_of_days_to_retain_empty_logs" type="integer"/>
         <element default="0" label="Number Of Pending Records" max_length="40" name="number_of_pending_records" type="integer"/>
         <element default="0" hint="Will be calculated automatically when the system connects to uControl" label="Number Of Supported Classes" max_length="40" name="number_of_supported_classes" type="integer"/>
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>

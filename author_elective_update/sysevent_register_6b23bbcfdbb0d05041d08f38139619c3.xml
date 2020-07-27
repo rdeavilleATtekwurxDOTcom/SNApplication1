@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="DELETE">
+        <caller_access/>
+        <description/>
+        <event_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</event_name>
+        <fired_by/>
+        <queue/>
+        <suffix>OBSOLETE  - senddatatoucontrol</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-05-20 15:28:03</sys_created_on>
+        <sys_id>6b23bbcfdbb0d05041d08f38139619c3</sys_id>
+        <sys_mod_count>4</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_register_6b23bbcfdbb0d05041d08f38139619c3</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-21 20:35:33</sys_updated_on>
+        <table>x_tekso_twxapp01_scheduled_job_log</table>
+    </sysevent_register>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_register_6b23bbcfdbb0d05041d08f38139619c3</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description/><event_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</event_name><fired_by/><queue/><suffix>OBSOLETE  - senddatatoucontrol</suffix><sys_class_name>sysevent_register</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-05-20 15:28:03</sys_created_on><sys_id>6b23bbcfdbb0d05041d08f38139619c3</sys_id><sys_mod_count>4</sys_mod_count><sys_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sysevent_register_6b23bbcfdbb0d05041d08f38139619c3</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-21 20:35:33</sys_updated_on><table>x_tekso_twxapp01_scheduled_job_log</table></sysevent_register></record_update>]]></payload>
+        <payload_hash>1874645271</payload_hash>
+        <record_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-21 20:35:33</sys_created_on>
+        <sys_id>e0cd889b1b0a14101c6afd9f034bcb46</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1737316b0010000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-21 20:35:33</sys_updated_on>
+        <type>Event Registration</type>
+        <update_guid>a4cd449bbc0a14101d102a5a8c12f3e6</update_guid>
+        <update_guid_history>a4cd449bbc0a14101d102a5a8c12f3e6:1874645271,3c73cc5f2a8614108155a9116c22a3dc:-1987002960,d239c919ec86d810438d0297e9809c6c:-862702475,20e5c5954686d810ebadb64e3e4ad6c1:-286765788,afc47343b4f0d0508a093ed394efe192:-862702475</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-24 08:46:13</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_register">sysevent_register</sys_db_object>
+        <sys_id>076898a39b8e42df91983102376a4731</sys_id>
+        <sys_metadata>6b23bbcfdbb0d05041d08f38139619c3</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE  - senddatatou</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Scheduled Job Log">d217697adbf8505041d08f3813961917</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_register_6b23bbcfdbb0d05041d08f38139619c3</sys_update_name>
+        <sys_update_version display_value="sysevent_register_6b23bbcfdbb0d05041d08f38139619c3">e0cd889b1b0a14101c6afd9f034bcb46</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-24 08:46:13</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

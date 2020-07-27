@@ -20,6 +20,8 @@
         <element label="SH Inserted By Script" max_length="100" name="sh_inserted_by_script" type="string"/>
         <element label="SH Last Button Clicked" max_length="40" name="sh_last_button_clicked" type="string"/>
         <element default="0" label="SH Max Retries" max_length="40" name="sh_max_retries" type="integer"/>
+        <element default="0" label="SH Number Of Days To Retain Data" max_length="40" name="sh_number_of_days_to_retain_data" type="integer"/>
+        <element default="0" label="SH Number Of Days To Retain Empty Logs" max_length="40" name="sh_number_of_days_to_retain_empty_logs" type="integer"/>
         <element default="0" label="SH Number Of Supported Classes" max_length="40" name="sh_number_of_supported_classes" type="integer"/>
         <element label="SH Previous CMDB Tracking" max_length="40" name="sh_previous_cmdb_tracking" type="string"/>
         <element label="SH Previous CMDB Tracking Error Details" max_length="100" name="sh_previous_cmdb_tracking_error_details" type="string"/>
@@ -37,6 +39,8 @@
         <element label="SH Previous Delete Criteria" max_length="40" name="sh_previous_delete_criteria" type="integer"/>
         <element label="SH Previous Last Button Clicked" max_length="40" name="sh_previous_last_button_clicked" type="string"/>
         <element default="0" label="SH Previous Max Retries" max_length="40" name="sh_previous_max_retries" type="integer"/>
+        <element default="0" label="SH Previous Number Of Days To Retain Data" max_length="40" name="sh_previous_number_of_days_to_retain_data" type="integer"/>
+        <element default="0" label="SH Previous Number Of Days To Retain Empty Logs" max_length="40" name="sh_previous_number_of_days_to_retain_empty_logs" type="integer"/>
         <element default="0" label="SH Previous Number Of Supported Classes" max_length="40" name="sh_previous_number_of_supported_classes" type="integer"/>
         <element label="SH Previous Start Sending Requested" max_length="40" name="sh_previous_start_sending_requested" type="boolean"/>
         <element label="SH Previous Start Sending Requested At" max_length="40" name="sh_previous_start_sending_requested_at" type="glide_date_time"/>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sysevent_script_action">
+    <sysevent_script_action action="DELETE">
+        <active>false</active>
+        <condition_script/>
+        <description/>
+        <event_name>alm_transfer_order_line_subtask.escalati</event_name>
+        <name>OBSOLETE - TestConnectionTimeOut</name>
+        <order>100</order>
+        <script><![CDATA[// Event x_tekso_twxapp01.testconnectiontimeout is triggered by BR - Connection Test - Insert
+
+TestConnectionTimeOutScriptAction();
+
+function TestConnectionTimeOutScriptAction() {
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); // gs.getUserName()
+
+	var script = 'SA TestConnectionTimeOut';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnectionTimeOut - Started');
+	
+	//var setupTable = 'x_tekso_twxapp01_setup';
+	var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+	
+	// current should be the x_tekso_twxapp01_connection_test record
+	var sysID = current.sys_id;
+	
+	// Get the connection test record
+	var gr1 = new GlideRecordSecure(connectionTestTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.query();
+	if (gr1.next()) {
+		// Got the connection test record
+		//var status = gr1.getValue('status') || '';
+		var setupRecord = gr1.getValue('setup_record') || '';
+		
+		var timedOutBy = 'Event x_tekso_twxapp01.testconnectiontimeout';					
+		var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+		si.checkForTimeout(sysID,setupRecord,timedOutBy);
+	
+	} // if (gr1.next()) 
+
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnectionTimeOut - Finished');
+}
+]]></script>
+        <synchronous>false</synchronous>
+        <sys_class_name>sysevent_script_action</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-20 14:56:11</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>329261a7dbe34c104f29252b139619a2</sys_id>
+        <sys_mod_count>37</sys_mod_count>
+        <sys_name>OBSOLETE - TestConnectionTimeOut</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-23 10:08:32</sys_updated_on>
+    </sysevent_script_action>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sysevent_script_action"&gt;&lt;sysevent_script_action action="INSERT_OR_UPDATE"&gt;&lt;active&gt;false&lt;/active&gt;&lt;condition_script/&gt;&lt;description/&gt;&lt;event_name&gt;alm_transfer_order_line_subtask.escalati&lt;/event_name&gt;&lt;name&gt;OBSOLETE - TestConnectionTimeOut&lt;/name&gt;&lt;order&gt;100&lt;/order&gt;&lt;script&gt;&lt;![CDATA[// Event x_tekso_twxapp01.testconnectiontimeout is triggered by BR - Connection Test - Insert
+
+TestConnectionTimeOutScriptAction();
+
+function TestConnectionTimeOutScriptAction() {
+	//Note: parm not param
+	//gs DOT info('event.parm1: ' + event.parm1); // gs.getUserID()
+	//gs DOT info('event.parm2: ' + event.parm2); // gs.getUserName()
+
+	var script = 'SA TestConnectionTimeOut';
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnectionTimeOut - Started');
+	
+	//var setupTable = 'x_tekso_twxapp01_setup';
+	var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+	
+	// current should be the x_tekso_twxapp01_connection_test record
+	var sysID = current.sys_id;
+	
+	// Get the connection test record
+	var gr1 = new GlideRecordSecure(connectionTestTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.query();
+	if (gr1.next()) {
+		// Got the connection test record
+		//var status = gr1.getValue('status') || '';
+		var setupRecord = gr1.getValue('setup_record') || '';
+		
+		var timedOutBy = 'Event x_tekso_twxapp01.testconnectiontimeout';					
+		var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+		si.checkForTimeout(sysID,setupRecord,timedOutBy);
+	
+	} // if (gr1.next()) 
+
+	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
+	new x_tekso_twxapp01.DebugLogging().message(script,2,'SA TestConnectionTimeOut - Finished');
+}
+]]&gt;&lt;/script&gt;&lt;synchronous&gt;false&lt;/synchronous&gt;&lt;sys_class_name&gt;sysevent_script_action&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-03-20 14:56:11&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;329261a7dbe34c104f29252b139619a2&lt;/sys_id&gt;&lt;sys_mod_count&gt;37&lt;/sys_mod_count&gt;&lt;sys_name&gt;OBSOLETE - TestConnectionTimeOut&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sysevent_script_action_329261a7dbe34c104f29252b139619a2&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-23 10:08:32&lt;/sys_updated_on&gt;&lt;/sysevent_script_action&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-1436352574</payload_hash>
+        <record_name>OBSOLETE - TestConnectionTimeOut</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-23 10:08:32</sys_created_on>
+        <sys_id>5361d8f71b0a94101c6afd9f034bcb16</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1737b255a7b0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-23 10:08:32</sys_updated_on>
+        <type>Script Action</type>
+        <update_guid>9b61d8f72d0a9410b53006762d954515</update_guid>
+        <update_guid_history>9b61d8f72d0a9410b53006762d954515:-1436352574,78cd32c9fd4a981049805d039f055530:-894299515,186f02740a8a58108ada4fe720f84497:-1208847935,d37db174214a5810c40b00d61d97bae0:-2087862313,d41219b6a8e95810347be023554a0fcd:1109431524,0c411d76c3e9581094518e80b0283d11:1638598455,7bc280be81a55810fdbbe55010c756b0:2075467465,f034b36251a55810611a28652fdd6e3b:894019780,d9137beeef65581038abc221418d5074:465944960,ef8fef2eca6558101bbb32df1a097760:-238502350,ef710826f36918107937bdac48a4c858:1789637883,31de3f1237691810093813b0afe35c57:1121728010,83913b921e2918104eef8d2f09800849:1789637883,4c86cf1adc6518105fc6ef27926ed988:-1973821225,4b93a023d0995810795e4808b06260f3:-852620937,d2a2a4a3c399581082a499ede7eea3e3:-48237343,2adb262ff3451490dacde8a5ceada51e:-211082434,7b9abbf03c8450104179bf73a8b72994:1514864606,50d676b0bfbb80507460c21f4d60ca2b:1169241295,74d118a070b300507152964a46cad9d2:1864945900,c02150a095b30050af225b1d8aa13c95:-1812273460,1d4e402074b30050b201bfd11de86d40:-1371521178,45f1c064ec730050789168184f8d8ee8:-102149865,93d0c8a060730050435bcee68dd80851:2028222118,647048a089730050feff461b0ff1bca6:831637495,48f9fb5c5d3300504335881e5a0038f7:346601478,57b8731c583300509dbbb5d94412261e:1565307386,34e633d8a6330050d7de20eb1b2b6ff6:-1009682694,85ce235445330050cd7963d9fa803999:-86237579,bc587de7fc274c10e935ff2a59e84cb5:-98455167,856e2daf2ee34c10ca589ee72b531c1f:-2081567105,c6bd6daf31e34c10d949998cfd20c615:1579094537,4d9c2d6fd0e34c10250de7e8380f2b1e:-1804579484,ccfba56fbfe34c1065be44f924b888e1:-1026072636,a64bed2f6ee34c10e0f90202bf9b8163:-797558842,41aa252f6de34c105eb5e300e5447474:274028949,c61aade7ece34c10680a3508e318a3e8:-9761469,528425a344e34c109ea5c5cf4f99a47f:-2010985404</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-24 08:45:44</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_script_action">sysevent_script_action</sys_db_object>
+        <sys_id>244de6e72a1d4e4ea9986c46023ee204</sys_id>
+        <sys_metadata>329261a7dbe34c104f29252b139619a2</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>OBSOLETE - TestConnectionTimeOut</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_script_action_329261a7dbe34c104f29252b139619a2</sys_update_name>
+        <sys_update_version display_value="sysevent_script_action_329261a7dbe34c104f29252b139619a2">5361d8f71b0a94101c6afd9f034bcb16</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-24 08:45:44</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

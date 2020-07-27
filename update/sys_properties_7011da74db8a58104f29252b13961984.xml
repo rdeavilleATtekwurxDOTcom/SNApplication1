@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
     <sys_properties action="INSERT_OR_UPDATE">
         <choices/>
-        <description>Used for testing to simulate a connection timeout. 1 = Force connection timeout. 0 = Do not force a connection timeout</description>
+        <description>Used for testing to simulate a connection timeout. 1 = Force connection timeout. 0 = Do not force a connection timeout&#13;
+If active -- Sets the connection timeout to 1 second so that it will fail. Default = 0</description>
         <ignore_cache>false</ignore_cache>
         <is_private>false</is_private>
         <name>x_tekso_twxapp01.testing.forceconnectiontimeout</name>
@@ -11,14 +12,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-14 11:46:17</sys_created_on>
         <sys_id>7011da74db8a58104f29252b13961984</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>x_tekso_twxapp01.testing.forceconnectiontimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_properties_7011da74db8a58104f29252b13961984</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-14 12:50:06</sys_updated_on>
+        <sys_updated_on>2020-07-27 20:16:58</sys_updated_on>
         <type>integer</type>
         <value>0</value>
         <write_roles/>

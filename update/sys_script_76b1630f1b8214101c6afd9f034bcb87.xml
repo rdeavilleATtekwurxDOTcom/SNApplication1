@@ -27,7 +27,20 @@
         <rest_service_text/>
         <rest_variables/>
         <role_conditions/>
-        <script><![CDATA[(function executeRule(current, previous /*null when async*/) {
+        <script><![CDATA[/*
+BR is triggered by SJ Process Responses From uControl
+
+						var gr3 = new GlideRecordSecure(inboundTable);
+						gr3.initialize();
+						gr3.setValue('rest_data_record_sys_id',dataSysID);
+						gr3.setValue('response_received_at',dtReceived);
+						gr3.setValue('response_from_ucontrol',response);
+						gr3.setValue('ecc_queue_record_sys_id',ecc_queue_sys_id);
+						gr3.setValue('scheduled_job2_log_record_sys_id',job2sysID);
+						gr3.insert();	
+						
+*/
+(function executeRule(current, previous /*null when async*/) {
 
 	var sysID = current.sys_id;
 
@@ -70,7 +83,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>76b1630f1b8214101c6afd9f034bcb87</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Queue Inbound Response - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -78,7 +91,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_76b1630f1b8214101c6afd9f034bcb87</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 11:45:03</sys_updated_on>
+        <sys_updated_on>2020-07-27 10:09:16</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

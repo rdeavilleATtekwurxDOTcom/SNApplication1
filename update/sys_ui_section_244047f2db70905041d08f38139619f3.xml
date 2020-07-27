@@ -1078,6 +1078,20 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>data_processed</element>
+            <position>77</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-27 10:23:30</sys_created_on>
+            <sys_id>ad3b3845db1a58504f29252b1396191a</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_scheduled_job_log" sys_domain="global" view="Default view">244047f2db70905041d08f38139619f3</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-27 10:23:30</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption/>
             <header>false</header>

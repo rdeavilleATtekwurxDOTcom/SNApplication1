@@ -4,6 +4,7 @@
         <element label="Background Job Started At" max_length="40" name="background_job_started_at" type="glide_date_time"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
         <element label="Connection Test Requested By Job" max_length="40" name="connection_test_requested_by_job" type="boolean"/>
+        <element label="Data Processed" max_length="40" name="data_processed" type="boolean"/>
         <element label="Data Sent Deletes Per Class" max_length="4000" name="data_sent_deletes_per_class" type="string"/>
         <element label="Data Sent Summary" max_length="40" name="data_sent_summary" type="string"/>
         <element label="Data Sent Updates Per Class" max_length="4000" name="data_sent_updates_per_class" type="string"/>

@@ -18,7 +18,7 @@
 var ClientConnectionTestTimeout = Class.create();
 ClientConnectionTestTimeout.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 	
-	checkForTimeout: function() {
+	clientCheckForTimeout: function() {
 		// sysID from sysparm_sys_id
 		var sysID = this.getParameter('sysparm_sys_id');
 		var setupTable = 'x_tekso_twxapp01_setup';
@@ -38,8 +38,7 @@ ClientConnectionTestTimeout.prototype = Object.extendsObject(global.AbstractAjax
 				if (gr2.next()) {
 					var timedOutBy = 'SI ClientConnectionTestTimeout';					
 					var si = new x_tekso_twxapp01.ConnectionTestTimeout();
-					si.checkForTimeout(connectionTestLink2,sysID,timedOutBy);
-
+					si.setConnectionTestRecordTimeoutExpiredIfOverdue(connectionTestLink2,sysID,timedOutBy);
 				} // if (gr2.next()) {
 			} // if (connectionTestLink2.length > 0) {		
 		} // if (gr1.next())
@@ -51,13 +50,13 @@ ClientConnectionTestTimeout.prototype = Object.extendsObject(global.AbstractAjax
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-24 17:37:53</sys_created_on>
         <sys_id>976cd0eadba9181041d08f381396192e</sys_id>
-        <sys_mod_count>33</sys_mod_count>
+        <sys_mod_count>34</sys_mod_count>
         <sys_name>ClientConnectionTestTimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_976cd0eadba9181041d08f381396192e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-22 16:28:53</sys_updated_on>
+        <sys_updated_on>2020-07-23 10:06:08</sys_updated_on>
     </sys_script_include>
 </record_update>

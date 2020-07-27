@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register">
+    <sysevent_register action="DELETE">
+        <caller_access/>
+        <description>BR Connection Test - Insert</description>
+        <event_name>x_tekso_twxapp01.OBSOLETE - testconnecti</event_name>
+        <fired_by>BR Connection Test - Insert</fired_by>
+        <queue/>
+        <suffix>OBSOLETE - testconnection</suffix>
+        <sys_class_name>sysevent_register</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-03-18 14:30:31</sys_created_on>
+        <sys_id>b91b0ff6db2fc81041d08f381396199e</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE - testconnecti</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sysevent_register_b91b0ff6db2fc81041d08f381396199e</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-22 12:12:51</sys_updated_on>
+        <table/>
+    </sysevent_register>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sysevent_register_b91b0ff6db2fc81041d08f381396199e</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sysevent_register"><sysevent_register action="INSERT_OR_UPDATE"><caller_access/><description>BR Connection Test - Insert</description><event_name>x_tekso_twxapp01.OBSOLETE - testconnecti</event_name><fired_by>BR Connection Test - Insert</fired_by><queue/><suffix>OBSOLETE - testconnection</suffix><sys_class_name>sysevent_register</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-03-18 14:30:31</sys_created_on><sys_id>b91b0ff6db2fc81041d08f381396199e</sys_id><sys_mod_count>2</sys_mod_count><sys_name>x_tekso_twxapp01.OBSOLETE - testconnecti</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sysevent_register_b91b0ff6db2fc81041d08f381396199e</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-22 12:12:51</sys_updated_on><table/></sysevent_register></record_update>]]></payload>
+        <payload_hash>-301738534</payload_hash>
+        <record_name>x_tekso_twxapp01.OBSOLETE - testconnecti</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-22 12:12:51</sys_created_on>
+        <sys_id>1e44eb5bdbc214504f29252b139619cf</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>1737670ce310000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-22 12:12:51</sys_updated_on>
+        <type>Event Registration</type>
+        <update_guid>5644eb5b45c21450dfa23bfdcba876cf</update_guid>
+        <update_guid_history>5644eb5b45c21450dfa23bfdcba876cf:-301738534,6a2da488e0d41c10090e6cabe2d05186:1391395524,ae7b43f6822fc8107935475f241d767f:1961051236</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-24 08:47:06</sys_created_on>
+        <sys_db_object display_value="" name="sysevent_register">sysevent_register</sys_db_object>
+        <sys_id>22969f13b4c74d589d2da907c3651d04</sys_id>
+        <sys_metadata>b91b0ff6db2fc81041d08f381396199e</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>x_tekso_twxapp01.OBSOLETE - testconnecti</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sysevent_register_b91b0ff6db2fc81041d08f381396199e</sys_update_name>
+        <sys_update_version display_value="sysevent_register_b91b0ff6db2fc81041d08f381396199e">1e44eb5bdbc214504f29252b139619cf</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-24 08:47:06</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

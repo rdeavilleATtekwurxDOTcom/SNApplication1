@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_queue_connection_test_timeout</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Queue Connection Test Timeout - Async</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[// There are two process which are checking for a connection timeout - the ui page which is using a timer
+// to check if a connection is overdue. The other method is this BR Queue Connection Test Timeout - Async
+
+(function executeRule(current, previous /*null when async*/) {
+	
+	var sysID = current.sys_id;
+	var sysID2 = sysID.toString();
+	
+	var setupSysID = '';
+	var setupSysID2 = '';
+	var connectionTestSysID = '';
+	var connectionTestSysID2 = '';
+	
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	var script = 'BR Queue Connection Test Timeout - Async';
+	// HAS TO BE ASYNC
+	
+	var alreadyExpired = false;
+	var secs = 0;
+	var sleep = true;
+	
+	var gr1 = new GlideRecordSecure(queueTable);
+	gr1.addQuery('sys_id',sysID2);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {
+		connectionTestSysID = gr1.getValue('connection_test_record_sys_id') || '';	
+		connectionTestSysID2 = connectionTestSysID.toString();
+
+		setupSysID = gr1.getValue('setup_record_sys_id') || '';			
+		setupSysID2 = setupSysID.toString();			
+		var timeoutAt = gr1.getValue('timeout_will_occur_at');
+		var timeoutAt2 = new GlideDateTime(timeoutAt);
+		
+		//Add on 2 more seconds
+		timeoutAt2.addSeconds(2);
+		
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+
+		var now = new GlideDateTime();		
+		secs = numberOfSecondsBetweenTwoDates(now,timeoutAt2);
+	}
+	
+	if (secs < 0) {
+		//Already expired
+		alreadyExpired = true;
+		sleep = false;
+		setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID2,connectionTestSysID2,script);
+	}
+	else { 	
+		var status = checkIfConnectionTestRecordStatusIsFinished(connectionTestSysID2);
+		if (status == true) {
+			sleep = false;
+			timeoutEndedEarly(sysID2);					
+			setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID2,connectionTestSysID2,script);
+		}
+		else {
+			var response = checkIfResponseReceivedIsTrue(sysID2);		
+			if (response == true) {
+				sleep = false;
+				timeoutEndedEarly(sysID2);			
+				setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID2,connectionTestSysID2,script);
+			}
+		}
+	}
+	
+	//Wip up a new gr2 - this is because we have multiple streams running at the same time 
+	//One process to perform the test and this process to abort it. Need to ensure that we 
+	//do not have stale data.	
+	var gr2 = new GlideRecordSecure(queueTable);
+	gr2.addQuery('sys_id',sysID2);
+	gr2.query();
+	if (gr2.next()) {
+		gr2.setValue('timeout_expired_reached_before_start',alreadyExpired);
+		gr2.setValue('number_of_seconds_before_timeout_expired',secs);
+		gr2.setWorkflow(false);
+		gr2.update();
+	}
+		
+	if (sleep == true) {		
+		sleepUntil(timeoutAt2,sysID2,connectionTestSysID2);
+
+		//Wip up a new gr3 - this is because we have multiple streams running at the same time 
+		//One process to perform the test and this process to abort it. Need to ensure that we 
+		//do not have stale data.
+		var wokeUpAt = new GlideDateTime();
+		var gr3 = new GlideRecordSecure(queueTable);
+		gr3.addQuery('sys_id',sysID2);
+		gr3.query();
+		if (gr3.next()) {
+			gr3.setValue('woke_up_at',wokeUpAt);
+			gr3.setWorkflow(false);
+			gr3.update();
+		}			
+	}
+	
+	//Wip up a new gr4 - this is because we have multiple streams running at the same time 
+	//One process to perform the test and this process to abort it. Need to ensure that we 
+	//do not have stale data.
+	var gr4 = new GlideRecordSecure(queueTable);
+	gr4.addQuery('sys_id',sysID2);
+	//Only if response_received = false
+	gr4.addQuery('response_received',false); // Set to true by OutboundRest().processTestConnection
+	gr4.query();
+	if (gr4.next()) {		
+		gr4.setValue('timeout_expired',true);
+		gr4.setWorkflow(false);
+		gr4.update();
+		setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID2,connectionTestSysID2,script);
+	}
+	
+	var completedAt = new GlideDateTime();
+
+	//Wip up a new gr5 - this is because we have multiple streams running at the same time 
+	//One process to perform the test and this process to abort it. Need to ensure that we 
+	//do not have stale data.
+	var gr5 = new GlideRecordSecure(queueTable);
+	gr5.addQuery('sys_id',sysID2);
+	gr5.query();
+	if (gr5.next()) {				
+		gr5.setValue('completed_at',completedAt);
+		gr5.setValue('processed',true);
+		gr5.setWorkflow(false);
+		gr5.update();	
+	}
+	
+})(current, previous);
+
+
+function sleepUntil(timeoutAt,sysID,connectionTestSysID) {
+		
+	var wakeUp = false;
+    var isPast = false;
+	
+	while(isPast == false && wakeUp == false) {
+		
+		//Sleep for 1 second
+		sleepMS(1000);	
+		
+		var status = checkIfConnectionTestRecordStatusIsFinished(connectionTestSysID);
+		if (status == true) {
+			timeoutEndedEarly(sysID);			
+			wakeUp = true;			
+		}
+		else {
+			var response = checkIfResponseReceivedIsTrue(sysID);		
+			if (response == true) {
+				timeoutEndedEarly(sysID);			
+				wakeUp = true;
+			}
+		}
+		isPast = dateTimeIsInThePast(timeoutAt);
+	}
+}
+
+function sleepMS(ms) {
+	// 1000ms = 1 second 
+	var unixtime_ms = new Date().getTime();
+	while(new Date().getTime() < unixtime_ms + ms) 
+	{
+		var a = 1;
+	}
+}
+
+function dateTimeIsInThePast(dt1) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.dateTimeIsInThePast(dt1);
+	return rtn;	
+}
+
+function numberOfSecondsBetweenTwoDates(dt1,dt2) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	var rtn = si.numberOfSecondsBetweenTwoDates(dt1,dt2);
+	return rtn;
+}
+
+function timeoutEndedEarly(sysID) {
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	var sysID2 = sysID.toString();
+	if (sysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);	
+		gr1.addQuery('sys_id',sysID2);
+		gr1.setLimit(1);		
+		gr1.query();
+		if (gr1.next()) {
+			gr1.setValue('timeout_ended_early',true);
+			gr1.setWorkflow(false);
+			gr1.update();
+		}
+	}
+}
+	
+function checkIfConnectionTestRecordStatusIsFinished(connectionTestSysID) {
+	var rtn = false;
+	var connectionTestSysID2 = connectionTestSysID.toString();
+	var connectionTestTable = 'x_tekso_twxapp01_connection_test';	
+	if (connectionTestSysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(connectionTestTable);
+		gr1.addQuery('sys_id',connectionTestSysID2);
+		gr1.setLimit(1);		
+		gr1.query();
+		if (gr1.next()) {
+			var status = gr1.getValue('status') || '';
+			var status2 = status.toString();
+			if (status2 == 'Processed' || status2 == 'Timeout Expired') {
+				rtn = true;
+			}
+		}
+	}
+	return rtn;
+}
+
+function checkIfResponseReceivedIsTrue(sysID) {
+	var rtn = false;
+	var queueTable = 'x_tekso_twxapp01_queue_connection_test_timeout';
+	var sysID2 = sysID.toString();
+	if (sysID2.length > 0) {
+		var gr1 = new GlideRecordSecure(queueTable);	
+		gr1.addQuery('sys_id',sysID2);
+		//Only if response_received = true
+		gr1.addQuery('response_received',true); // Set to true by OutboundRest().processTestConnection
+		gr1.setLimit(1);
+		gr1.query();
+		if (gr1.next()) {
+			rtn = true;
+		}
+	}
+	return rtn;
+}
+					
+function setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script) {
+	var si = new x_tekso_twxapp01.ConnectionTestTimeout();
+	si.setConnectionTestRecordTimeoutExpiredAndUpdateSetup(setupSysID,connectionTestSysID,script);	
+}
+
+
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-23 14:09:30</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>11b409731bca94101c6afd9f034bcb39</sys_id>
+        <sys_mod_count>34</sys_mod_count>
+        <sys_name>Queue Connection Test Timeout - Async</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_11b409731bca94101c6afd9f034bcb39</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-27 20:16:15</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=11b409731bca94101c6afd9f034bcb39"/>
+</record_update>

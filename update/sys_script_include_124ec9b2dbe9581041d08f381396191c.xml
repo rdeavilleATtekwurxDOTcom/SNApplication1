@@ -7,11 +7,9 @@
         <client_callable>false</client_callable>
         <description/>
         <name>ConnectionTestTimeout</name>
-        <script><![CDATA[// Example Calling new x_tekso_twxapp01.ConnectionTestTimeout().checkForTimeout(connTestSysID,setupSysID,timedOutBy);
-
-/* Example calling
+        <script><![CDATA[/* Example calling
 var si = new x_tekso_twxapp01.ConnectionTestTimeout();
-si.checkForTimeout(connTestSysID,setupSysID,timedOutBy);
+si.setConnectionTestRecordTimeoutExpiredIfOverdue(connTestSysID,setupSysID,timedOutBy);
 
 */
 	
@@ -43,7 +41,7 @@ ConnectionTestTimeout.prototype = {
 				var connTestSysID = gr2.getValue('sys_id') || '';
 				var connTestSysID2 = connTestSysID.toString();
 				if (connTestSysID2.length > 0) {
-					this.checkForTimeout(connTestSysID2,setupSysID2,timedOutBy);
+					this.setConnectionTestRecordTimeoutExpiredIfOverdue(connTestSysID2,setupSysID2,timedOutBy);
 				}
 			}
 		}	
@@ -51,87 +49,100 @@ ConnectionTestTimeout.prototype = {
 		new x_tekso_twxapp01.DebugLogging().message(script,2,msg);			
 	},
 	
-	checkForTimeout: function(connTestSysID,setupSysID,timedOutBy) {
-				
+	//Called by cleanup which is called by SJ and 
+	//ClientConnectionTestTimeout.clientCheckForTimeout - which is called by UI Page
+	setConnectionTestRecordTimeoutExpiredIfOverdue: function(connTestSysID,setupSysID,timedOutBy) {	
 		var connTestSysID2 = connTestSysID.toString();
 		var setupSysID2 = setupSysID.toString();
 		var script = 'SI ConnectionTestTimeout';
-
-		if (connTestSysID2.length > 0 && setupSysID2.length > 0) {
+	
+		if (connTestSysID2.length > 0 && setupSysID2.length > 0) {		
 			var connectionTestTable = 'x_tekso_twxapp01_connection_test';
 			var gr1 = new GlideRecordSecure(connectionTestTable);
 			gr1.addQuery('sys_id',connTestSysID2);
-			gr1.addQuery('status','Sent');
+			gr1.addQuery('status','Sent'); // Limit to Sent
 			gr1.query();
 			if (gr1.next()) {
-				var now = new GlideDateTime();
-				var requestWillTimeOutAtHasValue = gr1.getValue('timeout_has_been_calculated') || false;
-				var requestWillTimeOutAt = gr1.getValue('timeout_will_occur_at');
-				var requestWillTimeOutAt2 = new GlideDateTime(requestWillTimeOutAt);
-				if (requestWillTimeOutAtHasValue == true) {
-					//Only do this if we have a timeout date/time
-					var dur1 = new GlideDuration();
-					dur1 = GlideDateTime.subtract(now,requestWillTimeOutAt2);// In Milliseconds
-					var dur1secs = dur1.getNumericValue() / 1000; 
-					var dur1secs2 = parseInt(dur1secs); 
-					//If -ve then this means that requestWillTimeOutAt is earlier than now
-					//i.e. the date is in the past
-					if (dur1secs2 < 0) {
-						// Timeout has occurred
-						var status = gr1.getValue('status') || '';
-						var timedOutStatus = gr1.getValue('timeout_expired') || false;
-						var abortedStatus = gr1.getValue('aborted') || false;						
-						// This may have already been aborted or timed out
-						if (abortedStatus == true && status != 'Aborted') {
-							// Because of timing between various async threads the status may not have 
-							// been set to Aborted
-							// or it was set to Aborted but then overwritten by another process
-							// Hence the need for a separated Aborted flag
-							// If Status is not Aborted - set it now			
-							gr1.setValue('status','Aborted');	
-							gr1.setValue('updated_by_script',script);	// Debug
-							gr1.update();
-						}
+				var timedOutStatus = gr1.getValue('timeout_expired') || false;
+				var abortedStatus = gr1.getValue('aborted') || false;		
+				// This may have already been aborted or timed out
+				if (abortedStatus == true) {
+					// Because of timing between various async threads the status may not have 
+					// been set to Aborted
+					// or it was set to Aborted but then overwritten by another process
+					// Hence the need for a separated Aborted flag
+					// If Status is not Aborted - set it now			
+					gr1.setValue('status','Aborted');	
+					gr1.setValue('updated_by_script',script);	// Debug
+					gr1.update();
+				}
 
-						if (timedOutStatus == true && status != 'Timeout Expired') {
-							// Because of timing between various async threads the status may not have 
-							// been set to Timeout Expired
-							// or it was set to Timeout Expired but then overwritten by another process
-							// Hence the need for a separated Timeout Expired flag
-							// If Status is not Timeout Expired - set it now			
-							gr1.setValue('status','Timeout Expired');	
-							gr1.setValue('updated_by_script',script);	// Debug			
-							gr1.update();
-						}
-
-						if (abortedStatus == false && timedOutStatus == false) {
-							// Not alredy aborted or Processed
-							if (status == 'Pending' || status == 'Sent') {		
-								gr1.setValue('status','Timeout Expired');
-								gr1.setValue('timeout_triggered_by',timedOutBy);
-								gr1.setValue('timeout_triggered_at',now);							
-								gr1.setValue('timeout_expired',true);
-								gr1.setValue('updated_by_script',script);	// Debug
-								gr1.update();
-
-								//Update Setup
-								this.updateSetup(setupSysID2,connTestSysID2,script);
-								
-							} //if (status == 'Pending' || status == 'Sent') {	
-							
-						} //if (abortedStatus == false && timedOutStatus == false) {
-						
-					} //if (dur1secs2 < 0) {		
-					
-				} //if (requestWillTimeOutAtHasValue == true) {
+				if (timedOutStatus == true) {
+					// Because of timing between various async threads the status may not have 
+					// been set to Timeout Expired
+					// or it was set to Timeout Expired but then overwritten by another process
+					// Hence the need for a separated Timeout Expired flag
+					// If Status is not Timeout Expired - set it now			
+					gr1.setValue('status','Timeout Expired');	
+					gr1.setValue('updated_by_script',script);	// Debug			
+					gr1.update();
+				}
 				
-			} //if (gr1.next()) {
-			
+				if (abortedStatus == false && timedOutStatus == false) {
+					// Check for timeout
+					var requestWillTimeOutAtHasValue = gr1.getValue('timeout_has_been_calculated') || false;
+					var requestWillTimeOutAt = gr1.getValue('timeout_will_occur_at');
+					var requestWillTimeOutAt2 = new GlideDateTime(requestWillTimeOutAt);
+					if (requestWillTimeOutAtHasValue == true) {
+						var inPast = this.dateTimeIsInThePast(requestWillTimeOutAt2);
+						if (inPast == true) {
+							// Timeout has occurred
+							var now = new GlideDateTime();
+							gr1.setValue('status','Timeout Expired');
+							gr1.setValue('timeout_triggered_by',timedOutBy);
+							gr1.setValue('timeout_triggered_at',now);							
+							gr1.setValue('timeout_expired',true);
+							gr1.setValue('updated_by_script',script); // Debug
+							gr1.update();	
+							//Update Setup
+							this.updateSetupIfItContainsTheConnectionTest(setupSysID2,connTestSysID2,script);
+						} //if (inPast == true) {
+					} // if (requestWillTimeOutAtHasValue == true) {
+				} //if (abortedStatus == false && timedOutStatus == false) {	
+			} //if (gr1.next()) {			
 		} //if (connTestSysID2.length > 0 && setupSysID2.length > 0) {
-		
 	},
 	
-	updateSetup: function(setupSysID,connTestSysID,script) {
+	//Called by Queue Connection Test Timeout - Async
+	setConnectionTestRecordTimeoutExpiredAndUpdateSetup: function(setupSysID,connectionTestSysID,script) {	
+		var testTable = 'x_tekso_twxapp01_connection_test';
+		var connectionTestSysID2 = connectionTestSysID.toString();
+		var setupSysID2 = setupSysID.toString();
+
+		if (connectionTestSysID2.length > 0) {	
+			var gr1 = new GlideRecordSecure(testTable);
+			gr1.addQuery('sys_id',connectionTestSysID2);
+			gr1.addQuery('status','Sent'); // Only if Sent
+			gr1.query();
+			if (gr1.next()) {					
+				var now = new GlideDateTime();
+				gr1.setValue('status','Timeout Expired');
+				gr1.setValue('timeout_expired',true);		
+				gr1.setValue('timeout_triggered_by',script);
+				gr1.setValue('timeout_triggered_at',now);							
+				gr1.setValue('updated_by_script',script); // Debug
+				gr1.update();
+				
+				if (setupSysID2.length > 0) {
+					this.updateSetupIfItContainsTheConnectionTest(setupSysID2,connectionTestSysID2,script);
+				}
+			}
+		}
+	},
+
+	//called by setConnectionTestRecordTimeoutExpiredAndUpdateSetup
+	//and setConnectionTestRecordTimeoutExpiredIfOverdue
+	updateSetupIfItContainsTheConnectionTest: function(setupSysID,connTestSysID,script) {
 		var setupTable = 'x_tekso_twxapp01_setup';				
 		var connTestSysID2 = connTestSysID.toString();
 		var setupSysID2 = setupSysID.toString();
@@ -160,20 +171,75 @@ ConnectionTestTimeout.prototype = {
 			} // if (gr1.next())
 		}
 	},
+
+	dateTimeIsInTheFuture: function(timeoutAt) {
+		//Returns true if the date is in the future
+		
+		var rtn = false;
+		var now = new GlideDateTime();
+		var dur1secs2 = this.numberOfSecondsBetweenTwoDates(now,timeoutAt);	
+		//If -ve then this means that timeoutAt is < now
+		//i.e. the date is in the past	
+		//If +ve then this means that timeoutAt is > now
+		//i.e. the date is in the future
+		if (dur1secs2 > 0) {
+			rtn = true;
+		}	
+		return rtn;
+	},
+
+	numberOfSecondsBetweenTwoDates: function(dt1,dt2) {
+		//dt1 - dt2
+		var dur1 = new GlideDuration();
+		dur1 = GlideDateTime.subtract(dt1,dt2); // In Milliseconds	
+		var dur1ms = dur1.getNumericValue();
+		var dur1secs = dur1ms / 1000;
+		var dur1secs2 = parseInt(dur1secs);
+
+		// If there is less than 1000 ms between the dates
+		// then round this up to 1 second
+		if (dur1ms > 0 && dur1ms < 1000) {
+			dur1secs2 = 1;
+		}
+		//If -ve then this means that dt2 is < dt1
+		//If +ve then this meaas that dt2 is > dt1
+		return dur1secs2;
+	},
 	
+	dateTimeIsInThePast: function(timeoutAt) {
+		// Returns true of the date is in the past
+		
+		var rtn = false;
+		var now = new GlideDateTime();
+
+		var dur1secs2 = this.numberOfSecondsBetweenTwoDates(now,timeoutAt);	
+		//If -ve then this means that dt2 is < dt1
+		//If +ve then this menas that dt2 is > dt1
+		
+		//If -ve then this means that timeoutAt is < now
+		//i.e. the date is in the past	
+		//If +ve then this means that timeoutAt is > now
+		//i.e. the date is in the future
+		if (dur1secs2 < 0) {
+			rtn = true;
+		}
+		return rtn;
+	},
+
+
     type: 'ConnectionTestTimeout'
 };]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-25 15:33:46</sys_created_on>
         <sys_id>124ec9b2dbe9581041d08f381396191c</sys_id>
-        <sys_mod_count>16</sys_mod_count>
+        <sys_mod_count>42</sys_mod_count>
         <sys_name>ConnectionTestTimeout</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_124ec9b2dbe9581041d08f381396191c</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 20:45:35</sys_updated_on>
+        <sys_updated_on>2020-07-24 09:02:48</sys_updated_on>
     </sys_script_include>
 </record_update>
