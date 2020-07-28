@@ -41,60 +41,64 @@ IsConnectionTestDue.prototype = {
 		if (gr1.next()) {
 			//Got the setup record
 			var setupStatus = gr1.getValue('status') || '';
-			var wasSndng = gr1.getValue('status_was_sending_when_connection_failed');
+			var setupStatus2 = setupStatus.toString();
+			var wasSndng = gr1.getValue('status_was_sending_when_connection_failed'); // T/F
 			tstIntrvlMins = gr1.getValue('connection_test_interval_minutes') || 30;
 			tstIntrvlMins2 = parseInt(tstIntrvlMins);
-			if (tstIntrvlMins2 < 0) {
-				tstIntrvlMins2 = 30;
+			if (tstIntrvlMins2 < 1) {
+				tstIntrvlMins2 = 0;
+				tstRqurd = false; // No test if connection_test_interval_minutes is 0 or less
 			}
 			
-			// Number of minutes to wait for a response after sending a connection test
-			connTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
+			if (tstIntrvlMins2 > 0) {
+				// Only if connection_test_interval_minutes is > 0
+				// Number of minutes to wait for a response after sending a connection test
+				connTimeoutMins = gr1.getValue('ucontrol_connection_timeout_minutes') || 0; 
 
-			url = gr1.getValue('ucontrol_url') || ''; 
+				url = gr1.getValue('ucontrol_url') || ''; 
 
-			// Need to use getElement to do dot walking.
-			midSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
-			midSrvrSysID2 = midSrvrSysID.toString(); 
+				// Need to use getElement to do dot walking.
+				midSrvrSysID = gr1.getElement('ucontrol_mid_server.sys_id') || '';
+				midSrvrSysID2 = midSrvrSysID.toString(); 
 
-			var midSrvrStatus = this.getMidServerStatus(midSrvrSysID2);
-			if (midSrvrStatus == 'Up') {
-				//If the mid server is not Up then there is no point trying
-				midSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
-				midSrvrName2 = midSrvrName.toString();	
+				var midSrvrStatus = this.getMidServerStatus(midSrvrSysID2);
+				if (midSrvrStatus == 'Up') {
+					//If the mid server is not Up then there is no point trying
+					midSrvrName = gr1.getElement('ucontrol_mid_server.name') || '';	
+					midSrvrName2 = midSrvrName.toString();	
 
-				msg = 'midSrvrName2 = ' + midSrvrName2.toString();
-				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
-				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
-				
-				var connTstdAt = gr1.getValue('connection_tested_at'); //Setup
-				var now = new GlideDateTime();
-				//Need to put this through GlideDateTime()
-				var lastTestedAt = new GlideDateTime(connTstdAt);
-				
-				msg = 'lastTestedAt = ' + lastTestedAt;
-				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
-				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
-				
-				var dur = new GlideDuration();
-				dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
+					msg = 'midSrvrName2 = ' + midSrvrName2.toString();
+					//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+					new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
 
-				// Seconds - will be floating point e.g. 4,152.345
-				//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+					var connTstdAt = gr1.getValue('connection_tested_at'); //Setup
+					var now = new GlideDateTime();
+					//Need to put this through GlideDateTime()
+					var lastTestedAt = new GlideDateTime(connTstdAt);
 
-				// Minutes - will be floating point e.g. 69.206
-				var minsSinceLstTst = dur.getNumericValue() / 1000 / 60;  
-				var minsSinceLstTst2 = parseInt(minsSinceLstTst); // e.g. 69
+					msg = 'lastTestedAt = ' + lastTestedAt;
+					//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+					new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
 
-				msg = 'minsSinceLstTst2 = ' + minsSinceLstTst2.toString();
-				//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
-				new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
-				
-				//Test Required
-				//dur = time_elapsed_since_last_connection_test
-				//connTstdAt = connection_tested_at				
-				tstRqurd = this.testRequired(jobSysID,dur,connTstdAt,minsSinceLstTst2,tstIntrvlMins2,setupStatus,wasSndng);
+					var dur = new GlideDuration();
+					dur = GlideDateTime.subtract(lastTestedAt,now);	// In Milliseconds	
 
+					// Seconds - will be floating point e.g. 4,152.345
+					//var elaspsedTimeSinceConnectionTestInSecs = dur.getNumericValue() / 1000; 
+
+					// Minutes - will be floating point e.g. 69.206
+					var minsSinceLstTst = dur.getNumericValue() / 1000 / 60;  
+					var minsSinceLstTst2 = parseInt(minsSinceLstTst); // e.g. 69
+
+					msg = 'minsSinceLstTst2 = ' + minsSinceLstTst2.toString();
+					//This message will be output if property x_tekso_twxapp01.logging.level is 4 or higher	
+					new x_tekso_twxapp01.DebugLogging().message(script,4,msg);
+
+					//Test Required
+					//dur = time_elapsed_since_last_connection_test
+					//connTstdAt = connection_tested_at				
+					tstRqurd = this.testRequired(jobSysID,dur,connTstdAt,minsSinceLstTst2,tstIntrvlMins2,setupStatus2,wasSndng);
+				} //if (tstIntrvlMins2 > 0) {
 			} //if (midSrvrStatus == 'Up') {
 		} // if (gr1.next()) {
 
@@ -238,13 +242,13 @@ IsConnectionTestDue.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 20:13:18</sys_created_on>
         <sys_id>7ebd4d9ddb86d8104f29252b139619ab</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>IsConnectionTestDue</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_7ebd4d9ddb86d8104f29252b139619ab</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 10:50:08</sys_updated_on>
+        <sys_updated_on>2020-07-28 12:35:21</sys_updated_on>
     </sys_script_include>
 </record_update>

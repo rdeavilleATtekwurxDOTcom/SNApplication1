@@ -79,7 +79,7 @@ function getConnectionStatusCallBack(response){
 }
 
 function clientLog(msg) {
-	var ga = new GlideAjax('x_tekso_twxapp01.clientWriteToGSInfo');//this is the script include
+	var ga = new GlideAjax('x_tekso_twxapp01.ClientWriteToGSInfo');//this is the script include
 	ga.addParam("sysparm_name", "gsInfo"); //this is the function within the script include
 	ga.addParam("sysparm_msg",msg);
 	ga.getXML();	
@@ -182,13 +182,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 17:56:41</sys_created_on>
         <sys_id>207ab7b2dbefc81041d08f3813961980</sys_id>
-        <sys_mod_count>130</sys_mod_count>
+        <sys_mod_count>131</sys_mod_count>
         <sys_name>testing_connection_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_207ab7b2dbefc81041d08f3813961980</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 20:16:22</sys_updated_on>
+        <sys_updated_on>2020-07-28 14:03:29</sys_updated_on>
     </sys_ui_page>
 </record_update>

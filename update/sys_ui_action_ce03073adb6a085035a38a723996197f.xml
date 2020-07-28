@@ -123,12 +123,13 @@ function checkUserHasRoleCallBackFunction(response, mid_server_user_name,role) {
 	var answer = response.responseXML.documentElement.getAttribute("answer");	
 	if (answer.length > 0 && answer == 'yes') {
 		var ga4 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
-		ga4.addParam("sysparm_name", "checkScheduledJob"); //this is the function within the script include
+		ga4.addParam("sysparm_name", "checkAndUpdateScheduledJobRunTypePeriodically"); 
+		//this is the function within the script include
 		ga4.addParam("sysparm_job_name", "Send Data to uControl");
 		var interval = g_form.getValue('ucontrol_polling_interval_minutes');
 		var interval2 = parseInt(interval);
 		ga4.addParam("sysparm_job_interval_mins",interval2);	
-		ga4.getXML(checkScheduledJobCallBackFunction);
+		ga4.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction);
 	}
 	else {
 		g_form.hideFieldMsg('ucontrol_mid_server');
@@ -137,21 +138,22 @@ function checkUserHasRoleCallBackFunction(response, mid_server_user_name,role) {
 }
 
 
-//Call back function for checkScheduledJobExists
-function checkScheduledJobCallBackFunction(response) {
+//Call back function for checkAndUpdateScheduledJobRunTypePeriodically
+function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
 	var answer2 = answer.toString();
-	if (answer2 == 'ok') {
+	if (answer2.substring(0, 2) == 'ok') {
 		// Got the scheduled job
 		
 		// Check the 2nd scheduled job
 		var ga5 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
-		ga5.addParam("sysparm_name", "checkScheduledJob"); //this is the function within the script include
+		ga5.addParam("sysparm_name", "checkAndUpdateScheduledJobRunTypePeriodically"); 
+		//this is the function within the script include
 		ga5.addParam("sysparm_job_name", "Process Responses From uControl");
 		ga5.addParam("sysparm_job_interval_mins",1);	
-		ga5.getXML(checkScheduledJobCallBackFunction2);
+		ga5.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction2);
 	}
 	else {
 		g_form.hideFieldMsg('status');
@@ -159,13 +161,13 @@ function checkScheduledJobCallBackFunction(response) {
 	}
 }
 
-//Call back function for checkScheduledJobExists - No 2
-function checkScheduledJobCallBackFunction2(response) {
+//Call back function for checkAndUpdateScheduledJobRunTypePeriodically - No 2
+function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction2(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
 	var answer2 = answer.toString();
-	if (answer2 == 'ok') {
+	if (answer2.substring(0, 2) == 'ok') {
 		// Got the scheduled job
 		
 		// Check the load on ecc_queue
@@ -227,7 +229,9 @@ function runStartBusRuleCode(){
 	var interval2 = parseInt(interval);
 	
 	current.start_sending_requested = true;
-	current.connection_test_requested = true; // This will trigger the BR - Setup When Connection Test Req Changes
+	
+	// This will trigger the BR - Setup When Connection Test Req Changes	
+	current.connection_test_requested = true; 
 	current.last_button_clicked = 'Start Sending (Requested)';
 	current.connection_status = 'Sending Process Starting - Please Wait';	
 	
@@ -246,10 +250,10 @@ function runStartBusRuleCode(){
 	// and also set the repeat interval	
 	// (This should have already been handled by the client side)	
 	var si = new x_tekso_twxapp01.UpdateScheduledJob();
-	si.activateScheduledJob('Send Data to uControl',interval2);
+	si.updateScheduledJobByNameMakeRunTypePeriodically('Send Data to uControl',interval2);
 
 	var si2 = new x_tekso_twxapp01.UpdateScheduledJob();
-	si2.activateScheduledJob('Process Responses From uControl',1);
+	si2.updateScheduledJobByNameMakeRunTypePeriodically('Process Responses From uControl',1);
 	
 	action.setRedirectURL(current);		
 	
@@ -267,7 +271,7 @@ function runStartBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>ce03073adb6a085035a38a723996197f</sys_id>
-        <sys_mod_count>72</sys_mod_count>
+        <sys_mod_count>77</sys_mod_count>
         <sys_name>Start Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -275,7 +279,7 @@ function runStartBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_ce03073adb6a085035a38a723996197f</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 12:32:41</sys_updated_on>
+        <sys_updated_on>2020-07-28 18:12:58</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

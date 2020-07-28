@@ -10,13 +10,14 @@
         <script><![CDATA[/* Example calling
 
 		var ga4 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
-		ga4.addParam("sysparm_name", "checkScheduledJob"); //this is the function within the script include
+		ga4.addParam("sysparm_name", "checkAndUpdateScheduledJobRunTypePeriodically"); 
+		//this is the function within the script include
 		ga4.addParam("sysparm_job_name", "Send Data to uControl");	
 		ga4.addParam("sysparm_job_interval_mins",2);			
-		ga4.getXML(checkScheduledJobExistsCallBackFunction);
+		ga4.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction);
 
-//Call back function for checkScheduledJob
-function checkScheduledJobCallBackFunction(response) {
+//Call back function for checkAndUpdateScheduledJobRunTypePeriodically
+function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
@@ -35,167 +36,28 @@ function checkScheduledJobCallBackFunction(response) {
 var ClientCheckScheduledJob = Class.create();
 ClientCheckScheduledJob.prototype = Object.extendsObject(global.AbstractAjaxProcessor, {
 
-	checkScheduledJob: function() {
+	checkAndUpdateScheduledJobRunTypePeriodically: function() {
 
 		var name = this.getParameter('sysparm_job_name');	
 		var interval = this.getParameter('sysparm_job_interval_mins');	
-		var interval2 = parseInt(interval);
-		var name2 = name.toString();
-		var rtn = 'Problem with scheduled job ' + name2;
-		var jobSysID = this.getScheduledJobSysID(name2);
-		if (jobSysID.length > 0) {
-			//got job sys_id
-			var activeState = this.getScheduledJobActiveState(jobSysID);
-			var runPeriod = this.getScheduledJobRunPeriod(jobSysID);
-			var runType = this.getScheduledJobRunType(jobSysID);
-			if (activeState == 'active' && runType == 'periodically' && runPeriod == interval2) {
-				// Everything is ok
-				rtn = 'ok';
-			}
-			else {
-				// Need to update
-				this.updateScheduledJob(jobSysID,interval2);
-				// Check update was successful
-				var activeState2 = this.getScheduledJobActiveState(jobSysID);
-				if (activeState2 == 'active') {
-					var runType2 = this.getScheduledJobRunType(jobSysID);
-					if (runType2 == 'periodically') {
-						var runPeriod2 = this.getScheduledJobRunPeriod(jobSysID);	
-						if (runPeriod2 == interval2) {
-							// all ok
-							rtn = 'ok';
-						}
-						else {
-							// Unable to set run period
-							rtn = 'Problem with scheduled job: ' + name2 + ' unable to update the interval';
-						}
-					}
-					else {
-						//Unable to set to periodically
-						rtn = 'Problem with scheduled job: ' + name2 + ' unable to set to Periodically';
-					}
-				}
-				else {
-					//Unable to set active
-					rtn = 'Problem with scheduled job: ' + name2 + ' unable set Active';
-				}				
-			}
-		}
-		else {
-			//Job does not exist
-			rtn = 'Unable to find scheduled job: ' + name2;
-		}
-		return rtn;
-	},
-
-	updateScheduledJob: function(sys_id,intervalMins) {
-		var sys_id2 = sys_id.toString();
-		var intervalMins2 = parseInt(intervalMins);		
-		if (sys_id2.length > 0) {
-
-			var intervalStr = '';
-			if (intervalMins2 < 10) {
-				intervalStr = '0' + intervalMins2.toString();
-			}
-			else {
-				intervalStr = intervalMins2.toString();	
-			}
-
-			// D HH:MM:SS
-			var durationStr = '0 00:' + intervalStr + ':00';
-			var duration = new GlideDuration(durationStr);			
-			
-			var gr1 = new GlideRecordSecure('sysauto');
-			gr1.addQuery('sys_id',sys_id2);
-			gr1.query();	
-			if (gr1.next()) {
-				gr1.setValue('active',true);
-				gr1.setValue('run_type','periodically');
-				gr1.setValue('run_period',duration);
-				gr1.update();
-			}
-		}
-	},
 		
-	getScheduledJobSysID: function(name) {
-		var rtn = '';
+		var rtn = new x_tekso_twxapp01.CheckScheduledJob().checkAndUpdateScheduledJobRunTypePeriodically(name,interval);
 
-		var name2 = name.toString();
-		if (name2.length > 0) {
-			var gr1 = new GlideRecordSecure('sysauto');
-			gr1.addQuery('name',name2);
-			gr1.query();	
-			if (gr1.next()) {
-				var sys_id = gr1.getValue('sys_id');
-				rtn = sys_id.toString();
-			}
-		}
 		return rtn;
 	},
-	
-	getScheduledJobRunPeriod: function(sys_id) {
-		var rtn = 0;
-		var sys_id2 = sys_id.toString();
-		if (sys_id2.length > 0) {
-			var gr1 = new GlideRecordSecure('sysauto');
-			gr1.addQuery('sys_id',sys_id2);
-			gr1.query();
-			if (gr1.next()) {
-				var runPeriod = gr1.getValue('run_period');
-				var runPeriodDT = new GlideDateTime(runPeriod);
-				var ms = runPeriodDT.getNumericValue(); //returns the duration in milliseconds.
-				var minutes = ms / 1000 / 60; // div by 1000 to get secs // div by 60 to get mins
-				rtn = parseInt(minutes);
-			}
-		}
-		return rtn;				
-	},
-	
-	getScheduledJobRunType: function(sys_id) {
-		var rtn = '';
-		var sys_id2 = sys_id.toString();
-		if (sys_id2.length > 0) {
-			var gr1 = new GlideRecordSecure('sysauto');
-			gr1.addQuery('sys_id',sys_id2);
-			gr1.query();
-			if (gr1.next()) {
-				var runType = gr1.getValue('run_type') || '';
-				rtn = runType.toString();
-			}
-		}
-		return rtn;		
-	},
-	
-	getScheduledJobActiveState: function(sys_id) {
-		var rtn = '';
-		var sys_id2 = sys_id.toString();
-		if (sys_id2.length > 0) {
-			var gr1 = new GlideRecordSecure('sysauto');
-			gr1.addQuery('sys_id',sys_id2);
-			gr1.query();
-			if (gr1.next()) {
-				var active = gr1.getValue('active') || false;
-				if (active == true) {
-					rtn = 'active';
-				}
-			}
-		}
-		return rtn;
-	},
-
 	type: 'ClientCheckScheduledJob'
 });]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-16 10:30:44</sys_created_on>
         <sys_id>e9df48a5db421c104f29252b13961929</sys_id>
-        <sys_mod_count>12</sys_mod_count>
+        <sys_mod_count>17</sys_mod_count>
         <sys_name>ClientCheckScheduledJob</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e9df48a5db421c104f29252b13961929</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-16 12:25:06</sys_updated_on>
+        <sys_updated_on>2020-07-28 15:39:48</sys_updated_on>
     </sys_script_include>
 </record_update>

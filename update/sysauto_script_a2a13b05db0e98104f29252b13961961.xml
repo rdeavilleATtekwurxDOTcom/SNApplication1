@@ -11,12 +11,15 @@
         <run_period/>
         <run_start>2020-07-15 13:24:58</run_start>
         <run_time>1970-01-01 00:00:00</run_time>
-        <run_type>on_demand</run_type>
+        <run_type>daily</run_type>
         <script><![CDATA[CleanupuControlData();
 
 function CleanupuControlData() {
 	var script = 'SJ Cleanup uControl Data';
-
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher	
+	var msg = script + ' - Started';
+	new x_tekso_twxapp01.DebugLogging().message(script,1,msg);
+	
 	//Empty log records - where no processing occurred can be deleted more frequently
 	//e.g. after 1 day	
 	var defaultNoOfDaysOfEmptyLogs = 1;
@@ -28,16 +31,19 @@ function CleanupuControlData() {
 	var gr1 = new GlideRecordSecure(setupTbl);
 	gr1.query();
 	if (gr1.next()) {
-		noOfDaysOfEmptyLogs = gr1.getValue('number_of_days_to_retain_empty_logs') || -1;
-		noOfDaysOfEmptyLogs = parseInt(noOfDaysOfEmptyLogs);
-		noOfDaysToRetain = gr1.getValue('number_of_days_to_retain_data') || -1;
-		noOfDaysToRetain = parseInt(retain);
+		var noOfDaysOfEmptyLogsTmp = gr1.getValue('number_of_days_to_retain_empty_logs') || -1;
+		noOfDaysOfEmptyLogs = parseInt(noOfDaysOfEmptyLogsTmp);
+		var noOfDaysToRetainTmp = gr1.getValue('number_of_days_to_retain_data') || -1;
+		noOfDaysToRetain = parseInt(noOfDaysToRetainTmp);
 	}
+	
 	if (noOfDaysOfEmptyLogs < 0) {
+		//If not valid, default to 1
 		noOfDaysOfEmptyLogs = defaultNoOfDaysOfEmptyLogs;
 	}
 
 	if (noOfDaysToRetain < 0) {
+		//If not valid, default to 14
 		noOfDaysToRetain = defaultNoOfDaysToRetain;
 	}
 
@@ -56,21 +62,22 @@ function CleanupuControlData() {
 
 	new x_tekso_twxapp01.BuildTestData().buildTestDataIfMissing();
 
-	//This message will be output if property x_tekso_twxapp01.logging.level is 2 or higher	
-	new x_tekso_twxapp01.DebugLogging().message(script,2,'SJ Cleanup uControl Data - Finished');
+	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher		
+	msg = script + ' - Finished';
+	new x_tekso_twxapp01.DebugLogging().message(script,1,msg);	
 }]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-15 13:35:13</sys_created_on>
         <sys_id>a2a13b05db0e98104f29252b13961961</sys_id>
-        <sys_mod_count>31</sys_mod_count>
+        <sys_mod_count>41</sys_mod_count>
         <sys_name>Cleanup uControl Data</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_a2a13b05db0e98104f29252b13961961</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 14:48:35</sys_updated_on>
+        <sys_updated_on>2020-07-28 17:38:15</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

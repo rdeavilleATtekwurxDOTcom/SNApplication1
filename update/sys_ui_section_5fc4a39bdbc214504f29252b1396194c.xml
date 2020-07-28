@@ -1,114 +1,142 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_ui_section caption="" section_id="5fc4a39bdbc214504f29252b1396194c" sys_domain="global" table="x_tekso_twxapp01_queue_connection_test" version="3" view="">
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>connection_test_record_sys_id</element>
+            <element>x_tekso_twxapp01_ui_macro_tekwurx_logo1.xml</element>
             <position>0</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>0ef4e79bdbc214504f29252b1396191a</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>dda64251db9a98504f29252b13961985</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter display_value="Q Connec Test ui_formatter_tekwurx_logo1">19c4ce9ddb5a98504f29252b13961914</sys_ui_formatter>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
+            <sys_user/>
+            <type>formatter</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>.begin_split</element>
+            <position>1</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>15a64251db9a98504f29252b13961986</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
+            <sys_user/>
+            <type>.begin_split</type>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>connection_test_record_sys_id</element>
+            <position>2</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>95a64251db9a98504f29252b13961986</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>1</position>
+            <position>3</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>8ef4e79bdbc214504f29252b1396191a</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>19a64251db9a98504f29252b13961986</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.end_split</element>
-            <position>2</position>
+            <position>4</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>02f4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>99a64251db9a98504f29252b13961986</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.begin_split</element>
-            <position>3</position>
+            <position>5</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>82f4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>1da64251db9a98504f29252b13961986</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>started_at</element>
-            <position>4</position>
+            <position>6</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>06f4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>9da64251db9a98504f29252b13961986</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>processed</element>
-            <position>5</position>
+            <position>7</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>86f4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>11a64251db9a98504f29252b13961987</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>.split</element>
-            <position>6</position>
+            <position>8</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>0af4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>91a64251db9a98504f29252b13961987</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
         <sys_ui_element action="INSERT_OR_UPDATE">
             <element>completed_at</element>
-            <position>7</position>
+            <position>9</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-22 12:15:50</sys_created_on>
-            <sys_id>8af4e79bdbc214504f29252b1396191b</sys_id>
+            <sys_created_on>2020-07-28 10:31:34</sys_created_on>
+            <sys_id>15a64251db9a98504f29252b13961987</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_connection_test" sys_domain="global" view="Default view">5fc4a39bdbc214504f29252b1396194c</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-22 12:15:50</sys_updated_on>
+            <sys_updated_on>2020-07-28 10:31:34</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

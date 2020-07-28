@@ -297,14 +297,14 @@ function updateECCQueue(sys_id) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>47</sys_mod_count>
+        <sys_mod_count>85</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 10:41:52</sys_updated_on>
+        <sys_updated_on>2020-07-28 17:25:02</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>
