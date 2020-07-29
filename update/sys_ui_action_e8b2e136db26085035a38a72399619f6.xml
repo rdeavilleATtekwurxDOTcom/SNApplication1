@@ -144,6 +144,12 @@ function checkAndUpdateScheduledJobRunTypePeriodicallyJobCallBackFunction(respon
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
 	var answer2 = answer.toString();
+	//Examples:
+	//Unable to find scheduled job: "Send Data to uControl"
+	//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+	//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+	//ok
+	
 	if (answer2.substring(0, 2) == 'ok') {
 		// Got the scheduled job
 		
@@ -156,8 +162,31 @@ function checkAndUpdateScheduledJobRunTypePeriodicallyJobCallBackFunction(respon
 		ga5.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction2);
 	}
 	else {
-		g_form.hideFieldMsg('status');
-		g_form.showFieldMsg('status',answer2,'error');		
+		// Warning
+		
+		// This is triggered when the ok button is clicked on the UI Page below
+		// This code block has to be before the bind - gdw.setPreference('onOK', doIt.bind(this));
+		var doIt = function(){
+			// Check the 2nd scheduled job
+			var ga6 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
+			ga6.addParam("sysparm_name", "checkAndUpdateScheduledJobRunTypePeriodically"); 
+			//this is the function within the script include
+			ga6.addParam("sysparm_job_name", "Process Responses From uControl");
+			ga6.addParam("sysparm_job_interval_mins",1);	
+			ga6.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction2);	
+		};	
+		
+		// Display a warning message stating that the job is not running
+		// After clicking ok the code will jump to the doIt function above.
+		var gdw = new GlideDialogWindow('x_tekso_twxapp01_problem_with_scheduled_job');
+		gdw.setTitle('<h1><strong>Problem with scheduled job</strong></h1>');
+		gdw.setPreference('sysparm_problem',answer2);
+		gdw.setPreference('onOK', doIt.bind(this));
+
+		// To hide the x in the window
+		gdw.removeCloseDecoration();
+		gdw.render();	
+		// Important - No more code after this - otherwise it will continue executing
 	}
 }
 
@@ -166,48 +195,74 @@ function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction2(response
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
-	var answer2 = answer.toString();
+	var answer2 = answer.toString();	
+	//Examples:
+	//Unable to find scheduled job: "Send Data to uControl"
+	//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+	//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+	//ok
+	
 	if (answer2.substring(0, 2) == 'ok') {
 		// Got the scheduled job
-		
 		// Check the load on ecc_queue
-		var ga6 = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
-		ga6.addParam('sysparm_name','checkECCQueueOutput');
-		ga6.getXML(checkECCQueueOutputCallBackFunction);
+		var ga7 = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
+		ga7.addParam('sysparm_name','checkECCQueueOutput');
+		ga7.getXML(checkECCQueueOutputCallBackFunction);
 	}
 	else {
-		g_form.hideFieldMsg('status');
-		g_form.showFieldMsg('status',answer2,'error');		
+		// Warning		
+		// This is triggered when the ok button is clicked on the UI Page below
+		// This code block has to be before the bind - gdw.setPreference('onOK', doIt.bind(this));
+		var doIt2 = function(){
+			// Check the load on ecc_queue
+			var ga8 = new GlideAjax('x_tekso_twxapp01.ClientReadECCQueue');
+			ga8.addParam('sysparm_name','checkECCQueueOutput');
+			ga8.getXML(checkECCQueueOutputCallBackFunction);
+		};	
+				
+		// Display a warning message stating that the job is not running
+		// After clicking ok the code will jump to the doIt function above.
+		var gdw2 = new GlideDialogWindow('x_tekso_twxapp01_problem_with_scheduled_job');
+		gdw2.setTitle('<h1><strong>Problem with scheduled job</strong></h1>');
+		gdw2.setPreference('sysparm_problem',answer2);
+		gdw2.setPreference('onOK', doIt2.bind(this));
+
+		// To hide the x in the window
+		gdw2.removeCloseDecoration();
+		gdw2.render();	
+		// Important - No more code after this - otherwise it will continue executing		
 	}	
 }
 
 //Call back function for checkECCQueueOutput
 function checkECCQueueOutputCallBackFunction(response) {
+	
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
 	var answer2 = parseInt(answer);
+	
 	if (answer2 < 3) {
 		gsftSubmit(null, g_form.getFormElement(), 'test_connection_action'); //MUST call the 'Action name' set in this UI Action	
 	}
 	else {
-		var cancelIt = function(){
+		var cancelIt3 = function(){
 			//do nothing
 		};
-		var doIt = function(){
+		var doIt3 = function(){
 			//Call the UI Action and skip the 'onclick' function
 			gsftSubmit(null, g_form.getFormElement(), 'test_connection_action'); //MUST call the 'Action name' set in this UI Action
 		};
 
-		var gdw = new GlideDialogWindow('x_tekso_twxapp01_mid_server_queue_is_busy');
-		gdw.setTitle('<h1><strong>MID Server queue is busy...</strong></h1>');
-		gdw.setPreference('sysparm_queuesize',answer);
-		gdw.setPreference('onCancel', cancelIt.bind(this));
-		gdw.setPreference('onContinue', doIt.bind(this));
+		var gdw3 = new GlideDialogWindow('x_tekso_twxapp01_mid_server_queue_is_busy');
+		gdw3.setTitle('<h1><strong>MID Server queue is busy...</strong></h1>');
+		gdw3.setPreference('sysparm_queuesize',answer2);
+		gdw3.setPreference('onCancel', cancelIt3.bind(this));
+		gdw3.setPreference('onContinue', doIt3.bind(this));
 
 		// To hide the x in the window
-		gdw.removeCloseDecoration();
-		gdw.render();	
+		gdw3.removeCloseDecoration();
+		gdw3.render();	
 	}
 }
 
@@ -269,7 +324,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>189</sys_mod_count>
+        <sys_mod_count>211</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -277,7 +332,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 16:56:24</sys_updated_on>
+        <sys_updated_on>2020-07-29 20:20:18</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

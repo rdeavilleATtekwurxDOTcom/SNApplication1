@@ -64,10 +64,11 @@
             <choice>
                 <element inactive_on_update="false" label="Error" value="Error"/>
                 <element inactive_on_update="false" label="Not Sending" value="Not Sending"/>
+                <element inactive_on_update="false" label="Not Sending - Incomplete Setup" value="Not Sending - Incomplete Setup"/>
                 <element inactive_on_update="false" label="Sending" value="Sending"/>
             </choice>
         </element>
-        <element label="Status Error Details" max_length="100" name="status_error_details" type="string"/>
+        <element label="Status Error Details" max_length="200" name="status_error_details" type="string"/>
         <element label="Status Set To Not Sending At" max_length="40" name="status_set_to_not_sending_at" type="glide_date_time"/>
         <element label="Status Set To Not Sending By" max_length="40" name="status_set_to_not_sending_by" type="string"/>
         <element label="Status Set To Sending At" max_length="40" name="status_set_to_sending_at" type="glide_date_time"/>

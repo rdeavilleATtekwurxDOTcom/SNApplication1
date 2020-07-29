@@ -65,7 +65,22 @@ Triggered By SJ - Send Data to uControl
 			new x_tekso_twxapp01.IsConnectionTestDue().isConnectionTestDue(setupSysID2,jobSysID2);
 
 			new x_tekso_twxapp01.BuildTestData().buildTestDataIfMissing();
-			
+
+			// This BR is originally triggered by Send Data to uControl
+			// We can check to see if the other scheduled job - Process Responses From uControl is okay
+			var job = 'Process Responses From uControl';
+			var interval = 1;
+			var jobrtn = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job,interval);
+		// jobrtn: Problem with scheduled job: "Process Responses From uControl" Active is not True
+		// jobrtn: Problem with scheduled job: "Process Responses From uControl" Active is not True, Run is not Periodically
+		// jobrtn: ok
+			if (jobrtn.substring(0,2) != 'ok') {
+				new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIncompleteIfExistingIsSending(setupSysID2);			
+			}
+			else {
+				// ok
+				new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIfExistingIsIncompleteSetup(setupSysID2);
+			}			
 		}
 		
 		var completedAt = new GlideDateTime();
@@ -82,7 +97,7 @@ Triggered By SJ - Send Data to uControl
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>a20b401b1b0a14101c6afd9f034bcb6a</sys_id>
-        <sys_mod_count>3</sys_mod_count>
+        <sys_mod_count>13</sys_mod_count>
         <sys_name>Queue Send Data To uControl2 - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -90,7 +105,7 @@ Triggered By SJ - Send Data to uControl
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_a20b401b1b0a14101c6afd9f034bcb6a</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 10:35:21</sys_updated_on>
+        <sys_updated_on>2020-07-29 17:30:02</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

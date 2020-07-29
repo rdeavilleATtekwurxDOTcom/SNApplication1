@@ -20,8 +20,10 @@ CheckScheduledJob.prototype = {
 
 	// Checks the job exists and tries to set it to active
 	checkAndUpdateScheduledJob: function(name) {
+		var dq = String.fromCharCode(34);
+		
 		var name2 = name.toString();
-		var rtn = 'Problem with scheduled job: ' + name2;
+		var rtn = 'Problem with scheduled job: ' + dq + name2 + dq;
 		var jobSysID = this.getScheduledJobSysID(name2);
 		if (jobSysID.length > 0) {
 			//got job sys_id
@@ -38,26 +40,26 @@ CheckScheduledJob.prototype = {
 				var activeState2 = this.getScheduledJobActiveState(jobSysID);
 				if (activeState2 == 'active') {		
 					// all ok
-					rtn = 'ok Updated scheduled job: ' + name2 + ' set Active: True';
+					rtn = 'ok Updated scheduled job: ' + dq + name2 + dq + ' set Active: True';
 				}	
 				else {
 					//Unable to set active
-					rtn = 'Problem with scheduled job: ' + name2 + ' unable set Active';
+					rtn = 'Problem with scheduled job: ' + dq +  name2 + dq +  ' unable set Active';
 				}	
 			}
 		}
 		else {
 			//Job does not exist
-			rtn = 'Unable to find scheduled job: ' + name2;
+			rtn = 'Unable to find scheduled job: ' + dq +  name2 + dq;
 		}
 		return rtn;					
 	},
 	
 	checkAndUpdateScheduledJobRunTypePeriodically: function(name,interval) {
-
+		var dq = String.fromCharCode(34);
 		var interval2 = parseInt(interval);
 		var name2 = name.toString();
-		var rtn = 'Problem with scheduled job: ' + name2;
+		var rtn = 'Problem with scheduled job: ' + dq + name2 + dq;
 		var jobSysID = this.getScheduledJobSysID(name2);
 		if (jobSysID.length > 0) {
 			//got job sys_id
@@ -77,7 +79,7 @@ CheckScheduledJob.prototype = {
 				if (activeState2 == 'active') {
 					var runType2 = this.getScheduledJobRunType(jobSysID);
 					if (runType2 == 'periodically') {
-						var runPeriod2 = this.getScheduledJobRunPeriod(jobSysID);	
+						var runPeriod2 = this.getScheduledJobRunPeriod(jobSysID);							
 						if (runPeriod2 == interval2) {
 							// all ok
 							rtn = 'ok';
@@ -94,30 +96,101 @@ CheckScheduledJob.prototype = {
 							}
 							if (whatsChangedArr.length > 0) {
 								whatsChanged = whatsChangedArr.join(', ');
-								rtn = 'ok Updated scheduled job: ' + name2 + ' set ' + whatsChanged;
+								rtn = 'ok Updated scheduled job: ' + dq + name2 + dq +  ' set ' + whatsChanged;
 							}							
 						}
 						else {
 							// Unable to set run period
-							rtn = 'Problem with scheduled job: ' + name2 + ' unable to update the interval';
+							rtn = 'Problem with scheduled job: ' + dq + name2 + dq + ' unable to update the interval';
 						}
 					}
 					else {
 						//Unable to set to periodically
-						rtn = 'Problem with scheduled job: ' + name2 + ' unable to set to Periodically';
+						rtn = 'Problem with scheduled job: ' + dq + name2 + dq + ' unable to set to Periodically';
 					}
 				}
 				else {
 					//Unable to set active
-					rtn = 'Problem with scheduled job: ' + name2 + ' unable set Active';
+					rtn = 'Problem with scheduled job: ' + dq + name2 + dq + ' unable set Active';
 				}				
 			}
 		}
 		else {
 			//Job does not exist
-			rtn = 'Unable to find scheduled job: ' + name2;
+			rtn = 'Unable to find scheduled job: ' + dq + name2 + dq;
 		}
 		return rtn;
+	},
+
+	checkScheduledJobRunTypePeriodically: function(name,interval) {
+		var dq = String.fromCharCode(34);
+		var interval2 = parseInt(interval);
+		
+		var name2 = name.toString();
+		var rtn = 'Problem with scheduled job: ' + dq + name2 + dq;
+		var jobSysID = this.getScheduledJobSysID(name2);
+		if (jobSysID.length > 0) {
+			//got job sys_id
+			var activeState = this.getScheduledJobActiveState(jobSysID);
+			var runPeriod = this.getScheduledJobRunPeriod(jobSysID);
+			var runType = this.getScheduledJobRunType(jobSysID);
+			if (activeState == 'active' && runType == 'periodically' && runPeriod == interval2) {
+				// Everything is ok
+				rtn = 'ok';
+			}
+			else {
+				var whatsWrongArr = [];
+				var whatsWrong = '';
+				if (activeState != 'active') {
+					whatsWrongArr.push('Active is not True');
+				}
+				if (runType != 'periodically') {
+					whatsWrongArr.push('Run is not Periodically');
+				}
+				if (runPeriod != interval2) {
+					whatsWrongArr.push('Repeat Interval: is not ' + interval2.toString());
+				}
+				if (whatsWrongArr.length > 0) {
+					whatsWrong = whatsWrongArr.join(', ');
+					rtn = 'Problem with scheduled job: ' + dq + name2 + dq + ' ' + whatsWrong;
+				}										
+			}
+		}
+		else {
+			//Job does not exist
+			rtn = 'Unable to find scheduled job: ' + dq + name2 + dq;
+		}
+		return rtn;
+	},
+	// jobrtn: Problem with scheduled job: "Process Responses From uControl" Active is not True
+	// jobrtn: Problem with scheduled job: "Process Responses From uControl" Active is not True, Run is not Periodically
+	// jobrtn: ok
+	
+	// Checks the job exists
+	checkScheduledJob: function(name) {
+		var dq = String.fromCharCode(34);
+		
+		var name2 = name.toString();
+		var rtn = 'Problem with scheduled job: ' + dq + name2 + dq;
+		var jobSysID = this.getScheduledJobSysID(name2);
+		if (jobSysID.length > 0) {
+			//got job sys_id
+			var activeState = this.getScheduledJobActiveState(jobSysID);
+			if (activeState == 'active') {
+				// Everything is ok
+				rtn = 'ok';
+			}		
+			else
+			{
+				rtn = 'Problem with scheduled job: ' + dq +  name2 + dq + ' Active is not True';
+			}	
+		}
+		else 
+		{
+			//Job does not exist
+			rtn = 'Unable to find scheduled job: ' + dq +  name2 + dq;
+		}
+		return rtn;					
 	},
 	
 	getScheduledJobSysID: function(name) {
@@ -200,13 +273,13 @@ CheckScheduledJob.prototype = {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-28 14:08:59</sys_created_on>
         <sys_id>9277f2dddb1e98504f29252b139619c5</sys_id>
-        <sys_mod_count>15</sys_mod_count>
+        <sys_mod_count>36</sys_mod_count>
         <sys_name>CheckScheduledJob</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_9277f2dddb1e98504f29252b139619c5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 17:38:50</sys_updated_on>
+        <sys_updated_on>2020-07-29 21:52:06</sys_updated_on>
     </sys_script_include>
 </record_update>

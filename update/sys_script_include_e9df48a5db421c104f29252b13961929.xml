@@ -21,16 +21,10 @@ function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction(response)
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
-	var job_sys_id = answer.toString();
-	if (job_sys_id.length > 0) {
+	var answer2 = answer.toString();
+	if (answer2.substring(0, 2) == 'ok') {
 		// Got the scheduled job
-		var a = 1;
-	}
-	else {
-		g_form.hideFieldMsg('status');
-		g_form.showFieldMsg('status','Cannot find scheduled job: Send Data to uControl','error');		
-	}
-}
+
 */
 
 var ClientCheckScheduledJob = Class.create();
@@ -46,18 +40,23 @@ ClientCheckScheduledJob.prototype = Object.extendsObject(global.AbstractAjaxProc
 		return rtn;
 	},
 	type: 'ClientCheckScheduledJob'
-});]]></script>
+});
+//Unable to find scheduled job: "Send Data to uControl"
+//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+//ok
+]]></script>
         <sys_class_name>sys_script_include</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-16 10:30:44</sys_created_on>
         <sys_id>e9df48a5db421c104f29252b13961929</sys_id>
-        <sys_mod_count>17</sys_mod_count>
+        <sys_mod_count>19</sys_mod_count>
         <sys_name>ClientCheckScheduledJob</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_e9df48a5db421c104f29252b13961929</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 15:39:48</sys_updated_on>
+        <sys_updated_on>2020-07-29 20:21:37</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -46,7 +46,7 @@
         <element label="SH Previous Start Sending Requested At" max_length="40" name="sh_previous_start_sending_requested_at" type="glide_date_time"/>
         <element label="SH Previous Start Sending Requested By" max_length="40" name="sh_previous_start_sending_requested_by" type="string"/>
         <element label="SH Previous Status" max_length="40" name="sh_previous_status" type="string"/>
-        <element label="SH Previous Status Error Details" max_length="100" name="sh_previous_status_error_details" type="string"/>
+        <element label="SH Previous Status Error Details" max_length="200" name="sh_previous_status_error_details" type="string"/>
         <element label="SH Previous Status Set To Not Sending At " max_length="40" name="sh_previous_status_set_to_not_sending_at" type="glide_date_time"/>
         <element label="SH Previous Status Set To Not Sending By " max_length="40" name="sh_previous_status_set_to_not_sending_by" type="string"/>
         <element label="SH Previous Status Was Sending When Connection Failed" max_length="40" name="sh_previous_status_was_sending_when_connection_failed" type="boolean"/>
@@ -64,7 +64,7 @@
         <element label="SH Start Sending Requested At" max_length="40" name="sh_start_sending_requested_at" type="glide_date_time"/>
         <element label="SH Start Sending Requested By" max_length="40" name="sh_start_sending_requested_by" type="string"/>
         <element label="SH Status" max_length="40" name="sh_status" type="string"/>
-        <element label="SH Status Error Details" max_length="100" name="sh_status_error_details" type="string"/>
+        <element label="SH Status Error Details" max_length="200" name="sh_status_error_details" type="string"/>
         <element label="SH Status Set To Not Sending At " max_length="40" name="sh_status_set_to_not_sending_at" type="glide_date_time"/>
         <element label="SH Status Set To Not Sending By " max_length="40" name="sh_status_set_to_not_sending_by" type="string"/>
         <element label="SH Status Was Sending When Connection Failed" max_length="40" name="sh_status_was_sending_when_connection_failed" type="boolean"/>

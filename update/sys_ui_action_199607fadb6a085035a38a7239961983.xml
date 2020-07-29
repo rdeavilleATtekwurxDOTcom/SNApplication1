@@ -7,7 +7,7 @@
 
 }]]></client_script_v2>
         <comments/>
-        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.status != 'Not Sending'  &amp;&amp; current.status != 'Error' &amp;&amp; current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
+        <condition>gs.hasRole('x_tekso_twxapp01.admin') &amp;&amp; current.status.substring(0,11) != 'Not Sending'  &amp;&amp; current.status != 'Error' &amp;&amp; current.start_sending_requested == false &amp;&amp; current.connection_test_requested == false</condition>
         <form_action>true</form_action>
         <form_button>true</form_button>
         <form_button_v2>false</form_button_v2>
@@ -96,7 +96,7 @@ function runStopSendingBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>199607fadb6a085035a38a7239961983</sys_id>
-        <sys_mod_count>55</sys_mod_count>
+        <sys_mod_count>56</sys_mod_count>
         <sys_name>Stop Sending</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -104,7 +104,7 @@ function runStopSendingBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_199607fadb6a085035a38a7239961983</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-15 12:03:42</sys_updated_on>
+        <sys_updated_on>2020-07-29 10:44:59</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

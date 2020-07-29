@@ -28,42 +28,86 @@
         <rest_variables/>
         <role_conditions/>
         <script><![CDATA[function isThereAConnectionTestRecord(sysID,status) {
-
 	var rtn = false;
-	var connectionTestTable = 'x_tekso_twxapp01_connection_test';
-	var gr1 = new GlideRecordSecure(connectionTestTable);
-	gr1.addQuery('setup_record',sysID);
-	gr1.addQuery('status',status); //Pending or Sending
-	gr1.addQuery('aborted',false);
-	gr1.addQuery('timeout_expired',false);
-	gr1.query();
-	if (gr1.next()) {
-		rtn = true;
-	}	
+	var sysID2 = sysID.toString();
+	if (sysID2.length > 0) {
+		var connectionTestTable = 'x_tekso_twxapp01_connection_test';
+		var gr1 = new GlideRecordSecure(connectionTestTable);
+		gr1.addQuery('setup_record',sysID2);
+		gr1.addQuery('status',status); //Pending or Sending
+		gr1.addQuery('aborted',false);
+		gr1.addQuery('timeout_expired',false);
+		gr1.query();
+		if (gr1.next()) {
+			rtn = true;
+		}	
+	}
+	
 	return rtn;
 }
 
 (function executeRule(current, previous /*null when async*/) {
 
 	var sysID = current.sys_id;
+	
 	var connectionTestPending = false;
 	var connectionTestSent = false;
 	
 	//Check scheduled jobs
 	var job1 = 'Process Responses From uControl';
 	var interval1 = 1;
-	var jobrtn1 = new x_tekso_twxapp01.CheckScheduledJob().checkAndUpdateScheduledJobRunTypePeriodically(job1,interval1);
+	var jobrtn1 = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job1,interval1);
+	//Examples:
+	//Unable to find scheduled job: "Send Data to uControl"
+	//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+	//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+	//ok
+	
 	g_scratchpad.job1 = jobrtn1;
 	
 	var job2 = 'Send Data to uControl';
 	var interval2 = current.ucontrol_polling_interval_minutes;
-	var jobrtn2 = new x_tekso_twxapp01.CheckScheduledJob().checkAndUpdateScheduledJobRunTypePeriodically(job2,interval2);
+	var jobrtn2 = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job2,interval2);
+
+	//Unable to find scheduled job: "Send Data to uControl"
+	//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+	//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+	//ok	
 	g_scratchpad.job2 = jobrtn2;
+
 	
 	var job3 = 'Cleanup uControl Data';
-	var jobrtn3 = new x_tekso_twxapp01.CheckScheduledJob().checkAndUpdateScheduledJob(job3);
+	var jobrtn3 = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJob(job3);
 	g_scratchpad.job3 = jobrtn3;	
 	
+	// Scheduled jobs are good
+	g_scratchpad.jobs = false;
+	if (jobrtn1.substring(0,2) == 'ok' && jobrtn2.substring(0,2) == 'ok') {
+		g_scratchpad.jobs = true;
+	}
+
+	if (g_scratchpad.jobs == true) {
+		//Switch from 'Not Sending - Incomplete Setup' to 'Not Sending'
+		if (current.status == 'Not Sending - Incomplete Setup') {
+			current.status = 'Not Sending';
+			new x_tekso_twxapp01.UpdateSetup().setStatusNotSending(sysID);			
+		}
+	}
+	else {
+		if (current.status == 'Sending') {
+			//Only update if Sending
+			var gdt = new GlideDateTime();
+			var usr = 'system (incomplete setup)';
+			current.status = 'Not Sending - Incomplete Setup';	
+			current.status_set_to_not_sending_by = usr;
+			current.status_set_to_not_sending_at = gdt;
+			current.status_was_sending_when_connection_failed = false;
+			current.status_was_sending_when_connection_failed_at = '';
+			current.status_error_details = '';
+			new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIncomplete(sysID);
+		}
+	}
+
 	g_scratchpad.most_recent_valid_ucontrol_url = current.most_recent_valid_ucontrol_url;
 	g_scratchpad.start_sending_requested = 0;
 	g_scratchpad.connection_test_requested = 0;
@@ -104,6 +148,7 @@
 	
 	var checkforconnectiontimeout = gs.getProperty('x_tekso_twxapp01.testing.checkforconnectiontimeout') || 0;
 	g_scratchpad.testing_checkforconnectiontimeout = parseInt(checkforconnectiontimeout);
+		
 })(current, previous);]]></script>
         <sys_class_name>sys_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
@@ -111,7 +156,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>49893934db5b881041d08f38139619ff</sys_id>
-        <sys_mod_count>46</sys_mod_count>
+        <sys_mod_count>76</sys_mod_count>
         <sys_name>Setup - Display BR Scratchpad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -119,7 +164,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_49893934db5b881041d08f38139619ff</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 17:35:33</sys_updated_on>
+        <sys_updated_on>2020-07-29 21:39:10</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>

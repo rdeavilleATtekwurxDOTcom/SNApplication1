@@ -34,7 +34,8 @@ function processResponsesFromuControl() {
 	
 	var jobTable2 = 'x_tekso_twxapp01_scheduled_job2_log';
 	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response';
-
+	var inboundTable2 = 'x_tekso_twxapp01_queue_inbound_response2';
+	
 	var calculatedNextJobStartTime = new GlideDateTime();
 
 	// --Work out when the scheduled job is going to run next -----------------
@@ -216,6 +217,13 @@ function processResponsesFromuControl() {
 		gr4.setValue('finished_at',finishedAt);
 		gr4.update();
 	}
+
+	//To run at the end - once
+	var gr5 = new GlideRecordSecure(inboundTable2);
+	gr5.initialize();
+	gr5.setValue('scheduled_job2_log_record_sys_id',job2sysID);	
+	gr5.insert();						
+	// Will trigger Async BR - Queue Inbound Response2 - Async
 	
 	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher		
 	msg = script + ' - Finished';
@@ -292,19 +300,21 @@ function updateECCQueue(sys_id) {
 		}
 	}
 }
+
+
 ]]></script>
         <sys_class_name>sysauto_script</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>85</sys_mod_count>
+        <sys_mod_count>132</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 17:25:02</sys_updated_on>
+        <sys_updated_on>2020-07-29 17:39:21</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

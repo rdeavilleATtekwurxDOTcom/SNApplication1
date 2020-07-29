@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script">
+    <sys_script action="INSERT_OR_UPDATE">
+        <abort_action>false</abort_action>
+        <access>package_private</access>
+        <action_delete>false</action_delete>
+        <action_insert>true</action_insert>
+        <action_query>false</action_query>
+        <action_update>false</action_update>
+        <active>true</active>
+        <add_message>false</add_message>
+        <advanced>true</advanced>
+        <change_fields>false</change_fields>
+        <client_callable>false</client_callable>
+        <collection>x_tekso_twxapp01_queue_inbound_response2</collection>
+        <condition/>
+        <description/>
+        <execute_function>false</execute_function>
+        <filter_condition/>
+        <is_rest>false</is_rest>
+        <message/>
+        <name>Queue Inbound Response2 - Async</name>
+        <order>100</order>
+        <priority>100</priority>
+        <rest_method/>
+        <rest_method_text/>
+        <rest_service/>
+        <rest_service_text/>
+        <rest_variables/>
+        <role_conditions/>
+        <script><![CDATA[/*
+BR is triggered by SJ Process Responses From uControl
+
+	var gr5 = new GlideRecordSecure(inboundTable2);
+	gr5.initialize();
+	gr5.setValue('scheduled_job2_log_record_sys_id',job2sysID);	
+	gr5.insert();	
+						
+*/
+(function executeRule(current, previous /*null when async*/) {
+
+	var sysID = current.sys_id;
+
+	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response2';
+	var setupTable = 'x_tekso_twxapp01_setup';
+
+	var gr1 = new GlideRecordSecure(inboundTable);
+	gr1.addQuery('sys_id',sysID);
+	gr1.setLimit(1);	
+	gr1.query();
+	if (gr1.next()) {		
+		var startedAt = new GlideDateTime();
+		gr1.setValue('started_at',startedAt);
+		gr1.setWorkflow(false);
+		gr1.update();
+
+		// Check scheduled job
+		var gr2 = new GlideRecordSecure(setupTable);
+		gr2.setLimit(1);		
+		gr2.query();
+		if (gr2.next()) {
+			var setupSysID = gr2.getValue('sys_id') || '';
+			var setupSysID2 = setupSysID.toString();
+			var interval = gr2.getValue('ucontrol_polling_interval_minutes') || 1;
+			var interval2 = parseInt(interval);
+			if (interval2 < 1) {
+				interval2 = 1;
+			}
+			
+			// This BR is originally triggered by Process Responses From uControl
+			// We can check to see if the other scheduled job - Send Data to uControl is okay		
+			var job = 'Send Data to uControl';
+			var jobrtn = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job,interval2);					if (jobrtn.substring(0,2) != 'ok') {
+				new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIncompleteIfExistingIsSending(setupSysID2);			
+			}
+			else {
+				// ok
+				new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIfExistingIsIncompleteSetup(setupSysID2);
+			}		
+		}
+		
+		var completedAt = new GlideDateTime();
+		gr1.setValue('completed_at',completedAt);
+		gr1.setValue('processed',true);
+		gr1.setWorkflow(false);
+		gr1.update();		
+	}
+	
+})(current, previous);
+]]></script>
+        <sys_class_name>sys_script</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-29 17:29:33</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>476facf1db521c504f29252b1396195b</sys_id>
+        <sys_mod_count>3</sys_mod_count>
+        <sys_name>Queue Inbound Response2 - Async</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_476facf1db521c504f29252b1396195b</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-29 17:50:10</sys_updated_on>
+        <template/>
+        <when>async</when>
+    </sys_script>
+    <sys_translated_text action="delete_multiple" query="documentkey=476facf1db521c504f29252b1396195b"/>
+</record_update>

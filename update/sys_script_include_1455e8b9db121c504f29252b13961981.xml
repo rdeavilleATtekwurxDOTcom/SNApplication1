@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_script_include">
+    <sys_script_include action="INSERT_OR_UPDATE">
+        <access>package_private</access>
+        <active>true</active>
+        <api_name>x_tekso_twxapp01.UpdateSetup</api_name>
+        <caller_access/>
+        <client_callable>false</client_callable>
+        <description/>
+        <name>UpdateSetup</name>
+        <script><![CDATA[/*
+
+new x_tekso_twxapp01.UpdateSetup().setStatusNotSending(sys_id);
+
+new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIncomplete(sys_id);
+
+*/
+
+var UpdateSetup = Class.create();
+UpdateSetup.prototype = {
+    initialize: function() {
+    },
+
+	setStatusNotSending: function(sysID) {
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {		
+			var setupTable = 'x_tekso_twxapp01_setup';
+			var gr1 = new GlideRecordSecure(setupTable);
+			gr1.addQuery('sys_id',sysID2);
+			gr1.query();
+			if (gr1.next()) {
+				gr1.setValue('status','Not Sending');
+				gr1.setWorkflow(false);
+				gr1.update();
+			}
+		}
+	},
+	
+	//Change the status to 'Not Sending' if it is 'Not Sending - Incomplete Setup'
+	setStatusNotSendingIfExistingIsIncompleteSetup: function(sysID) {
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {		
+			var setupTable = 'x_tekso_twxapp01_setup';
+			var gr1 = new GlideRecordSecure(setupTable);
+			gr1.addQuery('sys_id',sysID2);
+			gr1.query();
+			if (gr1.next()) {
+				var status = gr1.getValue('status') || '';
+				var status2 = status.toString();
+				if (status2 == 'Not Sending - Incomplete Setup') {
+					gr1.setValue('status','Not Sending');
+					gr1.setWorkflow(false);
+					gr1.update();
+				}
+			}
+		}
+	},
+	
+	setStatusNotSendingIncomplete: function(sysID) {
+
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {		
+			var setupTable = 'x_tekso_twxapp01_setup';
+			var gdt = new GlideDateTime();
+			var usr = 'system (incomplete setup)';	
+			var gr1 = new GlideRecordSecure(setupTable);
+			gr1.addQuery('sys_id',sysID2);
+			gr1.query();
+			if (gr1.next()) {
+				gr1.setValue('status','Not Sending - Incomplete Setup');
+				gr1.setValue('status_error_details','');
+				gr1.setValue('status_was_sending_when_connection_failed_at','');
+				gr1.setValue('status_was_sending_when_connection_failed',false);
+				gr1.setValue('status_set_to_not_sending_at',gdt);
+				gr1.setValue('status_set_to_not_sending_by',usr);
+				gr1.setWorkflow(false);
+				gr1.update();
+			}
+		}
+	},
+	
+	// Change the status to 'Not Sending - Incomplete Setup' if status is 'Sending'
+	setStatusNotSendingIncompleteIfExistingIsSending: function(sysID) {
+
+		var sysID2 = sysID.toString();
+		if (sysID2.length > 0) {		
+			var setupTable = 'x_tekso_twxapp01_setup';
+			var gdt = new GlideDateTime();
+			var usr = 'system (incomplete setup)';	
+			var gr1 = new GlideRecordSecure(setupTable);
+			gr1.addQuery('sys_id',sysID2);
+			gr1.query();
+			if (gr1.next()) {
+				var status = gr1.getValue('status') || '';
+				var status2 = status.toString();
+				if (status2 == 'Sending') {				
+					gr1.setValue('status','Not Sending - Incomplete Setup');
+					gr1.setValue('status_error_details','');
+					gr1.setValue('status_was_sending_when_connection_failed_at','');
+					gr1.setValue('status_was_sending_when_connection_failed',false);
+					gr1.setValue('status_set_to_not_sending_at',gdt);
+					gr1.setValue('status_set_to_not_sending_by',usr);
+					gr1.setWorkflow(false);
+					gr1.update();
+				}
+			}
+		}
+	},
+	
+    type: 'UpdateSetup'
+};]]></script>
+        <sys_class_name>sys_script_include</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-29 16:46:09</sys_created_on>
+        <sys_id>1455e8b9db121c504f29252b13961981</sys_id>
+        <sys_mod_count>2</sys_mod_count>
+        <sys_name>UpdateSetup</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy>read</sys_policy>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_include_1455e8b9db121c504f29252b13961981</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-29 17:00:53</sys_updated_on>
+    </sys_script_include>
+</record_update>
