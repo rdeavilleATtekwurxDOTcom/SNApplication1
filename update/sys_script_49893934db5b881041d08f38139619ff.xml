@@ -50,6 +50,23 @@
 
 	var sysID = current.sys_id;
 	
+	g_scratchpad.hasRoleItil = 0;
+	var hasRoleItil = gs.hasRole('itil');
+	if (hasRoleItil == true) {
+		g_scratchpad.hasRoleItil = 1;	
+	}
+
+	g_scratchpad.hasRoleMIDServer = 0;
+	var hasRoleMIDServer = gs.hasRole('mid_server');
+	if (hasRoleMIDServer == true) {
+		g_scratchpad.hasRoleMIDServer = 1;	
+	}
+	
+	g_scratchpad.advanced_settings_visible = 0;
+	if (current.advanced_settings_visible == true) {
+		g_scratchpad.advanced_settings_visible = 1;
+	}
+				
 	var connectionTestPending = false;
 	var connectionTestSent = false;
 	
@@ -156,7 +173,7 @@
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>49893934db5b881041d08f38139619ff</sys_id>
-        <sys_mod_count>76</sys_mod_count>
+        <sys_mod_count>82</sys_mod_count>
         <sys_name>Setup - Display BR Scratchpad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -164,7 +181,7 @@
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_49893934db5b881041d08f38139619ff</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 21:39:10</sys_updated_on>
+        <sys_updated_on>2020-07-30 17:09:49</sys_updated_on>
         <template/>
         <when>before_display</when>
     </sys_script>

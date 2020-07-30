@@ -15,7 +15,7 @@
 	// Hide Updated By Script and Inserted By Script
 	g_form.setDisplay('updated_by_script',false);
 	g_form.setDisplay('inserted_by_script',false);
-	
+		
 	if (g_scratchpad.start_sending_requested == 1) {
 		sendingStartingUp();
 		return;
@@ -25,209 +25,40 @@
 		testConnectionIsRunning();
 		return;
 	}
-		
-	if (g_scratchpad.job1 != 'ok') {
-		//Examples:
-		//Unable to find scheduled job: "Send Data to uControl"
-		//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
-		//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
-		//ok
-		
-		var job1 = g_scratchpad.job1;
-		if (job1.substring(0,2) == 'ok') {
-			job1 = job1.substring(3);
-			//Updated scheduled job: "Process Responses From uControl" set Active: True, Run: Periodically
-			g_form.addInfoMessage(job1);
-		}
-		else {
-			//Unable to find scheduled job: "Process Responses From uControl"
-			g_form.addErrorMessage(job1);
-		}
-	}
-
-	if (g_scratchpad.job2 != 'ok') {
-		//Examples:
-		//Unable to find scheduled job: "Send Data to uControl"
-		//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
-		//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
-		//ok		
-		var job2 = g_scratchpad.job2;
-		if (job2.substring(0,2) == 'ok') {
-			job2 = job2.substring(3);
-			//Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
-			g_form.addInfoMessage(job2);
-		}
-		else {
-			//Unable to find scheduled job: "Send Data to uControl"
-			g_form.addErrorMessage(job2);
-		}		
-	}
-		
-	if (g_scratchpad.job3 != 'ok') {
-		var job3 = g_scratchpad.job3;
-		if (job3.substring(0,2) == 'ok') {
-			job3 = job3.substring(3);
-			//Updated scheduled job: "Cleanup uControl Data" set Active: True
-			g_form.addInfoMessage(job3);
-		}
-		else {
-			//Unable to find scheduled job: "Cleanup uControl Data"
-			g_form.addErrorMessage(job3);
-		}		
-	}
-			
-	// Set fields ReadOnly
-	g_form.setReadOnly('status',true);   
-	g_form.setReadOnly('status_error_details',true);		
 	
-	g_form.setReadOnly('start_sending_requested_at',true);
-	g_form.setReadOnly('start_sending_requested_by',true);
-	g_form.setReadOnly('status_set_to_sending_at',true);
-	g_form.setReadOnly('status_set_to_sending_by',true);
-	g_form.setReadOnly('status_set_to_not_sending_at',true);
-	g_form.setReadOnly('status_set_to_not_sending_by',true);
-
-	g_form.setReadOnly('connection_status',true);
-	g_form.setReadOnly('connection_status_details',true);
-	g_form.setReadOnly('ucontrol_integration_user',true);
-	g_form.setReadOnly('number_of_supported_classes',true);
-	g_form.setReadOnly('cmdb_tracking',true);
 	
-	g_form.setReadOnly('cmdb_tracking_switched_on_at',true);
-	g_form.setReadOnly('cmdb_tracking_switched_on_by',true);
-	g_form.setReadOnly('cmdb_tracking_switched_off_at',true);
-	g_form.setReadOnly('cmdb_tracking_switched_off_by',true);
+	if (g_scratchpad.hasRoleItil == 0) {
+		g_form.addErrorMessage('The role: itil is required');
+	}
+	
+	if (g_scratchpad.hasRoleMIDServer == 0) {
+		g_form.addErrorMessage('The role: mid_server is required');
+	}	
 
-	g_form.setReadOnly('cmdb_tracking_error_details',true);	
-	g_form.setReadOnly('number_of_pending_records',true);	
-	g_form.setReadonly('ucontrol_mid_server.status',true);
-	g_form.setReadonly('last_scan_performed_at',true);
-	g_form.setReadonly('last_processing_at',true);
-	g_form.setReadonly('last_processing_data_sent_summary',true);
-	g_form.setReadonly('last_processing_results_summary',true);
-	g_form.setReadonly('help',true);
+	//Check scheduled jobs are there
+	areScheduledJobsOK();
+	
+    setFieldsReadonly();
 
 	// Display the help if Status is Sending or Error
-	if (g_form.getValue('status') == 'Sending' || g_form.getValue('status') == 'Error' || g_form.getValue('connection_status') == 'Missing Connection Details') {
-		g_form.setDisplay('help',true);
-	}
-	else {
-		g_form.setDisplay('help',false);	
-	}
-	
+	help();
+
 	// Only show connection tested at if it is not blank
-	if (g_form.getValue('connection_tested_at') == '') {
-		g_form.setDisplay('connection_tested_at',false);
-	}
-	else {
-		g_form.setDisplay('connection_tested_at',true);
-		g_form.setReadOnly('connection_tested_at',true);		
-	}
+	connectionTestedAt();
 
 	// Only show last scan performed at if there is some data
-	if (g_form.getValue('last_scan_performed_at') == '') {
-		g_form.setDisplay('last_scan_performed_at',false);
-	}
-	else {
-		g_form.setDisplay('last_scan_performed_at',true);		
-	}
+	lastScanPerformed();
 	
 	// Only show the last data sent fields if there is some data	
-	if (g_form.getValue('last_processing_at') == '') {
-		g_form.setDisplay('last_processing_at',false);
-		g_form.setDisplay('last_processing_data_sent_summary',false);
-		g_form.setDisplay('last_processing_results_summary',false);
-	}
-	else {
-		g_form.setDisplay('last_processing_at',true);
-		g_form.setDisplay('last_processing_data_sent_summary',true);
-		g_form.setDisplay('last_processing_results_summary',true);		
-
-		g_form.setReadonly('last_processing_at',true);
-		g_form.setReadonly('last_processing_data_sent_summary',true);
-		g_form.setReadonly('last_processing_results_summary',true);
-
-		g_form.setLabelOf('last_processing_at','Last Data Was Sent To uControl At');
-		g_form.setLabelOf('last_processing_data_sent_summary','Last Data Sent Was');
-		g_form.setLabelOf('last_processing_results_summary','Results From Last Data Sent');		
-	}
+	lastDataSent();
 
 	// Check we can access the MID Server 
-	var mid_server = '';
-	var canReadMIDServerField = true;
-	// Put the mid_server in a try catch block in case the user does not have access to this
-	try {
-		mid_server = g_form.getDisplayBox('ucontrol_mid_server').value || '';		
-	}
-	catch(err) {
-		//TypeError: Cannot read property 'value' of undefined
-		canReadMIDServerField = false;
-		mid_server = '';
-	}
-	
-	if (canReadMIDServerField == false) {
-		g_form.addErrorMessage("Cannot access the MID Server table");	
-	}
-	else {
-		// MID Server Status should only be visible if we have a MID Server
-		if (g_form.getValue('ucontrol_mid_server') == ''){
-			g_form.setDisplay('ucontrol_mid_server.status',false);		
-		}
-		else {
-			g_form.setLabelOf('ucontrol_mid_server.status','MID Server Status');	
-			g_form.setDisplay('ucontrol_mid_server.status',true);
-		}
-	}
+	canWeAccessTheMIDServer();
 
+	//supported classes and user only if connection_status is OK
+	supportedClassesAndUser();
 
-	if (g_form.getValue('connection_status') == 'OK') {
-		g_form.setDisplay('number_of_supported_classes',true);	
-		g_form.setDisplay('ucontrol_integration_user',true);	
-	}
-	else {
-		g_form.setDisplay('number_of_supported_classes',false);
-		g_form.setDisplay('ucontrol_integration_user',false);			
-	}
-
-
-	if (g_form.getValue('cmdb_tracking') == 'Running') {
-
-		g_form.setDisplay('cmdb_tracking_switched_on_at',true);
-		g_form.setDisplay('cmdb_tracking_switched_on_by',true);
-		g_form.getElement('cmdb_tracking_switched_on_at').style.backgroundColor = "lightgreen";
-		g_form.getElement('cmdb_tracking_switched_on_by').style.backgroundColor = "lightgreen";
-		
-		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
-		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
-		
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";	
-		g_form.setDisplay('cmdb_tracking_error_details',false);		
-	}
-	
-	if (g_form.getValue('cmdb_tracking') == 'Off') {
-
-		g_form.setDisplay('cmdb_tracking_switched_off_at',true);
-		g_form.setDisplay('cmdb_tracking_switched_off_by',true);
-		g_form.getElement('cmdb_tracking_switched_off_at').style.backgroundColor = "Tomato";
-		g_form.getElement('cmdb_tracking_switched_off_by').style.backgroundColor = "Tomato";
-		
-		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
-		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
-		
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
-		g_form.setDisplay('cmdb_tracking_error_details',false);
-	}
-	
-	if (g_form.getValue('cmdb_tracking') == 'Error') {
-		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
-		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
-		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
-		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
-		
-		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
-		g_form.setDisplay('cmdb_tracking_error_details',true);			
-		g_form.getElement('cmdb_tracking_error_details').style.backgroundColor = "Tomato";			
-	}
+	cmdbTrackingFields();
 	
 	if (g_form.getValue('status') == 'Sending') {
 		g_form.getElement('status').style.backgroundColor = "lightgreen";
@@ -238,17 +69,15 @@
 		g_form.setDisplay('status_set_to_sending_by',true); // Show
 		g_form.setDisplay('status_set_to_not_sending_at',false); // Hide
 		g_form.setDisplay('status_set_to_not_sending_by',false); // Hide
-
-		//g_form.getElement('start_sending_requested_at').style.backgroundColor = "lightgreen";
-		//g_form.getElement('start_sending_requested_by').style.backgroundColor = "lightgreen";
 		g_form.getElement('status_set_to_sending_at').style.backgroundColor = "lightgreen";
-		g_form.getElement('status_set_to_sending_by').style.backgroundColor = "lightgreen";
+		g_form.getElement('status_set_to_sending_by').style.backgroundColor = "lightgreen";		
+		g_form.setDisplay('status_error_details',false); // Hide	
 		
-		g_form.setDisplay('status_error_details',false); // Hide		
-		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
+		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); 
 		g_form.setReadOnly('ucontrol_connection_timeout_minutes',true);
-		g_form.setReadOnly('max_retries',true); // Could do this via ACL?
-		
+		g_form.setReadOnly('max_retries',true); 
+ 
+		advancedSettingsReadonly();				
 	}
 	else if (g_form.getValue('status') == 'Error') {
 		g_form.getElement('status').style.backgroundColor = "Tomato";
@@ -262,9 +91,12 @@
 		
 		g_form.setDisplay('status_error_details',true); // Show
 		g_form.getElement('status_error_details').style.backgroundColor = "Tomato";
-		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); // Could do this via ACL?
+		
+		g_form.setReadOnly('ucontrol_polling_interval_minutes',true); 
 		g_form.setReadOnly('ucontrol_connection_timeout_minutes',true);
-		g_form.setReadOnly('max_retries',true); // Could do this via ACL?		
+		g_form.setReadOnly('max_retries',true); 
+		
+		advancedSettingsReadonly();
 	}
 	else {
 		// Not Sending
@@ -280,51 +112,18 @@
 		g_form.getElement('status_set_to_not_sending_by').style.backgroundColor = "Tomato";
 		
 		g_form.setDisplay('status_error_details',false); // Hide
-		g_form.setReadOnly('ucontrol_polling_interval_minutes',false); // Could do this via ACL?
+		
+		g_form.setReadOnly('ucontrol_polling_interval_minutes',false); 
 		g_form.setReadOnly('ucontrol_connection_timeout_minutes',false);
-		g_form.setReadOnly('max_retries',false); // Could do this via ACL?		
+		g_form.setReadOnly('max_retries',false);	
+		
+		advancedSettingsEditable();					
 	}
 
-	if (g_form.getValue('connection_status') == 'OK') {
-		g_form.getElement('connection_status').style.backgroundColor = "lightGreen";	
-		g_form.getElement('connection_status_details').style.backgroundColor = "lightGreen";	
-	}
-	else if (g_form.getValue('connection_status') == 'Failed'){
-		g_form.getElement('connection_status').style.backgroundColor = "Tomato";	
-		g_form.getElement('connection_status_details').style.backgroundColor = "Tomato";
-		g_form.flash('connection_status', 'Tomato', 0);
-	}
-	else if (g_form.getValue('connection_status') == 'Missing Connection Details'){
-		g_form.getElement('connection_status').style.backgroundColor = "yellow";	
-		g_form.getElement('connection_status_details').style.backgroundColor = "yellow";
-	}	
-	else if (g_form.getValue('connection_status') == 'Connection Requires Testing'){
-		g_form.getElement('connection_status').style.backgroundColor = "coral";	
-		g_form.getElement('connection_status_details').style.backgroundColor = "coral";
-	}	
-	else 
-		{
-		g_form.getElement('connection_status').style.backgroundColor = "white";	
-		g_form.getElement('connection_status_details').style.backgroundColor = "white";
-	}
+	connectionStatus();
 	
-	// Field messages
-	if (g_form.getValue('ucontrol_url') == '') {
-		g_form.showFieldMsg('ucontrol_url', 'No URL - Test Connection cannot be performed until this is provided');	
-	}
-	else {
-		g_form.hideFieldMsg('ucontrol_url');			
-	}
-	
-	if (canReadMIDServerField == true) {
-		if (g_form.getValue('ucontrol_mid_server') == '') {			
-			g_form.showFieldMsg('ucontrol_mid_server', 'No MID Server - Test Connection cannot be performed until this is provided');	
-		}
-		else {
-			g_form.hideFieldMsg('ucontrol_mid_server');			
-		}	
-	}
-	
+	url();
+		
 	// Have to use scratchpad as this field is not on the form
 	// Display BR reads the record and sets g_scratchpad.show_message_on_form_reload
 	if (g_scratchpad.show_message_on_form_reload == 'x_tekso_twxapp01_start_sending_message') {
@@ -345,8 +144,7 @@
 		gdw.render();	
 	}
 	
-	if (g_scratchpad.show_message_on_form_reload == 'x_tekso_twxapp01_start_tracking_message') {
-		
+	if (g_scratchpad.show_message_on_form_reload == 'x_tekso_twxapp01_start_tracking_message') {		
 		var sysID3 = g_form.getUniqueValue();
 		// Call script include function to clear show_message_on_form_reload
 		var ga3 = new GlideAjax('x_tekso_twxapp01.ClientUpdateSetup');//this is the script include
@@ -363,6 +161,7 @@
 		gdw3.render();	
 	}	
 }
+
 
 function testConnectionIsRunning() {
 
@@ -411,6 +210,7 @@ function testConnectionIsRunning() {
 	return;
 }
 
+
 function sendingStartingUp() {
 
 	var sysID = g_form.getUniqueValue();
@@ -455,14 +255,333 @@ function sendingStartingUp() {
 	
 	return;
 }
-]]></script>
+
+
+function setFieldsReadonly() {
+	// Set fields ReadOnly
+	g_form.setReadOnly('status',true);   
+	g_form.setReadOnly('status_error_details',true);		
+	
+	g_form.setReadOnly('start_sending_requested_at',true);
+	g_form.setReadOnly('start_sending_requested_by',true);
+	g_form.setReadOnly('status_set_to_sending_at',true);
+	g_form.setReadOnly('status_set_to_sending_by',true);
+	g_form.setReadOnly('status_set_to_not_sending_at',true);
+	g_form.setReadOnly('status_set_to_not_sending_by',true);
+
+	g_form.setReadOnly('connection_status',true);
+	g_form.setReadOnly('connection_status_details',true);
+	g_form.setReadOnly('ucontrol_integration_user',true);
+	g_form.setReadOnly('number_of_supported_classes',true);
+	g_form.setReadOnly('cmdb_tracking',true);
+	
+	g_form.setReadOnly('cmdb_tracking_switched_on_at',true);
+	g_form.setReadOnly('cmdb_tracking_switched_on_by',true);
+	g_form.setReadOnly('cmdb_tracking_switched_off_at',true);
+	g_form.setReadOnly('cmdb_tracking_switched_off_by',true);
+
+	g_form.setReadOnly('cmdb_tracking_error_details',true);	
+	g_form.setReadOnly('number_of_pending_records',true);	
+	g_form.setReadonly('ucontrol_mid_server.status',true);
+	g_form.setReadonly('last_scan_performed_at',true);
+	g_form.setReadonly('last_processing_at',true);
+	g_form.setReadonly('last_processing_data_sent_summary',true);
+	g_form.setReadonly('last_processing_results_summary',true);
+	g_form.setReadonly('help',true);	
+}
+
+
+function cmdbTrackingFields() {
+	if (g_form.getValue('cmdb_tracking') == 'Running') {
+		g_form.setDisplay('cmdb_tracking_switched_on_at',true);
+		g_form.setDisplay('cmdb_tracking_switched_on_by',true);
+		g_form.getElement('cmdb_tracking_switched_on_at').style.backgroundColor = "lightgreen";
+		g_form.getElement('cmdb_tracking_switched_on_by').style.backgroundColor = "lightgreen";
+		
+		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
+		
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "lightgreen";	
+		g_form.setDisplay('cmdb_tracking_error_details',false);		
+	}
+	
+	if (g_form.getValue('cmdb_tracking') == 'Off') {
+		g_form.setDisplay('cmdb_tracking_switched_off_at',true);
+		g_form.setDisplay('cmdb_tracking_switched_off_by',true);
+		g_form.getElement('cmdb_tracking_switched_off_at').style.backgroundColor = "Tomato";
+		g_form.getElement('cmdb_tracking_switched_off_by').style.backgroundColor = "Tomato";
+		
+		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
+		
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
+		g_form.setDisplay('cmdb_tracking_error_details',false);
+	}
+	
+	if (g_form.getValue('cmdb_tracking') == 'Error') {
+		g_form.setDisplay('cmdb_tracking_switched_on_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_on_by',false);
+		g_form.setDisplay('cmdb_tracking_switched_off_at',false);		
+		g_form.setDisplay('cmdb_tracking_switched_off_by',false);
+		
+		g_form.getElement('cmdb_tracking').style.backgroundColor = "Tomato";	
+		g_form.setDisplay('cmdb_tracking_error_details',true);			
+		g_form.getElement('cmdb_tracking_error_details').style.backgroundColor = "Tomato";			
+	}	
+}
+
+
+function lastDataSent() {
+	// Only show the last data sent fields if there is some data		
+	if (g_form.getValue('last_processing_at') == '') {
+		g_form.setDisplay('last_processing_at',false);
+		g_form.setDisplay('last_processing_data_sent_summary',false);
+		g_form.setDisplay('last_processing_results_summary',false);
+	}
+	else {
+		g_form.setDisplay('last_processing_at',true);
+		g_form.setDisplay('last_processing_data_sent_summary',true);
+		g_form.setDisplay('last_processing_results_summary',true);		
+
+		g_form.setReadonly('last_processing_at',true);
+		g_form.setReadonly('last_processing_data_sent_summary',true);
+		g_form.setReadonly('last_processing_results_summary',true);
+
+		g_form.setLabelOf('last_processing_at','Last Data Was Sent To uControl At');
+		g_form.setLabelOf('last_processing_data_sent_summary','Last Data Sent Was');
+		g_form.setLabelOf('last_processing_results_summary','Results From Last Data Sent');		
+	}	
+}
+
+
+function supportedClassesAndUser() {
+	//supported classes and user only if connection_status is OK
+	if (g_form.getValue('connection_status') == 'OK') {
+		g_form.setDisplay('number_of_supported_classes',true);	
+		g_form.setDisplay('ucontrol_integration_user',true);	
+	}
+	else {
+		g_form.setDisplay('number_of_supported_classes',false);
+		g_form.setDisplay('ucontrol_integration_user',false);			
+	}
+}
+
+
+function advancedSettingsReadonly() {
+	if (g_scratchpad.advanced_settings_visible == 1) {
+		g_form.setDisplay('update_criteria',true);
+		g_form.setDisplay('delete_criteria',true);
+		g_form.setDisplay('connection_test_interval_minutes',true);
+		g_form.setDisplay('number_of_days_to_retain_data',true);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',true);	
+
+		g_form.setReadOnly('update_criteria',true);
+		g_form.setReadOnly('delete_criteria',true);
+		g_form.setReadOnly('connection_test_interval_minutes',true);
+		g_form.setReadOnly('number_of_days_to_retain_data',true);
+		g_form.setReadOnly('number_of_days_to_retain_empty_logs',true);		
+	}
+	else {
+		g_form.setDisplay('update_criteria',false);
+		g_form.setDisplay('delete_criteria',false);
+		g_form.setDisplay('connection_test_interval_minutes',false);
+		g_form.setDisplay('number_of_days_to_retain_data',false);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',false);				
+	}
+}
+
+function advancedSettingsEditable() {
+	if (g_scratchpad.advanced_settings_visible == 1) {
+		g_form.setDisplay('update_criteria',true);
+		g_form.setDisplay('delete_criteria',true);
+		g_form.setDisplay('connection_test_interval_minutes',true);
+		g_form.setDisplay('number_of_days_to_retain_data',true);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',true);	
+
+		g_form.setReadOnly('update_criteria',false);
+		g_form.setReadOnly('delete_criteria',false);
+		g_form.setReadOnly('connection_test_interval_minutes',false);
+		g_form.setReadOnly('number_of_days_to_retain_data',false);
+		g_form.setReadOnly('number_of_days_to_retain_empty_logs',false);		
+	}
+	else {
+		g_form.setDisplay('update_criteria',false);
+		g_form.setDisplay('delete_criteria',false);
+		g_form.setDisplay('connection_test_interval_minutes',false);
+		g_form.setDisplay('number_of_days_to_retain_data',false);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',false);				
+	}
+}
+
+
+function lastScanPerformed() {
+	// Only show last scan performed at if there is some data
+	if (g_form.getValue('last_scan_performed_at') == '') {
+		g_form.setDisplay('last_scan_performed_at',false);
+	}
+	else {
+		g_form.setDisplay('last_scan_performed_at',true);		
+	}
+}
+
+
+function connectionTestedAt() {
+	// Only show connection tested at if it is not blank
+	if (g_form.getValue('connection_tested_at') == '') {
+		g_form.setDisplay('connection_tested_at',false);
+	}
+	else {
+		g_form.setDisplay('connection_tested_at',true);
+		g_form.setReadOnly('connection_tested_at',true);		
+	}
+}
+
+
+function help() {
+	// Display the help if Status is Sending or Error
+	if (g_form.getValue('status') == 'Sending' || g_form.getValue('status') == 'Error' || g_form.getValue('connection_status') == 'Missing Connection Details') {
+		g_form.setDisplay('help',true);
+	}
+	else {
+		g_form.setDisplay('help',false);	
+	}
+}
+
+
+
+function areScheduledJobsOK() {	
+	if (g_scratchpad.job1 != 'ok') {
+		//Examples:
+		//Unable to find scheduled job: "Send Data to uControl"
+		//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+		//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+		//ok
+		
+		var job1 = g_scratchpad.job1;
+		if (job1.substring(0,2) == 'ok') {
+			job1 = job1.substring(3);
+			//Updated scheduled job: "Process Responses From uControl" set Active: True, Run: Periodically
+			g_form.addInfoMessage(job1);
+		}
+		else {
+			//Unable to find scheduled job: "Process Responses From uControl"
+			g_form.addErrorMessage(job1);
+		}
+	}
+	
+	if (g_scratchpad.job2 != 'ok') {
+		//Examples:
+		//Unable to find scheduled job: "Send Data to uControl"
+		//ok Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+		//ok Updated scheduled job: "Send Data to uControl" set Repeat Interval: 2
+		//ok		
+		var job2 = g_scratchpad.job2;
+		if (job2.substring(0,2) == 'ok') {
+			job2 = job2.substring(3);
+			//Updated scheduled job: "Send Data to uControl" set Active: True, Run: Periodically
+			g_form.addInfoMessage(job2);
+		}
+		else {
+			//Unable to find scheduled job: "Send Data to uControl"
+			g_form.addErrorMessage(job2);
+		}		
+	}
+		
+	if (g_scratchpad.job3 != 'ok') {
+		var job3 = g_scratchpad.job3;
+		if (job3.substring(0,2) == 'ok') {
+			job3 = job3.substring(3);
+			//Updated scheduled job: "Cleanup uControl Data" set Active: True
+			g_form.addInfoMessage(job3);
+		}
+		else {
+			//Unable to find scheduled job: "Cleanup uControl Data"
+			g_form.addErrorMessage(job3);
+		}		
+	}
+}
+
+
+function canWeAccessTheMIDServer() {
+	var mid_server = '';
+	var canReadMIDServerField = true;
+	// Put the mid_server in a try catch block in case the user does not have access to this
+	try {
+		mid_server = g_form.getDisplayBox('ucontrol_mid_server').value || '';		
+	}
+	catch(err) {
+		//TypeError: Cannot read property 'value' of undefined
+		canReadMIDServerField = false;
+		mid_server = '';
+	}
+	
+	if (canReadMIDServerField == false) {
+		g_form.addErrorMessage("Cannot access the MID Server table");	
+	}
+	else {
+		// MID Server Status should only be visible if we have a MID Server
+		if (g_form.getValue('ucontrol_mid_server') == ''){
+			g_form.setDisplay('ucontrol_mid_server.status',false);		
+		}
+		else {
+			g_form.setLabelOf('ucontrol_mid_server.status','MID Server Status');	
+			g_form.setDisplay('ucontrol_mid_server.status',true);
+		}
+	}	
+
+	if (canReadMIDServerField == true) {
+		if (g_form.getValue('ucontrol_mid_server') == '') {			
+			g_form.showFieldMsg('ucontrol_mid_server', 'No MID Server - Test Connection cannot be performed until this is provided');	
+		}
+		else {
+			g_form.hideFieldMsg('ucontrol_mid_server');			
+		}	
+	}
+}
+
+
+function connectionStatus() {	
+	if (g_form.getValue('connection_status') == 'OK') {
+		g_form.getElement('connection_status').style.backgroundColor = "lightGreen";	
+		g_form.getElement('connection_status_details').style.backgroundColor = "lightGreen";	
+	}
+	else if (g_form.getValue('connection_status') == 'Failed'){
+		g_form.getElement('connection_status').style.backgroundColor = "Tomato";	
+		g_form.getElement('connection_status_details').style.backgroundColor = "Tomato";
+		g_form.flash('connection_status', 'Tomato', 0);
+	}
+	else if (g_form.getValue('connection_status') == 'Missing Connection Details'){
+		g_form.getElement('connection_status').style.backgroundColor = "yellow";	
+		g_form.getElement('connection_status_details').style.backgroundColor = "yellow";
+	}	
+	else if (g_form.getValue('connection_status') == 'Connection Requires Testing'){
+		g_form.getElement('connection_status').style.backgroundColor = "coral";	
+		g_form.getElement('connection_status_details').style.backgroundColor = "coral";
+	}	
+	else 
+		{
+		g_form.getElement('connection_status').style.backgroundColor = "white";	
+		g_form.getElement('connection_status_details').style.backgroundColor = "white";
+	}	
+}
+
+
+function url() {
+	// Field messages
+	if (g_form.getValue('ucontrol_url') == '') {
+		g_form.showFieldMsg('ucontrol_url', 'No URL - Test Connection cannot be performed until this is provided');	
+	}
+	else {
+		g_form.hideFieldMsg('ucontrol_url');			
+	}	
+}]]></script>
         <sys_class_name>sys_script_client</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-29 11:03:10</sys_created_on>
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>233</sys_mod_count>
+        <sys_mod_count>252</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -470,7 +589,7 @@ function sendingStartingUp() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 21:33:13</sys_updated_on>
+        <sys_updated_on>2020-07-30 17:10:26</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>

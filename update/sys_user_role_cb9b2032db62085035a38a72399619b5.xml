@@ -2,7 +2,10 @@
     <sys_user_role action="INSERT_OR_UPDATE">
         <assignable_by/>
         <can_delegate>true</can_delegate>
-        <description/>
+        <description>admin required to access scheduled jobs sysauto&#13;
+mid_server needed to  access ecc_queue&#13;
+itil needed to access cmdb etc - but admin does everything&#13;
+ </description>
         <elevated_privilege>false</elevated_privilege>
         <grantable>true</grantable>
         <includes_roles/>
@@ -14,13 +17,13 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-01-28 09:49:15</sys_created_on>
         <sys_id>cb9b2032db62085035a38a72399619b5</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>x_tekso_twxapp01.admin</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_user_role_cb9b2032db62085035a38a72399619b5</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-01-28 09:49:15</sys_updated_on>
+        <sys_updated_on>2020-07-30 20:17:21</sys_updated_on>
     </sys_user_role>
 </record_update>

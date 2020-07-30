@@ -102,12 +102,17 @@ function getECCAgentStatusCallBackFunction(response) {
 function getECCAgentUserCallBackFunction(response) {
 	var answer = response.responseXML.documentElement.getAttribute("answer");	
 	var mid_server_user_name = answer.toString();
-	if (answer.length < 1) {
+	if (mid_server_user_name.length < 1) {
 		g_form.hideFieldMsg('ucontrol_mid_server');
 		g_form.showFieldMsg('ucontrol_mid_server','Unable to get MID Server user','error');
 	}
 	else {
 		// Check if the midserver user has the role mid_server
+		/* No longer need to do this
+		This was always a problem anyway as we can't use gs.hasRole on another user account - so have 
+		to query the table directly - which is not accurate as that would only find a mattch if the user 
+		account had mid_server directly assigned - rather than via admin etc.
+				
 		var role = 'mid_server';
 		var ga3 = new GlideAjax('x_tekso_twxapp01.ClientCheckECCAgent');//this is the script include
 		ga3.addParam("sysparm_name", "checkUserHasRole"); //this is the function within the script include
@@ -115,9 +120,22 @@ function getECCAgentUserCallBackFunction(response) {
 		ga3.addParam("sysparm_role",role);
 		//ga3.getXML(checkUserHasRoleCallBackFunction);	
 		ga3.getXML( function (response) { checkUserHasRoleCallBackFunction (response, mid_server_user_name, role); });
+		
+		*/
+		
+		//New
+		var ga4 = new GlideAjax('x_tekso_twxapp01.ClientCheckScheduledJob');//this is the script include
+		ga4.addParam("sysparm_name", "checkAndUpdateScheduledJobRunTypePeriodically"); 
+		//this is the function within the script include
+		ga4.addParam("sysparm_job_name", "Send Data to uControl");
+		var interval = g_form.getValue('ucontrol_polling_interval_minutes');
+		var interval2 = parseInt(interval);
+		ga4.addParam("sysparm_job_interval_mins",interval2);	
+		ga4.getXML(checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction);			
 	}
 }
 
+/* No longer required
 //Call back function for checkUserHasRole
 function checkUserHasRoleCallBackFunction(response, mid_server_user_name,role) {
 	var answer = response.responseXML.documentElement.getAttribute("answer");	
@@ -137,9 +155,10 @@ function checkUserHasRoleCallBackFunction(response, mid_server_user_name,role) {
 		g_form.showFieldMsg('ucontrol_mid_server','MID Server user ' + mid_server_user_name + ' does not have the role ' + role,'error');
 	}
 }
+*/
 
 //Call back function for checkAndUpdateScheduledJobRunTypePeriodically
-function checkAndUpdateScheduledJobRunTypePeriodicallyJobCallBackFunction(response) {
+function checkAndUpdateScheduledJobRunTypePeriodicallyCallBackFunction(response) {
 	// The server will always return an xml object that you will need to parse. 
 	// You can start with the following to figure out what xml you have and then dig into it to pull what you need.
 	var answer = response.responseXML.documentElement.getAttribute("answer");
@@ -324,7 +343,7 @@ function runTestBusRuleCode(){
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>e8b2e136db26085035a38a72399619f6</sys_id>
-        <sys_mod_count>211</sys_mod_count>
+        <sys_mod_count>212</sys_mod_count>
         <sys_name>Test Connection</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -332,7 +351,7 @@ function runTestBusRuleCode(){
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_action_e8b2e136db26085035a38a72399619f6</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 20:20:18</sys_updated_on>
+        <sys_updated_on>2020-07-30 20:12:58</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <ui11_compatible>true</ui11_compatible>
         <ui16_compatible>false</ui16_compatible>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Debug Log" max_length="40" name="x_tekso_twxapp01_debug_log" sizeclass="58773" type="collection">
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
+        <element default="0" label="Level" max_length="40" name="level" type="integer"/>
         <element attributes="no_truncate" label="Message" max_length="1000" name="message" type="string"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
     </element>

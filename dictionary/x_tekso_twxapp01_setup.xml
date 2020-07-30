@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Setup" max_length="40" name="x_tekso_twxapp01_setup" type="collection">
+        <element label="Advanced Settings Visible" max_length="40" name="advanced_settings_visible" type="boolean"/>
         <element default="Off" hint="The system is checking the CMDB for changes" label="CMDB Tracking" max_length="40" name="cmdb_tracking" type="string"/>
         <element label="CMDB Tracking Error Details" max_length="100" name="cmdb_tracking_error_details" type="string"/>
         <element label="CMDB Tracking Switched Off At" max_length="40" name="cmdb_tracking_switched_off_at" type="glide_date_time"/>

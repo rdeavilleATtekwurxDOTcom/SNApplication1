@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update sys_domain="global" table="sys_script_client">
+    <sys_script_client action="DELETE">
+        <active>true</active>
+        <applies_extended>false</applies_extended>
+        <condition/>
+        <description/>
+        <field>additional_config_settings</field>
+        <global>true</global>
+        <isolate_script>true</isolate_script>
+        <messages/>
+        <name>Setup When Additional Config Changed</name>
+        <order/>
+        <script><![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+
+	var sysID = g_form.getUniqueValue();
+	
+	if (newValue == 'true') {
+		g_form.setDisplay('update_criteria',true);
+		g_form.setDisplay('delete_criteria',true);
+		g_form.setDisplay('connection_test_interval_minutes',true);
+		g_form.setDisplay('number_of_days_to_retain_data',true);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',true);	
+
+		g_form.setReadOnly('update_criteria',true);
+		g_form.setReadOnly('delete_criteria',true);
+		g_form.setReadOnly('connection_test_interval_minutes',true);
+		g_form.setReadOnly('number_of_days_to_retain_data',true);
+		g_form.setReadOnly('number_of_days_to_retain_empty_logs',true);	
+
+		
+	}
+	else {
+		g_form.setDisplay('update_criteria',false);
+		g_form.setDisplay('delete_criteria',false);
+		g_form.setDisplay('connection_test_interval_minutes',false);
+		g_form.setDisplay('number_of_days_to_retain_data',false);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',false);				
+	}	
+
+	//Save the change in order to avoid the message:
+	//Leaving Site? Changes that you made may not be saved	
+	//g_form.save();	
+
+}]]></script>
+        <sys_class_name>sys_script_client</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 13:06:44</sys_created_on>
+        <sys_domain>global</sys_domain>
+        <sys_domain_path>/</sys_domain_path>
+        <sys_id>ca0d344e1b9a9c101c6afd9f034bcb45</sys_id>
+        <sys_mod_count>12</sys_mod_count>
+        <sys_name>Setup When Additional Config Changed</sys_name>
+        <sys_overrides/>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_script_client_ca0d344e1b9a9c101c6afd9f034bcb45</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 14:04:59</sys_updated_on>
+        <table>x_tekso_twxapp01_setup</table>
+        <type>onChange</type>
+        <ui_type>10</ui_type>
+        <view/>
+    </sys_script_client>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_script_client_ca0d344e1b9a9c101c6afd9f034bcb45</name>
+        <payload>&lt;?xml version="1.0" encoding="UTF-8"?&gt;&lt;record_update sys_domain="global" table="sys_script_client"&gt;&lt;sys_script_client action="INSERT_OR_UPDATE"&gt;&lt;active&gt;true&lt;/active&gt;&lt;applies_extended&gt;false&lt;/applies_extended&gt;&lt;condition/&gt;&lt;description/&gt;&lt;field&gt;additional_config_settings&lt;/field&gt;&lt;global&gt;true&lt;/global&gt;&lt;isolate_script&gt;true&lt;/isolate_script&gt;&lt;messages/&gt;&lt;name&gt;Setup When Additional Config Changed&lt;/name&gt;&lt;order/&gt;&lt;script&gt;&lt;![CDATA[function onChange(control, oldValue, newValue, isLoading, isTemplate) {
+   if (isLoading || newValue === '') {
+      return;
+   }
+
+	var sysID = g_form.getUniqueValue();
+	
+	if (newValue == 'true') {
+		g_form.setDisplay('update_criteria',true);
+		g_form.setDisplay('delete_criteria',true);
+		g_form.setDisplay('connection_test_interval_minutes',true);
+		g_form.setDisplay('number_of_days_to_retain_data',true);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',true);	
+
+		g_form.setReadOnly('update_criteria',true);
+		g_form.setReadOnly('delete_criteria',true);
+		g_form.setReadOnly('connection_test_interval_minutes',true);
+		g_form.setReadOnly('number_of_days_to_retain_data',true);
+		g_form.setReadOnly('number_of_days_to_retain_empty_logs',true);	
+
+		
+	}
+	else {
+		g_form.setDisplay('update_criteria',false);
+		g_form.setDisplay('delete_criteria',false);
+		g_form.setDisplay('connection_test_interval_minutes',false);
+		g_form.setDisplay('number_of_days_to_retain_data',false);
+		g_form.setDisplay('number_of_days_to_retain_empty_logs',false);				
+	}	
+
+	//Save the change in order to avoid the message:
+	//Leaving Site? Changes that you made may not be saved	
+	//g_form.save();	
+
+}]]&gt;&lt;/script&gt;&lt;sys_class_name&gt;sys_script_client&lt;/sys_class_name&gt;&lt;sys_created_by&gt;robin&lt;/sys_created_by&gt;&lt;sys_created_on&gt;2020-07-30 13:06:44&lt;/sys_created_on&gt;&lt;sys_domain&gt;global&lt;/sys_domain&gt;&lt;sys_domain_path&gt;/&lt;/sys_domain_path&gt;&lt;sys_id&gt;ca0d344e1b9a9c101c6afd9f034bcb45&lt;/sys_id&gt;&lt;sys_mod_count&gt;12&lt;/sys_mod_count&gt;&lt;sys_name&gt;Setup When Additional Config Changed&lt;/sys_name&gt;&lt;sys_overrides/&gt;&lt;sys_package display_value="Application 1" source="x_tekso_twxapp01"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_package&gt;&lt;sys_policy/&gt;&lt;sys_scope display_value="Application 1"&gt;993be4b2db62085035a38a72399619a7&lt;/sys_scope&gt;&lt;sys_update_name&gt;sys_script_client_ca0d344e1b9a9c101c6afd9f034bcb45&lt;/sys_update_name&gt;&lt;sys_updated_by&gt;robin&lt;/sys_updated_by&gt;&lt;sys_updated_on&gt;2020-07-30 14:04:59&lt;/sys_updated_on&gt;&lt;table&gt;x_tekso_twxapp01_setup&lt;/table&gt;&lt;type&gt;onChange&lt;/type&gt;&lt;ui_type&gt;10&lt;/ui_type&gt;&lt;view/&gt;&lt;/sys_script_client&gt;&lt;/record_update&gt;</payload>
+        <payload_hash>-275157949</payload_hash>
+        <record_name>Setup When Additional Config Changed</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 14:04:59</sys_created_on>
+        <sys_id>17aa4d4a1bda9c101c6afd9f034bcb68</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173a00a59630000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 14:04:59</sys_updated_on>
+        <type>Client Script</type>
+        <update_guid>5faa4d4ac3da9c10b76db597936c4467</update_guid>
+        <update_guid_history>5faa4d4ac3da9c10b76db597936c4467:-275157949,0f9941c692da9c10f9e9e8cfdcb422b6:-1628030560,ce3709866dda9c103f142fcff0678078:106722505,aaf6c5862ada9c10b061d634e92b5c6f:-1467722906,9bc58546ffda9c101c68b5186a2242de:121914102,2e350d0641da9c10d4e2025eb7651840:457351961,3d15c906ecda9c100fae8a3507bd817e:-2128367815,57a2818231da9c10c36c4cc80caf3829:-10042733,6052cd42d2da9c109200cd4c29888fd0:1767028472,3622cd42feda9c10637dccac6069659f:-913369695,5631850239da9c102030944e53a6b918:-1955832648,9a9dbc0e389a9c1096d7efc67a05de77:691330949,b55dbc0ec09a9c109ec4d7494eaadb07:-1644377005</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 14:14:01</sys_created_on>
+        <sys_db_object display_value="" name="sys_script_client">sys_script_client</sys_db_object>
+        <sys_id>000a41ad56e54d10ad24244c2d682c40</sys_id>
+        <sys_metadata>ca0d344e1b9a9c101c6afd9f034bcb45</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Setup When Additional Config Changed</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="Setup">a93c2476db62085035a38a723996195b</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_script_client_ca0d344e1b9a9c101c6afd9f034bcb45</sys_update_name>
+        <sys_update_version display_value="sys_script_client_ca0d344e1b9a9c101c6afd9f034bcb45">17aa4d4a1bda9c101c6afd9f034bcb68</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 14:14:01</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

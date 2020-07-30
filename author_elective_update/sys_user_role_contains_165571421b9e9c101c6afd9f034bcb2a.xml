@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role_contains">
+    <sys_user_role_contains action="DELETE">
+        <contains display_value="mid_server" name="mid_server">e76b74ba0ab3015700a3263b26e5e9d5</contains>
+        <role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</role>
+        <sys_class_name>sys_user_role_contains</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 17:11:25</sys_created_on>
+        <sys_id>165571421b9e9c101c6afd9f034bcb2a</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>mid_server.x_tekso_twxapp01.admin</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_user_role_contains_165571421b9e9c101c6afd9f034bcb2a</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:11:25</sys_updated_on>
+    </sys_user_role_contains>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_user_role_contains_165571421b9e9c101c6afd9f034bcb2a</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_user_role_contains"><sys_user_role_contains action="INSERT_OR_UPDATE"><contains display_value="mid_server" name="mid_server">e76b74ba0ab3015700a3263b26e5e9d5</contains><role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</role><sys_class_name>sys_user_role_contains</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-07-30 17:11:25</sys_created_on><sys_id>165571421b9e9c101c6afd9f034bcb2a</sys_id><sys_mod_count>0</sys_mod_count><sys_name>mid_server.x_tekso_twxapp01.admin</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_user_role_contains_165571421b9e9c101c6afd9f034bcb2a</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-30 17:11:25</sys_updated_on></sys_user_role_contains></record_update>]]></payload>
+        <payload_hash>1926045101</payload_hash>
+        <record_name>mid_server.x_tekso_twxapp01.admin</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 17:11:26</sys_created_on>
+        <sys_id>d655b1421b9e9c101c6afd9f034bcb20</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173a0b50a4c0000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:11:26</sys_updated_on>
+        <type>Contained Role</type>
+        <update_guid>1255b142cb9e9c1072121784de512620</update_guid>
+        <update_guid_history>1255b142cb9e9c1072121784de512620:1926045101</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 19:25:07</sys_created_on>
+        <sys_db_object display_value="" name="sys_user_role_contains">sys_user_role_contains</sys_db_object>
+        <sys_id>b5e32d062eb44966bca38a54c81394b9</sys_id>
+        <sys_metadata>165571421b9e9c101c6afd9f034bcb2a</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>mid_server.x_tekso_twxapp01.admin</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_user_role_contains_165571421b9e9c101c6afd9f034bcb2a</sys_update_name>
+        <sys_update_version display_value="sys_user_role_contains_165571421b9e9c101c6afd9f034bcb2a">d655b1421b9e9c101c6afd9f034bcb20</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 19:25:07</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

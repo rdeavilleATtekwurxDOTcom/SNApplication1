@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role">
+    <sys_security_acl_role action="DELETE">
+        <sys_class_name>sys_security_acl_role</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 17:53:29</sys_created_on>
+        <sys_id>1bdeb18a1b9e9c101c6afd9f034bcba2</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>.x_tekso_twxapp01.admin</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_security_acl display_value="">e6de754a1b9e9c101c6afd9f034bcb03</sys_security_acl>
+        <sys_update_name>sys_security_acl_role_1bdeb18a1b9e9c101c6afd9f034bcba2</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:53:29</sys_updated_on>
+        <sys_user_role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</sys_user_role>
+        <transaction_id/>
+    </sys_security_acl_role>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_security_acl_role_1bdeb18a1b9e9c101c6afd9f034bcba2</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_security_acl_role"><sys_security_acl_role action="INSERT_OR_UPDATE"><sys_class_name>sys_security_acl_role</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-07-30 17:53:29</sys_created_on><sys_id>1bdeb18a1b9e9c101c6afd9f034bcba2</sys_id><sys_mod_count>0</sys_mod_count><sys_name>.x_tekso_twxapp01.admin</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_security_acl display_value="">e6de754a1b9e9c101c6afd9f034bcb03</sys_security_acl><sys_update_name>sys_security_acl_role_1bdeb18a1b9e9c101c6afd9f034bcba2</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-30 17:53:29</sys_updated_on><sys_user_role display_value="x_tekso_twxapp01.admin" name="x_tekso_twxapp01.admin">cb9b2032db62085035a38a72399619b5</sys_user_role><transaction_id/></sys_security_acl_role></record_update>]]></payload>
+        <payload_hash>-477748517</payload_hash>
+        <record_name>.x_tekso_twxapp01.admin</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 17:53:29</sys_created_on>
+        <sys_id>1efe318a1b9e9c101c6afd9f034bcba9</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>173a0db8d280000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 17:53:29</sys_updated_on>
+        <type>Access Roles</type>
+        <update_guid>56fe318acf9e9c10db43491c152b6aa9</update_guid>
+        <update_guid_history>56fe318acf9e9c10db43491c152b6aa9:-477748517</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value=".x_tekso_twxapp01.admin">b8f04eca1b9e9c101c6afd9f034bcb20</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 18:02:07</sys_created_on>
+        <sys_db_object display_value="" name="sys_security_acl_role">sys_security_acl_role</sys_db_object>
+        <sys_id>042e49021ef24092954de960b02651a4</sys_id>
+        <sys_metadata>1bdeb18a1b9e9c101c6afd9f034bcba2</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>.x_tekso_twxapp01.admin</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_security_acl_role_1bdeb18a1b9e9c101c6afd9f034bcba2</sys_update_name>
+        <sys_update_version display_value="sys_security_acl_role_1bdeb18a1b9e9c101c6afd9f034bcba2">1efe318a1b9e9c101c6afd9f034bcba9</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 18:02:07</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>
