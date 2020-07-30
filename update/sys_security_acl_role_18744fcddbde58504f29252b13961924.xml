@@ -9,7 +9,7 @@
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_security_acl display_value="clientWriteToGSInfo">bf64cfcddbde58504f29252b13961986</sys_security_acl>
+        <sys_security_acl display_value="ClientWriteToGSInfo">bf64cfcddbde58504f29252b13961986</sys_security_acl>
         <sys_update_name>sys_security_acl_role_18744fcddbde58504f29252b13961924</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
         <sys_updated_on>2020-07-27 20:23:26</sys_updated_on>

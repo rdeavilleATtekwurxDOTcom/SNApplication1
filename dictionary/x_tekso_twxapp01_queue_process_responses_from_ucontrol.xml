@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?><database>
+    <element label="Queue Process Responses From uControl" max_length="40" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol" type="collection">
+        <element label="Completed At" max_length="40" name="completed_at" type="glide_date_time"/>
+        <element label="ECC Queue Record Sys ID" max_length="32" name="ecc_queue_record_sys_id" type="string"/>
+        <element label="Processed" max_length="40" name="processed" type="boolean"/>
+        <element label="Response From uControl" max_length="1000" name="response_from_ucontrol" type="string"/>
+        <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
+        <element label="REST Data Record Sys ID" max_length="32" name="rest_data_record_sys_id" type="string"/>
+        <element label="Scheduled Job2 Log Record Sys ID" max_length="32" name="scheduled_job2_log_record_sys_id" type="string"/>
+        <element label="Started At" max_length="40" name="started_at" type="glide_date_time"/>
+    </element>
+</database>

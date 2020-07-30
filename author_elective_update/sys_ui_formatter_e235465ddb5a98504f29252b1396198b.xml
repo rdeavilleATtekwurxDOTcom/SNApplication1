@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter">
+    <sys_ui_formatter action="DELETE">
+        <active>true</active>
+        <angular_module/>
+        <formatter>ui_macro_tekwurx_logo1.xml</formatter>
+        <name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</name>
+        <sys_class_name>sys_ui_formatter</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-28 10:26:11</sys_created_on>
+        <sys_id>e235465ddb5a98504f29252b1396198b</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_ui_formatter_e235465ddb5a98504f29252b1396198b</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-28 10:26:11</sys_updated_on>
+        <table>x_tekso_twxapp01_queue_inbound_response</table>
+        <type>formatter</type>
+    </sys_ui_formatter>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sys_ui_formatter_e235465ddb5a98504f29252b1396198b</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_ui_formatter"><sys_ui_formatter action="INSERT_OR_UPDATE"><active>true</active><angular_module/><formatter>ui_macro_tekwurx_logo1.xml</formatter><name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</name><sys_class_name>sys_ui_formatter</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-07-28 10:26:11</sys_created_on><sys_id>e235465ddb5a98504f29252b1396198b</sys_id><sys_mod_count>0</sys_mod_count><sys_name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sys_ui_formatter_e235465ddb5a98504f29252b1396198b</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-07-28 10:26:11</sys_updated_on><table>x_tekso_twxapp01_queue_inbound_response</table><type>formatter</type></sys_ui_formatter></record_update>]]></payload>
+        <payload_hash>-808442856</payload_hash>
+        <record_name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</record_name>
+        <reverted_from/>
+        <source>1cbbdc5cdb65181041d08f3813961959</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-28 10:26:11</sys_created_on>
+        <sys_id>6265c2dddb5a98504f29252b13961978</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>17394f550690000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-28 10:26:11</sys_updated_on>
+        <type>UI Formatter</type>
+        <update_guid>aa65c2ddaf5a985052cd32faa78e3477</update_guid>
+        <update_guid_history>aa65c2ddaf5a985052cd32faa78e3477:-808442856</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete/>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-07-30 11:04:55</sys_created_on>
+        <sys_db_object display_value="" name="sys_ui_formatter">sys_ui_formatter</sys_db_object>
+        <sys_id>2d1c10d17a2842f0961bd265fe58c421</sys_id>
+        <sys_metadata>e235465ddb5a98504f29252b1396198b</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>Q Inbnd Rspns ui_formatter_tekwurx_logo1</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent display_value="">61cd035fdbced0504f29252b139619f5</sys_parent>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sys_ui_formatter_e235465ddb5a98504f29252b1396198b</sys_update_name>
+        <sys_update_version display_value="sys_ui_formatter_e235465ddb5a98504f29252b1396198b">6265c2dddb5a98504f29252b13961978</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-07-30 11:04:55</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

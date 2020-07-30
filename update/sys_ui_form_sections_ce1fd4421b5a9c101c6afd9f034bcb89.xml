@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update>
+    <sys_ui_form_sections form_id="ce1fd4421b5a9c101c6afd9f034bcb89" sys_domain="global" table="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" version="3">
+        <sys_ui_form_section action="INSERT_OR_UPDATE">
+            <position>0</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-30 10:54:35</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>8e1fd4421b5a9c101c6afd9f034bcb8c</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_overrides/>
+            <sys_ui_form display_value="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">ce1fd4421b5a9c101c6afd9f034bcb89</sys_ui_form>
+            <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-30 10:54:35</sys_updated_on>
+        </sys_ui_form_section>
+        <sys_ui_form action="INSERT_OR_UPDATE">
+            <name>x_tekso_twxapp01_queue_process_responses_from_ucontrol2</name>
+            <roles/>
+            <sys_class_name>sys_ui_form</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-07-30 10:54:35</sys_created_on>
+            <sys_domain>global</sys_domain>
+            <sys_domain_path>/</sys_domain_path>
+            <sys_id>ce1fd4421b5a9c101c6afd9f034bcb89</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>x_tekso_twxapp01_queue_process_responses_from_ucontrol2</sys_name>
+            <sys_overrides/>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_ui_form_sections_ce1fd4421b5a9c101c6afd9f034bcb89</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-07-30 10:54:35</sys_updated_on>
+            <sys_user/>
+            <view display_value="Default view" name="NULL">Default view</view>
+            <view_name/>
+        </sys_ui_form>
+    </sys_ui_form_sections>
+</record_update>

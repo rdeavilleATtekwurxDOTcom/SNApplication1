@@ -33,8 +33,8 @@ function processResponsesFromuControl() {
 	var dataProcessed = false;
 	
 	var jobTable2 = 'x_tekso_twxapp01_scheduled_job2_log';
-	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response';
-	var inboundTable2 = 'x_tekso_twxapp01_queue_inbound_response2';
+	var queueTable = 'x_tekso_twxapp01_queue_process_responses_from_ucontrol';
+	var queueTable2 = 'x_tekso_twxapp01_queue_process_responses_from_ucontrol2';
 	
 	var calculatedNextJobStartTime = new GlideDateTime();
 
@@ -172,7 +172,7 @@ function processResponsesFromuControl() {
 					if (gotDataSysID == true && gotResponse == true) {
 						updateECCQueue(ecc_queue_sys_id);
 						
-						var gr3 = new GlideRecordSecure(inboundTable);
+						var gr3 = new GlideRecordSecure(queueTable);
 						gr3.initialize();
 						gr3.setValue('rest_data_record_sys_id',dataSysID);
 						gr3.setValue('response_received_at',dtReceived);
@@ -180,7 +180,7 @@ function processResponsesFromuControl() {
 						gr3.setValue('ecc_queue_record_sys_id',ecc_queue_sys_id);
 						gr3.setValue('scheduled_job2_log_record_sys_id',job2sysID);
 						gr3.insert();						
-						// Will trigger Async BR - Queue Inbound Response - Async
+						// Will trigger Async BR - Queue Process Responses - Async
 
 						//This will update the fields:
 						//background_job_handlerestresponse_started_at							 
@@ -219,11 +219,11 @@ function processResponsesFromuControl() {
 	}
 
 	//To run at the end - once
-	var gr5 = new GlideRecordSecure(inboundTable2);
+	var gr5 = new GlideRecordSecure(queueTable2);
 	gr5.initialize();
 	gr5.setValue('scheduled_job2_log_record_sys_id',job2sysID);	
 	gr5.insert();						
-	// Will trigger Async BR - Queue Inbound Response2 - Async
+	// Will trigger Async BR - Queue Process Responses2 - Async
 	
 	//This message will be output if property x_tekso_twxapp01.logging.level is 1 or higher		
 	msg = script + ' - Finished';
@@ -307,14 +307,14 @@ function updateECCQueue(sys_id) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>132</sys_mod_count>
+        <sys_mod_count>135</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 17:39:21</sys_updated_on>
+        <sys_updated_on>2020-07-30 10:58:49</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

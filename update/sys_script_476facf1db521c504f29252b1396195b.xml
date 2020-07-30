@@ -11,14 +11,14 @@
         <advanced>true</advanced>
         <change_fields>false</change_fields>
         <client_callable>false</client_callable>
-        <collection>x_tekso_twxapp01_queue_inbound_response2</collection>
+        <collection>x_tekso_twxapp01_queue_process_responses_from_ucontrol2</collection>
         <condition/>
         <description/>
         <execute_function>false</execute_function>
         <filter_condition/>
         <is_rest>false</is_rest>
         <message/>
-        <name>Queue Inbound Response2 - Async</name>
+        <name>Queue Process Responses2 - Async</name>
         <order>100</order>
         <priority>100</priority>
         <rest_method/>
@@ -30,7 +30,7 @@
         <script><![CDATA[/*
 BR is triggered by SJ Process Responses From uControl
 
-	var gr5 = new GlideRecordSecure(inboundTable2);
+	var gr5 = new GlideRecordSecure(queueTable2);
 	gr5.initialize();
 	gr5.setValue('scheduled_job2_log_record_sys_id',job2sysID);	
 	gr5.insert();	
@@ -40,10 +40,10 @@ BR is triggered by SJ Process Responses From uControl
 
 	var sysID = current.sys_id;
 
-	var inboundTable = 'x_tekso_twxapp01_queue_inbound_response2';
+	var queueTable = 'x_tekso_twxapp01_queue_process_responses_from_ucontrol2';
 	var setupTable = 'x_tekso_twxapp01_setup';
 
-	var gr1 = new GlideRecordSecure(inboundTable);
+	var gr1 = new GlideRecordSecure(queueTable);
 	gr1.addQuery('sys_id',sysID);
 	gr1.setLimit(1);	
 	gr1.query();
@@ -69,7 +69,8 @@ BR is triggered by SJ Process Responses From uControl
 			// This BR is originally triggered by Process Responses From uControl
 			// We can check to see if the other scheduled job - Send Data to uControl is okay		
 			var job = 'Send Data to uControl';
-			var jobrtn = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job,interval2);					if (jobrtn.substring(0,2) != 'ok') {
+			var jobrtn = new x_tekso_twxapp01.CheckScheduledJob().checkScheduledJobRunTypePeriodically(job,interval2);	
+			if (jobrtn.substring(0,2) != 'ok') {
 				new x_tekso_twxapp01.UpdateSetup().setStatusNotSendingIncompleteIfExistingIsSending(setupSysID2);			
 			}
 			else {
@@ -93,15 +94,15 @@ BR is triggered by SJ Process Responses From uControl
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>476facf1db521c504f29252b1396195b</sys_id>
-        <sys_mod_count>3</sys_mod_count>
-        <sys_name>Queue Inbound Response2 - Async</sys_name>
+        <sys_mod_count>5</sys_mod_count>
+        <sys_name>Queue Process Responses2 - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_476facf1db521c504f29252b1396195b</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 17:50:10</sys_updated_on>
+        <sys_updated_on>2020-07-30 10:48:07</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

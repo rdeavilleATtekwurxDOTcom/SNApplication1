@@ -18,7 +18,7 @@
         </element>
         <element default="A uControl URL and MID Server are required" label="Connection Status Details" max_length="200" name="connection_status_details" type="string"/>
         <element label="Connection Tested At" max_length="40" name="connection_tested_at" type="glide_date_time"/>
-        <element default="30" label="Connection Test Interval (minutes)" max_length="40" name="connection_test_interval_minutes" type="integer"/>
+        <element default="30" hint="How frequently the system should automatically perform a connection test" label="Connection Test Interval (minutes)" max_length="40" name="connection_test_interval_minutes" type="integer"/>
         <element label="Connection Test Link" max_length="32" name="connection_test_link" reference="x_tekso_twxapp01_connection_test" type="reference"/>
         <element label="Connection Test Requested" max_length="40" name="connection_test_requested" type="boolean"/>
         <element label="Connection Test Requested At" max_length="40" name="connection_test_requested_at" type="glide_date_time"/>
@@ -53,7 +53,7 @@
         </element>
         <element label="Most Recent Valid uControl URL" max_length="100" name="most_recent_valid_ucontrol_url" type="string"/>
         <element default="14" label="Number Of Days To Retain Data" max_length="40" name="number_of_days_to_retain_data" type="integer"/>
-        <element default="2" label="Number Of Days To Retain Empty Logs" max_length="40" name="number_of_days_to_retain_empty_logs" type="integer"/>
+        <element default="2" hint="Log records for scheduled job executions where there was nothing to process" label="Number Of Days To Retain Empty Logs" max_length="40" name="number_of_days_to_retain_empty_logs" type="integer"/>
         <element default="0" label="Number Of Pending Records" max_length="40" name="number_of_pending_records" type="integer"/>
         <element default="0" hint="Will be calculated automatically when the system connects to uControl" label="Number Of Supported Classes" max_length="40" name="number_of_supported_classes" type="integer"/>
         <element label="Show Message On Form Reload" max_length="40" name="show_message_on_form_reload" type="string"/>
