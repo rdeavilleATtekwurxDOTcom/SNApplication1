@@ -6,6 +6,7 @@
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="JSON Request Body First 1000 Chars" max_length="1000" name="json_request_body_first_1000_chars" type="string"/>
         <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
         <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element label="MID Server Agent Correlator" max_length="100" name="mid_server_agent_correlator" type="string"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
@@ -19,6 +20,7 @@
         <element label="Response Received At" max_length="40" name="response_received_at" type="glide_date_time"/>
         <element label="Response Status Code" max_length="40" name="response_status_code" type="integer"/>
         <element label="Response Status Message" max_length="100" name="response_status_message" type="string"/>
+        <element label="Scheduled Job2 Log Record Sys ID" max_length="32" name="scheduled_job2_log_record_sys_id" type="string"/>
         <element label="Scheduled Job Log Record Sys ID" max_length="32" name="scheduled_job_log_record_sys_id" type="string"/>
         <element label="Sending Will Timeout At" max_length="40" name="sending_will_timeout_at" type="glide_date_time"/>
         <element label="Sent To uControl" max_length="40" name="sent_to_ucontrol" type="boolean"/>

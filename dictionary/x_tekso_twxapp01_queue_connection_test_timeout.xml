@@ -2,6 +2,7 @@
     <element label="Queue Connection Test Timeout" max_length="40" name="x_tekso_twxapp01_queue_connection_test_timeout" type="collection">
         <element label="Completed At" max_length="40" name="completed_at" type="glide_date_time"/>
         <element label="Connection Test Record Sys ID" max_length="32" name="connection_test_record_sys_id" type="string"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element default="0" label="Number Of Seconds Before Timeout Expired" max_length="40" name="number_of_seconds_before_timeout_expired" type="integer"/>
         <element label="Processed" max_length="40" name="processed" type="boolean"/>
         <element label="Response Received" max_length="40" name="response_received" type="boolean"/>

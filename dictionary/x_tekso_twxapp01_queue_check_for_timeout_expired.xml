@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
     <element label="Queue Check For Timeout Expired" max_length="40" name="x_tekso_twxapp01_queue_check_for_timeout_expired" sizeclass="5414" type="collection">
         <element label="Completed At" max_length="40" name="completed_at" type="glide_date_time"/>
+        <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Processed" max_length="40" name="processed" type="boolean"/>
         <element label="Scheduled Job2 Log Record Sys ID" max_length="32" name="scheduled_job2_log_record_sys_id" type="string"/>
         <element label="Started At" max_length="40" name="started_at" type="glide_date_time"/>
