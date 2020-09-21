@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
     <sys_properties action="INSERT_OR_UPDATE">
         <choices/>
-        <description>0 = Off, 1 = On</description>
+        <description>&lt;strong&gt;Debug Track Data Changes&lt;/strong&gt; - 0 = Off, 1 = On</description>
         <ignore_cache>false</ignore_cache>
         <is_private>false</is_private>
         <name>x_tekso_twxapp01.debug.track.data.changes</name>
@@ -11,14 +11,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-22 09:34:35</sys_created_on>
         <sys_id>f82024b9dbe914104f29252b1396199e</sys_id>
-        <sys_mod_count>2</sys_mod_count>
+        <sys_mod_count>3</sys_mod_count>
         <sys_name>x_tekso_twxapp01.debug.track.data.changes</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_properties_f82024b9dbe914104f29252b1396199e</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-22 11:45:12</sys_updated_on>
+        <sys_updated_on>2020-09-21 10:15:58</sys_updated_on>
         <type>integer</type>
         <value>1</value>
         <write_roles/>

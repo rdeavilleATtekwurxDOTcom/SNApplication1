@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
     <sys_properties action="INSERT_OR_UPDATE">
         <choices/>
-        <description>0 or 1 or 2 or 3 or 4</description>
+        <description>&lt;strong&gt;Debug Logging Level&lt;/strong&gt; - 0 or 1 or 2 or 3 or 4</description>
         <ignore_cache>false</ignore_cache>
         <is_private>false</is_private>
         <name>x_tekso_twxapp01.logging.level</name>
@@ -11,14 +11,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-17 09:20:20</sys_created_on>
         <sys_id>a3dca244dbedd41041d08f3813961944</sys_id>
-        <sys_mod_count>14</sys_mod_count>
+        <sys_mod_count>15</sys_mod_count>
         <sys_name>x_tekso_twxapp01.logging.level</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_properties_a3dca244dbedd41041d08f3813961944</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-31 10:00:37</sys_updated_on>
+        <sys_updated_on>2020-09-21 10:17:44</sys_updated_on>
         <type>string</type>
         <value>4</value>
         <write_roles/>

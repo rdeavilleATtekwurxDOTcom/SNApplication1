@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties_category">
+    <sys_properties_category action="INSERT_OR_UPDATE">
+        <name>TekWurx uControl Data Connector</name>
+        <sys_class_name>sys_properties_category</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-09-21 10:13:05</sys_created_on>
+        <sys_id>bd511dcfdb1b1050e590d1d3ca961962</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TekWurx uControl Data Connector</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sys_properties_category_bd511dcfdb1b1050e590d1d3ca961962</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-09-21 10:13:05</sys_updated_on>
+        <title><![CDATA[<p>TekWurx uControl Data Connector Application Properties</p>]]></title>
+    </sys_properties_category>
+    <sys_translated_text action="delete_multiple" query="documentkey=bd511dcfdb1b1050e590d1d3ca961962"/>
+</record_update>
