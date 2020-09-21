@@ -2,20 +2,20 @@
     <sys_ui_formatter action="INSERT_OR_UPDATE">
         <active>true</active>
         <angular_module/>
-        <formatter>ui_macro_tekwurx_logo1.xml</formatter>
-        <name>CMDB 2 REST  ui_formatter_tekwurx_logo1</name>
+        <formatter>ui_macro_tekwurx_logo2.xml</formatter>
+        <name>CMDB 2 REST  ui_formatter_tekwurx_logo</name>
         <sys_class_name>sys_ui_formatter</sys_class_name>
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 21:53:11</sys_created_on>
         <sys_id>19b37dfedb1300504f29252b139619bc</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>CMDB 2 REST  ui_formatter_tekwurx_logo1</sys_name>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>CMDB 2 REST  ui_formatter_tekwurx_logo</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_formatter_19b37dfedb1300504f29252b139619bc</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-05 21:53:11</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:49:29</sys_updated_on>
         <table>x_tekso_twxapp01_cmdb_link_to_rest_data</table>
         <type>formatter</type>
     </sys_ui_formatter>

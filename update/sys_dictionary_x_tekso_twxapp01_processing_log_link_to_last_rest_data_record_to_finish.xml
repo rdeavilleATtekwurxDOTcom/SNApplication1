@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="no_of_records_in_mid_server_queue" table="x_tekso_twxapp01_rest_data_to_ucontrol">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="link_to_last_rest_data_record_to_finish" table="x_tekso_twxapp01_processing_log">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
-        <attributes/>
+        <attributes>readonly_clickthrough=true</attributes>
         <audit>false</audit>
         <calculation><![CDATA[(function calculatedFieldValue(current) {
 
@@ -14,10 +14,10 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>No Of Records In MID Server Queue</column_label>
+        <column_label>Link To Last REST Data Record To Finish</column_label>
         <comments/>
         <create_roles/>
-        <default_value>0</default_value>
+        <default_value/>
         <defaultsort/>
         <delete_roles/>
         <dependent/>
@@ -27,20 +27,20 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>no_of_records_in_mid_server_queue</element>
+        <element>link_to_last_rest_data_record_to_finish</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
         <function_field>false</function_field>
-        <internal_type display_value="Integer">integer</internal_type>
+        <internal_type display_value="Reference">reference</internal_type>
         <mandatory>false</mandatory>
-        <max_length>40</max_length>
-        <name>x_tekso_twxapp01_rest_data_to_ucontrol</name>
+        <max_length>32</max_length>
+        <name>x_tekso_twxapp01_processing_log</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
         <read_roles/>
-        <reference/>
+        <reference display_value="" name="x_tekso_twxapp01_rest_data_to_ucontrol">x_tekso_twxapp01_rest_data_to_ucontrol</reference>
         <reference_cascade_rule/>
         <reference_floats>false</reference_floats>
         <reference_key/>
@@ -52,16 +52,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-07-20 11:17:08</sys_created_on>
-        <sys_id>4b44cd321b8e50101c6afd9f034bcbcc</sys_id>
-        <sys_mod_count>0</sys_mod_count>
-        <sys_name>No Of Records In MID Server Queue</sys_name>
+        <sys_created_on>2020-08-04 10:15:37</sys_created_on>
+        <sys_id>a8064ea71b1a14501c6afd9f034bcb11</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Link To Last REST Data Record To Finish</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_dictionary_x_tekso_twxapp01_rest_data_to_ucontrol_no_of_records_in_mid_server_queue</sys_update_name>
+        <sys_update_name>sys_dictionary_x_tekso_twxapp01_processing_log_link_to_last_rest_data_record_to_finish</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-20 11:17:08</sys_updated_on>
+        <sys_updated_on>2020-08-04 10:15:47</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

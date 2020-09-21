@@ -1104,6 +1104,7 @@ function updateProcessingLogStats(logSysID) {
 
 	var firstRestSysID = firstRestSysIDLinkedToLog(logSysID);
 	var lastRestSysID = lastRestSysIDLinkedToLog(logSysID);
+	var noOfRestRecords = numberOfRestDataRecordsLinkedToLog(logSysID);
 	var lastDT = lastDataDateLinkedToLog(logSysID);
 	var restDataRecordContentSummary = restDataRecordContentsSummaryLinkedToLog(logSysID);
 	
@@ -1134,7 +1135,7 @@ function updateProcessingLogStats(logSysID) {
 		gr1.setValue('link_to_last_rest_data_record',lastRestSysID);
 		gr1.setValue('first_rest_data_record_sys_id',firstRestSysID);
 		gr1.setValue('last_rest_data_record_sys_id',lastRestSysID);
-	
+		gr1.setValue('number_of_rest_data_records',noOfRestRecords);
 		gr1.setValue('rest_data_record_contents_summary',restDataRecordContentSummary);
 		gr1.setValue('updated_by_script','SA SendDataTouControl'); // Debug			
 		gr1.update();	
@@ -1193,8 +1194,8 @@ function numberOfRecordsLinkedToLog(logSysID) {
 	return rtn;
 }
 
-/*
-function numberOfRestRecordsLinkedToLog(logSysID) {
+
+function numberOfRestDataRecordsLinkedToLog(logSysID) {
 	var rtn = 0;
 	var dataTable = 'x_tekso_twxapp01_rest_data_to_ucontrol';
 	var gr1 = new GlideAggregate(dataTable); //'x_tekso_twxapp01_rest_data_to_ucontrol'
@@ -1205,7 +1206,7 @@ function numberOfRestRecordsLinkedToLog(logSysID) {
 	rtn = gr1.getAggregate('COUNT');
 	return rtn;	
 }
-*/
+
 		
 function numberOfUpdatesLinkedToLog(logSysID) {
 	var rtn = 0;
@@ -1682,7 +1683,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>28c0841f1b8614101c6afd9f034bcb31</sys_id>
-        <sys_mod_count>8</sys_mod_count>
+        <sys_mod_count>9</sys_mod_count>
         <sys_name>Queue Send Data To uControl - Async</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -1690,7 +1691,7 @@ function createDataRecordWithJSON(dataTable,action,bsTbl,tstData,midSrvNm,midSrv
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_28c0841f1b8614101c6afd9f034bcb31</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-27 11:42:49</sys_updated_on>
+        <sys_updated_on>2020-08-04 12:02:09</sys_updated_on>
         <template/>
         <when>async</when>
     </sys_script>

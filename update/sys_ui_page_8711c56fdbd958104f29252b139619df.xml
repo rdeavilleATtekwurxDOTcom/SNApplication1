@@ -38,8 +38,8 @@ function invokePromptCallBack(type) {
 </style>		
 <g:ui_form>
 	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 
-	<img src="logo1.jpg"/>
-	<table border="0">		
+	<img src="logo2.jpg" width="238" height="100"/>	
+	<table border="0" width="600">				
 	<tr>
 		<td>
 		<h3>CMDB tracking is Running.</h3>
@@ -80,13 +80,13 @@ function invokePromptCallBack(type) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-15 12:15:06</sys_created_on>
         <sys_id>8711c56fdbd958104f29252b139619df</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>2</sys_mod_count>
         <sys_name>stop_sending_when_tracking_is_running</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_8711c56fdbd958104f29252b139619df</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-06-15 12:15:06</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:32:26</sys_updated_on>
     </sys_ui_page>
 </record_update>

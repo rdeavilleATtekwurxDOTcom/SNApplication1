@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
-    <sys_dictionary action="INSERT_OR_UPDATE" element="no_of_records_in_mid_server_queue" table="x_tekso_twxapp01_cmdb_changes">
+    <sys_dictionary action="INSERT_OR_UPDATE" element="no_of_records_in_mid_server_output_queue" table="x_tekso_twxapp01_cmdb_changes_history">
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
@@ -14,7 +14,7 @@
         <choice/>
         <choice_field/>
         <choice_table/>
-        <column_label>No Of Records In MID Server Queue</column_label>
+        <column_label>No Of Records In MID Server Output Queue</column_label>
         <comments/>
         <create_roles/>
         <default_value>0</default_value>
@@ -27,7 +27,7 @@
         <dynamic_creation_script/>
         <dynamic_default_value/>
         <dynamic_ref_qual/>
-        <element>no_of_records_in_mid_server_queue</element>
+        <element>no_of_records_in_mid_server_output_queue</element>
         <element_reference>false</element_reference>
         <foreign_database/>
         <function_definition/>
@@ -35,7 +35,7 @@
         <internal_type display_value="Integer">integer</internal_type>
         <mandatory>false</mandatory>
         <max_length>40</max_length>
-        <name>x_tekso_twxapp01_cmdb_changes</name>
+        <name>x_tekso_twxapp01_cmdb_changes_history</name>
         <next_element/>
         <primary>false</primary>
         <read_only>false</read_only>
@@ -52,16 +52,16 @@
         <staged>false</staged>
         <sys_class_name>sys_dictionary</sys_class_name>
         <sys_created_by>robin</sys_created_by>
-        <sys_created_on>2020-07-20 13:14:41</sys_created_on>
-        <sys_id>cb2fd5761bc290101c6afd9f034bcbcd</sys_id>
+        <sys_created_on>2020-08-04 12:51:09</sys_created_on>
+        <sys_id>c0b92e231b1e14501c6afd9f034bcba5</sys_id>
         <sys_mod_count>0</sys_mod_count>
-        <sys_name>No Of Records In MID Server Queue</sys_name>
+        <sys_name>No Of Records In MID Server Output Queue</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-        <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_changes_no_of_records_in_mid_server_queue</sys_update_name>
+        <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_changes_history_no_of_records_in_mid_server_output_queue</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-20 13:14:41</sys_updated_on>
+        <sys_updated_on>2020-08-04 12:51:09</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

@@ -12,7 +12,7 @@
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="Is A Copy Of Another Record" max_length="40" name="is_a_copy_of_another_record" type="boolean"/>
         <element label="Is In The List Of uControl Supported Classes" max_length="40" name="is_in_the_list_of_ucontrol_supported_classes" type="boolean"/>
-        <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Name" max_length="255" name="name" type="string"/>
         <element default="0" label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>

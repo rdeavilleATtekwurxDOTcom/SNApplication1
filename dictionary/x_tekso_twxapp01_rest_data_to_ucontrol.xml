@@ -5,12 +5,12 @@
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="JSON Request Body" max_length="5000000" name="json_request_body" type="string"/>
         <element label="JSON Request Body First 1000 Chars" max_length="1000" name="json_request_body_first_1000_chars" type="string"/>
-        <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
-        <element label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
-        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element label="MID Server Agent Correlator" max_length="100" name="mid_server_agent_correlator" type="string"/>
         <element default="0" label="No Of CMDB Records In JSON Request Body" max_length="40" name="no_of_cmdb_records_in_json_request_body" type="integer"/>
-        <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
+        <element default="0" label="No Of Records In MID Server Output Queue" max_length="40" name="no_of_records_in_mid_server_output_queue" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>

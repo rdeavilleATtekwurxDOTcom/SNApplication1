@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Queue Send Data To uControl" max_length="40" name="x_tekso_twxapp01_queue_send_data_to_ucontrol" type="collection">
+    <element label="Queue Send Data To uControl" max_length="40" name="x_tekso_twxapp01_queue_send_data_to_ucontrol" sizeclass="5556" type="collection">
         <element label="Completed At" max_length="40" name="completed_at" type="glide_date_time"/>
         <element label="Next Run At" max_length="40" name="next_run_at" type="glide_date_time"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>

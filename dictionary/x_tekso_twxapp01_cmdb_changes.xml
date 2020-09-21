@@ -17,19 +17,19 @@
         <element label="Latest REST Data Record Sys ID" max_length="32" name="latest_rest_data_record_sys_id" type="string"/>
         <element label="Latest REST Response Record Sys ID" max_length="32" name="latest_rest_response_record_sys_id" type="string"/>
         <element attributes="readonly_clickthrough=true" label="Link To Latest REST Data Record" max_length="32" name="link_to_latest_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
-        <element label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
-        <element label="Link To Originating Delete Record" max_length="32" name="link_to_originating_delete_record" reference="x_tekso_twxapp01_cmdb_deletes" type="reference"/>
-        <element label="Link To Originating Update Record" max_length="32" name="link_to_originating_update_record" reference="x_tekso_twxapp01_cmdb_updates" type="reference"/>
-        <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
-        <element label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
-        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Latest REST Response Record" max_length="32" name="link_to_latest_rest_response_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Originating Delete Record" max_length="32" name="link_to_originating_delete_record" reference="x_tekso_twxapp01_cmdb_deletes" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Originating Update Record" max_length="32" name="link_to_originating_update_record" reference="x_tekso_twxapp01_cmdb_updates" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
         <element label="MetaData" max_length="4000" name="metadata" type="string"/>
         <element label="No Of Dropped Fields" max_length="40" name="no_of_dropped_fields" type="integer"/>
         <element label="No Of Excluded Fields" max_length="40" name="no_of_excluded_fields" type="integer"/>
         <element label="No Of Fields" max_length="40" name="no_of_fields" type="integer"/>
         <element label="No Of Fields To Process" max_length="40" name="no_of_fields_to_process" type="integer"/>
-        <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
+        <element default="0" label="No Of Records In MID Server Output Queue" max_length="40" name="no_of_records_in_mid_server_output_queue" type="integer"/>
         <element label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" display="true" label="Number" max_length="40" name="number" type="string"/>
         <element label="Originating Delete Record Sys ID" max_length="32" name="originating_delete_record_sys_id" type="string"/>

@@ -9,6 +9,7 @@
         <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
         <element label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
         <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
+        <element default="0" label="No Of Records In MID Server Output Queue" max_length="40" name="no_of_records_in_mid_server_output_queue" type="integer"/>
         <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
         <element default="0" label="No Of Times Sent To uControl" max_length="40" name="no_of_times_sent_to_ucontrol" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>

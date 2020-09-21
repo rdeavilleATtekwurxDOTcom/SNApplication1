@@ -13,9 +13,9 @@
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="Last Processing Log Record Sys ID" max_length="32" name="last_processing_log_record_sys_id" type="string"/>
         <element label="Last Processing Log Record To Finish Sys ID" max_length="32" name="last_processing_log_record_to_finish_sys_id" type="string"/>
-        <element label="Link To First Processing Log Record" max_length="32" name="link_to_first_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
-        <element label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
-        <element label="Link To Last Processing Log Record To Finish" max_length="32" name="link_to_last_processing_log_record_to_finish" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To First Processing Log Record" max_length="32" name="link_to_first_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Last Processing Log Record" max_length="32" name="link_to_last_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Last Processing Log Record To Finish" max_length="32" name="link_to_last_processing_log_record_to_finish" reference="x_tekso_twxapp01_processing_log" type="reference"/>
         <element label="Max Retries" max_length="40" name="max_retries" type="integer"/>
         <element label="Next Run At" max_length="40" name="next_run_at" type="glide_date_time"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>

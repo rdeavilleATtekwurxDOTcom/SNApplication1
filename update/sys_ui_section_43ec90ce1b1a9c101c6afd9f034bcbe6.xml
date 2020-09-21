@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_ui_section caption="" section_id="43ec90ce1b1a9c101c6afd9f034bcbe6" sys_domain="global" table="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" version="3" view="">
         <sys_ui_element action="INSERT_OR_UPDATE">
-            <element>x_tekso_twxapp01_ui_macro_tekwurx_logo1.xml</element>
+            <element>x_tekso_twxapp01_ui_macro_tekwurx_logo2.xml</element>
             <position>0</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>b93b35161b1edc101c6afd9f034bcb66</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>97886389dbd79810e590d1d3ca96193b</sys_id>
             <sys_mod_count>0</sys_mod_count>
-            <sys_ui_formatter display_value="Q Prcss Rsp2 ui_formatter_tekwurx_logo1">433c9c4e1b1a9c101c6afd9f034bcbdf</sys_ui_formatter>
+            <sys_ui_formatter display_value="Q Prcss Rsp2 ui_formatter_tekwurx_logo">433c9c4e1b1a9c101c6afd9f034bcbdf</sys_ui_formatter>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>formatter</type>
         </sys_ui_element>
@@ -18,13 +18,13 @@
             <element>.begin_split</element>
             <position>1</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>f13b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>db886389dbd79810e590d1d3ca96193b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -32,13 +32,13 @@
             <element>number</element>
             <position>2</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>753b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>5f886389dbd79810e590d1d3ca96193b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -46,13 +46,13 @@
             <element>.split</element>
             <position>3</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>f53b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>df886389dbd79810e590d1d3ca96193b</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -60,13 +60,13 @@
             <element>scheduled_job2_log_record_sys_id</element>
             <position>4</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>793b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>53886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -74,13 +74,13 @@
             <element>.end_split</element>
             <position>5</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>f93b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>d3886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>.end_split</type>
         </sys_ui_element>
@@ -88,13 +88,13 @@
             <element>.begin_split</element>
             <position>6</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>7d3b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>57886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>.begin_split</type>
         </sys_ui_element>
@@ -102,13 +102,13 @@
             <element>started_at</element>
             <position>7</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>fd3b35161b1edc101c6afd9f034bcb67</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>d7886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -116,13 +116,13 @@
             <element>processed</element>
             <position>8</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>713b35161b1edc101c6afd9f034bcb68</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>5b886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>
@@ -130,13 +130,13 @@
             <element>.split</element>
             <position>9</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>b93b35161b1edc101c6afd9f034bcb74</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>db886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type>.split</type>
         </sys_ui_element>
@@ -144,13 +144,13 @@
             <element>completed_at</element>
             <position>10</position>
             <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-07-31 12:15:33</sys_created_on>
-            <sys_id>3d3b35161b1edc101c6afd9f034bcb74</sys_id>
+            <sys_created_on>2020-09-15 16:03:38</sys_created_on>
+            <sys_id>5f886389dbd79810e590d1d3ca96193c</sys_id>
             <sys_mod_count>0</sys_mod_count>
             <sys_ui_formatter/>
             <sys_ui_section caption="NULL" display_value="" name="x_tekso_twxapp01_queue_process_responses_from_ucontrol2" sys_domain="global" view="Default view">43ec90ce1b1a9c101c6afd9f034bcbe6</sys_ui_section>
             <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-07-31 12:15:33</sys_updated_on>
+            <sys_updated_on>2020-09-15 16:03:38</sys_updated_on>
             <sys_user/>
             <type/>
         </sys_ui_element>

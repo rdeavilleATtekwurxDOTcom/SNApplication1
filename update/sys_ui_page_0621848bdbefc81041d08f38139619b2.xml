@@ -104,8 +104,8 @@ function clientLog(msg) {
 <g:ui_form>
 	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 	
 	<input type="hidden" id="checkforconnectiontimeout" name="checkforconnectiontimeout" value="${sysparm_checkforconnectiontimeout}"/>	
-	<img src="logo1.jpg"/>
-	<table border="0">		
+	<img src="logo2.jpg" width="238" height="100"/>	
+	<table border="0" width="600">			
 	<tr>
 		<td>
 			<h3>Sending Processing is starting up.</h3>
@@ -184,13 +184,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 18:26:40</sys_created_on>
         <sys_id>0621848bdbefc81041d08f38139619b2</sys_id>
-        <sys_mod_count>32</sys_mod_count>
+        <sys_mod_count>34</sys_mod_count>
         <sys_name>sending_starting_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_0621848bdbefc81041d08f38139619b2</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 14:03:06</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:34:57</sys_updated_on>
     </sys_ui_page>
 </record_update>

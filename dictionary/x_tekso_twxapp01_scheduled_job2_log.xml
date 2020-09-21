@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><database>
-    <element label="Scheduled Job2 Log" max_length="40" name="x_tekso_twxapp01_scheduled_job2_log" type="collection">
+    <element label="Scheduled Job2 Log" max_length="40" name="x_tekso_twxapp01_scheduled_job2_log" sizeclass="5352" type="collection">
         <element label="Background Job CheckForTimeout Finished At" max_length="40" name="background_job_checkfortimeout_finished_at" type="glide_date_time"/>
         <element label="Background Job CheckForTimeout Started At" max_length="40" name="background_job_checkfortimeout_started_at" type="glide_date_time"/>
         <element label="Background Job HandleRESTResponse Finished At" max_length="40" name="background_job_handlerestresponse_finished_at" type="glide_date_time"/>

@@ -35,9 +35,9 @@ function invokePromptCallBack(type) {
 }
 </style>		
 <g:ui_form>
-	<img src="logo1.jpg"/>
+	<img src="logo2.jpg" width="238" height="100"/>	
 	<input type="hidden" id="problem" name="problem" value="${sysparm_problem}"/> 	
-	<table border="0">				
+	<table border="0" width="600">					
 	<tr>
 		<td>
 		<h3>${sysparm_problem}</h3>
@@ -55,13 +55,13 @@ function invokePromptCallBack(type) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-29 11:49:37</sys_created_on>
         <sys_id>fce1a32ddb1ed8504f29252b139619fb</sys_id>
-        <sys_mod_count>6</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>problem_with_scheduled_job</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_fce1a32ddb1ed8504f29252b139619fb</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-29 12:38:07</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:35:25</sys_updated_on>
     </sys_ui_page>
 </record_update>

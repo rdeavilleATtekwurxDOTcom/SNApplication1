@@ -103,8 +103,8 @@ function clientLog(msg) {
 <g:ui_form>	
 	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/> 
 	<input type="hidden" id="checkforconnectiontimeout" name="checkforconnectiontimeout" value="${sysparm_checkforconnectiontimeout}"/>
-	<img src="logo1.jpg"/>
-	<table border="0">		
+	<img src="logo2.jpg" width="238" height="100"/>	
+	<table border="0" width="600">		
 	<tr>
 		<td>
 			<h3>The Test Connection action is running.</h3>
@@ -182,13 +182,13 @@ if (gr1.next()) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-18 17:56:41</sys_created_on>
         <sys_id>207ab7b2dbefc81041d08f3813961980</sys_id>
-        <sys_mod_count>131</sys_mod_count>
+        <sys_mod_count>138</sys_mod_count>
         <sys_name>testing_connection_please_wait</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_207ab7b2dbefc81041d08f3813961980</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-28 14:03:29</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:22:09</sys_updated_on>
     </sys_ui_page>
 </record_update>

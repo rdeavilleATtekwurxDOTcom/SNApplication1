@@ -21,8 +21,8 @@
 <j:jelly trim="false" xmlns:j="jelly:core" xmlns:g="glide" xmlns:j2="null" xmlns:g2="null">
 <g:ui_form>
 	<input type="hidden" id="sysID" name="sysID" value="${sysparm_sysid}"/>  	
-	<img src="logo1.jpg"/>
-	<table border="0">		
+	<img src="logo2.jpg" width="238" height="100"/>	
+	<table border="0" width="600">		
 	<tr>
 		<td>
 			<h3>Sending to uControl is currently switched off.</h3>
@@ -47,13 +47,13 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-05 17:08:37</sys_created_on>
         <sys_id>3352343edb53405041d08f38139619cf</sys_id>
-        <sys_mod_count>4</sys_mod_count>
+        <sys_mod_count>6</sys_mod_count>
         <sys_name>start_tracking_message</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_ui_page_3352343edb53405041d08f38139619cf</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-14 22:22:47</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:34:00</sys_updated_on>
     </sys_ui_page>
 </record_update>

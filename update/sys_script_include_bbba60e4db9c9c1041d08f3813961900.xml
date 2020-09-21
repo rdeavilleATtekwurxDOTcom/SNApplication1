@@ -143,7 +143,7 @@ HandleRESTResponse.prototype = {
 			var completedAt = GlideDateTime();
 			
 			// Update the processing log record
-			var processingSummary = this.updateProcessingLog(logSysID,action,noOfRecords2,completedAt);
+			var processingSummary = this.updateProcessingLog(logSysID,dataSysID2,action,noOfRecords2,completedAt);
 
 			// Update Setup - log processing summary
 			this.updateSetup1(logSysID,processingSummary);
@@ -230,7 +230,7 @@ HandleRESTResponse.prototype = {
 		}
 	},
 	
-	updateProcessingLog: function(logSysID,action,noOfRecords,completedAt) {
+	updateProcessingLog: function(logSysID,dataSysID,action,noOfRecords,completedAt) {
 		
 		var script = 'SI HandleRestResponse updateProcessingLog';
 		var msg = script + ' - Started';
@@ -280,6 +280,8 @@ HandleRESTResponse.prototype = {
 			else {		
 				summary = total.toString() + ' records, ' + pSummary + ', ' + tSummary;		
 			}
+			gr1.setValue('link_to_last_rest_data_record_to_finish',dataSysID);
+			gr1.setValue('last_rest_data_record_to_finish_sys_id',dataSysID);			
 			gr1.setValue('number_of_updates_processed',updCnt2);
 			gr1.setValue('number_of_deletes_processed',delCnt2);
 			gr1.setValue('total_number_of_records_processed',newRecCnt);
@@ -427,13 +429,13 @@ si.handleRESTResponse(resultRestResponse,dataSysID);
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-04-17 10:15:37</sys_created_on>
         <sys_id>bbba60e4db9c9c1041d08f3813961900</sys_id>
-        <sys_mod_count>69</sys_mod_count>
+        <sys_mod_count>70</sys_mod_count>
         <sys_name>HandleRESTResponse</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy>protected</sys_policy>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_include_bbba60e4db9c9c1041d08f3813961900</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-08-03 13:57:45</sys_updated_on>
+        <sys_updated_on>2020-08-04 10:24:10</sys_updated_on>
     </sys_script_include>
 </record_update>

@@ -5,15 +5,15 @@
         <element label="First Process Record" max_length="40" name="first_process_record" type="boolean"/>
         <element label="Inserted By Script" max_length="100" name="inserted_by_script" type="string"/>
         <element label="Latest Process Record" max_length="40" name="latest_process_record" type="boolean"/>
-        <element label="Link To Next Record" max_length="32" name="link_to_next_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
-        <element label="Link To Previous Record" max_length="32" name="link_to_previous_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
-        <element label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
-        <element label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
-        <element label="Link To REST Data Record" max_length="32" name="link_to_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
-        <element label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
-        <element label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Next Record" max_length="32" name="link_to_next_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Previous Record" max_length="32" name="link_to_previous_record" reference="x_tekso_twxapp01_cmdb_link_to_rest_data" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Processing Log Record" max_length="32" name="link_to_processing_log_record" reference="x_tekso_twxapp01_processing_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Processing Record" max_length="32" name="link_to_processing_record" reference="x_tekso_twxapp01_cmdb_changes" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To REST Data Record" max_length="32" name="link_to_rest_data_record" reference="x_tekso_twxapp01_rest_data_to_ucontrol" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job2 Log Record" max_length="32" name="link_to_scheduled_job2_log_record" reference="x_tekso_twxapp01_scheduled_job2_log" type="reference"/>
+        <element attributes="readonly_clickthrough=true" label="Link To Scheduled Job Log Record" max_length="32" name="link_to_scheduled_job_log_record" reference="x_tekso_twxapp01_scheduled_job_log" type="reference"/>
         <element label="MID Server Agent Correlator" max_length="100" name="mid_server_agent_correlator" type="string"/>
-        <element default="0" label="No Of Records In MID Server Queue" max_length="40" name="no_of_records_in_mid_server_queue" type="integer"/>
+        <element default="0" label="No Of Records In MID Server Output Queue" max_length="40" name="no_of_records_in_mid_server_output_queue" type="integer"/>
         <element attributes="ignore_filter_on_new=true" default="javascript:global.getNextObjNumberPadded();" label="Number" max_length="40" name="number" type="string"/>
         <element label="Processing ID" max_length="32" name="processing_id" type="string"/>
         <element label="Processing Log Record Sys ID" max_length="32" name="processing_log_record_sys_id" type="string"/>

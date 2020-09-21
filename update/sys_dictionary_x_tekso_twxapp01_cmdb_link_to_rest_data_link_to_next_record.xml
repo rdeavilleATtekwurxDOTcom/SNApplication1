@@ -3,7 +3,7 @@
         <active>true</active>
         <array>false</array>
         <array_denormalized>false</array_denormalized>
-        <attributes/>
+        <attributes>readonly_clickthrough=true</attributes>
         <audit>false</audit>
         <calculation><![CDATA[(function calculatedFieldValue(current) {
 
@@ -54,14 +54,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-03-04 21:16:17</sys_created_on>
         <sys_id>090264a2dbdf8c104f29252b13961981</sys_id>
-        <sys_mod_count>0</sys_mod_count>
+        <sys_mod_count>1</sys_mod_count>
         <sys_name>Link To Next Record</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_dictionary_x_tekso_twxapp01_cmdb_link_to_rest_data_link_to_next_record</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-03-04 21:16:17</sys_updated_on>
+        <sys_updated_on>2020-08-04 08:52:52</sys_updated_on>
         <table_reference>false</table_reference>
         <text_index>false</text_index>
         <unique>false</unique>

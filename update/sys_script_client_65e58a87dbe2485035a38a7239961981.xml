@@ -195,14 +195,13 @@ function testConnectionIsRunning() {
 	g_form.setReadOnly('ucontrol_mid_server.status',false);
 	g_form.setDisplay('ucontrol_mid_server.status',false);
 	
-	var gdw = new GlideDialogWindow('x_tekso_twxapp01_testing_connection_please_wait');
+	var gdw = new GlideDialogWindow('x_tekso_twxapp01_testing_connection_please_wait');	
 	gdw.setPreference('sysparm_sysid',sysID);
-	
 	//testing value from x_tekso_twxapp01.testing.checkforconnectiontimeout	
 	//Has to be a string	
 	gdw.setPreference('sysparm_checkforconnectiontimeout',g_scratchpad.testing_checkforconnectiontimeout.toString());
 	//gdw.setPreference('sysparm_now',gdt);	
-	gdw.setTitle('<h1><strong>Please wait..</strong></h1>');
+	gdw.setTitle('<h1><strong>Test Connection. Please wait...</strong></h1>');
 	// To hide the x in the window
 	gdw.removeCloseDecoration();
 	gdw.render();	
@@ -248,7 +247,7 @@ function sendingStartingUp() {
 	gdw.setPreference('sysparm_sysid',sysID);
 	gdw.setPreference('sysparm_checkforconnectiontimeout',g_scratchpad.testing_checkforconnectiontimeout);	
 	//gdw.setPreference('sysparm_now',gdt);	
-	gdw.setTitle('<h1><strong>Please wait...</strong></h1>');
+	gdw.setTitle('<h1><strong>Start Sending. Please wait...</strong></h1>');
 	// To hide the x in the window
 	gdw.removeCloseDecoration();
 	gdw.render();	
@@ -581,7 +580,7 @@ function url() {
         <sys_domain>global</sys_domain>
         <sys_domain_path>/</sys_domain_path>
         <sys_id>65e58a87dbe2485035a38a7239961981</sys_id>
-        <sys_mod_count>252</sys_mod_count>
+        <sys_mod_count>264</sys_mod_count>
         <sys_name>Setup Set Fields onLoad</sys_name>
         <sys_overrides/>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
@@ -589,7 +588,7 @@ function url() {
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_script_client_65e58a87dbe2485035a38a7239961981</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-30 17:10:26</sys_updated_on>
+        <sys_updated_on>2020-09-15 15:38:31</sys_updated_on>
         <table>x_tekso_twxapp01_setup</table>
         <type>onLoad</type>
         <ui_type>10</ui_type>
