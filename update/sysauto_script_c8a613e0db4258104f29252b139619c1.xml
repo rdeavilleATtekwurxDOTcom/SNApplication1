@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
     <sysauto_script action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition/>
         <conditional>false</conditional>
         <name>Process Responses From uControl</name>
@@ -287,7 +287,7 @@ function updateECCQueue(sys_id) {
 	var sys_id2 = sys_id.toString();
 	if (sys_id2.length > 0) {
 		var gr1 = new GlideRecordSecure('ecc_queue');
-		gr1.addQuery('sys_id',sys_id);
+		gr1.addQuery('sys_id',sys_id2);
 		gr1.addQuery('queue','input');
 		gr1.addQuery('state','ready');
 		gr1.orderByDesc('sys_created_on'); //Descending Order
@@ -306,14 +306,14 @@ function updateECCQueue(sys_id) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-07-13 22:14:49</sys_created_on>
         <sys_id>c8a613e0db4258104f29252b139619c1</sys_id>
-        <sys_mod_count>139</sys_mod_count>
+        <sys_mod_count>141</sys_mod_count>
         <sys_name>Process Responses From uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_c8a613e0db4258104f29252b139619c1</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-31 11:49:00</sys_updated_on>
+        <sys_updated_on>2021-03-09 13:59:53</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

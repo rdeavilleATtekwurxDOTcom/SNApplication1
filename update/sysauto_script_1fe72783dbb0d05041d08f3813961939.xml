@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
     <sysauto_script action="INSERT_OR_UPDATE">
-        <active>true</active>
+        <active>false</active>
         <condition/>
         <conditional>false</conditional>
         <name>Send Data to uControl</name>
@@ -152,14 +152,14 @@ function queue_send_data_to_ucontrol2(setupSysID,jobSysID) {
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-05-20 14:42:29</sys_created_on>
         <sys_id>1fe72783dbb0d05041d08f3813961939</sys_id>
-        <sys_mod_count>190</sys_mod_count>
+        <sys_mod_count>191</sys_mod_count>
         <sys_name>Send Data to uControl</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sysauto_script_1fe72783dbb0d05041d08f3813961939</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2020-07-31 08:42:18</sys_updated_on>
+        <sys_updated_on>2021-03-09 13:59:46</sys_updated_on>
         <upgrade_safe>false</upgrade_safe>
     </sysauto_script>
 </record_update>

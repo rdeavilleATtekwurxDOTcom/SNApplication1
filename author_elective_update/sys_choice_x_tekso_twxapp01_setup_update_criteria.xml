@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_choice action="INSERT_OR_UPDATE" field="update_criteria" table="x_tekso_twxapp01_setup" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>update_criteria</element>
+            <name>x_tekso_twxapp01_setup</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-04-22 16:05:36</sys_created_on>
+            <sys_id>64e0f3c2db9c945041d08f381396199d</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>update_criteria</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_setup_update_criteria</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-04-22 16:05:36</sys_updated_on>
+        </sys_choice_set>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
             <element>update_criteria</element>
@@ -57,21 +73,5 @@
             <sys_updated_on>2020-04-22 16:08:05</sys_updated_on>
             <value>2</value>
         </sys_choice>
-        <sys_choice_set action="INSERT_OR_UPDATE">
-            <element>update_criteria</element>
-            <name>x_tekso_twxapp01_setup</name>
-            <sys_class_name>sys_choice_set</sys_class_name>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-04-22 16:05:36</sys_created_on>
-            <sys_id>64e0f3c2db9c945041d08f381396199d</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_name>update_criteria</sys_name>
-            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
-            <sys_policy/>
-            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-            <sys_update_name>sys_choice_x_tekso_twxapp01_setup_update_criteria</sys_update_name>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-04-22 16:05:36</sys_updated_on>
-        </sys_choice_set>
     </sys_choice>
 </record_update>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container">
+    <sp_container action="DELETE">
+        <background_color/>
+        <background_image/>
+        <background_style>default</background_style>
+        <bootstrap_alt>false</bootstrap_alt>
+        <class_name/>
+        <container_class_name/>
+        <name>TekWurx uControl Data Connector - Documentation - Container 2</name>
+        <order>2</order>
+        <sp_page display_value="x_tekso_twxapp01_docs">6a5261cfdb5b1050e590d1d3ca961912</sp_page>
+        <subheader>false</subheader>
+        <sys_class_name>sp_container</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-09-21 11:25:09</sys_created_on>
+        <sys_id>2a52e943db9b1050e590d1d3ca96198c</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>TekWurx uControl Data Connector - Documentation - Container 2</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_update_name>sp_container_2a52e943db9b1050e590d1d3ca96198c</sys_update_name>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-09-21 11:25:45</sys_updated_on>
+        <title/>
+        <width>container</width>
+    </sp_container>
+    <sys_update_version action="INSERT_OR_UPDATE">
+        <action>DELETE</action>
+        <application display_value="Application 1">993be4b2db62085035a38a72399619a7</application>
+        <file_path/>
+        <instance_id>29531a01dba58c1852dd2f17d496198c</instance_id>
+        <instance_name>ven03409</instance_name>
+        <name>sp_container_2a52e943db9b1050e590d1d3ca96198c</name>
+        <payload><![CDATA[<?xml version="1.0" encoding="UTF-8"?><record_update table="sp_container"><sp_container action="INSERT_OR_UPDATE"><background_color/><background_image/><background_style>default</background_style><bootstrap_alt>false</bootstrap_alt><class_name/><container_class_name/><name>TekWurx uControl Data Connector - Documentation - Container 2</name><order>2</order><sp_page display_value="x_tekso_twxapp01_docs">6a5261cfdb5b1050e590d1d3ca961912</sp_page><subheader>false</subheader><sys_class_name>sp_container</sys_class_name><sys_created_by>robin</sys_created_by><sys_created_on>2020-09-21 11:25:09</sys_created_on><sys_id>2a52e943db9b1050e590d1d3ca96198c</sys_id><sys_mod_count>1</sys_mod_count><sys_name>TekWurx uControl Data Connector - Documentation - Container 2</sys_name><sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package><sys_policy/><sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope><sys_update_name>sp_container_2a52e943db9b1050e590d1d3ca96198c</sys_update_name><sys_updated_by>robin</sys_updated_by><sys_updated_on>2020-09-21 11:25:45</sys_updated_on><title/><width>container</width></sp_container></record_update>]]></payload>
+        <payload_hash>2125079964</payload_hash>
+        <record_name>TekWurx uControl Data Connector - Documentation - Container 2</record_name>
+        <reverted_from/>
+        <source>915645921b5adc101c6afd9f034bcba5</source>
+        <source_table>sys_update_set</source_table>
+        <state>previous</state>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-09-21 11:25:45</sys_created_on>
+        <sys_id>d37265cfdb5b1050e590d1d3ca961919</sys_id>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_recorded_at>174b0699af00000001</sys_recorded_at>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-09-21 11:25:45</sys_updated_on>
+        <type>Container</type>
+        <update_guid>db7265cf915b105078e86730004ffe18</update_guid>
+        <update_guid_history>db7265cf915b105078e86730004ffe18:2125079964,e652e943819b10501b58e1f5ecb1988e:1521157371</update_guid_history>
+    </sys_update_version>
+    <sys_metadata_delete action="INSERT_OR_UPDATE">
+        <sys_audit_delete display_value="TekWurx uControl Data Connector - Documentation - Container 2">c092258fdb5b1050e590d1d3ca96193e</sys_audit_delete>
+        <sys_class_name>sys_metadata_delete</sys_class_name>
+        <sys_created_by>robin</sys_created_by>
+        <sys_created_on>2020-09-21 11:26:04</sys_created_on>
+        <sys_db_object display_value="" name="sp_container">sp_container</sys_db_object>
+        <sys_id>0bbcfc40fbda490f8f4b7a5c762be389</sys_id>
+        <sys_metadata>2a52e943db9b1050e590d1d3ca96198c</sys_metadata>
+        <sys_mod_count>0</sys_mod_count>
+        <sys_name>TekWurx uControl Data Connector - Documentation - Container 2</sys_name>
+        <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+        <sys_parent/>
+        <sys_policy/>
+        <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+        <sys_scope_delete display_value="">5f4484af6af94780855e3e0c0b5eb404</sys_scope_delete>
+        <sys_update_name>sp_container_2a52e943db9b1050e590d1d3ca96198c</sys_update_name>
+        <sys_update_version display_value="sp_container_2a52e943db9b1050e590d1d3ca96198c">d37265cfdb5b1050e590d1d3ca961919</sys_update_version>
+        <sys_updated_by>robin</sys_updated_by>
+        <sys_updated_on>2020-09-21 11:26:04</sys_updated_on>
+    </sys_metadata_delete>
+</record_update>

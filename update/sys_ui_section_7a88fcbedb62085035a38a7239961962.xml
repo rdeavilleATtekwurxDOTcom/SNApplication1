@@ -910,6 +910,34 @@
             <sys_user/>
             <type/>
         </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>password1</element>
+            <position>65</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-09-22 08:45:40</sys_created_on>
+            <sys_id>d07786db1b5390501c6afd9f034bcba8</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Setup" display_value="Setup" name="x_tekso_twxapp01_setup" sys_domain="global" view="Default view">7a88fcbedb62085035a38a7239961962</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-09-22 08:45:40</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
+        <sys_ui_element action="INSERT_OR_UPDATE">
+            <element>password2</element>
+            <position>66</position>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-09-22 08:46:04</sys_created_on>
+            <sys_id>92870adb1b5390501c6afd9f034bcb56</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_ui_formatter/>
+            <sys_ui_section caption="Setup" display_value="Setup" name="x_tekso_twxapp01_setup" sys_domain="global" view="Default view">7a88fcbedb62085035a38a7239961962</sys_ui_section>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-09-22 08:46:04</sys_updated_on>
+            <sys_user/>
+            <type/>
+        </sys_ui_element>
         <sys_ui_section action="INSERT_OR_UPDATE">
             <caption>Setup</caption>
             <header>false</header>

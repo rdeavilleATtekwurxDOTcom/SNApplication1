@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update>
     <sys_choice action="INSERT_OR_UPDATE" field="status" table="x_tekso_twxapp01_connection_test" version="3">
+        <sys_choice_set action="INSERT_OR_UPDATE">
+            <element>status</element>
+            <name>x_tekso_twxapp01_connection_test</name>
+            <sys_class_name>sys_choice_set</sys_class_name>
+            <sys_created_by>robin</sys_created_by>
+            <sys_created_on>2020-03-19 15:25:05</sys_created_on>
+            <sys_id>f381249bdbef0c1041d08f38139619a7</sys_id>
+            <sys_mod_count>0</sys_mod_count>
+            <sys_name>status</sys_name>
+            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
+            <sys_policy/>
+            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
+            <sys_update_name>sys_choice_x_tekso_twxapp01_connection_test_status</sys_update_name>
+            <sys_updated_by>robin</sys_updated_by>
+            <sys_updated_on>2020-03-19 15:25:05</sys_updated_on>
+        </sys_choice_set>
         <sys_choice action="INSERT_OR_UPDATE">
             <dependent_value/>
             <element>status</element>
@@ -95,21 +111,5 @@
             <sys_updated_on>2020-07-14 12:49:06</sys_updated_on>
             <value>Timeout Expired</value>
         </sys_choice>
-        <sys_choice_set action="INSERT_OR_UPDATE">
-            <element>status</element>
-            <name>x_tekso_twxapp01_connection_test</name>
-            <sys_class_name>sys_choice_set</sys_class_name>
-            <sys_created_by>robin</sys_created_by>
-            <sys_created_on>2020-03-19 15:25:05</sys_created_on>
-            <sys_id>f381249bdbef0c1041d08f38139619a7</sys_id>
-            <sys_mod_count>0</sys_mod_count>
-            <sys_name>status</sys_name>
-            <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
-            <sys_policy/>
-            <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
-            <sys_update_name>sys_choice_x_tekso_twxapp01_connection_test_status</sys_update_name>
-            <sys_updated_by>robin</sys_updated_by>
-            <sys_updated_on>2020-03-19 15:25:05</sys_updated_on>
-        </sys_choice_set>
     </sys_choice>
 </record_update>
