@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><record_update table="sys_properties">
     <sys_properties action="INSERT_OR_UPDATE">
         <choices/>
-        <description>&lt;strong&gt;Debug Logging Destination&lt;/strong&gt; - db or log or both</description>
+        <description>&lt;strong&gt;Debug Logging Destination&lt;/strong&gt; - db or log or both.</description>
         <ignore_cache>false</ignore_cache>
         <is_private>false</is_private>
         <name>x_tekso_twxapp01.logging.destination</name>
@@ -11,14 +11,14 @@
         <sys_created_by>robin</sys_created_by>
         <sys_created_on>2020-06-17 10:18:00</sys_created_on>
         <sys_id>fa3ab240db21181041d08f38139619ce</sys_id>
-        <sys_mod_count>7</sys_mod_count>
+        <sys_mod_count>8</sys_mod_count>
         <sys_name>x_tekso_twxapp01.logging.destination</sys_name>
         <sys_package display_value="Application 1" source="x_tekso_twxapp01">993be4b2db62085035a38a72399619a7</sys_package>
         <sys_policy/>
         <sys_scope display_value="Application 1">993be4b2db62085035a38a72399619a7</sys_scope>
         <sys_update_name>sys_properties_fa3ab240db21181041d08f38139619ce</sys_update_name>
         <sys_updated_by>robin</sys_updated_by>
-        <sys_updated_on>2021-03-09 13:57:54</sys_updated_on>
+        <sys_updated_on>2021-03-09 17:16:57</sys_updated_on>
         <type>string</type>
         <value>db</value>
         <write_roles/>
